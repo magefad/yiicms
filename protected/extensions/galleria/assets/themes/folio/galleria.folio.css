@@ -1,0 +1,184 @@
+.galleria-container {
+	position: relative;
+	font-family: arial, sans-serif;
+}
+.galleria-container img {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+}
+.galleria-stage {
+	width: 100%;
+	height: 100%;
+	background: #000;
+	display: none;
+	top: 0;
+	left: 0;
+}
+.galleria-thumbnails .galleria-image {
+	width: 130px;
+	height: auto;/*120px;*/
+	margin: 0 5px 5px 0;
+	position: absolute !important;
+	top: 0;
+	left: 0;
+	cursor: pointer; /* opera */
+	cursor: url(img/cursor-zoom.png), -moz-zoom-in; /* chrome, FF */
+	cursor: pointer\9; /* IE */
+	background: #eee url(img/miniloader.gif) no-repeat 50% 50%;
+}
+.galleria-loader {
+	width: 64px;
+	height: 64px;
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -16px;
+	margin-top: -16px;
+	background: #000 url(img/loader.gif) no-repeat 50% 50%;
+	z-index: 3;
+	opacity: .5;
+	filter: alpha(opacity = 50);
+	border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+.galleria-info {
+	display: none;
+	background: #000;
+	color: #fff;
+	padding: 8px 0;
+	z-index: 3;
+	position: absolute;
+	bottom: 10px;
+	background: rgba(0, 0, 0, 0.7);
+	_filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = #B2000000, endColorstr = #B2000000);
+	font-size: 12px;
+	line-height: 16px;
+	max-width: 50%;
+}
+.galleria-info-text {
+	padding: 0 12px;
+}
+.galleria-info-description {
+	color: #bbb;
+}
+:root *>.galleria-info-description {
+	color: rgba(255, 255, 255, 0.6)
+}
+.galleria-plus {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background: url(img/bg.png);
+	color: #fff;
+	line-height: 1.2;
+	font-size: 11px;
+	display: none;
+}
+.galleria-plus span {
+	position: absolute;
+	bottom: 5px;
+	left: 5px;
+	background: #000;
+	background: rgba(0, 0, 0, .5);
+	_filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = #7F000000, endColorstr = #7F000000);
+	padding: 1px 5px;
+	max-width: 160px;
+}
+.galleria-close {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: url(img/close.png) no-repeat 0 0;
+	z-index: 100;
+	cursor: pointer;
+}
+.galleria-close:hover {
+	background-position: 0 -50px;
+}
+.galleria-image-nav {
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0
+}
+.galleria-image-nav-left, .galleria-image-nav-right {
+	width: 50%;
+	height: 100%;
+	background: url(img/left.png) no-repeat 0 50%;
+	position: absolute;
+	left: 0;
+	z-index: 3;
+	cursor: pointer;
+}
+.galleria-image-nav-right {
+	left: auto;
+	right: 0;
+	background: url(img/right.png) no-repeat 100% 50%;
+}
+.galleria-image-nav-left:hover {
+	background-image: url(img/left-hover.png);
+}
+.galleria-image-nav-right:hover {
+	background-image: url(img/right-hover.png);
+}
+.galleria-image-nav-left.cur {
+	cursor: url(img/left-cursor.png), pointer;
+	background: none !important;
+}
+.galleria-image-nav-right.cur {
+	cursor: url(img/right-cursor.png), pointer;
+	background: none !important;
+}
+.galleria-container.iframe .galleria-image-nav {
+	height: 100px;
+	top: 50%;
+	margin-top: -50px;
+}
+.galleria-container.iframe.touch .galleria-images
+iframe {
+	margin-top: 40px;
+}
+.galleria-container.iframe.touch .galleria-info {
+	bottom: 40px;
+}
+.galleria-container.iframe .galleria-image-nav-left,
+.galleria-container.iframe .galleria-image-nav-left.cur {
+	cursor: pointer;
+	background: url(img/left.png) no-repeat 0 50% !important;
+	width: 100px;
+}
+.galleria-container.iframe .galleria-image-nav-right,
+.galleria-container.iframe .galleria-image-nav-right.cur {
+	cursor: pointer;
+	background: url(img/right.png) no-repeat 100% 50% !important;
+	width: 100px;
+}
+.galleria-container.iframe .galleria-image-nav-left:hover,
+.galleria-container.iframe .galleria-image-nav-left.cur:hover {
+	background-image: url(img/left-hover.png) !important;
+}
+.galleria-container.iframe .galleria-image-nav-right:hover,
+.galleria-container.iframe .galleria-image-nav-right.cur:hover {
+	background-image: url(img/right-hover.png) !important;
+}
+.galleria-preloader {
+	height: 4px;
+	width: 180px;
+	background: #eee;
+	position: absolute;
+	top: 0;
+}
+.galleria-loaded {
+	height: 4px;
+	width: 0%;
+	background: #444;
+}

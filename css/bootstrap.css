@@ -1,0 +1,12 @@
+.form-inline select, .form-inline input[type=text] {
+	width: 100% !important;
+}
+.row-fluid .span1 {
+	width: 60px;
+}
+.row-fluid .span2 {
+	width: 140px;
+}
+.row-fluid .span3 {
+	width: 230px;
+}

@@ -1,0 +1,148 @@
+/* Photo Gallery */
+.GalleryEditor {
+	border: 1px solid #DDD;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.GalleryEditor div.gform {
+	padding-top: 4px;
+	clear: left;
+}
+
+.GalleryEditor form {
+	margin: 0;
+}
+
+.GalleryEditor .photo {
+	position: relative;
+	float: left;
+	background-color: #fff;
+	margin: 4px;
+	height: 178px;
+	width: 140px;
+
+	display: block;
+	padding: 4px;
+	line-height: 1;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.GalleryEditor .photo img {
+	width: 140px;
+	height: auto;
+}
+
+.GalleryEditor .photo a {
+	padding-left: 8px;
+}
+
+.GalleryEditor .photo .actions {
+	float: right;
+
+	position: absolute;
+	bottom: 4px;
+	right: 4px;
+}
+
+.GalleryEditor hr {
+	margin: 0 4px;
+}
+
+.GalleryEditor .fileinput-button {
+	position: relative;
+	overflow: hidden;
+	margin-left: 8px;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+.GalleryEditor .fileinput-button input {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	border: solid transparent;
+	border-width: 0 0 100px 200px;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	-moz-transform: translate(-300px, 0) scale(4);
+	direction: ltr;
+	cursor: pointer;
+}
+
+/* modal styles*/
+.GalleryEditor .preview {
+	overflow: hidden;
+	width: 200px;
+	height: 156px;
+	margin-right: 10px;
+	overflow: hidden;
+	float: left;
+}
+
+.GalleryEditor .preview img {
+	width: 200px;
+}
+
+.GalleryEditor .photo-editor {
+	min-height: 156px;
+	margin-bottom: 4px;
+	padding: 4px;
+	border: 1px solid #DDD;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.photo-editor form {
+	margin-bottom: 0;
+}
+
+.GalleryEditor .caption p {
+	height: 40px;
+	overflow: hidden;
+}
+
+/* fixed thumbnail sizes */
+.GalleryEditor.no-desc .photo {
+	height: 138px;
+}
+
+.GalleryEditor.no-name .photo {
+	height: 160px;
+}
+
+.GalleryEditor.no-name-no-desc .photo {
+	height: 120px;
+}
+
+.GalleryEditor .image-preview {
+	height: 88px;
+	overflow: hidden;
+}
+
+/* item selection */
+.GalleryEditor .photo-select {
+	position: absolute;
+	bottom: 8px;
+	left: 8px;
+}
+
+.GalleryEditor .photo.selected {
+	background-color: #cef;
+	border-color: blue;
+}
