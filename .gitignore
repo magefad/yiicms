@@ -3,7 +3,6 @@
 *.settings
 .project
 protected/config/db.php
-themes/reflector
 uploads/
 .idea/
 Thumbs.db
