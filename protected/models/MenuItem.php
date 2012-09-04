@@ -17,7 +17,7 @@
  */
 class MenuItem extends CActiveRecord
 {
-	const STATUS_ACTIVE = 1;
+	const STATUS_ACTIVE   = 1;
 	const STATUS_DISABLED = 0;
 
 	public $menu_search;
@@ -65,9 +65,9 @@ class MenuItem extends CActiveRecord
 	public function relations()
 	{
 		return array(
-			'children'        => array(self::HAS_MANY, 'MenuItem', 'parent_id' /*, 'order' => 'sort ASC'*/),
-			'parent'          => array(self::BELONGS_TO, 'MenuItem', 'parent_id'),
-			'menu'            => array(self::BELONGS_TO, 'Menu', 'menu_id'),
+			'children' => array(self::HAS_MANY, 'MenuItem', 'parent_id' /*, 'order' => 'sort ASC'*/),
+			'parent'   => array(self::BELONGS_TO, 'MenuItem', 'parent_id'),
+			'menu'     => array(self::BELONGS_TO, 'Menu', 'menu_id'),
 		);
 	}
 
@@ -77,17 +77,17 @@ class MenuItem extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id'           => Yii::t('menu', 'ID'),
-			'parent_id'    => Yii::t('menu', 'Родитель'),
-			'menu_id'      => Yii::t('menu', 'Меню'),
-			'title'        => Yii::t('menu', 'Заголовок'),
-			'href'         => Yii::t('menu', 'Ссылка'),
-			'access'       => Yii::t('menu', 'Уровень доступа'),
-			'sort'         => Yii::t('menu', 'Порядок'),
-			'status'       => Yii::t('menu', 'Статус'),
+			'id'            => Yii::t('menu', 'ID'),
+			'parent_id'     => Yii::t('menu', 'Родитель'),
+			'menu_id'       => Yii::t('menu', 'Меню'),
+			'title'         => Yii::t('menu', 'Заголовок'),
+			'href'          => Yii::t('menu', 'Ссылка'),
+			'access'        => Yii::t('menu', 'Уровень доступа'),
+			'sort'          => Yii::t('menu', 'Порядок'),
+			'status'        => Yii::t('menu', 'Статус'),
 
-			'menu_search'  => Yii::t('menu', 'Меню'),
-			'parent_search'=> Yii::t('menu', 'Родитель'),
+			'menu_search'   => Yii::t('menu', 'Меню'),
+			'parent_search' => Yii::t('menu', 'Родитель'),
 		);
 	}
 
@@ -97,15 +97,15 @@ class MenuItem extends CActiveRecord
 	 */
 	public function search()
 	{
-		$criteria=new CDbCriteria;
+		$criteria       = new CDbCriteria;
 		$criteria->with = array('menu', 'parent');
 
 		$criteria->compare('id', $this->id, true);
-		$criteria->compare('parent_id', $this->parent_id, true);//@todo выключить?
-		#$criteria->compare('menu_id', $this->menu_id,true);
+		$criteria->compare('parent_id', $this->parent_id, true); //@todo выключить?
+		#$criteria->compare('menu_id', $this->menu_id, true);
 		$criteria->compare('menu.name', $this->menu_search, true);
 		$criteria->compare('parent.title', $this->parent_search, true);
-		#$criteria->compare('change_user_id',$this->change_user_id);
+		#$criteria->compare('change_user_id', $this->change_user_id);
 		$criteria->compare('title', $this->title, true);
 		$criteria->compare('href', $this->href, true);
 		//$criteria->compare('type', $this->type);
@@ -129,7 +129,7 @@ class MenuItem extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
-			'sort' => $sort
+			'sort'     => $sort
 		));
 	}
 
@@ -149,12 +149,16 @@ class MenuItem extends CActiveRecord
 
 	public function getParentList()
 	{
-		#return array_merge(array(0 => Yii::t('menu', 'Корень меню')), CHtml::listData($this->findAll(), 'id', 'title'));
 		$parents = MenuItem::model()->findAll(array(
 			'select' 	=> 'id, title',
 			'condition' => 'parent_id is null OR parent_id=0',
 			'order' 	=> 'sort'
 		));
+		// add parent_id = 0 (Root)
+		$parents['0'] = MenuItem::model();
+		$parents['0']->setAttribute('id', 0);
+		$parents['0']->setAttribute('title', Yii::t('menu', 'Корень меню'));
+
 		$tree = new Tree();
 		$tree->name = 'title';
 		return $tree->makeDropDown($parents);
