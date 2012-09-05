@@ -18,6 +18,7 @@ class UserIdentity extends CUserIdentity
 	 */
 	public function authenticate()
 	{
+		/** @var $user User */
 		$user = User::model()->findByAttributes(array('username' => $this->username));
 		if ( $user === null )
 		{
@@ -29,7 +30,7 @@ class UserIdentity extends CUserIdentity
 		}
 		else
 		{
-			$this->_id = $user->id;
+			$this->_id      = $user->id;
 			$this->username = $user->username;
 			Yii::app()->user->setState('id', $user->id);
 			Yii::app()->user->setState('access_level', $user->access_level);
@@ -56,7 +57,7 @@ class UserIdentity extends CUserIdentity
 	{
 		return array(
 			self::EMAIL_CONFIRM_YES => Yii::t('user', 'Да'),
-			self::EMAIL_CONFIRM_NO => Yii::t('user', 'Нет'),
+			self::EMAIL_CONFIRM_NO  => Yii::t('user', 'Нет'),
 		);
 	}
 
@@ -64,9 +65,7 @@ class UserIdentity extends CUserIdentity
 	{
 		$data = $this->getEmailConfirmStatusList();
 
-		return isset($data[$this->email_confirm])
-			? $data[$this->email_confirm]
-			: Yii::t('user', '*неизвестно*');
+		return isset($data[$this->email_confirm]) ? $data[$this->email_confirm] : Yii::t('user', 'неизвестно');
 	}
 
 	/**

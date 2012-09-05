@@ -17,7 +17,7 @@ class WebUser extends CWebUser
 			return false;
 		}
 		$authData = WebUser::getAuthData();
-        if ( $authData['username'] && isset($authData['access_level']) && $authData['loginTime'] && $authData['id'] )
+		if ( $authData['username'] && isset($authData['access_level']) && $authData['loginTime'] && $authData['id'] )
 		{
 			return true;
 		}
@@ -30,10 +30,10 @@ class WebUser extends CWebUser
 	protected function getAuthData()
 	{
 		return array(
-			'username' => Yii::app()->user->getState('username'),
+			'username'     => Yii::app()->user->getState('username'),
 			'access_level' => (int)Yii::app()->user->getState('access_level'),
-			'loginTime' => Yii::app()->user->getState('loginTime'),
-			'id' => (int)Yii::app()->user->getState('id')
+			'loginTime'    => Yii::app()->user->getState('loginTime'),
+			'id'           => (int)Yii::app()->user->getState('id')
 		);
 	}
 
@@ -46,8 +46,8 @@ class WebUser extends CWebUser
 		{
 			return false;
 		}
-        $loginAdmTime = Yii::app()->user->getState('loginAdmTime');
-		$isAdmin = Yii::app()->user->getState('isAdmin');
+		$loginAdmTime = Yii::app()->user->getState('loginAdmTime');
+		$isAdmin      = Yii::app()->user->getState('isAdmin');
 
 		if ( $isAdmin == User::ACCESS_LEVEL_ADMIN && $loginAdmTime )
 		{

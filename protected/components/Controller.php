@@ -45,7 +45,7 @@ class Controller extends RController
 	public function setMetaTags($data)
 	{
 		$this->setPageTitle($data->title);
-		$this->keywords = $data->keywords;
+		$this->keywords    = $data->keywords;
 		$this->description = $data->description;
 	}
 
@@ -56,52 +56,62 @@ class Controller extends RController
 
 	public function actionActivate()
 	{
-		$status = (int)Yii::app()->request->getQuery('status');
-		$id     = (int)Yii::app()->request->getQuery('id');
-		$modelClass   = Yii::app()->request->getQuery('model');
-		$statusField  = Yii::app()->request->getQuery('statusField');
+		$status      = (int)Yii::app()->request->getQuery('status');
+		$id          = (int)Yii::app()->request->getQuery('id');
+		$modelClass  = Yii::app()->request->getQuery('model');
+		$statusField = Yii::app()->request->getQuery('statusField');
 
-		if(!isset($modelClass,$id,$status,$statusField))
-			throw new CHttpException(404,Yii::t('fad','Страница не найдена!'));
+		if ( !isset($modelClass, $id, $status, $statusField) )
+		{
+			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
+		}
 
 		$model = new $modelClass;
 		$model = $model->resetScope()->findByPk($id);
-		if(!$model)
-			throw new CHttpException(404,Yii::t('fad','Страница не найдена!'));
+		if ( !$model )
+		{
+			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
+		}
 
 		$model->$statusField = $status;
 		$model->update(array($statusField));
 
-		if(!Yii::app()->request->isAjaxRequest)
+		if ( !Yii::app()->request->isAjaxRequest )
+		{
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		}
 
 	}
 
 	public function actionSort()
 	{
 		$direction  = Yii::app()->request->getQuery('direction');
-		$id     	= (int)Yii::app()->request->getQuery('id');
+		$id         = (int)Yii::app()->request->getQuery('id');
 		$modelClass = Yii::app()->request->getQuery('model');
 		$sortField  = Yii::app()->request->getQuery('sortField');
 
-		if(!isset($direction,$id,$modelClass,$sortField))
-			throw new CHttpException(404,Yii::t('fad','Страница не найдена!'));
+		if ( !isset($direction, $id, $modelClass, $sortField) )
+		{
+			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
+		}
 
-		$model = new $modelClass;
+		$model         = new $modelClass;
 		$model_depends = new $modelClass;
-		$model = $model->resetScope()->findByPk($id);
-		if(!$model)
-			throw new CHttpException(404,Yii::t('fad','Страница не найдена!'));
+		$model         = $model->resetScope()->findByPk($id);
+		if ( !$model )
+		{
+			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
+		}
 
 		if ( $direction === 'up' )
 		{
-			$model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField-1)));
+			$model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField - 1)));
 			$model_depends->$sortField++;
-			$model->$sortField--;#example menu_order column in sql
+			$model->$sortField--; #example menu_order column in sql
 		}
 		else
 		{
-			$model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField+1)));
+			$model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField + 1)));
 			$model_depends->$sortField--;
 			$model->$sortField++;
 		}
@@ -110,7 +120,9 @@ class Controller extends RController
 		$model_depends->update(array($sortField));
 
 		if ( !Yii::app()->request->isAjaxRequest )
+		{
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		}
 	}
 
 }
