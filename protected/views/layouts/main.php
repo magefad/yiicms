@@ -32,6 +32,7 @@ if ( !$topMenu = Yii::app()->cache->get('top-menu') )
 }
 #####################################
 $this->widget('bootstrap.widgets.TbNavbar', array(
+	'type'		=> 'inverse',
 	'fixed'		=> false,
 	'brand'		=> CHtml::encode(Yii::app()->name),
 	'brandUrl'	=> '/',
@@ -48,9 +49,9 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 					'items' => array_merge(
 						Menu::getItems('admin-menu'),
 						array(
-							array('label' => 'Войти', 'url' => array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+							array('label' => 'Войти', 'url' => array('/user/account/login'), 'visible'=>Yii::app()->user->isGuest),
 							array('label' => Yii::app()->user->name, 'url' => array('site/profile'), 'visible'=>!Yii::app()->user->isGuest),
-							array('label' => 'Выйти', 'url' => array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest, 'htmlOptions' => array('class' => 'btn')),
+							array('label' => 'Выйти', 'url' => array('/user/account/logout'), 'visible'=>!Yii::app()->user->isGuest, 'htmlOptions' => array('class' => 'btn')),
 						)
 					)
 				),
@@ -79,13 +80,13 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
 		)); ?><!-- breadcrumbs -->
 		<?php endif?>
 	    <?php if ( isset($this->currentPage) && $this->currentPage['slug'] == Yii::app()->params['index'] ):?>
-			<div class="news" style="float: right"><?php $this->widget('ext.news.widgets.LastNews', array('cacheTime' => 10));?></div>
+			<div class="news" style="float: right"><?php $this->widget('application.modules.news.widgets.LastNews', array('cacheTime' => 10));?></div>
 		<?php endif;?>
 		<?php echo $content; ?>
 	</div>
 	<footer class="footer">
 		<div class="container">
-			<?php $this->widget('ext.performance.widgets.statistic');?>
+			<?php #$this->widget('ext.performance.widgets.statistic');?>
 		</div>
 	</footer>
 </div><!-- page -->
