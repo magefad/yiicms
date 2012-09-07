@@ -86,7 +86,8 @@ $('.search-form form').submit(function(){
 			),
 			'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
 		), array(
-			'class' => 'bootstrap.widgets.TbButtonColumn',
+			'class'       => 'bootstrap.widgets.TbButtonColumn',
+			'htmlOptions' => array('style' => 'width:60px; text-align: center;')
 		),
 	),
 )); ?>

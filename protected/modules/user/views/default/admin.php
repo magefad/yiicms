@@ -76,7 +76,7 @@ $('.search-form form').submit(function(){
 					'options' => array('class' => 'icon-certificate', 'title' => 'Пароль'),
 				),
 			),
-			'htmlOptions' => array('style'=> 'width: 67px'),
+			'htmlOptions' => array('style'=> 'width: 70px'),
 		),
 	),
 )); ?>

@@ -1,12 +1,11 @@
 <?php
 $this->breadcrumbs = array(
-	Yii::t('gallery', 'Фотографии') => array('admin'),
-	Yii::t('gallery', 'Управление'),
+	Yii::t('gallery', 'Фотографии') => array('index'), Yii::t('gallery', 'Управление'),
 );
 
 $this->menu = array(
 	array('label' => Yii::t('gallery', 'Список'), 'url' => array('index')),
-	array('label' => Yii::t('gallery', 'Создать'), 'url' => array('create')),
+	array('label' => Yii::t('gallery', 'Добавить'), 'url' => array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -74,6 +73,7 @@ $('.search-form form').submit(function(){
 		*/
 		array(
 			'class' => 'bootstrap.widgets.TbButtonColumn',
+			'htmlOptions' => array('style' => 'width:60px; text-align: center;')
 		),
 	),
 )); ?>

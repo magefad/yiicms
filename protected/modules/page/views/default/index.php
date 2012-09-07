@@ -4,7 +4,6 @@
 $this->pageTitle   = Yii::t('page', 'Добавление страницы');
 $this->breadcrumbs = array(
 	Yii::t('page', 'Страницы') => array('admin'),
-	Yii::t('page', 'Создать'),
 );
 
 $this->menu = array(

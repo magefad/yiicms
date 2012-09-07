@@ -80,7 +80,7 @@ $('.search-form form').submit(function(){
 					'options' => array('class' => 'icon-picture', 'title' => 'Фотографии'),
 				),
 			),
-			'htmlOptions' => array('style'=> 'width: 70px'),
+			'htmlOptions' => array('style'=> 'width: 85px'),
 		),
 	),
 )); ?>
