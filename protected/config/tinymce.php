@@ -19,7 +19,7 @@ return array(
 		'theme_advanced_toolbar_location'  => "top",
 		'theme_advanced_toolbar_align'     => "left",
 		'external_link_list_url'           => '/page/MceListUrl',
-		'relative_urls'                    => true,
+		'relative_urls'                    => false,
 	),
 )
 ?>
