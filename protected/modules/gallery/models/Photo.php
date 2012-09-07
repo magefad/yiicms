@@ -1,0 +1,367 @@
+<?php
+
+/**
+ * This is the model class for table "{{gallery_photo}}".
+ *
+ * The followings are the available columns in table '{{gallery_photo}}':
+ * @property string $id
+ * @property string $gallery_id
+ * @property string $name
+ * @property string $title
+ * @property string $description
+ * @property string $keywords
+ * @property string $file_name
+ * @property string $creation_date
+ * @property string $change_date
+ * @property string $user_id
+ * @property string $change_user_id
+ * @property string $alt
+ * @property integer $type
+ * @property integer $status
+ * @property integer $sort
+ *
+ * The followings are the available model relations:
+ * @property User $changeUser
+ * @property Gallery $gallery
+ * @property User $user
+ */
+class Photo extends CActiveRecord
+{
+	const STATUS_PUBLISHED = 1;
+	const STATUS_DRAFT  = 0;
+
+	public $author_search;
+	public $changeAuthor_search;
+	public $gallery_search;
+
+	/** @var string Extensions for gallery images */
+	public $galleryExt = 'jpg';
+	/** @var string directory in web root for galleries */
+	public $galleryDir = 'uploads/gallery';
+
+	public $versions = array(
+		'thumb' => array(
+			'resize' => array(130, null),
+		),
+		'small' => array(
+			'resize' => array(320, null),
+		),
+		'standard' => array(
+			'resize' => array(640, null),
+		),
+		'medium' => array(
+			'resize' => array(1024, null),
+		),
+		'large' => array(
+			'resize' => array(1280, null),
+		)
+	);
+	/** @var int Maximum Photo width */
+	public $maxWidth = 1600;
+	/** @var int Maximum Photo height */
+	public $maxHeight = 1200;
+
+	/**
+	 * Returns the static model of the specified AR class.
+	 * @param string $className active record class name.
+	 * @return Photo the static model class
+	 */
+	public static function model($className=__CLASS__)
+	{
+		return parent::model($className);
+	}
+	
+	/**
+	 * @return string the associated database table name
+	 */
+	public function tableName()
+	{
+		return '{{gallery_photo}}';
+	}
+
+	/**
+	 * @return array validation rules for model attributes.
+	 */
+	public function rules()
+	{
+		return array(
+			#array('gallery_id, name, file_name, creation_date, user_id, change_user_id, alt', 'required'),
+			array('gallery_id', 'required'),
+			array('sort, type, status', 'numerical', 'integerOnly'=> true),
+			array('gallery_id', 'length', 'max'=> 11),
+			array('name', 'length', 'max'=> 300),
+			array('file_name', 'length', 'max'=> 500),
+			array('user_id, change_user_id', 'length', 'max'=> 10),
+			array('alt', 'length', 'max'=> 150),
+			array('description', 'safe'),
+
+			array('id, gallery_id, name, description, sort, file_name, creation_date, user_id, change_user_id, alt, type, status,   author_search,changeAuthor_search,gallery_search', 'safe', 'on'=>'search'),
+		);
+	}
+
+	/**
+	 * @return array relational rules.
+	 */
+	public function relations()
+	{
+		return array(
+			'changeAuthor' => array(self::BELONGS_TO, 'User', 'change_user_id'),
+			'gallery'      => array(self::BELONGS_TO, 'Gallery', 'gallery_id'),
+			'author'       => array(self::BELONGS_TO, 'User', 'user_id'),
+		);
+	}
+
+	/**
+	 * @return array customized attribute labels (name=>label)
+	 */
+	public function attributeLabels()
+	{
+		return array(
+			'id'                  => 'ID',
+			'gallery_id'          => 'Галерея',
+			'name'                => 'Название',
+			'title'               => 'Заголовок (title)',
+			'keywords'            => 'Ключевые слова',
+			'description'         => 'Поисание',
+			#'rank' => 'Rank',
+			'file_name'           => 'Файл',
+			'creation_date'       => 'Создано',
+			'user_id'             => 'Автор',
+			'change_user_id'      => 'Изменил',
+			'alt'                 => 'Alt',
+			'type'                => 'Тип',
+			'status'              => 'Статус',
+			'sort'                => 'Порядок',
+
+			'author_search'       => Yii::t('gallery', 'Автор'),
+			'changeAuthor_search' => Yii::t('gallery', 'Изменил'),
+			'gallery_search'      => Yii::t('gallery', 'Альбом'),
+		);
+	}
+
+	/**
+	 * Retrieves a list of models based on the current search/filter conditions.
+	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+	 */
+	public function search()
+	{
+
+		$criteria       = new CDbCriteria;
+		$criteria->with = array('author', 'changeAuthor', 'gallery');
+
+		$criteria->compare('id', $this->id, true);
+		$criteria->compare('gallery_id', $this->gallery_id, true);
+		$criteria->compare('name', $this->name, true);
+		$criteria->compare('description', $this->description, true);
+		$criteria->compare('file_name', $this->file_name, true);
+		$criteria->compare('creation_date', $this->creation_date, true);
+		$criteria->compare('user_id', $this->user_id, true);
+		$criteria->compare('change_user_id', $this->change_user_id, true);
+		$criteria->compare('alt', $this->alt, true);
+		$criteria->compare('type', $this->type);
+		$criteria->compare('t.status', $this->status);
+		$criteria->compare('t.sort', $this->sort);
+
+		$criteria->compare('author.username', $this->author_search, true);
+		$criteria->compare('changeAuthor.username', $this->changeAuthor_search, true);
+		$criteria->compare('gallery.name', $this->gallery_search, true);
+
+		$sort               = new CSort;
+		$sort->defaultOrder = 't.sort ASC';
+		$sort->attributes = array(
+			'author_search' => array(
+				'asc' => 'author.username',
+				'desc'=> 'author.username DESC',
+			),
+			'changeAuthor_search' => array(
+				'asc' => 'changeAuthor.username',
+				'desc'=> 'changeAuthor.username DESC',
+			),
+			'gallery_search' => array(
+				'asc' => 'gallery.name',
+				'desc'=> 'gallery.name DESC',
+			),
+			'*',
+		);
+		return new CActiveDataProvider($this, array(
+			'criteria' => $criteria,
+			'sort' => $sort
+		));
+	}
+
+
+	public function getStatusList()
+	{
+		return array(
+			self::STATUS_PUBLISHED   => Yii::t('page', 'Опубликовано'),
+			self::STATUS_DRAFT       => Yii::t('page', 'Скрыто'),
+			#self::STATUS_MODERATION => Yii::t('page', 'На модерации')
+		);
+	}
+
+	public function beforeSave()
+	{
+		$this->change_date = new CDbExpression('now()');
+		$this->user_id     = Yii::app()->user->getId();
+
+		if ( $this->isNewRecord )
+		{
+			$this->creation_date  = $this->change_date;
+			$this->change_user_id = $this->user_id;
+		}
+
+		return parent::beforeSave();
+	}
+
+	public function save($runValidation = true, $attributes = null)
+	{
+		parent::save($runValidation, $attributes);
+		if ( $this->sort == null )
+		{
+			$this->sort = $this->id;
+			$this->setIsNewRecord(false);
+			$this->save(false);
+		}
+		return true;
+	}
+
+	public function setImage($path)
+	{
+		/** @var $image Image */
+		$image = Yii::app()->image->load($path);
+
+		/** resize image to Max width x height */
+		$image->cresize($this->maxWidth, $this->maxHeight);
+		//@todo clean
+		/*if ( $image->width > $this->maxWidth )
+		{
+			$image->resize($this->maxWidth, null);
+		}
+		else if ( $image->height > $this->maxHeight )
+		{
+			$image->resize(null, $this->maxHeight);
+		}*/
+		//save image
+		$image->save($this->getUploadPath() . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+
+		/** resize images to user versions and put-sort it to versions-named folders */
+		foreach ($this->versions as $version => $actions)
+		{
+			if ( !is_dir($this->getUploadPath() . '/' . $version) )
+			{
+				mkdir($this->getUploadPath() . '/' . $version);
+			}
+			$image = Yii::app()->image->load($path);
+			foreach ($actions as $method => $args)
+			{
+				# if it width >= version->width image no need to resize
+				if ( $image->width >= $args['0'] )
+				{
+					call_user_func_array(array($image, $method), $args);
+					$image->save($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+				}
+			}
+		}
+	}
+
+	public function delete()
+	{
+		$this->removeFile($this->getUploadPath() . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+
+		//create image preview for gallery manager
+		foreach ($this->versions as $version => $actions) {
+			$this->removeFile($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+		}
+		return parent::delete();
+	}
+
+	private function removeFile($fileName)
+	{
+		if ( file_exists($fileName) )
+		{
+			@unlink($fileName);
+		}
+	}
+
+	public function removeImages()
+	{
+		foreach ($this->versions as $version => $actions)
+		{
+			$this->removeFile($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+		}
+	}
+
+	/**
+	 * Regenerate image versions
+	 */
+	public function updateImages()
+	{
+		foreach ($this->versions as $version => $actions)
+		{
+			$this->removeFile($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+
+			$image = Yii::app()->image->load($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+			foreach ($actions as $method => $args)
+			{
+				call_user_func_array(array($image, $method), $args);
+			}
+			$image->save($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+		}
+	}
+
+	/**
+	 * Get status of page
+	 * @return string
+	 */
+	public function getStatus()
+	{
+		$data = $this->getStatusList();
+		return array_key_exists($this->status, $data) ? $data[$this->status] : Yii::t('gallery', 'неизвестно');
+	}
+
+	public function getPreview($version = 'thumb')
+	{
+		return Yii::app()->request->baseUrl . '/' . $this->getUploadPath() . '/' .$version. '/' . $this->getFileName('') . '.' . $this->galleryExt;
+	}
+
+	/**
+	 * Return upload path of gallery album
+	 * @return string
+	 */
+	private function getUploadPath()
+	{
+		if ( !is_dir($this->galleryDir . '/' . $this->gallery->slug) )
+		{
+			mkdir($this->galleryDir . '/' . $this->gallery->slug, 0777);
+		}
+		return $this->galleryDir . '/' . $this->gallery->slug;
+	}
+
+	private function getFileName($version = '')
+	{
+		#return $this->id . $version;
+		return $this->id . '-' . pathinfo($this->file_name, PATHINFO_FILENAME);
+	}
+
+	public function getUrl($version = '')
+	{
+		return Yii::app()->request->baseUrl . '/' . $this->getUploadPath() . '/' . $this->getFileName('') . '.' . $this->galleryExt;
+	}
+
+	public function behaviors()
+	{
+		return array(
+			'galleria' => array(
+				'class'       => 'application.extensions.galleria.GalleriaBehavior',
+				'image'       => 'file_name',
+				//required, will be image name of src
+				'imagePrefix' => 'id',
+				//optional, not required
+				'description' => 'description',
+				//optional, not required
+				'title'       => 'name',
+				//optional, not required
+			),
+		);
+	}
+}

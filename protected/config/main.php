@@ -10,10 +10,10 @@ define('JUI-THEME', 'dark-hive');
 return array(
 	'basePath'          => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
 	'name'              => 'Fad cms',
-	'defaultController' => 'page/show',
+	'defaultController' => 'page/default/show',
 	#'homeLink'=> '/',
 	'language'          => 'ru',
-	'theme'             => 'reflector',
+	#'theme'             => 'reflector',
 	// preloading 'log' component
 	'preload'           => array('log', 'bootstrap'),
 
@@ -21,6 +21,13 @@ return array(
 	'import' => array(
 		'application.models.*',
 		'application.components.*',
+		//module
+		'application.modules.user.models.*',
+		'application.modules.menu.models.*',
+		'application.modules.page.models.*',
+		'application.modules.news.models.*',
+		'application.modules.contact.models.*',
+		'application.modules.gallery.models.*',
 		// not base
 		'application.helpers.*',
 		'application.modules.rights.RightsModule',
@@ -37,6 +44,12 @@ return array(
 			'ipFilters'     => array('127.0.0.1', '::1'),
 			'generatorPaths'=> array('bootstrap.gii'),
 		),
+		'news',
+		'page',
+		'menu',
+		'user',
+		'contact',
+		'gallery',
 		'rights' => array(
 			'superuserName'      => 'Admin', // Name of the role with super user privileges.
 			'authenticatedName'  => 'Authenticated', // Name of the authenticated user role.
@@ -59,7 +72,8 @@ return array(
 	// application components
 	'components' => array(
 		'user' => array(
-			'class'          => 'RWebUser', #'loginUrl' 	 => '/site/login/',
+			'class'          => 'RWebUser',
+			'loginUrl' 	 => '/user/account/login',
 			'allowAutoLogin' => true, // enable cookie-based authentication
 		),
 		'image' => array(
