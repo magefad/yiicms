@@ -41,20 +41,22 @@ $('.search-form form').submit(function(){
 	'rowCssClassExpression' => '($data->status == 2) ? "moderation" : (($data->status) ? "published" : "draft")',
 	'columns'               => array(
 		array(
-			'name'           => 'id', 'htmlOptions' => array('style'=> 'width: 20px; text-align: center'),
+			'name'        => 'id',
+			'htmlOptions' => array('style'=> 'width: 20px; text-align: center'),
 		), //'change_user_id',
 		array(
 			'name'  => 'name',
 			'type'  => 'raw',
-			'value' => 'CHtml::link($data->name,array("/page/update", "id" => $data->id))'
+			'value' => 'CHtml::link($data->name, array("update", "id" => $data->id))'
 		), array(
-			'name'  => 'parent_id', //@todo почему то не работает
-			'value' => '$data->parentName', 'filter'=> Page::model()->allPagesList
+			'name'  => 'parent_id',
+			'value' => '$data->parentName',
+			'filter'=> Page::model()->allPagesList
 		), #'title',
 		array(
-			'name'  => 'slug', 'type' => 'raw', //'value' => 'CHtml::link($data->slug, array("page/show/$data->slug"))',
-			//@todo исправить page/show
-			'value' => 'CHtml::link($data->slug, array("/$data->slug"), array("target" => "_blank"))',
+			'name'  => 'slug',
+			'type'  => 'raw',
+			'value' => 'CHtml::link($data->slug, array("show", "slug" => $data->slug), array("target" => "_blank"))',
 		), array(
 			'name'        => 'creation_date',
 			'value'       => 'date_format(date_create($data->creation_date), "Y-m-d")',
