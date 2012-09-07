@@ -44,7 +44,7 @@ $('.search-form form').submit(function(){
 		), array(
 			'name'        => 'username',
 			'type'        => 'raw',
-			'value'       => 'CHtml::link($data->username, array("/user/update/", "id" => $data->id))',
+			'value'       => 'CHtml::link($data->username, array("update", "id" => $data->id))',
 			'htmlOptions' => array('style'=> 'width: 80px; text-align: center'),
 		),
 		'email',
