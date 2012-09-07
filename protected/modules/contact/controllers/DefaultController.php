@@ -34,7 +34,7 @@ class DefaultController extends Controller
 			{
 				$headers = "From: {$model->email}\r\nReply-To: {$model->email}\r\nContent-type: text/plain;charset=utf-8";
 				if ( !$model->subject )
-					$model->subject = Yii::t('site', 'Письмо с сайта '.Yii::app()->name);
+					$model->subject = Yii::t('contact', 'Письмо с сайта '.Yii::app()->name);
 				$body = '';
 				foreach ( $model->attributes as $attribute => $value )
 				{
@@ -45,7 +45,7 @@ class DefaultController extends Controller
 				}
 
 				mail(Yii::app()->params['adminEmail'], $model->subject, $body, $headers);
-				Yii::app()->user->setFlash('success', Yii::t('site', 'Спасибо за сообщение! Мы Вам обязательно ответим!'));
+				Yii::app()->user->setFlash('success', Yii::t('contact', 'Спасибо за сообщение! Мы Вам обязательно ответим!'));
 				$this->refresh();
 			}
 		}

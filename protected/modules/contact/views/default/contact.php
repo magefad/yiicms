@@ -1,5 +1,5 @@
 <?php
-$this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('site', 'Контакты');
+$this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('contact', 'Контакты');
 $this->breadcrumbs = array(
 	Yii::t('contact', 'Контакты'),
 );
