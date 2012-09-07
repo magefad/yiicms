@@ -42,27 +42,22 @@ $this->widget('CustomTbGridView', array(
 	'rowCssClassExpression' => '($data->status == 2) ? "moderation" : (($data->status) ? "published" : "draft")',
 	'columns'               => array(
 		array(
-			'name' => 'id',
-			'htmlOptions' => array('style'=> 'width:20px'),
-		),
-		array(
-			'name' => 'date',
-			'htmlOptions' => array('style'=> 'width:80px'),
-		),
-		array(
+			'name' => 'id', 'htmlOptions' => array('style'=> 'width:20px'),
+		), array(
+			'name' => 'date', 'htmlOptions' => array('style'=> 'width:80px'),
+		), array(
 			'name'  => 'title',
 			'type'  => 'raw',
 			'value' => 'CHtml::link($data->title,array("/news/update","id" => $data->id))'
-		),
-		array(
-			'name'  => 'slug', 'type' => 'raw', 'value' => 'CHtml::link($data->slug, array("news/show/$data->slug"))',
-		),
-		'creation_date', 'change_date', array(
+		), array(
+			'name'  => 'slug',
+			'type'  => 'raw',
+			'value' => 'CHtml::link($data->slug, array("show", "slug" => $data->slug))',
+		), 'creation_date', 'change_date', array(
 			'name'        => 'author_search',
 			'value'       => '$data->author->username',
 			'htmlOptions' => array('style'=> 'width:40px; text-align:center;'),
-		),
-		array(
+		), array(
 			'name'        => 'status',
 			'type'        => 'raw',
 			'value'       => '$this->grid->returnBootstrapStatusHtml($data)',

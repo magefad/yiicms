@@ -12,7 +12,7 @@
 	<div class='portlet-content'>
 		<ul class="unstyled">
 			<?php foreach ($news as $new): ?>
-			<li><?php echo CHtml::link($new->title.' »', array('/news/default/show', 'title' => $new->slug));?></li>
+			<li><?php echo CHtml::link($new->title.' »', array('/news/default/show', 'slug' => $new->slug));?></li>
 			<?php endforeach;?>
 		</ul>
 	</div>

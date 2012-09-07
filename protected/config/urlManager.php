@@ -8,10 +8,10 @@ return array(
 		'gallery'                                => 'gallery/default/list',
 		'album/<slug:[\w\_-]+>'                  => 'gallery/photo/album',
 
-		'contact'                                => 'contact-default',
+		'contact'                                => 'contact/default',
 		'about'                                  => 'contact/default',
 		'<slug:[\w\_-]+>'                        => 'page/default/show',
-		'/news/show/<title:[\w\_-]+>'            => 'news/default/show',
+		'/news/show/<slug:[\w\_-]+>'            => 'news/default/show',
 
 		#'news/<id:\d+>'                          => 'news/news/view',
 		#'news/<action:\w+>/<id:\d+>'             => 'news/news/<action>',

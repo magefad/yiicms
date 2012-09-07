@@ -20,9 +20,9 @@ class DefaultController extends Controller
 		return 'show,list';
 	}
 
-	public function actionShow($title)
+	public function actionShow($slug)
 	{
-		$news = News::model()->published()->find('slug = :slug', array(':slug' => $title));
+		$news = News::model()->published()->find('slug = :slug', array(':slug' => $slug));
 
 		if (!$news)
 			throw new CHttpException(404, Yii::t('news', 'Новость не найдена!'));
