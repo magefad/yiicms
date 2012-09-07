@@ -50,6 +50,7 @@ return array(
 		'user',
 		'contact',
 		'gallery',
+		'admin',
 		'rights' => array(
 			'superuserName'      => 'Admin', // Name of the role with super user privileges.
 			'authenticatedName'  => 'Authenticated', // Name of the authenticated user role.
