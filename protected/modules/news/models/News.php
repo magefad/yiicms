@@ -24,6 +24,9 @@
  */
 class News extends CActiveRecord
 {
+	/** @var string upload path with slug path (ex. ./uploads/news/news_link/images... */
+	//public $uploadPath;
+
 	public $author_search;
 	const STATUS_DRAFT      = 0;
 	const STATUS_PUBLISHED  = 1;
@@ -31,11 +34,6 @@ class News extends CActiveRecord
 
 	const PROTECTED_NO  = 0;
 	const PROTECTED_YES = 1;
-
-	/** @var string Extensions for gallery images */
-	public $newsExt = 'jpg';
-	/** @var string directory in web root for galleries */
-	public $newsDir = 'uploads/news';
 
 	public $versions = array(
 		'thumb' => array(
@@ -88,7 +86,7 @@ class News extends CActiveRecord
 			array('body_cut', 'length', 'max' => 400),
 			array('description', 'length', 'max' => 250),
 			array('image', 'length', 'max' => 300),
-			array('image', 'file', 'types'=> 'jpg,gif,bmp', 'allowEmpty'=> true, 'safe'=> false),
+			array('image', 'file', 'types' => Yii::app()->getModule('news')->uploadAllowExt, 'allowEmpty'=> true, 'safe'=> false),
 
 			array('title, slug, body_cut, body, keywords, description', 'filter', 'filter' => 'trim'),
 			array(
@@ -187,12 +185,14 @@ class News extends CActiveRecord
 
 		if ( $imageFile = CUploadedFile::getInstance($this, 'image') )
 		{
-			if ( !$this->isNewRecord )
+			$uploadPath = $this->getUploadPath();
+			if ( !$this->isNewRecord && is_dir($uploadPath) )
 			{
-				$this->deleteImage(); // удаляем старое изображение, если обновляем новость
+				$this->deleteImage($uploadPath); // удаляем старое изображение, если обновляем новость
 			}
+			mkdir($uploadPath, 0777);
 			$this->image = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.jpg';
-			$this->setImage($imageFile->getTempName());
+			$this->setImage($imageFile->getTempName(), $uploadPath);
 		}
 
 		if ( $this->isNewRecord )
@@ -208,7 +208,7 @@ class News extends CActiveRecord
 	{
 		if ( parent::beforeDelete() )
 		{
-			$this->deleteImage(); // удалили модель? удаляем и файл
+			$this->deleteImage($this->getUploadPath()); // удалили модель? удаляем и файл
 			return true;
 		}
 		return false;
@@ -221,14 +221,14 @@ class News extends CActiveRecord
 		$this->date = date('d.m.Y', strtotime($this->date));
 	}
 
-	private function setImage($path)
+	private function setImage($path, $uploadPath)
 	{
 		/** @var $image Image */
 		$image = Yii::app()->image->load($path);
 
 		/** resize image to Max width x height */
 		$image->cresize($this->maxWidth, $this->maxHeight);
-		$image->save($this->getUploadPath() . '/' . $this->getFileName('') . '.jpg');
+		$image->save($uploadPath . '/' . $this->getFileName('') . '.jpg');
 
 		/** resize images to user versions and put-sort it to versions-named folders */
 		foreach ($this->versions as $version => $actions)
@@ -239,32 +239,35 @@ class News extends CActiveRecord
 				# if it width >= version->width image no need to resize
 				if ( $image->width >= $args['0'] )
 				{
-					if ( !is_dir($this->getUploadPath() . '/' . $version) )
+					if ( !is_dir($uploadPath . DIRECTORY_SEPARATOR . $version) )
 					{
-						mkdir($this->getUploadPath() . '/' . $version);
+						mkdir($uploadPath . DIRECTORY_SEPARATOR . $version);
 					}
 					call_user_func_array(array($image, $method), $args);
-					$image->save($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.jpg');
+					$image->save($uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $this->getFileName('') . '.jpg');
 				}
 			}
 		}
 	}
 
-	private function deleteImage()
+	private function deleteImage($uploadPath)
 	{
-		$this->removeFile($this->getUploadPath() . '/' . $this->getFileName('') . '.jpg');
+		$this->removeFile($uploadPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.jpg');
 
-		foreach ($this->versions as $version => $actions) {
-			$this->removeFile($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.jpg');
-			$this->removeDir($this->getUploadPath() . '/' . $version);
+		foreach ($this->versions as $version => $actions)
+		{
+			$this->removeFile($uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $this->getFileName() . '.jpg');
+			$this->removeDir($uploadPath . DIRECTORY_SEPARATOR . $version);
 		}
-		$this->removeDir($this->getUploadPath());
+		$this->removeDir($uploadPath);
 	}
 
 	public function renamePath($newPathName)
 	{
 		if ( is_dir($this->getUploadPath()) )
-	 		rename($this->getUploadPath(), $this->newsDir . '/' . $newPathName);
+		{
+			rename($this->getUploadPath(), Yii::app()->getModule('news')->getUploadPath() . DIRECTORY_SEPARATOR . $newPathName);
+		}
 	}
 
 	private function removeFile($fileName)
@@ -325,14 +328,6 @@ class News extends CActiveRecord
 		));
 	}
 
-	/**
-	 * @return string link to news
-	 */
-	public function getPermanentLink()
-	{
-		return Yii::app()->createUrl('/news/show/', array('title' => $this->slug));
-	}
-
 	public function getStatusList()
 	{
 		return array(
@@ -363,13 +358,12 @@ class News extends CActiveRecord
 		return array_key_exists($this->is_protected, $data) ? $data[$this->is_protected] : Yii::t('news', 'неизвестно');
 	}
 
+	/**
+	 * @return string $module->uploadPath.'/'.$this->slug
+	 */
 	private function getUploadPath()
 	{
-		if ( !is_dir($this->newsDir . '/' . $this->slug) )
-		{
-			mkdir($this->newsDir . '/' . $this->slug, 0777);
-		}
-		return $this->newsDir . '/' . $this->slug;
+		return Yii::app()->getModule('news')->getUploadPath() . DIRECTORY_SEPARATOR . $this->slug;
 	}
 
 	private function getFileName()
@@ -377,15 +371,4 @@ class News extends CActiveRecord
 		return pathinfo($this->image, PATHINFO_FILENAME);
 	}
 
-	/**
-	 * @return bool|string image URL
-	 */
-	public function getImageUrl()
-	{
-		if ( $this->image )
-		{
-			return Yii::app()->baseUrl . '/uploads/news/' . $this->image;
-		}
-		return false;
-	}
 }

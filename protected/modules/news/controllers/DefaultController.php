@@ -81,6 +81,7 @@ class DefaultController extends Controller
 
 		if ( isset($_POST['News']) )
 		{
+			/** rename upload path if slug (link) changed */
 			if ( $model->attributes['slug'] != $_POST['News']['slug'] )
 				$model->renamePath($_POST['News']['slug']);#rename image directory if slug (link) changed
 			$model->attributes = $_POST['News'];
