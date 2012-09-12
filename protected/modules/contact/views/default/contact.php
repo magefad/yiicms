@@ -3,7 +3,7 @@ $this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('contact', 'Контак�
 $this->breadcrumbs = array(
 	Yii::t('contact', 'Контакты'),
 );
-$pageSlug = Yii::app()->request->getPathInfo();
+$pageSlug = str_replace('page/', '', Yii::app()->request->getPathInfo());//@todo BAD STR_REPLACE!!!
 /** @var $page Page */
 $page = Page::model()->findBySlug($pageSlug);
 $flashSuccess = (Yii::app()->user->hasFlash('success') == 1) ? true : false;
@@ -32,8 +32,8 @@ if ( $page )
 	$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                     => 'contact-form',
 	'type'					 => 'horizontal',
-	'focus'                  => array($model, 'name'),
-	/*'enableAjaxValidation'	 =>	true,*/
+	'focus'                  => $page ? null : array($model, 'name'),
+	/*'enableAjaxValidation' =>	true,*/
 	'enableClientValidation' => true,
 	'clientOptions'          => array(
 		'validateOnSubmit' => true,
