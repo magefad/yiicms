@@ -18,7 +18,7 @@ return array(
 		#'theme_advanced_buttons4'         => "insertlayer,moveforward,movebackward,absolute,|,cite,abbr,acronym,del,ins|,visualchars,nonbreaking,template,pagebreak",
 		'theme_advanced_toolbar_location'  => "top",
 		'theme_advanced_toolbar_align'     => "left",
-		'external_link_list_url'           => '/page/MceListUrl',
+		'external_link_list_url'           => '/page/default/MceListUrl',
 		'relative_urls'                    => false,
 	),
 )

@@ -36,15 +36,12 @@ class DefaultController extends Controller
 		));
 	}
 
-	public function actionShow()
+	public function actionShow($slug='')
 	{
-		$slug = Yii::app()->request->getQuery('slug');
-		if ( !$slug )
+		if ( empty($slug) )
 		{
 			$slug = Yii::app()->params['index'];
 		}
-		#throw new CHttpException('404', Yii::t('page', 'Страница не найдена!'));
-
 		$this->currentPage = null;
 
 		// превью
@@ -191,7 +188,7 @@ class DefaultController extends Controller
 		$this->render('admin', array('model' => $model, 'pages' => Page::model()->allPagesList));
 	}
 
-	/** @todo Сделать что-то с ссылкой на главную страницу
+	/** @todo Сделать что-то с ссылкой на главную страницу и с генерацией урл..
 	 * Return javascript for TinyMce 'external_link_list_url' => '/page/MceListUrl'
 	 */
 	public function actionMceListUrl()
@@ -204,7 +201,7 @@ class DefaultController extends Controller
 		{
 			$itemsCount--;
 			$endLine = ($itemsCount > 0 ? '/"],' : '/"]');
-			$output .= '["'.$item->name.'", "/'.$item->slug.$endLine."\n\t";
+			$output .= '["'.$item->name.'", "/page/'.$item->slug.$endLine."\n\t";
 		}
 		$output .= ');';
 
