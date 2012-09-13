@@ -20,7 +20,7 @@
  * @property string $description
  *
  * The followings are the available model relations:
- * @property User $user
+ * @property User $author
  */
 class News extends CActiveRecord
 {
@@ -141,6 +141,9 @@ class News extends CActiveRecord
 				'order' => 'creation_date DESC',
 				'limit' => 5,
 			),
+			'date'  => array(
+				'order' => 'date DESC',
+			)
 		);
 	}
 
@@ -363,7 +366,7 @@ class News extends CActiveRecord
 	 */
 	private function getUploadPath()
 	{
-		return Yii::app()->getModule('news')->getUploadPath() . DIRECTORY_SEPARATOR . $this->slug;
+		return Yii::app()->getModule('news')->uploadPath . DIRECTORY_SEPARATOR . $this->slug;
 	}
 
 	private function getFileName()
@@ -371,4 +374,21 @@ class News extends CActiveRecord
 		return pathinfo($this->image, PATHINFO_FILENAME);
 	}
 
+	public function getThumbnailUrl()
+	{
+		if ( $this->image )
+			return  Yii::app()->baseUrl . '/uploads/' .	Yii::app()->getModule('news')->uploadPath . '/' .
+				$this->slug . '/thumb/' . $this->image;
+
+		return false;
+	}
+
+	public function getImageUrl()
+	{
+		if ( $this->image )
+			return  Yii::app()->baseUrl . '/uploads/' .	Yii::app()->getModule('news')->uploadPath . '/' .
+				$this->slug . '/' .	$this->image;
+
+		return false;
+	}
 }

@@ -15,20 +15,27 @@ class DefaultController extends Controller
 		return array('rights');
 	}
 
+	/**
+	 * All users can see news and see index of news (list news)
+	 * @return string
+	 */
 	public function allowedActions()
 	{
-		return 'show,list';
+		return 'show,index';
 	}
 
 	public function actionShow($slug)
 	{
-		$news = News::model()->published()->find('slug = :slug', array(':slug' => $slug));
-
-		if (!$news)
+		$model = Yii::app()->user->isGuest ? News::model()->published()->public()->find('slug = :slug', array(':slug' => $slug)) : News::model()->published()->find('slug = :slug', array(':slug' => $slug));
+		if ( !$model )
+		{
 			throw new CHttpException(404, Yii::t('news', 'Новость не найдена!'));
-
-		$this->setMetaTags($news);
-		$this->render('show', array('news' => $news));
+		}
+		else
+		{
+			$this->setMetaTags($model);
+			$this->render('show', array('model' => $model));
+		}
 	}
 
 	/**
@@ -63,7 +70,7 @@ class DefaultController extends Controller
 		}
 		$model->date = date('d.m.Y');
 
-		$this->render('create',array(
+		$this->render('create', array(
 			'model' => $model,
 		));
 	}
@@ -83,7 +90,10 @@ class DefaultController extends Controller
 		{
 			/** rename upload path if slug (link) changed */
 			if ( $model->attributes['slug'] != $_POST['News']['slug'] )
-				$model->renamePath($_POST['News']['slug']);#rename image directory if slug (link) changed
+			{
+				$model->renamePath($_POST['News']['slug']);
+			}
+			#rename image directory if slug (link) changed
 			$model->attributes = $_POST['News'];
 			if ( $model->save() )
 			{
@@ -92,7 +102,7 @@ class DefaultController extends Controller
 			}				
 		}
 
-		$this->render('update',array(
+		$this->render('update', array(
 			'model' => $model,
 		));
 	}
@@ -114,7 +124,9 @@ class DefaultController extends Controller
 				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+		{
+			throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+		}
 	}
 
 	/**
@@ -122,8 +134,10 @@ class DefaultController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider = new CActiveDataProvider('News');
-		$this->render('index',array(
+		$criteria = Yii::app()->user->isGuest ? News::model()->published()->public()->date() : News::model()->published()->date();
+		$dataProvider = new CActiveDataProvider($criteria);
+
+		$this->render('index', array(
 			'dataProvider' => $dataProvider,
 		));
 	}
@@ -134,7 +148,7 @@ class DefaultController extends Controller
 	public function actionAdmin()
 	{
 		$model = new News('search');
-		$model->unsetAttributes();  // clear any default values
+		$model->unsetAttributes(); // clear any default values
 		if ( isset($_GET['News']) )
 			$model->attributes = $_GET['News'];
 
@@ -151,8 +165,8 @@ class DefaultController extends Controller
 	public function loadModel($id)
 	{
 		$model = News::model()->findByPk($id);
-		if ( $model===null )
-			throw new CHttpException(404,'The requested page does not exist.');
+		if ( $model === null )
+			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
 	}
 

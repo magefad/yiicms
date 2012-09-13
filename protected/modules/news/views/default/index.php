@@ -1,6 +1,6 @@
 <?php
 $this->breadcrumbs = array(
-	Yii::t('news', 'Новости') => array('admin'),
+	Yii::t('news', 'Новости')
 );
 
 $this->menu = array(
@@ -12,6 +12,11 @@ $this->menu = array(
 
 /** @var $dataProvider CDataProvider */
 $this->widget('bootstrap.widgets.TbListView', array(
-	'dataProvider' => $dataProvider,
-	'itemView'     => '_view',
+	'dataProvider'       => $dataProvider,
+	'itemView'           => '_view',
+	'sortableAttributes' => array(
+		'title',
+		'date',
+	),
+	'htmlOptions'  => array('style' => 'padding-top:0'),
 )); ?>
