@@ -161,7 +161,7 @@ class DefaultController extends Controller
 			{
 				$model->changePassword($form->password);
 				Yii::app()->user->setFlash('notice', Yii::t('user', 'Пароль успешно изменен!'));
-				$this->redirect(array('/user/view/','id' => $model->id ));
+				$this->redirect(array('view','id' => $model->id ));
 			}
 		}
 
