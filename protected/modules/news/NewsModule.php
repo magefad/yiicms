@@ -6,13 +6,13 @@
  */
 class NewsModule extends WebModule
 {
-	/** @var string 'webroot/uploads/' . $uploadPath */
-	public $_uploadPath = 'news';
+	/** @var string 'webroot/uploads/' . $uploadDir */
+	public $uploadDir = 'news';
 	public $uploadAllowExt = 'jpg,jpeg,gif,bmp,png';
 
 	public function getUploadPath()
 	{
-		return Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->_uploadPath;
+		return Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->uploadDir;
 	}
 
 	public function init()
