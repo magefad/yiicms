@@ -9,7 +9,7 @@ return array(
 	'settings'           => array(
 		'doctype'                          => '<!DOCTYPE html>',
 		'extended_valid_elements'          => 'iframe[id|class|title|style|align|frameborder|height|longdesc|marginheight|marginwidth|name|scrolling|src|width]',
-		'body_class'                       => 'container',
+		'body_class'                       => 'container-fluid',
 		'width'                            => '100%',
 		'plugins'                          => 'autolink,lists,pagebreak,layer,table,save,advhr,advimage,advlink,inlinepopups,insertdatetime,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist',
 		'theme_advanced_buttons1'          => "save,|,|,undo,redo,|,|,pastetext,pasteword,|,|,attribs,styleprops,charmap,|,|,removeformat,visualaid,|,|,|,hr,advhr,|,|,fullscreen,code,|",
