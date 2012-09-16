@@ -7,7 +7,7 @@
 class NewsModule extends WebModule
 {
 	/** @var string 'webroot/uploads/' . $uploadPath */
-	private $_uploadPath = 'news';
+	public $_uploadPath = 'news';
 	public $uploadAllowExt = 'jpg,jpeg,gif,bmp,png';
 
 	public function getUploadPath()

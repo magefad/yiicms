@@ -374,7 +374,7 @@ class News extends CActiveRecord
 	public function getThumbnailUrl()
 	{
 		if ( $this->image )
-			return  Yii::app()->baseUrl . '/uploads/' .	Yii::app()->getModule('news')->uploadPath . '/' .
+			return  Yii::app()->baseUrl . '/uploads/' .	Yii::app()->getModule('news')->_uploadPath . '/' .
 				$this->slug . '/thumb/' . $this->image;
 
 		return false;
@@ -383,7 +383,7 @@ class News extends CActiveRecord
 	public function getImageUrl()
 	{
 		if ( $this->image )
-			return  Yii::app()->baseUrl . '/uploads/' .	Yii::app()->getModule('news')->uploadPath . '/' .
+			return  Yii::app()->baseUrl . '/uploads/' .	Yii::app()->getModule('news')->_uploadPath . '/' .
 				$this->slug . '/' .	$this->image;
 
 		return false;
