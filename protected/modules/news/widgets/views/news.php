@@ -4,6 +4,7 @@
  * Date: 27.07.12
  * Time: 16:59
  */
+/** @var $news News */
 ?>
 <div class='portlet'>
 	<div class='portlet-decoration'>

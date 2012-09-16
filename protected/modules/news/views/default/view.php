@@ -56,4 +56,4 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
 		'keywords',
 		'description',
 	),
-)); ?>
+));

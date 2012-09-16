@@ -12,4 +12,4 @@ $this->menu = array(
 	array('icon' => 'file white', 'label' => Yii::t('news', 'Добавить'), 'url' => array('/news/default/create')),
 );
 
-$this->renderPartial('_form', array('model' => $model)); ?>
+$this->renderPartial('_form', array('model' => $model));
