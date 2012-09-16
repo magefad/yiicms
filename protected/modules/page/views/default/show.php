@@ -6,4 +6,3 @@
  */
 /** @var $page array */
 echo $page['body'];
-?>

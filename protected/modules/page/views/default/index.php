@@ -1,6 +1,6 @@
 <?php
 /** @var $dataProvider CDataProvider */
-
+/** @var $this Controller */
 $this->pageTitle   = Yii::t('page', 'Добавление страницы');
 $this->breadcrumbs = array(
 	Yii::t('page', 'Страницы') => array('admin'),
@@ -14,4 +14,4 @@ $this->menu = array(
 $this->widget('bootstrap.widgets.TbListView', array(
 	'dataProvider' => $dataProvider,
 	'itemView'     => '_view',
-)); ?>
+));

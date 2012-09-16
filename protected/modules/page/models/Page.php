@@ -4,7 +4,7 @@
  * This is the model class for table "{{page}}".
  *
  * The followings are the available columns in table '{{page}}':
- * @property string $id
+ * @property integer $id
  * @property integer $parent_id
  * @property string $creation_date
  * @property string $change_date
@@ -75,8 +75,7 @@ class Page extends CActiveRecord
 			array('title, slug, body, description, keywords, name', 'filter', 'filter' => 'trim'),
 			array('title, slug, description, keywords, name', 'filter', 'filter' => array($obj = new CHtmlPurifier(),'purify')),
 			array('slug', 'match', 'pattern' => '/^[a-zA-Z0-9_\-]+$/', 'message' => Yii::t('page', 'Строка содержит запрещенные символы: {attribute}')),
-			array('id, parent_id, creation_date, change_date, title, slug, body, keywords, description, status, menu_order,      author_search,changeAuthor_search', 'safe', 'on' => 'search'),
-			#array('id, parent_id, creation_date, change_date, user_id, change_user_id, name, title, slug, body, keywords, description, status, is_protected, menu_order', 'safe', 'on'=>'search'),
+			array('id, parent_id, creation_date, change_date, title, slug, body, keywords, description, status, menu_order, author_search, changeAuthor_search', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -114,7 +113,6 @@ class Page extends CActiveRecord
 			#'user_id'		=> Yii::t('page', 'Создал'),
 			#'change_user_id'=> Yii::t('page', 'Изменил'),
 			'menu_order'          => Yii::t('page', 'Порядок'),
-
 			'author_search'       => Yii::t('page', 'Создал'),
 			'changeAuthor_search' => Yii::t('page', 'Изменил'),
 		);
@@ -274,9 +272,9 @@ class Page extends CActiveRecord
 	public function getAllPagesList()
 	{
 		$parents = $this->findAll(array(
-			'select' => 'id, title, name',
+			'select'    => 'id, title, name',
 			'condition' => 'parent_id is null OR parent_id=0',
-			'order' => 'menu_order'
+			'order'     => 'menu_order'
 		));
 		$tree = new Tree();
 		return $tree->makeDropDown($parents);

@@ -145,6 +145,8 @@ class DefaultController extends Controller
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
+	 * @throws CHttpException
+	 * @return void
 	 */
 	public function actionDelete($id)
 	{
@@ -188,20 +190,19 @@ class DefaultController extends Controller
 		$this->render('admin', array('model' => $model, 'pages' => Page::model()->allPagesList));
 	}
 
-	/** @todo Сделать что-то с ссылкой на главную страницу и с генерацией урл..
-	 * Return javascript for TinyMce 'external_link_list_url' => '/page/MceListUrl'
+	/**
+	 * Return javascript for TinyMce 'external_link_list_url' => '/page/default/MceListUrl'
 	 */
 	public function actionMceListUrl()
 	{
 		$items = Page::model()->findAll(array('select' => 'name, slug'));
-		#print_r($items);
 		$output = 'var tinyMCELinkList = new Array('."\n\t";
 		$itemsCount = count($items);
 		foreach ($items as $item)
 		{
 			$itemsCount--;
 			$endLine = ($itemsCount > 0 ? '/"],' : '/"]');
-			$output .= '["'.$item->name.'", "/page/'.$item->slug.$endLine."\n\t";
+			$output .= '["'.$item->name.'", "'.$this->createUrl('/page/default/show', array('slug' => $item->slug)).$endLine."\n\t";
 		}
 		$output .= ');';
 
@@ -225,25 +226,22 @@ class DefaultController extends Controller
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
+	 * @param $id
+	 * @throws CHttpException
+	 * @internal param \the $integer ID of the model to be loaded
+	 * @return Page
 	 */
 	public function loadModel($id)
 	{
-		if ( isset($_GET['id']) )
-		{
-			$model = Page::model()->with('author', 'changeAuthor')->findbyPk($_GET['id']);
-		}
-
+		$model = Page::model()->with('author', 'changeAuthor')->findByPk($id);
 		if ( $model === null )
-		{
 			throw new CHttpException(404, 'The requested page does not exist.');
-		}
 		return $model;
 	}
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
+	 * @param $model CModel the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{

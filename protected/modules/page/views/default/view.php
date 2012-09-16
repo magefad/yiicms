@@ -1,5 +1,6 @@
 <?php
 /** @var $model Page */
+/** @var $this Controller */
 $this->pageTitle   = Yii::t('page', 'Просмотр страницы');
 $this->breadcrumbs = array(
 	Yii::t('page', 'Страницы') => array('admin'), #index
@@ -25,20 +26,20 @@ $this->menu = array(
 		)
 	),
 );
-?>
-<?php echo CHtml::link(Yii::t('page', 'Просмотреть на сайте'), array(
-	'/page/show/',
-	'slug'    => $model->slug,
-	'preview' => 1
-)); ?>
+echo CHtml::link(Yii::t('page', 'Просмотреть на сайте'), array(
+		'show',
+		'slug'    => $model->slug,
+		'preview' => 1
+	), array('target' => '_blank'));
 
-<?php $this->widget('bootstrap.widgets.TbDetailView', array(
+$this->widget('bootstrap.widgets.TbDetailView', array(
 	'data' => $model,
 	'attributes' => array(
 		'id',
 		'creation_date',
 		'change_date', array(
-			'name' => 'user_id', 'value' => $model->author->getFullName()
+			'name' => 'user_id',
+			'value' => $model->author->getFullName()
 		),
 		'menu_order', array(
 			'name'  => 'change_user_id',
@@ -59,4 +60,4 @@ $this->menu = array(
 			'value' => $model->getProtectedStatus()
 		)
 	),
-)); ?>
+));

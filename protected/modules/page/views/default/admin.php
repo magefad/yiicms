@@ -1,6 +1,6 @@
 <?php
 /** @var $model Page */
-
+/** @var $this Controller */
 $this->pageTitle   = Yii::t('user', 'Управление страницами');
 $this->breadcrumbs = array(
 	Yii::t('page', 'Страницы') => array('admin'),

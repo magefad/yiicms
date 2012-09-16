@@ -1,6 +1,8 @@
 <?php
 /** @var $model Page */
 /** @var $form TbActiveForm */
+/** @var $pages array */
+/** @var $this Controller */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                   => 'page-form',
 	'focus'                => array($model, 'name'),
@@ -30,24 +32,24 @@ $("#ajaxPreview").click(function(e) {
 	<?php echo $form->errorSummary($model); ?>
    	<div class="row-fluid control-group">
 		<div class="span3 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('parent_id');?>">
-			<?php echo $form->dropDownList($model,'parent_id', $pages, array('empty' => Yii::t('page','- нет родительской страницы -'))); ?>
+			<?php echo $form->dropDownList($model, 'parent_id', $pages, array('empty' => Yii::t('page', '- нет родительской страницы -'))); ?>
 		</div>
 		<div class="span3 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('status');?>">
-			<?php echo $form->dropDownList($model,'status', $model->getStatusList()) ?>
+			<?php echo $form->dropDownList($model, 'status', $model->getStatusList()) ?>
 		</div>
 		<div class="span1 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('menu_order');?>">
-			<?php echo $form->textField($model,'menu_order'); ?>
+			<?php echo $form->textField($model, 'menu_order'); ?>
 		</div>
 	</div>
 	<div class="row-fluid control-group">
 		<div class="span3 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('name');?>">
-			<?php echo $form->textField($model,'name', array('style' => 'width: 220px!important', 'maxlength' => 150, 'placeholder' => $model->getAttributeLabel('name'))); ?>
+			<?php echo $form->textField($model, 'name', array('style' => 'width: 220px!important', 'maxlength' => 150, 'placeholder' => $model->getAttributeLabel('name'))); ?>
 		</div>
 		<div class="span3 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('title');?>">
-			<?php echo $form->textField($model,'title', array('style' => 'width: 220px!important', 'maxlength' => 150, 'placeholder' => $model->getAttributeLabel('title'))); ?>
+			<?php echo $form->textField($model, 'title', array('style' => 'width: 220px!important', 'maxlength' => 150, 'placeholder' => $model->getAttributeLabel('title'))); ?>
 		</div>
 		<div class="span4 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('slug');?>">
-			<?php echo $form->textField($model,'slug', array('maxlength'=>150, 'placeholder' => $model->getAttributeLabel('slug'))); ?>
+			<?php echo $form->textField($model, 'slug', array('maxlength'=>150, 'placeholder' => $model->getAttributeLabel('slug'))); ?>
 		</div>
 	</div>
 
@@ -58,15 +60,15 @@ $("#ajaxPreview").click(function(e) {
 	</div>
 	<div>&nbsp;</div>
 	<div class="row-fluid control-group mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('keywords');?>">
-		<?php echo $form->textField($model,'keywords', array('class' => 'span5','maxlength'=>150, 'placeholder' => $model->getAttributeLabel('keywords'))); ?>
+		<?php echo $form->textField($model, 'keywords', array('class' => 'span5', 'maxlength'=>150, 'placeholder' => $model->getAttributeLabel('keywords'))); ?>
 	</div>
 	<div class="row-fluid control-group mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('description');?>">
-		<?php echo $form->textField($model,'description', array('class' => 'span5','maxlength'=>250, 'placeholder' => $model->getAttributeLabel('description'))); ?>
+		<?php echo $form->textField($model, 'description', array('class' => 'span5', 'maxlength'=>250, 'placeholder' => $model->getAttributeLabel('description'))); ?>
 	</div>
 	<div class="row-fluid control-group">
 		<?php #echo $form->label($model, 'is_protected'); ?>
 		<div class="row-fluid control-group">
-			<?php echo $form->checkBoxRow($model,'is_protected'); ?>
+			<?php echo $form->checkBoxRow($model, 'is_protected'); ?>
 		</div>
 	</div>
 <?php $this->widget('bootstrap.widgets.TbButton', array(

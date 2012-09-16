@@ -2,7 +2,7 @@
 /** @var $model Page
  ** @var $pages Page[]
  */
-
+/** @var $this Controller */
 $this->pageTitle   = Yii::t('page', 'Добавление страницы');
 $this->breadcrumbs = array(
 	Yii::t('page', 'Страницы') => array('admin'),
@@ -20,6 +20,4 @@ $this->menu = array(
 		'linkOptions' => array('id' => 'ajaxPreview')
 	),
 );
-?>
-<!-- <h1><?php #echo Yii::t('page', 'Добавление новой страницы');?></h1>-->
-<?php echo $this->renderPartial('_form', array('model' => $model, 'pages' => $pages)); ?>
+echo $this->renderPartial('_form', array('model' => $model, 'pages' => $pages));
