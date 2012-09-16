@@ -4,15 +4,15 @@
  * Date: 05.09.12
  * Time: 11:49
  */
-class NewsModule extends CWebModule
+class NewsModule extends WebModule
 {
 	/** @var string 'webroot/uploads/' . $uploadPath */
-	public $uploadPath = 'news';
+	private $_uploadPath = 'news';
 	public $uploadAllowExt = 'jpg,jpeg,gif,bmp,png';
 
 	public function getUploadPath()
 	{
-		return Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->uploadPath;
+		return Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->_uploadPath;
 	}
 
 	public function init()

@@ -24,9 +24,6 @@
  */
 class News extends CActiveRecord
 {
-	/** @var string upload path with slug path (ex. ./uploads/news/news_link/images... */
-	//public $uploadPath;
-
 	public $author_search;
 	const STATUS_DRAFT      = 0;
 	const STATUS_PUBLISHED  = 1;
@@ -269,7 +266,7 @@ class News extends CActiveRecord
 	{
 		if ( is_dir($this->getUploadPath()) )
 		{
-			rename($this->getUploadPath(), Yii::app()->getModule('news')->getUploadPath() . DIRECTORY_SEPARATOR . $newPathName);
+			rename($this->getUploadPath(), Yii::app()->getModule('news')->uploadPath . DIRECTORY_SEPARATOR . $newPathName);
 		}
 	}
 
