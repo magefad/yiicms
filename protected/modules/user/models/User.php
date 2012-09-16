@@ -4,7 +4,7 @@
  * This is the model class for table "{{user}}".
  *
  * The followings are the available columns in table '{{user}}':
- * @property string $id
+ * @property integer $id
  * @property string $creation_date
  * @property string $change_date
  * @property string $firstname
@@ -178,7 +178,7 @@ class User extends CActiveRecord
 		$criteria->compare('email_confirm', $this->email_confirm);
 
 		return new CActiveDataProvider($this, array(
-			'criteria'=> $criteria,
+			'criteria' => $criteria,
 		));
 	}
 
@@ -192,8 +192,8 @@ class User extends CActiveRecord
 		if ( $this->isNewRecord )
 		{
 			$this->registration_date = $this->creation_date = $this->change_date;
-			$this->activate_key = $this->generateActivationKey();
-			$this->registration_ip = $this->activation_ip = Yii::app()->request->userHostAddress;
+			$this->activate_key      = $this->generateActivationKey();
+			$this->registration_ip   = $this->activation_ip = Yii::app()->request->userHostAddress;
 		}
 		return parent::beforeSave();
 	}
@@ -204,25 +204,25 @@ class User extends CActiveRecord
 	public function scopes()
 	{
 		return array(
-			'active' => array(
+			'active'       => array(
 				'condition' => 'status = :status',
-				'params' => array(':status' => self::STATUS_ACTIVE)
+				'params'    => array(':status' => self::STATUS_ACTIVE)
 			),
-			'blocked' => array(
+			'blocked'      => array(
 				'condition' => 'status = :status',
-				'params' => array(':status' => self::STATUS_BLOCK)
+				'params'    => array(':status' => self::STATUS_BLOCK)
 			),
 			'notActivated' => array(
 				'condition' => 'status = :status',
-				'params' => array(':status' => self::STATUS_NOT_ACTIVE)
+				'params'    => array(':status' => self::STATUS_NOT_ACTIVE)
 			),
-			'admin' => array(
+			'admin'        => array(
 				'condition' => 'access_level = :access_level',
-				'params' => array(':access_level' => self::ACCESS_LEVEL_ADMIN)
+				'params'    => array(':access_level' => self::ACCESS_LEVEL_ADMIN)
 			),
-			'user' => array(
+			'user'         => array(
 				'condition' => 'access_level = :access_level',
-				'params' => array(':access_level' => self::ACCESS_LEVEL_USER)
+				'params'    => array(':access_level' => self::ACCESS_LEVEL_USER)
 			),
 		);
 	}
@@ -285,6 +285,7 @@ class User extends CActiveRecord
 
 	/**
 	 * @param $password
+	 * @param $salt
 	 * @return string md5 password
 	 */
 	public function hashPassword($password, $salt)

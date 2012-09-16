@@ -1,5 +1,8 @@
 <?php
-/** @var $dataProvider CDataProvider */
+/**
+ * @var $dataProvider CDataProvider
+ * @var $this CController
+ */
 $this->breadcrumbs = array(
 	Yii::t('user', 'Пользователи') => array('admin'),
 	Yii::t('user', 'Управление'),
@@ -14,4 +17,4 @@ $this->menu = array(
 $this->widget('bootstrap.widgets.TbListView', array(
 	'dataProvider' => $dataProvider,
 	'itemView'     => '_view',
-)); ?>
+));

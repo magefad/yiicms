@@ -4,9 +4,13 @@
  * Date: 11.07.12
  * Time: 17:20
  */
-/** @var $model User */
-/** @var $form TbActiveForm */
-/** @var $changePasswordForm changePasswordForm */
+/**
+ * @var $model User
+ * @var $form TbActiveForm
+ * @var $changePasswordForm changePasswordForm
+ * @var $this CController
+ */
+
 $this->pageTitle   = Yii::t('user', 'Изменение пароля');
 $this->breadcrumbs = array(
 	Yii::t('user', 'Пользователи') => array('admin'),

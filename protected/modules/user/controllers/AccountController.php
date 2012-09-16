@@ -10,12 +10,13 @@ class AccountController extends Controller
 	{
 		return array(
 			'captcha'   => array(
-				'class' => 'CCaptchaAction', 'backColor' => 0xFFFFFF,
+				'class'     => 'CCaptchaAction',
+				'backColor' => 0xFFFFFF,
 			),
-			'login'  => array(
+			'login'     => array(
 				'class' => 'application.modules.user.controllers.account.LoginAction',
 			),
-			'logout' => array(
+			'logout'    => array(
 				'class' => 'application.modules.user.controllers.account.LogOutAction',
 			),
 		);

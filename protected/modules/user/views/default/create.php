@@ -1,5 +1,8 @@
 <?php
-/** @var $model User */
+/**
+ * @var $model User
+ * @var $this CController
+ */
 $this->breadcrumbs = array(
 	Yii::t('user', 'Пользователи') => array('admin'),
 	Yii::t('user', 'Добавить'),
@@ -12,4 +15,3 @@ $this->menu = array(
 );
 
 echo $this->renderPartial('_form', array('model' => $model));
-?>

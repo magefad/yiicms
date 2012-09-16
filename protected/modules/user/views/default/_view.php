@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $data User
+ * @var $this CController
+*/
+?>
 <div class="view">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>

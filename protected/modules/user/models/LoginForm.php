@@ -21,11 +21,8 @@ class LoginForm extends CFormModel
 	public function rules()
 	{
 		return array(
-			// username and password are required
 			array('username, password', 'required'),
-			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
-			// password needs to be authenticated
 			array('password', 'authenticate'),
 		);
 	}
@@ -36,6 +33,8 @@ class LoginForm extends CFormModel
 	public function attributeLabels()
 	{
 		return array(
+			'username'   => Yii::t('site', 'Логин'),
+			'password'   => Yii::t('site', 'Пароль'),
 			'rememberMe' => Yii::t('site', 'Запомнить'),
 		);
 	}

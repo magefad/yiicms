@@ -1,6 +1,9 @@
 <?php
-/** @var $form TbActiveForm */
-/** @var $model User */
+/**
+ * @var $form TbActiveForm
+ * @var $model User
+ * @var $this CController
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                     => 'user-form',
 	'enableClientValidation' => true,
@@ -53,5 +56,4 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'label'      => $model->isNewRecord ? Yii::t('user', 'Создать') : Yii::t('user', 'Сохранить'),
 )); ?>
 </div>
-
 <?php $this->endWidget(); ?>

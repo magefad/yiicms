@@ -1,6 +1,6 @@
 <?php
 
-class UserModule extends CWebModule
+class UserModule extends WebModule
 {
 	public function init()
 	{

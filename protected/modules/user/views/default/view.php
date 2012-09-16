@@ -1,5 +1,8 @@
 <?php
-/** @var $model User */
+/**
+ * @var $model User
+ * @var $this CController
+ */
 $this->breadcrumbs = array(
 	Yii::t('user', 'Пользователи') => array('admin'),
 	Yii::t('user', 'Просмотр пользователя') . ' ' . $model->username,
@@ -56,4 +59,4 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
 			'value' => $model->getEmailConfirmStatus(),
 		),
 	),
-)); ?>
+));
