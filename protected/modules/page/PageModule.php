@@ -2,22 +2,25 @@
 
 class PageModule extends WebModule
 {
+	public function getName()
+	{
+		return Yii::t('page', 'Страницы');
+	}
+
+	public function getDescription()
+	{
+		return Yii::t('page', 'Управление страницами сайта');
+	}
+
+	public function getIcon()
+	{
+		return 'font';
+	}
+
 	public function init()
 	{
 		$this->setImport(array(
 			'page.models.*',
 		));
-	}
-
-	public function beforeControllerAction($controller, $action)
-	{
-		if(parent::beforeControllerAction($controller, $action))
-		{
-			// this method is called before any module controller action is performed
-			// you may place customized code here
-			return true;
-		}
-		else
-			return false;
 	}
 }

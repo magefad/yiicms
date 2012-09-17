@@ -10,6 +10,21 @@ class NewsModule extends WebModule
 	public $uploadDir = 'news';
 	public $uploadAllowExt = 'jpg,jpeg,gif,bmp,png';
 
+	public function getName()
+	{
+		return Yii::t('news', 'Новости');
+	}
+
+	public function getDescription()
+	{
+		return Yii::t('news', 'Управление новостями сайта');
+	}
+
+	public function getIcon()
+	{
+		return 'info-sign';
+	}
+
 	public function getUploadPath()
 	{
 		return Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->uploadDir;

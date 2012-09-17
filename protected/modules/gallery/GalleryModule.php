@@ -1,28 +1,26 @@
 <?php
 
-class GalleryModule extends CWebModule
+class GalleryModule extends WebModule
 {
-	public function init()
+	public function getName()
 	{
-		// this method is called when the module is being created
-		// you may place code here to customize the module or the application
-
-		// import the module-level models and components
-		$this->setImport(array(
-			'gallery.models.*',
-			'gallery.components.*',
-		));
+		return Yii::t('gallery', 'Галерея');
 	}
 
-	public function beforeControllerAction($controller, $action)
+	public function getDescription()
 	{
-		if(parent::beforeControllerAction($controller, $action))
-		{
-			// this method is called before any module controller action is performed
-			// you may place customized code here
-			return true;
-		}
-		else
-			return false;
+		return Yii::t('gallery', 'Создание и управление альбомами с фотографиями');
+	}
+
+	public function getIcon()
+	{
+		return 'picture';
+	}
+
+	public function init()
+	{
+		$this->setImport(array(
+			'gallery.models.*',
+		));
 	}
 }

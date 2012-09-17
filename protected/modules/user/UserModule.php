@@ -2,27 +2,25 @@
 
 class UserModule extends WebModule
 {
-	public function init()
+	public function getName()
 	{
-		// this method is called when the module is being created
-		// you may place code here to customize the module or the application
-
-		// import the module-level models and components
-		$this->setImport(array(
-			'user.models.*',
-			'user.components.*',
-		));
+		return Yii::t('user', 'Пользователи');
 	}
 
-	public function beforeControllerAction($controller, $action)
+	public function getDescription()
 	{
-		if(parent::beforeControllerAction($controller, $action))
-		{
-			// this method is called before any module controller action is performed
-			// you may place customized code here
-			return true;
-		}
-		else
-			return false;
+		return Yii::t('user', 'Управление пользователями сайта');
+	}
+
+	public function getIcon()
+	{
+		return 'user';
+	}
+
+	public function init()
+	{
+		$this->setImport(array(
+			'user.models.*',
+		));
 	}
 }
