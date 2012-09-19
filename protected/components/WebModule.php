@@ -47,4 +47,29 @@ class WebModule extends CWebModule
 	{
 		return "cog";
 	}
+
+	public function getSettingLabels()
+	{
+		return array();
+	}
+
+	public function getSettingData()
+	{
+		return array();
+	}
+
+	public function init()
+	{
+		$settings = Setting::model()->findAll('module_id = :module_id', array('module_id' => $this->getId()));
+		if ( $settings )
+		{
+			$settingKeys   = array_keys($this->settingLabels);
+			foreach ($settings as $model)
+			{
+				if ( property_exists($this, $model->key) && (in_array($model->key, $settingKeys)) )
+					$this->{$model->key} = $model->value;
+			}
+		}
+		parent::init();
+	}
 }

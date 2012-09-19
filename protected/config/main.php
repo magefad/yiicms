@@ -28,6 +28,7 @@ return array(
 		'application.modules.news.models.*',
 		'application.modules.contact.models.*',
 		'application.modules.gallery.models.*',
+		'application.modules.admin.models.*',
 		// not base
 		'application.helpers.*',
 		'application.modules.rights.RightsModule',
@@ -72,10 +73,16 @@ return array(
 
 	// application components
 	'components' => array(
+		'settings' => array(
+			'class'          => 'Settings',
+			'categoryColumn' => 'module_id',
+			'cacheTime'      => 84000,
+		),
 		'user' => array(
 			'class'          => 'RWebUser',
-			'loginUrl' 	 => '/user/account/login',
-			'allowAutoLogin' => true, // enable cookie-based authentication
+			'loginUrl'       => '/user/account/login',
+			'allowAutoLogin' => true,
+			// enable cookie-based authentication
 		),
 		'image' => array(
 			'class'   => 'ext.image.CImageComponent', #'application.helpers.image.CImageComponent',
