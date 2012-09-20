@@ -9,7 +9,7 @@
  * @var $module CModule
  */
 $this->widget('bootstrap.widgets.TbAlert', array(
-	'alerts'   => array('success'),
+	'alerts'   => array('success', 'error'),
 ));
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'          => 'horizontalForm',
@@ -23,7 +23,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<?php
 		echo $form->hiddenField($setting, "[$key]module_id");
 		echo $form->hiddenField($setting, "[$key]key");
-		echo $form->{$setting->data['tag'].'Row'}($setting, "[$key]value", $setting->data['value']);
+		echo $form->{$setting->valueTag.'Row'}($setting, "[$key]value", $setting->valueValue);
 	?>
 	<?php endforeach; ?>
 </fieldset>

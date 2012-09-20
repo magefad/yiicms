@@ -17,8 +17,12 @@
  */
 class Setting extends CActiveRecord
 {
-	/** @var array('label' => '', 'tag' => '', 'value' => '') */
-	public $data = array();
+	/** @var string value attribute dynamic label */
+	public $valueLabel;
+	/** @var string html tag for value */
+	public $valueTag = 'textField';
+	/** @var array array of values for DropDownRow etc. */
+	public $valueValue = array();
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -45,7 +49,8 @@ class Setting extends CActiveRecord
 	{
 		return array(
 			array('module_id, key', 'required'),
-			array('module_id, key, value', 'length', 'max' => 20),
+			array('module_id, key', 'length', 'max' => 32),
+			array('value', 'length', 'max' => 255),
 			array('user_id', 'numerical', 'integerOnly' => true),
 			array('module_id, key', 'match', 'pattern' => '/^[\w\_-]+$/'),
 			array('id, module_id, key, value, creation_date, change_date, user_id', 'safe', 'on' => 'search'),
@@ -54,9 +59,12 @@ class Setting extends CActiveRecord
 
 	public function beforeSave()
 	{
-		$this->creation_date = $this->change_date = new CDbExpression('NOW()');
+		$this->change_date = new CDbExpression('NOW()');
+		if ( $this->isNewRecord )
+			$this->creation_date = $this->change_date;
+
 		if ( !isset($this->user_id) )
-			$this->user_id = Yii::app()->user->getId();
+			$this->user_id = Yii::app()->user->id;
 
 		return parent::beforeSave();
 	}
@@ -89,9 +97,9 @@ class Setting extends CActiveRecord
 
 	public function getAttributeLabel($attribute)
 	{
-		if ( $attribute == 'value' )
-			return $this->data['label'];
-		return parent::getAttributeLabel($attribute);
+		return ( $attribute == 'value' && isset($this->valueLabel) )
+			? $this->valueLabel
+			: parent::getAttributeLabel($attribute);
 	}
 
 	/**
@@ -113,5 +121,26 @@ class Setting extends CActiveRecord
 		return new CActiveDataProvider(get_class($this), array(
 			'criteria' => $criteria,
 		));
+	}
+
+	public function getSettings($module_id, $keys)
+	{
+		$settings = array();
+		if ( $module_id )
+		{
+			$criteria = new CDbCriteria();
+			$criteria->compare('module_id', $module_id);
+
+			if ( is_array($keys) )
+				$criteria->addInCondition('`key`', $keys);
+			else
+				$criteria->compare('`key`', $keys);
+
+			$dependency = new CDbCacheDependency('SELECT UNIX_TIMESTAMP(MAX(change_date)) FROM ' . $this->tableName() . ' WHERE module_id="' . $module_id . '"');
+			$settingsRows = $this->cache(Yii::app()->getModule('admin')->coreCacheTime, $dependency, 2)->findAll($criteria);
+			foreach ( $settingsRows as $setting )
+				$settings[$setting->key] = $setting;
+		}
+		return $settings;
 	}
 }

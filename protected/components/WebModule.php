@@ -13,54 +13,99 @@ class WebModule extends CWebModule
 	const CHOICE_YES = 1;
 	const CHOICE_NO = 0;
 
+	/**
+	 * Returns the version of this module.
+	 * The default implementation returns '0.0.1'.
+	 * @return string the version of this module.
+	 */
 	public function getVersion()
 	{
 		return '0.0.1';
 	}
 
-	public function getName()
-	{
-		return Yii::t('admin', 'Нет названия');
-	}
-
+	/**
+	 * Returns the description of this module.
+	 * @return string the description of this module.
+	 */
 	public function getDescription()
 	{
 		return Yii::t('admin', 'Нет описания');
 	}
 
+	/**
+	 * Returns the author of this module.
+	 * @return string the author of this module.
+	 */
 	public function getAuthor()
 	{
 		return Yii::t('admin', 'fad');
 	}
 
+	/**
+	 * Returns the author email of this module.
+	 * @return string the author email of this module.
+	 */
 	public function getAuthorEmail()
 	{
 		return Yii::t('admin', 'fad@itrade-rus.ru');
 	}
 
+	/**
+	 * Returns the site url of this module.
+	 * @return string the site url of this module.
+	 */
 	public function getUrl()
 	{
 		return Yii::t('admin', '');
 	}
 
+	/**
+	 * Returns the bootstrap icon of this module.
+	 * @return string the bootstrap icon of this module.
+	 */
 	public function getIcon()
 	{
 		return "cog";
 	}
 
+	/**
+	 * Returns the setting's labels.
+	 * @return array setting's labels (name=>label)
+	 */
 	public function getSettingLabels()
 	{
 		return array();
 	}
 
+	/**
+	 * Returns the setting's data.
+	 * @example
+	 * array(
+	 *      'settingKey1'   => array(
+	 *          'tag'   => 'textArea',
+	 *      ),
+	 *      'settingKey2'   => array(
+	 *          'value' => array(1 => 'first value', 2 => 'second value'),
+	 *          'tag'   => 'dropDownList',
+	 *      ),
+	 * ...
+	 * );
+	 *
+	 * @return array setting's data
+	 */
 	public function getSettingData()
 	{
 		return array();
 	}
 
+	/**
+	 * Read Settings from DB, if null - use default module property's
+	 */
 	public function init()
 	{
-		$settings = Setting::model()->findAll('module_id = :module_id', array('module_id' => $this->getId()));
+		$dependency = new CDbCacheDependency('SELECT UNIX_TIMESTAMP(MAX(change_date)) FROM ' . Setting::model()->tableName() . ' WHERE module_id="' . $this->getId() . '"');
+		$settings = Setting::model()->cache(3600, $dependency, 2)->findAll('module_id = :module_id', array('module_id' => $this->getId()));
+
 		if ( $settings )
 		{
 			$settingKeys   = array_keys($this->settingLabels);

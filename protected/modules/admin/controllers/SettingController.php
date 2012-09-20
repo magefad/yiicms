@@ -45,7 +45,6 @@ class SettingController extends Controller
 			}
 			if ( $valid )
 			{
-				Setting::model()->deleteAll('module_id = :module_id', array(':module_id' => $module_id));
 				foreach ($settings as $setting)
 				{
 					if ( $setting->save() )
@@ -53,6 +52,10 @@ class SettingController extends Controller
 						Yii::app()->user->setFlash('success', Yii::t('setting', 'Настройки сохранены!'));
 					}
 				}
+			}
+			else
+			{
+				Yii::app()->user->setFlash('error', Yii::t('setting', 'Произошла ошибка при сохранении!'));
 			}
 		}
 		$this->render('update', array('module' => $module, 'settings' => $settings));
@@ -73,22 +76,25 @@ class SettingController extends Controller
 		$settingKeys   = array_keys($settingLabels);
 		$settingData   = $module->settingData;
 		/** @var $settings Setting[] */
-		$settings = array();
+		$settings = Setting::model()->getSettings($module->id, $settingKeys);
 		foreach ($module as $key => $value)//settingKey and settingValue
 		{
 			if ( in_array($key, $settingKeys) )
 			{
-				if ( !(isset($settingData[$key]) && is_array($settingData[$key])) )
-					$settingData[$key]['tag'] = 'textField';
-
-				$settingData[$key]['label'] = $settingLabels[$key];
-				$settings[$key] = new Setting;
-				$settings[$key]->setAttributes(array(
-					'module_id' => $module->id,
-					'key'       => $key,
-					'value'     => $value,
-				));
-				$settings[$key]->data = $settingData[$key];
+				if ( !isset($settings[$key]) )
+				{
+					$settings[$key] = new Setting;
+					$settings[$key]->setAttributes(array(
+						'module_id' => $module->id,
+						'key'       => $key,
+						'value'     => $value,
+					));
+				}
+				$settings[$key]->valueLabel = $settingLabels[$key];
+				if ( $settingData[$key]['tag'] )
+					$settings[$key]->valueTag = $settingData[$key]['tag'];
+				if ( $settingData[$key]['value'] )
+					$settings[$key]->valueValue = $settingData[$key]['value'];
 			}
 		}
 		return $settings;
