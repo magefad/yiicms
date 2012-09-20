@@ -8,6 +8,12 @@
  * @var $this Controller
  * @var $module CModule
  */
+$this->breadcrumbs = array(
+	Yii::t('admin', 'Админка') => array('/admin'),
+	Yii::t('admin', $module->name) => array('/' . $module->id . '/default/admin'),
+	Yii::t('admin', 'Настройки'),
+);
+
 $this->widget('bootstrap.widgets.TbAlert', array(
 	'alerts'   => array('success', 'error'),
 ));

@@ -91,9 +91,9 @@ class SettingController extends Controller
 					));
 				}
 				$settings[$key]->valueLabel = $settingLabels[$key];
-				if ( $settingData[$key]['tag'] )
+				if ( isset($settingData[$key]['tag']) )
 					$settings[$key]->valueTag = $settingData[$key]['tag'];
-				if ( $settingData[$key]['value'] )
+				if ( isset($settingData[$key]['value']) )
 					$settings[$key]->valueValue = $settingData[$key]['value'];
 			}
 		}
