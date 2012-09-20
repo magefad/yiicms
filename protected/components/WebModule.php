@@ -106,7 +106,7 @@ class WebModule extends CWebModule
 	public function init()
 	{
 		$dependency = new CDbCacheDependency('SELECT UNIX_TIMESTAMP(MAX(change_date)) FROM ' . Setting::model()->tableName() . ' WHERE module_id="' . $this->getId() . '"');
-		$settings = Setting::model()->cache(3600, $dependency)->findAll('module_id = :module_id', array('module_id' => $this->getId()));
+		$settings = Setting::model()->cache($this->getModule('admin')->cachingDuration, $dependency)->findAll('module_id = :module_id', array('module_id' => $this->getId()));
 
 		if ( $settings )
 		{

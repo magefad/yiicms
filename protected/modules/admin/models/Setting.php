@@ -139,7 +139,7 @@ class Setting extends CActiveRecord
 				$criteria->compare('`key`', $keys);
 
 			$dependency = new CDbCacheDependency('SELECT UNIX_TIMESTAMP(MAX(change_date)) FROM ' . $this->tableName() . ' WHERE module_id="' . $module_id . '"');
-			$settingsRows = $this->cache(Yii::app()->getModule('admin')->coreCacheTime, $dependency, 2)->findAll($criteria);
+			$settingsRows = $this->cache(Yii::app()->getModule('admin')->cachingDuration, $dependency, 2)->findAll($criteria);
 			foreach ( $settingsRows as $setting )
 				$settings[$setting->key] = $setting;
 		}

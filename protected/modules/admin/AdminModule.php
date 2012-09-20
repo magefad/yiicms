@@ -5,9 +5,7 @@ class AdminModule extends WebModule
 	public $siteName;
 	public $siteDescription;
 	public $siteKeywords;
-	public $theme;
-	public $brandUrl;
-	public $coreCacheTime = 3600;
+	public $cachingDuration = 3600;
 	public $uploadDir     = 'uploads';
 	public $email;
 
@@ -22,7 +20,7 @@ class AdminModule extends WebModule
 			'siteName'        => Yii::t('admin', 'Название сайта'),
 			'siteDescription' => Yii::t('admin', 'Описание сайта'),
 			'siteKeywords'    => Yii::t('admin', 'Ключевые слова'),
-			'coreCacheTime'   => Yii::t('admin', 'Кэширование (сек.)'),
+			'cachingDuration' => Yii::t('admin', 'Кэширование (сек.)'),
 			'uploadDir'       => Yii::t('admin', 'Каталог для файлов'),
 			'email'           => Yii::t('admin', 'Email сайта'),
 		);
@@ -46,6 +44,7 @@ class AdminModule extends WebModule
 			'admin.components.*',
 		));
 		$this->siteName = empty($this->siteName) ? Yii::app()->name : $this->siteName;
+		$this->email = isset($this->email) ? $this->email: 'mail@' . str_replace('www.', '', Yii::app()->request->getServerName());
 	}
 
 	public function getModules()

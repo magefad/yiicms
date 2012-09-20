@@ -50,7 +50,7 @@ class DefaultController extends Controller
 				$body .= "\r\nReferer: " . Yii::app()->request->getUrlReferrer();
 				$body .= "\r\nIP: " . Yii::app()->request->userHostAddress;
 
-				mail(Yii::app()->params['adminEmail'], $model->subject, $body, $headers);
+				mail($this->admin->email, $model->subject, $body, $headers);
 				Yii::app()->user->setFlash('success', Yii::t('contact', 'Спасибо за сообщение! Мы Вам обязательно ответим!'));
 				$this->refresh();
 			}

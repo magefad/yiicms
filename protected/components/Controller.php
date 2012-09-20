@@ -32,7 +32,7 @@ class Controller extends RController
 	 */
 	public $description = '';
 
-	private $_assetsBase;
+	public $admin;
 
 	public function setMetaTags($data)
 	{
@@ -43,11 +43,11 @@ class Controller extends RController
 
 	public function init()
 	{
+		$this->admin       = Yii::app()->getModule('admin');
+		$this->pageTitle   = $this->admin->siteName;
+		$this->description = $this->admin->siteDescription;
+		$this->keywords    = $this->admin->siteKeywords;
 		parent::init();
-		$admin = Yii::app()->getModule('admin');
-		$this->pageTitle   = $admin->siteName;
-		$this->description = $admin->siteDescription;
-		$this->keywords    = $admin->siteKeywords;
 	}
 
 	public function actionActivate()
