@@ -40,6 +40,7 @@ class DefaultController extends Controller
 		{
 			$slug = Yii::app()->params['index'];
 		}
+		/** @var $this->currentPage Page */
 		$this->currentPage = null;
 
 		// превью
@@ -57,7 +58,13 @@ class DefaultController extends Controller
 			throw new CHttpException('404', Yii::t('page', 'Страница не найдена или удалена!'));
 		}
         $this->setMetaTags($this->currentPage);
-
+		if ( isset($this->currentPage->parent_id) )
+		{
+			$this->breadcrumbs = array(
+				$this->currentPage->parent->name => array('default/show','slug' => $this->currentPage->parent->slug),
+				$this->currentPage->name,
+			);
+		}
 		$this->render('show', array('page' => $this->currentPage));
 	}
 
