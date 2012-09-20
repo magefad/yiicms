@@ -5,7 +5,7 @@
 $this->pageTitle   = Yii::t('page', 'Редактирование страницы');
 $this->breadcrumbs = array(
 	Yii::t('page', 'Страницы') => array('admin'), #index
-	$model->title              => array('view', 'id' => $model->id), #
+	$model->title              => array('show', 'slug' => $model->slug), #
 	Yii::t('page', 'Изменение страницы') . ' «' . $model->title . '»',
 );
 if ( !$model->isNewRecord )
