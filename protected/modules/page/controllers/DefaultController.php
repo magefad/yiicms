@@ -195,6 +195,7 @@ class DefaultController extends Controller
 
 	/**
 	 * Return javascript for TinyMce 'external_link_list_url' => '/page/default/MceListUrl'
+	 *
 	 */
 	public function actionMceListUrl()
 	{
@@ -205,7 +206,7 @@ class DefaultController extends Controller
 		{
 			$itemsCount--;
 			$endLine = ($itemsCount > 0 ? '/"],' : '/"]');
-			$output .= '["'.$item->name.'", "'.$this->createUrl('/page/default/show', array('slug' => $item->slug)).$endLine."\n\t";
+			$output .= '["'.CHtml::encode($item->name).'", "'.$this->createUrl('/page/default/show', array('slug' => $item->slug)).$endLine."\n\t";
 		}
 		$output .= ');';
 
