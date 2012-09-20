@@ -9,9 +9,7 @@ class DefaultController extends Controller
 	public $layout='//layouts/main';
 
 	public $currentPage;
-	public $title;
-	public $keywords;
-	public $description;
+
 	/**
 	 * @return array action filters
 	 */
@@ -58,8 +56,6 @@ class DefaultController extends Controller
 		{
 			throw new CHttpException('404', Yii::t('page', 'Страница не найдена или удалена!'));
 		}
-
-		$this->setPageTitle($this->title);
         $this->setMetaTags($this->currentPage);
 
 		$this->render('show', array('page' => $this->currentPage));
