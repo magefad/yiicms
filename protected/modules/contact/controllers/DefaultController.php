@@ -32,9 +32,13 @@ class DefaultController extends Controller
 
 			if ( $model->validate() )
 			{
-				$headers = "From: {$model->email}\r\nReply-To: {$model->email}\r\nContent-type: text/plain;charset=utf-8";
+				$headers = "From: $model->name <{$model->email}>\r\n" .
+					"Reply-To: {$model->email}\r\n".
+					"MIME-Version: 1.0\r\n".
+					"Content-type: text/plain; charset=UTF-8";
+
 				if ( !$model->subject )
-					$model->subject = Yii::t('contact', 'Ïèñüìî ñ ñàéòà '.Yii::app()->name);
+					$model->subject = Yii::t('contact', 'ÐŸÐ¸ÑÑŒÐ¼Ð¾ Ñ ÑÐ°Ð¹Ñ‚Ð° '.Yii::app()->name);
 				$body = '';
 				foreach ( $model->attributes as $attribute => $value )
 				{
@@ -43,9 +47,11 @@ class DefaultController extends Controller
 					if ( $value )
 						$body .= $model->getAttributeLabel($attribute).": ".$value."\r\n\r\n";
 				}
+				$body .= "\r\nReferer: " . Yii::app()->request->getUrlReferrer();
+				$body .= "\r\nIP: " . Yii::app()->request->userHostAddress;
 
 				mail(Yii::app()->params['adminEmail'], $model->subject, $body, $headers);
-				Yii::app()->user->setFlash('success', Yii::t('contact', 'Ñïàñèáî çà ñîîáùåíèå! Ìû Âàì îáÿçàòåëüíî îòâåòèì!'));
+				Yii::app()->user->setFlash('success', Yii::t('contact', 'Ð¡Ð¿Ð°ÑÐ¸Ð±Ð¾ Ð·Ð° ÑÐ¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ðµ! ÐœÑ‹ Ð’Ð°Ð¼ Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾ Ð¾Ñ‚Ð²ÐµÑ‚Ð¸Ð¼!'));
 				$this->refresh();
 			}
 		}
