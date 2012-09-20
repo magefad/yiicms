@@ -33,7 +33,7 @@ class News extends CActiveRecord
 	const PROTECTED_YES = 1;
 
 	public $versions = array(
-		'thumb' => array(
+		'thumb' => array(//thumb is required
 			'resize' => array(130, null),
 		),
 		'small' => array(
@@ -47,9 +47,9 @@ class News extends CActiveRecord
 		),
 	);
 	/** @var int Maximum Photo width */
-	public $maxWidth = 1024;
+	//public $maxWidth = 1024;
 	/** @var int Maximum Photo height */
-	public $maxHeight = 768;
+	//public $maxHeight = 768;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -227,9 +227,11 @@ class News extends CActiveRecord
 		$image = Yii::app()->image->load($path);
 
 		/** resize image to Max width x height */
-		$image->cresize($this->maxWidth, $this->maxHeight);
+		$image->cresize(Yii::app()->getModule('news')->maxWidth, Yii::app()->getModule('news')->maxHeight);
 		$image->save($uploadPath . '/' . $this->getFileName('') . '.jpg');
 
+		// set thumb max width from module setting
+		$this->versions['thumb']['resize'][0] = Yii::app()->getModule('news')->thumbMaxWidth;
 		/** resize images to user versions and put-sort it to versions-named folders */
 		foreach ($this->versions as $version => $actions)
 		{

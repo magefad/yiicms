@@ -6,14 +6,15 @@
  */
 class LastNews extends Widget
 {
-	public $count = 3;
-
 	public function run()
 	{
+		$count = 3;
+		if ( isset(Yii::app()->getModule('news')->lastNewsCount) )
+			$count = Yii::app()->getModule('news')->lastNewsCount;
 		$dependency = new CDbCacheDependency('SELECT UNIX_TIMESTAMP(MAX(change_date)) FROM '.News::model()->tableName());
 
-		$news = News::model()->published()->cache(Yii::app()->params['cacheTime'], $dependency)->findAll(array(
-			'limit' => $this->count,
+		$news = News::model()->published()->cache(Yii::app()->params['cacheTime'], $dependency, 2)->findAll(array(
+			'limit' => $count,
 			'order' => 'date DESC'
 		));
 
