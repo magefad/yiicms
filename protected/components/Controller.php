@@ -34,24 +34,20 @@ class Controller extends RController
 
 	private $_assetsBase;
 
-	/**
-	 * @param string $title
-	 */
-	public function setPageTitle($title)
-	{
-		$this->pageTitle = $title;
-	}
-
 	public function setMetaTags($data)
 	{
-		$this->setPageTitle($data->title);
+		$this->pageTitle   = $data->title;
 		$this->keywords    = $data->keywords;
 		$this->description = $data->description;
 	}
 
 	public function init()
 	{
-		$this->setPageTitle($this->title);
+		parent::init();
+		$admin = Yii::app()->getModule('admin');
+		$this->pageTitle   = $admin->siteName;
+		$this->description = $admin->siteDescription;
+		$this->keywords    = $admin->siteKeywords;
 	}
 
 	public function actionActivate()
