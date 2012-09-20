@@ -87,6 +87,8 @@ class WebModule extends CWebModule
 	 *      'settingKey2'   => array(
 	 *          'value' => array(1 => 'first value', 2 => 'second value'),
 	 *          'tag'   => 'dropDownList',
+	 *          'htmlOptions' => array(
+	 *              'hint' => Yii::t('module_id', 'Hint (help) for input'),
 	 *      ),
 	 * ...
 	 * );

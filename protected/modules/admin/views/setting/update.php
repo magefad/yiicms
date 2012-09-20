@@ -29,7 +29,10 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	<?php
 		echo $form->hiddenField($setting, "[$key]module_id");
 		echo $form->hiddenField($setting, "[$key]key");
-		echo $form->{$setting->valueTag.'Row'}($setting, "[$key]value", $setting->valueValue);
+		if ( count($setting->data) )
+			echo $form->{$setting->tag.'Row'}($setting, "[$key]value", $setting->data, $setting->htmlOptions);
+		else
+			echo $form->{$setting->tag.'Row'}($setting, "[$key]value", $setting->htmlOptions);
 	?>
 	<?php endforeach; ?>
 </fieldset>

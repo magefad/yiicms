@@ -18,11 +18,13 @@
 class Setting extends CActiveRecord
 {
 	/** @var string value attribute dynamic label */
-	public $valueLabel;
+	public $label;
 	/** @var string html tag for value */
-	public $valueTag = 'textField';
+	public $tag = 'textField';
 	/** @var array array of values for DropDownRow etc. */
-	public $valueValue = array();
+	public $data = array();
+	/** @var array htmlOptions for setting */
+	public $htmlOptions = array();
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -97,8 +99,8 @@ class Setting extends CActiveRecord
 
 	public function getAttributeLabel($attribute)
 	{
-		return ( $attribute == 'value' && isset($this->valueLabel) )
-			? $this->valueLabel
+		return ( $attribute == 'value' && isset($this->label) )
+			? $this->label
 			: parent::getAttributeLabel($attribute);
 	}
 

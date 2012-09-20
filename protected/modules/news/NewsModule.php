@@ -36,12 +36,12 @@ class NewsModule extends WebModule
 	{
 		return array(
 			'maxWidth' => array(
-				'value' => array('480' => '480', '640' => '640', '800' => '800', '1024' => '1024', '1280' => '1280'),
-				'tag'   => 'dropDownList',
+				'data' => array('480' => '480', '640' => '640', '800' => '800', '1024' => '1024', '1280' => '1280'),
+				'tag'  => 'dropDownList',
 			),
 			'maxHeight' => array(
-				'value' => array('320' => '320', '480' => '480', '600' => '600', '768' => '768', '1024' => '1024'),
-				'tag'   => 'dropDownList',
+				'data' => array('320' => '320', '480' => '480', '600' => '600', '768' => '768', '1024' => '1024'),
+				'tag'  => 'dropDownList',
 			)
 		);
 	}

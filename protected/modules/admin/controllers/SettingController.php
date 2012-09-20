@@ -90,11 +90,15 @@ class SettingController extends Controller
 						'value'     => $value,
 					));
 				}
-				$settings[$key]->valueLabel = $settingLabels[$key];
+				$settings[$key]->label = $settingLabels[$key];
 				if ( isset($settingData[$key]['tag']) )
-					$settings[$key]->valueTag = $settingData[$key]['tag'];
-				if ( isset($settingData[$key]['value']) )
-					$settings[$key]->valueValue = $settingData[$key]['value'];
+					$settings[$key]->tag = $settingData[$key]['tag'];
+
+				if ( isset($settingData[$key]['data']) )
+					$settings[$key]->data = $settingData[$key]['data'];
+
+				if ( isset($settingData[$key]['htmlOptions']) )
+					$settings[$key]->htmlOptions = $settingData[$key]['htmlOptions'];
 			}
 		}
 		return $settings;

@@ -13,7 +13,7 @@ return array(
 	'defaultController' => 'page/default/show',
 	#'homeLink'=> '/',
 	'language'          => 'ru',
-	#'theme'             => 'reflector',
+	'theme'             => 'reflector',
 	// preloading 'log' component
 	'preload'           => array('log', 'bootstrap'),
 
@@ -73,11 +73,6 @@ return array(
 
 	// application components
 	'components' => array(
-		'settings' => array(
-			'class'          => 'Settings',
-			'categoryColumn' => 'module_id',
-			'cacheTime'      => 84000,
-		),
 		'user' => array(
 			'class'          => 'RWebUser',
 			'loginUrl'       => '/user/account/login',
@@ -122,7 +117,6 @@ return array(
 			'itemChildTable'  => 'fad_auth_item_child',
 			'assignmentTable' => 'fad_auth_assignment',
 			'rightsTable'     => 'fad_rights',
-			#'connectionID'  => 'db',
 		),
 		'errorHandler' => array(
 			'errorAction' => 'site/error', // use 'site/error' action to display errors
@@ -137,11 +131,9 @@ return array(
 					'class' => 'CFileLogRoute', 'levels' => 'error, warning, info',
 				),
 				// uncomment the following to show log messages on web pages
-				/*
-				array(
+				/*array(
 					'class' => 'CWebLogRoute',
-				),
-				*/
+				),*/
 			),
 		),
 		'bootstrap' => array(

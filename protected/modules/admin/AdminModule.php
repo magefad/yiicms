@@ -22,27 +22,19 @@ class AdminModule extends WebModule
 			'siteName'        => Yii::t('admin', 'Название сайта'),
 			'siteDescription' => Yii::t('admin', 'Описание сайта'),
 			'siteKeywords'    => Yii::t('admin', 'Ключевые слова'),
-			'theme'           => Yii::t('admin', 'Тема'),
 			'coreCacheTime'   => Yii::t('admin', 'Кэширование (сек.)'),
 			'uploadDir'       => Yii::t('admin', 'Каталог для файлов'),
 			'email'           => Yii::t('admin', 'Email сайта'),
 		);
 	}
+
 	public function getSettingData()
 	{
 		return array(
-			'siteDescription' => array(
-				#'value' => array(1  => 'val1', 2  => 'val2', 4  => 'val3', 5  => 'val4'),
-				'tag'   => 'textArea'
-			),
-			'coreCacheTime'   => array(
-				'value' => array(111 => 111, 3600 => 3600, 555 => 555, 333 => 333),
-				'tag'   => 'dropDownList',
-			),
-			'email' => array(
-				'value' => array(1 => 'yea', 2 => 'nooo'),
-				'tag' => 'dropDownList'
-			)
+			'uploadDir' => array(
+				'htmlOptions' => array(
+					'hint' => Yii::t('admin', 'При изменении значения требуется вручную переименовать папку на FTP'),
+			)),
 		);
 	}
 
