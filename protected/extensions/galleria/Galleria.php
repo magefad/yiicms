@@ -82,7 +82,7 @@ class Galleria extends CWidget
 	public function init()
 	{
 		$this->initGalleria();
-		$this->assets = Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets');
+		$this->assets = Yii::app()->assetManager->publish(dirname(__FILE__) . '/assets');
 		echo "<div id='galleria_" . $this->id . "' >";
 	}
 
@@ -157,10 +157,7 @@ class Galleria extends CWidget
 				}
 			}
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 	}
 
 	/**
