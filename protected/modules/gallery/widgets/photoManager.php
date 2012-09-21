@@ -37,7 +37,7 @@ class photoManager extends Widget
 		$cs->registerCoreScript('jquery');
 		$cs->registerCoreScript('jquery.ui');
 
-		if ( defined('YII_DEBUG') )
+		if ( YII_DEBUG )
 		{
 			$cs->registerScriptFile($this->assets . '/jquery.iframe-transport.js');
 			$cs->registerScriptFile($this->assets . '/jquery.photoManager.js');
