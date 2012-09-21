@@ -6,12 +6,12 @@
  */
 class WebModule extends CWebModule
 {
-	const CHECK_ERROR  = 'error';
+	const CHECK_ERROR = 'error';
 
 	const CHECK_NOTICE = 'notice';
 
 	const CHOICE_YES = 1;
-	const CHOICE_NO = 0;
+	const CHOICE_NO  = 0;
 
 	/**
 	 * Returns the version of this module.
@@ -98,6 +98,18 @@ class WebModule extends CWebModule
 	public function getSettingData()
 	{
 		return array();
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	public function getChoice()
+	{
+		return array(
+			self::CHOICE_YES => Yii::t('admin', 'Да'),
+			self::CHOICE_NO  => Yii::t('admin', 'Нет'),
+		);
 	}
 
 	/**
