@@ -33,6 +33,14 @@ class GalleryModule extends WebModule
 			'maxHeight' => array(
 				'data' => array('320' => '320', '480' => '480', '600' => '600', '768' => '768', '1024' => '1024', '1200' => '1200'),
 				'tag'  => 'dropDownList',
+			),
+			'thumbMaxWidth' => array(
+				'htmlOptions' => array(
+					'hint' => "Если используется галерея Gallery с темой Folio (по умолчанию), нужно изменить значение параметра в CSS:
+					<br/> .galleria-thumbnails .galleria-image {width: 130px}
+					<br/>Файл: ./extensions/galleria/assets/themes/folio/galleria.folio.css
+					<br/>иначе превью будут показываться размером по умолчанию 130px в ширину",
+				)
 			)
 		);
 	}
