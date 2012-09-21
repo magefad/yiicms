@@ -1,5 +1,8 @@
 <?php
-/** @var $model News */
+/**
+ * @var $model News
+ * @var $this Controller
+ */
 $this->breadcrumbs = array(
 	Yii::t('news', 'Новости') => array('admin'),
 	Yii::t('news', 'Управление'),
@@ -49,7 +52,7 @@ $this->widget('CustomTbGridView', array(
 		), array(
 			'name'  => 'title',
 			'type'  => 'raw',
-			'value' => 'CHtml::link($data->title,array("/news/update","id" => $data->id))'
+			'value' => 'CHtml::link($data->title,array("update", "id" => $data->id))'
 		), array(
 			'name'  => 'slug',
 			'type'  => 'raw',
