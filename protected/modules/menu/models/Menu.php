@@ -119,7 +119,7 @@ class Menu extends CActiveRecord
 		return isset($data[$this->status]) ? $data[$this->status] : Yii::t('menu', 'неизвестно');
 	}
 
-	// @todo добавить кэширование
+	// @todo полностью переделать функцию, добавить кэширование
 	/**
 	 * @param $code
 	 * @param int $parent_id
@@ -127,6 +127,7 @@ class Menu extends CActiveRecord
 	 */
 	public function getItems($code, $parent_id = 0)
 	{
+		$requestUri = rtrim(Yii::app()->request->requestUri, '/');
 		$command = Yii::app()->getDb()->createCommand();
 		$results = $command->select('item.id, item.title, item.href, item.access')
 			->from('{{menu_item}} item')
@@ -141,14 +142,14 @@ class Menu extends CActiveRecord
 
 		foreach ( $results as $result )
 		{
-			$childItems = Menu::getItems($code, $result['id']);
 
+			$childItems = Menu::getItems($code, $result['id']);
 			$items[] = array(
 				'label'         => $result['title'],
-				'url'           => array($result['href']),
-				'itemOptions'   => array('class'=>'listItem'),
-				'linkOptions'   => array('class'=>'listItemLink', 'title' => $result['title']),
-				'submenuOptions'=> array(),
+				'url'           => $result['href'],
+				'itemOptions'   => (rtrim($result['href'], '/#') == $requestUri) ? array('class' => 'active') : array(),
+				'linkOptions'   => array('title' => $result['title']),
+				#'submenuOptions'=> array(),
 				'items'         => $childItems,
 				'visible' 		=> (isset($result['access']) && $result['access']) ? Yii::app()->user->checkAccess($result['access']) : 1,
 			);
