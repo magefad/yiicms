@@ -1,6 +1,9 @@
 <?php
-/** @var $model News */
-/** @var $form TbActiveForm */
+/**
+ * @var $model News
+ * @var $form TbActiveForm
+ * @var $this Controller
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                   => 'news-form',
 	'enableAjaxValidation' => false,
@@ -24,7 +27,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php echo $form->textFieldRow($model, 'slug', array('class'=> 'span5', 'maxlength'=> 150)); ?>
 
 <?php if ( $model->image ): ?>
-<p><?php echo CHtml::image('/uploads/news/' . $model->slug . '/thumb/' . $model->image); ?></p>
+<p><?php echo CHtml::image($model->getThumbnailUrl()); ?></p>
 <?php endif; ?>
 <?php echo $form->fileFieldRow($model, 'image'); ?>
 

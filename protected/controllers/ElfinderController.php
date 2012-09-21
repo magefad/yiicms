@@ -1,6 +1,6 @@
 <?php
 
-class ElfinderController extends CController
+class ElfinderController extends Controller
 {
 	// Uncomment the following methods and override them if needed
 	/*
@@ -22,8 +22,8 @@ class ElfinderController extends CController
             'connector' => array(
                 'class' => 'ext.elFinder.ElFinderConnectorAction',
                 'settings' => array(
-                    'root' => Yii::getPathOfAlias('webroot') . '/uploads/',
-                    'URL' => Yii::app()->baseUrl . '/uploads/',
+                    'root' => Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . $this->admin->uploadDir . DIRECTORY_SEPARATOR,
+                    'URL' => Yii::app()->baseUrl . '/' . $this->admin->uploadDir . '/',
                     'rootAlias' => 'Home',
                     'mimeDetect' => 'none'
                 )

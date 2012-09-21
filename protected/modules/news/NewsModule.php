@@ -63,7 +63,7 @@ class NewsModule extends WebModule
 
 	public function getUploadPath()
 	{
-		return Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . $this->uploadDir;
+		return Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . Yii::app()->getModule('admin')->uploadDir . DIRECTORY_SEPARATOR . $this->uploadDir;
 	}
 
 	public function init()
