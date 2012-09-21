@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var $this Controller
+ */
 $this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('contact', 'Контакты');
 $this->breadcrumbs = array(
 	Yii::t('contact', 'Контакты'),
@@ -46,7 +49,7 @@ if ( $page )
 	<?php echo $form->textFieldRow($model, 'city'); ?>
 	<?php echo $form->textFieldRow($model, 'phone', array('style' => 'margin-top:8px')); ?>
 	<?php echo $form->textAreaRow($model, 'body'); ?>
-	<?php if(CCaptcha::checkRequirements()): ?>
+	<?php if ( CCaptcha::checkRequirements() && Yii::app()->getModule('contact')->captchaRequired): ?>
 		<?php echo $form->captchaRow($model, 'verifyCode', array('class' => 'xlarge'), array('clickableImage' => true, 'showRefreshButton' => 0));?>
 	<?php endif; ?>
 </fieldset>

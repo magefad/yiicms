@@ -38,7 +38,7 @@ class ContactForm extends CFormModel
 			array('countShop, countStudent', 'numerical', 'integerOnly' => true),
 			array('organization, education, city, phone, body', 'safe'),
 			// verifyCode needs to be entered correctly
-			array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements()),
+			array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements() || !Yii::app()->getModule('contact')->captchaRequired),
 		);
 	}
 
