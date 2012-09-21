@@ -1,6 +1,9 @@
 <?php
-/** @var $model Photo */
-/** @var $form TbActiveForm */
+/**
+ * @var $model Photo
+ * @var $form TbActiveForm
+ * @var $this Controller
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                   => 'photo-form',
 	'enableAjaxValidation' => false,

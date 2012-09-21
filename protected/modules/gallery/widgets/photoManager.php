@@ -24,7 +24,7 @@ class photoManager extends Widget
 
 	public function init()
 	{
-		$this->assets = Yii::app()->getAssetManager()->publish(dirname(__FILE__) . '/assets');
+		$this->assets = Yii::app()->assetManager->publish(dirname(__FILE__) . '/assets');
 	}
 
 	/** Render widget */
@@ -48,17 +48,17 @@ class photoManager extends Widget
 			$cs->registerScriptFile($this->assets . '/jquery.photoManager.min.js');
 		}
 
-		if ($this->controllerRoute === null)
+		if ( $this->controllerRoute === null )
 			throw new CException('$controllerRoute must be set.', 500);
 
 		$opts = CJavaScript::encode(array(
-			'hasName:' => true,
-			'hasDesc:' => true,
-			'uploadUrl' => Yii::app()->createUrl($this->controllerRoute . '/ajaxUpload', array('galleryId' => $this->galleryId)),
-			'deleteUrl' => Yii::app()->createUrl($this->controllerRoute . '/ajaxDelete'),
-			'updateUrl' => Yii::app()->createUrl($this->controllerRoute . '/changeData'),
-			'arrangeUrl' => Yii::app()->createUrl($this->controllerRoute . '/order'),
-			'nameLabel' => Yii::t('gallery', 'Название'),
+			'hasName:'         => true,
+			'hasDesc:'         => true,
+			'uploadUrl'        => Yii::app()->createUrl($this->controllerRoute . '/ajaxUpload', array('galleryId' => $this->galleryId)),
+			'deleteUrl'        => Yii::app()->createUrl($this->controllerRoute . '/ajaxDelete'),
+			'updateUrl'        => Yii::app()->createUrl($this->controllerRoute . '/changeData'),
+			'arrangeUrl'       => Yii::app()->createUrl($this->controllerRoute . '/order'),
+			'nameLabel'        => Yii::t('gallery', 'Название'),
 			'descriptionLabel' => Yii::t('gallery', 'Описание'),
 		));
 		$src = "$('#{$this->id}').galleryManager({$opts});";
@@ -66,11 +66,15 @@ class photoManager extends Widget
 
 		$model = new Photo();
 		$this->render('photoManager', array(
-			'model' => $model,
+			'model'  => $model,
 			#'galleryId' => $this->galleryId,
-			'slug' => $this->slug,
+			'slug'   => $this->slug,
 			'albums' => $this->albums,
-			'photos' => $model->findAll(array('condition' => 'gallery_id=:gallery_id', 'order' => 'sort', 'params' => array(':gallery_id' => $this->galleryId)))
+			'photos' => $model->findAll(array(
+				'condition' => 'gallery_id=:gallery_id',
+				'order'     => 'sort',
+				'params'    => array(':gallery_id' => $this->galleryId)
+			))
 		));
 	}
 }

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @var $model Photo
+ * @var $form TbActiveForm
+ * @var $this Controller
+ */
 $this->breadcrumbs = array(
 	Yii::t('gallery', 'Фотографии') => array('index'), Yii::t('gallery', 'Управление'),
 );
@@ -23,9 +28,10 @@ $('.search-form form').submit(function(){
 ?>
 <?php echo CHtml::link(Yii::t('Фотографии', '<i class="icon-search"></i> Поиск <span class="caret"></span>'), '#', array('class' => 'search-button btn btn-small')) ?>
 <div class="search-form" style="display:none">
-	<?php $this->renderPartial('_search', array(
-	'model' => $model,
-)); ?>
+	<?php
+	$this->renderPartial('_search', array(
+		'model' => $model,
+	)); ?>
 </div><!-- search-form -->
 
 <?php $this->widget('CustomTbGridView', array(

@@ -3,6 +3,8 @@
  * User: fad
  * Date: 07.08.12
  * Time: 16:10
+ *
+ * @var $albums Photo[]
  */
 ?>
 <h2>Альбомы</h2>

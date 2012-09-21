@@ -4,8 +4,8 @@
  * This is the model class for table "{{gallery_photo}}".
  *
  * The followings are the available columns in table '{{gallery_photo}}':
- * @property string $id
- * @property string $gallery_id
+ * @property integer $id
+ * @property integer $gallery_id
  * @property string $name
  * @property string $title
  * @property string $description
@@ -13,8 +13,8 @@
  * @property string $file_name
  * @property string $creation_date
  * @property string $change_date
- * @property string $user_id
- * @property string $change_user_id
+ * @property integer $user_id
+ * @property integer $change_user_id
  * @property string $alt
  * @property integer $type
  * @property integer $status
@@ -28,7 +28,7 @@
 class Photo extends CActiveRecord
 {
 	const STATUS_PUBLISHED = 1;
-	const STATUS_DRAFT  = 0;
+	const STATUS_DRAFT     = 0;
 
 	public $author_search;
 	public $changeAuthor_search;
@@ -36,8 +36,6 @@ class Photo extends CActiveRecord
 
 	/** @var string Extensions for gallery images */
 	public $galleryExt = 'jpg';
-	/** @var string directory in web root for galleries */
-	public $galleryDir = 'uploads/gallery';
 
 	public $versions = array(
 		'thumb' => array(
@@ -56,10 +54,6 @@ class Photo extends CActiveRecord
 			'resize' => array(1280, null),
 		)
 	);
-	/** @var int Maximum Photo width */
-	public $maxWidth = 1600;
-	/** @var int Maximum Photo height */
-	public $maxHeight = 1200;
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -87,12 +81,13 @@ class Photo extends CActiveRecord
 		return array(
 			#array('gallery_id, name, file_name, creation_date, user_id, change_user_id, alt', 'required'),
 			array('gallery_id', 'required'),
-			array('sort, type, status', 'numerical', 'integerOnly'=> true),
-			array('gallery_id', 'length', 'max'=> 11),
-			array('name', 'length', 'max'=> 300),
-			array('file_name', 'length', 'max'=> 500),
+			array('sort, type, status', 'numerical', 'integerOnly' => true),
+			array('gallery_id', 'length', 'max' => 11),
+			array('name', 'length', 'max' => 300),
+			array('file_name', 'length', 'max' => 500),
+			array('image', 'file', 'types' => Yii::app()->getModule('gallery')->uploadAllowExt, 'allowEmpty' => true, 'safe' => false),
 			array('user_id, change_user_id', 'length', 'max'=> 10),
-			array('alt', 'length', 'max'=> 150),
+			array('alt', 'length', 'max' => 150),
 			array('description', 'safe'),
 
 			array('id, gallery_id, name, description, sort, file_name, creation_date, user_id, change_user_id, alt, type, status,   author_search,changeAuthor_search,gallery_search', 'safe', 'on'=>'search'),
@@ -231,26 +226,19 @@ class Photo extends CActiveRecord
 		$image = Yii::app()->image->load($path);
 
 		/** resize image to Max width x height */
-		$image->cresize($this->maxWidth, $this->maxHeight);
-		//@todo clean
-		/*if ( $image->width > $this->maxWidth )
-		{
-			$image->resize($this->maxWidth, null);
-		}
-		else if ( $image->height > $this->maxHeight )
-		{
-			$image->resize(null, $this->maxHeight);
-		}*/
+		$image->cresize(Yii::app()->getModule('gallery')->maxWidth, Yii::app()->getModule('gallery')->maxHeight);
 		//save image
-		$image->save($this->getUploadPath() . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+		$image->save($this->getUploadPath() . DIRECTORY_SEPARATOR . $this->getFileName() . '.' . $this->galleryExt);
 
+		// set thumb max width from module setting
+		$this->versions['thumb']['resize'][0] = Yii::app()->getModule('gallery')->thumbMaxWidth;
 		/** resize images to user versions and put-sort it to versions-named folders */
 		foreach ($this->versions as $version => $actions)
 		{
-			if ( !is_dir($this->getUploadPath() . '/' . $version) )
-			{
-				mkdir($this->getUploadPath() . '/' . $version);
-			}
+			$_uploadPath = $this->getUploadPath() . DIRECTORY_SEPARATOR . $version;
+			if ( !is_dir($_uploadPath) )
+				mkdir($_uploadPath);
+
 			$image = Yii::app()->image->load($path);
 			foreach ($actions as $method => $args)
 			{
@@ -258,7 +246,7 @@ class Photo extends CActiveRecord
 				if ( $image->width >= $args['0'] )
 				{
 					call_user_func_array(array($image, $method), $args);
-					$image->save($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+					$image->save($_uploadPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.' . $this->galleryExt);
 				}
 			}
 		}
@@ -266,29 +254,27 @@ class Photo extends CActiveRecord
 
 	public function delete()
 	{
-		$this->removeFile($this->getUploadPath() . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+		$_uploadPath = $this->getUploadPath();
+		$_fileName = $this->getFileName();
+		$this->removeFile($_uploadPath . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt);
 
 		//create image preview for gallery manager
-		foreach ($this->versions as $version => $actions) {
-			$this->removeFile($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
-		}
+		foreach ($this->versions as $version => $actions)
+			$this->removeFile($_uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt);
+
 		return parent::delete();
 	}
 
 	private function removeFile($fileName)
 	{
 		if ( file_exists($fileName) )
-		{
 			@unlink($fileName);
-		}
 	}
 
 	public function removeImages()
 	{
 		foreach ($this->versions as $version => $actions)
-		{
-			$this->removeFile($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
-		}
+			$this->removeFile($this->getUploadPath() . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $this->getFileName() . '.' . $this->galleryExt);
 	}
 
 	/**
@@ -298,14 +284,16 @@ class Photo extends CActiveRecord
 	{
 		foreach ($this->versions as $version => $actions)
 		{
-			$this->removeFile($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
-
-			$image = Yii::app()->image->load($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+			$_uploadPath = $this->getUploadPath();
+			$_fileName   = $this->getFileName();
+			$this->removeFile($_uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt);
+			/** @var $image Image */
+			$image = Yii::app()->image->load($_uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt);
 			foreach ($actions as $method => $args)
 			{
 				call_user_func_array(array($image, $method), $args);
 			}
-			$image->save($this->getUploadPath() . '/' . $version . '/' . $this->getFileName('') . '.' . $this->galleryExt);
+			$image->save($_uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt);
 		}
 	}
 
@@ -321,7 +309,7 @@ class Photo extends CActiveRecord
 
 	public function getPreview($version = 'thumb')
 	{
-		return Yii::app()->request->baseUrl . '/' . $this->getUploadPath() . '/' .$version. '/' . $this->getFileName('') . '.' . $this->galleryExt;
+		return Yii::app()->request->baseUrl . '/' . Yii::app()->getModule('admin')->uploadDir . '/' . Yii::app()->getModule('gallery')->uploadDir . '/' . $this->gallery->slug . '/' .$version. '/' . $this->getFileName() . '.' . $this->galleryExt;
 	}
 
 	/**
@@ -330,22 +318,21 @@ class Photo extends CActiveRecord
 	 */
 	private function getUploadPath()
 	{
-		if ( !is_dir($this->galleryDir . '/' . $this->gallery->slug) )
-		{
-			mkdir($this->galleryDir . '/' . $this->gallery->slug, 0777);
-		}
-		return $this->galleryDir . '/' . $this->gallery->slug;
+		$_uploadPath = Yii::app()->getModule('gallery')->uploadPath . DIRECTORY_SEPARATOR . $this->gallery->slug;
+		if ( !is_dir($_uploadPath) )
+			mkdir($_uploadPath, 0777);
+		
+		return $_uploadPath;
 	}
 
-	private function getFileName($version = '')
+	private function getFileName()
 	{
-		#return $this->id . $version;
 		return $this->id . '-' . pathinfo($this->file_name, PATHINFO_FILENAME);
 	}
 
-	public function getUrl($version = '')
+	public function getUrl()
 	{
-		return Yii::app()->request->baseUrl . '/' . $this->getUploadPath() . '/' . $this->getFileName('') . '.' . $this->galleryExt;
+		return Yii::app()->request->baseUrl . '/' . Yii::app()->getModule('admin')->uploadDir . '/' . Yii::app()->getModule('gallery')->uploadDir . '/' . $this->getFileName() . '.' . $this->galleryExt;
 	}
 
 	public function behaviors()

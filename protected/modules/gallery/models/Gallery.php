@@ -4,7 +4,7 @@
  * This is the model class for table "{{gallery}}".
  *
  * The followings are the available columns in table '{{gallery}}':
- * @property string $id
+ * @property integer $id
  * @property string $name
  * @property string $description
  * @property string $keywords
@@ -13,7 +13,7 @@
  * @property integer $sort
  *
  * The followings are the available model relations:
- * @property photos[] $photos
+ * @property Photo[] $photos
  */
 class Gallery extends CActiveRecord
 {
@@ -23,8 +23,6 @@ class Gallery extends CActiveRecord
 	/** @var array versions for resize images */
 	public $versions = array();
 
-	/** @var string directory in web root for galleries */
-	public $galleryDir = 'uploads/gallery';
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -100,22 +98,22 @@ class Gallery extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+		$criteria = new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('keywords',$this->keywords,true);
-		$criteria->compare('slug',$this->slug,true);
-		$criteria->compare('status',$this->status);
-		$criteria->compare('sort',$this->sort,true);
+		$criteria->compare('id', $this->id, true);
+		$criteria->compare('name', $this->name, true);
+		$criteria->compare('description', $this->description, true);
+		$criteria->compare('keywords', $this->keywords, true);
+		$criteria->compare('slug', $this->slug, true);
+		$criteria->compare('status', $this->status);
+		$criteria->compare('sort', $this->sort, true);
 
 		$sort = new CSort;
 		$sort->defaultOrder = 'sort ASC';
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
-			'sort' => $sort
+			'sort'     => $sort
 		));
 	}
 	public function scopes()
@@ -123,11 +121,11 @@ class Gallery extends CActiveRecord
 		return array(
 			'public' => array(
 				'condition' => 'status = :status',
-				'params' => array(':status' => self::STATUS_PUBLIC)
+				'params'    => array(':status' => self::STATUS_PUBLIC)
 			),
-			'draft' => array(
+			'draft'  => array(
 				'condition' => 'status = :status',
-				'params' => array(':status' => self::STATUS_DRAFT)
+				'params'    => array(':status' => self::STATUS_DRAFT)
 			),
 		);
 	}
@@ -177,8 +175,9 @@ class Gallery extends CActiveRecord
 
 	public function renamePath($newPathName)
 	{
-		if ( is_dir($this->getUploadPath()) )
-			rename($this->getUploadPath(), $this->galleryDir . '/' . $newPathName);
+		$_uploadPath = $this->getUploadPath();
+		if ( is_dir($_uploadPath) )
+			rename($_uploadPath, Yii::app()->getModule('gallery')->uploadDir . DIRECTORY_SEPARATOR . $newPathName);
 	}
 
 	/**
@@ -187,18 +186,18 @@ class Gallery extends CActiveRecord
 	 */
 	private function getUploadPath()
 	{
-		if ( !is_dir($this->galleryDir . '/' . $this->slug) )
-		{
-			mkdir($this->galleryDir . '/' . $this->slug, 0777);
-		}
-		return $this->galleryDir . '/' . $this->slug;
+		$_uploadPath = Yii::app()->getModule('gallery')->uploadPath . DIRECTORY_SEPARATOR . $this->slug;
+		if ( !is_dir($_uploadPath) )
+			mkdir($_uploadPath, 0777);
+
+		return $_uploadPath;
 	}
 
 	public function getStatusList()
 	{
 		return array(
 			self::STATUS_PUBLIC => Yii::t('gallery', 'опубликовано'),
-			self::STATUS_DRAFT => Yii::t('gallery', 'скрыто'),
+			self::STATUS_DRAFT  => Yii::t('gallery', 'скрыто'),
 		);
 	}
 
@@ -212,9 +211,9 @@ class Gallery extends CActiveRecord
 	public function getSlugById($id)
 	{
 		$data = $this->model()->find(array(
-			'select' => 'slug',
+			'select'    => 'slug',
 			'condition' => 'id = :id',
-			'params' => array(':id' => $id)
+			'params'    => array(':id' => $id)
 		));
 		return $data->slug;
 	}
@@ -222,9 +221,9 @@ class Gallery extends CActiveRecord
 	public function getIdBySlug($slug)
 	{
 		$data = $this->model()->find(array(
-			'select' => 'id',
+			'select'    => 'id',
 			'condition' => 'slug = :slug',
-			'params' => array(':slug' => $slug)
+			'params'    => array(':slug' => $slug)
 		));
 		return $data->id;
 	}

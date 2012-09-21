@@ -1,5 +1,8 @@
 <?php
-/** @var $model Photo */
+/**
+ * @var $model Photo
+ * @var $this Controller
+ */
 $this->breadcrumbs = array(
 	Yii::t('gallery', 'Фотографии') => array('admin'),
 	$model->name,
@@ -38,4 +41,4 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
 		'status',
 		'sort',
 	),
-)); ?>
+));

@@ -3,11 +3,6 @@
 class DefaultController extends Controller
 {
 	/**
-	 * @var string the default layout for the views.
-	 */
-	public $layout='//layouts/main';
-
-	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -26,7 +21,7 @@ class DefaultController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$this->render('view',array(
+		$this->render('view', array(
 			'model' => $this->loadModel($id),
 		));
 	}
@@ -108,6 +103,8 @@ class DefaultController extends Controller
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
+	 * @throws CHttpException
+	 * @return void
 	 */
 	public function actionDelete($id)
 	{
@@ -174,7 +171,10 @@ class DefaultController extends Controller
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
+	 * @param $id
+	 * @throws CHttpException
+	 * @internal param \the $integer ID of the model to be loaded
+	 * @return Gallery
 	 */
 	public function loadModel($id)
 	{
@@ -188,7 +188,7 @@ class DefaultController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
+	 * @param CModel $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{

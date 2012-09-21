@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var $model Photo
+ * @var $this CController
+ * @var $albums array
+ *
+ * @var $photo Photo
+ */
+?>
 <div class="GalleryEditor" id="<?php echo $this->id?>">
 	<div class="gform">
         <span class="btn btn-success fileinput-button">

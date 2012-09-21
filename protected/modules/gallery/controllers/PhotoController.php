@@ -3,11 +3,6 @@
 class PhotoController extends Controller
 {
 	/**
-	 * @var string the default layout for the views.
-	 */
-	public $layout='//layouts/main';
-
-	/**
 	 * @return array action filters
 	 */
 	public function filters()
@@ -28,7 +23,7 @@ class PhotoController extends Controller
 
 	public function actionManager($id)
 	{
-		#$model = new Photo;
+		$items = array();
 		$albums = CHtml::listData(Gallery::model()->findAll(), 'id', 'name');
 		foreach ( $albums as $gid => $name )
 		{
@@ -37,8 +32,8 @@ class PhotoController extends Controller
 
 		$this->render('manager', array(
 			'galleryId' => $id,
-			'slug' => Gallery::model()->getSlugById($id),
-			'albums' => $items,
+			'slug'      => Gallery::model()->getSlugById($id),
+			'albums'    => $items,
 		));
 	}
 
@@ -95,6 +90,8 @@ class PhotoController extends Controller
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
+	 * @throws CHttpException
+	 * @return void
 	 */
 	public function actionDelete($id)
 	{
@@ -117,7 +114,7 @@ class PhotoController extends Controller
 	public function actionIndex()
 	{
 		$dataProvider = new CActiveDataProvider('Photo');
-		$this->render('index',array(
+		$this->render('index', array(
 			'dataProvider' => $dataProvider,
 		));
 	}
@@ -141,8 +138,10 @@ class PhotoController extends Controller
 	/**
 	 * Method to handle file upload thought XHR2
 	 * On success returns JSON object with image info.
-	 * @param $gallery_id string Gallery Id to upload images
+	 * @param null $galleryId
 	 * @throws CHttpException
+	 * @return void
+	 * @internal param string $gallery_id Gallery Id to upload images
 	 */
 	public function actionAjaxUpload($galleryId = null)
 	{
@@ -282,19 +281,22 @@ class PhotoController extends Controller
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer the ID of the model to be loaded
+	 * @param $id
+	 * @throws CHttpException
+	 * @internal param \the $integer ID of the model to be loaded
+	 * @return Photo
 	 */
 	public function loadModel($id)
 	{
 		$model = Photo::model()->findByPk($id);
 		if ( $model===null )
-			throw new CHttpException(404,'The requested page does not exist.');
+			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
 	}
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param CModel the model to be validated
+	 * @param CModel $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{

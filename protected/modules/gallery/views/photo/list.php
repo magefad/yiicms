@@ -3,8 +3,12 @@
  * User: fad
  * Date: 07.08.12
  * Time: 16:39
+ *
+ * @var $galleryId int
+ * @var $this CController
+ * @var $slug string
  */
-
+$_uploadDirUrl = '/' . $this->admin->uploadDir . '/' . Yii::app()->getModule('gallery')->uploadDir . '/' . $slug . '/';
 $photos = new CActiveDataProvider('Photo', array(
 	'criteria'      => array(
 		#'condition' => 'status=1',
@@ -20,8 +24,8 @@ $this->widget('Galleria', array(
 	'dataProvider'         => $photos,
 	'imagePrefixSeparator' => '-',
 	//if set 'imagePrefix' => '' in behaviors; separate - imagePrefix{separator}image
-	'srcPrefix'            => '/uploads/gallery/' . $slug . '/',
-	'srcPrefixThumb'       => '/uploads/gallery/' . $slug . '/thumb/',
+	'srcPrefix'            => $_uploadDirUrl,
+	'srcPrefixThumb'       => $_uploadDirUrl . 'thumb/',
 	'themeName'            => 'folio',
 	//classic by default
 	#'plugins' => array('history', 'flickr', 'picasa'),//history by default

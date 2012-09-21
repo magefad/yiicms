@@ -1,6 +1,9 @@
 <?php
-/** @var $model Gallery */
-/** @var $form TbActiveForm */
+/**
+ * @var $model Gallery
+ * @var $form TbActiveForm
+ * @var $this Controller
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                     => 'gallery-form',
 	'focus'                  => array($model, 'name'),

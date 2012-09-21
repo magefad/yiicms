@@ -1,5 +1,9 @@
 <?php
-/** @var $form TbActiveForm */
+/**
+ * @var $form TbActiveForm
+ * @var $this Controller
+ * @var $model Gallery
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'action'      => Yii::app()->createUrl($this->route),
 	'method'      => 'get',

@@ -1,5 +1,9 @@
 <?php
-$this->breadcrumbs=array(
+/**
+ * @var $this Controller
+ * @var $model Gallery
+ */
+$this->breadcrumbs = array(
 	'Альбомы' => array('index'),
 	$model->name,
 );
@@ -17,9 +21,8 @@ $this->menu = array(
 		)
 	),
 );
-?>
-<?php $this->widget('bootstrap.widgets.TbDetailView',array(
-	'data'	=> $model,
+$this->widget('bootstrap.widgets.TbDetailView', array(
+	'data'       => $model,
 	'attributes' => array(
 		'id',
 		'name',
@@ -29,4 +32,4 @@ $this->menu = array(
 		'status',
 		'sort',
 	),
-)); ?>
+));

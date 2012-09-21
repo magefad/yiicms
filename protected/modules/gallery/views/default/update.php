@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var $this Controller
+ * @var $model Gallery
+ */
 $this->breadcrumbs = array(
 	Yii::t('gallery', 'Изменение') => array('admin'),
 	$model->name                   => array('view', 'id'=> $model->id),
@@ -11,4 +15,4 @@ $this->menu = array(
 	array('icon' => 'file', 'label' => Yii::t('page', 'Добавить'), 'url' => array('create')),
 );
 
-$this->renderPartial('_form', array('model'=> $model)); ?>
+$this->renderPartial('_form', array('model'=> $model));

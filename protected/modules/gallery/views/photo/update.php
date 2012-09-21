@@ -1,5 +1,8 @@
 <?php
-/** @var $model Gallery */
+/**
+ * @var $model Gallery
+ * @var $this Controller
+ */
 $this->breadcrumbs = array(
 	Yii::t('gallery', 'Изменение') => array('admin'),
 	$model->name                   => array('view', 'id'=> $model->id),
@@ -13,4 +16,3 @@ $this->menu = array(
 	array('label' => Yii::t('gallery', 'Смотреть'), 'url' => array('view', 'id' => $model->id)),
 );
 echo $this->renderPartial('_form', array('model'=> $model));
-?>
