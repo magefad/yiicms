@@ -9,7 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap.css">
 	<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 	<?php
-		if ( !Yii::app()->user->isGuest /*&& Yii::app()->user->isSuperUser()*/ )
+		if ( Yii::app()->user->isSuperUser )
 		{
 			echo "<script src='".Yii::app()->request->baseUrl."/js/admin.js'></script>\n\t";
 			echo "<script type='text/javascript'>$(function() { $('.mytip').tooltip(); });</script>\n";
