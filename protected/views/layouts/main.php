@@ -3,8 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-	<meta name="keywords" content="<?php echo isset($this->keywords) ? $this->keywords : '';?>"/>
-	<meta name="description" content="<?php echo isset($this->description) ? $this->description : '';?>"/>
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap.css">
 	<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->

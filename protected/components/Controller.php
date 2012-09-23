@@ -5,50 +5,59 @@
  */
 class Controller extends RController
 {
-	/**
-	 * @var string the default layout for the controller view. Defaults to '//layouts/column1',
-	 * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
-	 */
-	public $layout = '//layouts/main';
-	/**
-	 * @var array context menu items. This property will be assigned to {@link CMenu::items}.
-	 */
-	public $menu = array();
-	/**
-	 * @var array the breadcrumbs of the current page. The value of this property will
-	 * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
-	 * for more details on how to specify this property.
-	 */
-	public $breadcrumbs = array();
+    /**
+     * @var string the default layout for the controller view. Defaults to '//layouts/column1',
+     * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
+     */
+    public $layout = '//layouts/main';
+    /**
+     * @var array context menu items. This property will be assigned to {@link CMenu::items}.
+     */
+    public $menu = array();
+    /**
+     * @var array the breadcrumbs of the current page. The value of this property will
+     * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
+     * for more details on how to specify this property.
+     */
+    public $breadcrumbs = array();
 
-	public $title;
+    public $title;
 
-	/**
-	 * @var string the meta keywords of the current page.
-	 */
+    /**
+     * @var string the meta keywords of the current page.
+     */
 	public $keywords = '';
 	/**
 	 * @var string the meta description of the current page.
 	 */
 	public $description = '';
 
-	public $admin;
+    /**
+     * @var AdminModule for access to the global site settings
+     */
+    public $admin;
 
-	public function setMetaTags($data)
-	{
-		$this->pageTitle   = $data->title;
-		$this->keywords    = $data->keywords;
-		$this->description = $data->description;
-	}
+    public function setMetaTags($seo)
+    {
+        $this->pageTitle   = $seo->title;
+        $this->keywords    = $seo->keywords;
+        $this->description = $seo->description;
+    }
 
-	public function init()
-	{
-		$this->admin       = Yii::app()->getModule('admin');
-		$this->pageTitle   = $this->admin->siteName;
-		$this->description = $this->admin->siteDescription;
-		$this->keywords    = $this->admin->siteKeywords;
-		parent::init();
-	}
+    public function init()
+    {
+        $this->admin       = Yii::app()->getModule('admin');
+        $this->pageTitle   = $this->admin->siteName;
+        $this->keywords    = $this->admin->siteKeywords;
+        $this->description = $this->admin->siteDescription;
+        parent::init();
+    }
+
+    public function afterRender()
+    {
+        Yii::app()->clientScript->registerMetaTag($this->keywords, 'keywords');
+        Yii::app()->clientScript->registerMetaTag($this->description, 'description');
+    }
 
 	public function actionActivate()
 	{
@@ -61,7 +70,7 @@ class Controller extends RController
 		{
 			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
 		}
-
+		/** @var $model CActiveRecord */
 		$model = new $modelClass;
 		$model = $model->resetScope()->findByPk($id);
 		if ( !$model )
@@ -90,7 +99,8 @@ class Controller extends RController
 		{
 			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
 		}
-
+		/** @var $model CActiveRecord */
+		/** @var $model_depends CActiveRecord */
 		$model         = new $modelClass;
 		$model_depends = new $modelClass;
 		$model         = $model->resetScope()->findByPk($id);
@@ -120,5 +130,4 @@ class Controller extends RController
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 	}
-
 }
