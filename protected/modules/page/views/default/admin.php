@@ -1,6 +1,9 @@
 <?php
-/** @var $model Page */
-/** @var $this Controller */
+/**
+ * @var $model Page
+ * @var $this Controller
+ */
+
 $this->pageTitle   = Yii::t('user', 'Управление страницами');
 $this->breadcrumbs = array(
 	Yii::t('page', 'Страницы') => array('admin'),
@@ -51,7 +54,8 @@ $('.search-form form').submit(function(){
 		), array(
 			'name'  => 'parent_id',
 			'value' => '$data->parentName',
-			'filter'=> Page::model()->allPagesList
+			'filter'=> Page::model()->allPagesList,
+			'htmlOptions' => array('style' => 'width: 200px')
 		), #'title',
 		array(
 			'name'  => 'slug',
