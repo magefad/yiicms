@@ -1,1 +1,32 @@
 Yii Based Mini CMS (Dev)
+
+Что используется:
+Yii 1.1.12
+Tiwtter Bootstrap (http://www.yiiframework.com/extension/bootstrap/)
+Rights extension (http://www.yiiframework.com/extension/rights/)
+TinyMce, elFinder (http://www.yiiframework.com/extension/newtinymce/)
+Galleria (http://www.yiiframework.com/extension/galleria/)
+Image (http://www.yiiframework.com/extension/image/)
+
+Что есть:
+- страницы
+- новости
+- галерея фото (Galleria frontend)
+- пользователи
+- права доступа пользователям (Yii Rights)
+- меню
+- обратная связь
+- настройки модулей, перечисленных выше
+
+Что планируется:
+- блоги
+- комментарии к любой сущности (страницы, новости, записи блога etc.)
+- авторизация через популярные сервисы (вконтакте, facebook, google etc.)
+- большая переработка формы создания/обновления страницы
+- возможность изменять страницу прямо на сайте (подобно Google Sites)
+- создание нечто блоков контента (подобно ModX)
+- переход на единый стиль кода (скорее всего PSR-0)
+- создание шаблонов для управления правами пользователей (Rights ext) под CMS
+- инсталлятор
+
+Список будет пополняться и обновляться
