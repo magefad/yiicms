@@ -6,101 +6,106 @@
  */
 class SettingController extends Controller
 {
-	public $defaultAction = 'update';
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array('rights');
-	}
+    public $defaultAction = 'update';
 
-	/**
-	 * @param string $slug
-	 * @throws CHttpException
-	 */
-	public function actionUpdate($slug)
-	{
-		/**
-		 * @var $module WebModule
-		 * @var $settings Setting[]
-		 */
-		$module_id = $slug;
-		unset($slug);
-		if ( !$module = Yii::app()->getModule($module_id) )
-			throw new CHttpException(404, Yii::t('admin', 'Модуль "{module}" не найден!', array('{module}' => $module_id)));
+    /**
+     * @return array action filters
+     */
+    public function filters()
+    {
+        return array('rights');
+    }
 
-		$settings = $this->getSettingsToUpdate($module);
+    /**
+     * @param string $slug
+     * @throws CHttpException
+     */
+    public function actionUpdate($slug)
+    {
+        /**
+         * @var $module WebModule
+         * @var $settings Setting[]
+         */
+        $module_id = $slug;
+        unset($slug);
+        if (!$module = Yii::app()->getModule($module_id)) {
+            throw new CHttpException(404, Yii::t(
+                'admin',
+                'Модуль "{module}" не найден!',
+                array('{module}' => $module_id)
+            ));
+        }
 
-		if ( isset($_POST['Setting']) )
-		{
-			$valid = true;
-			foreach ($settings as $key => $setting) //settingKey => settingData's etc..
-			{
-				if ( isset($_POST['Setting'][$key]) )
-				{
-					$settings[$key]->setAttributes($_POST['Setting'][$key]);
-					$valid = $settings[$key]->validate() && $valid;
-				}
-			}
-			if ( $valid )
-			{
-				foreach ($settings as $setting)
-				{
-					if ( $setting->save() )
-					{
-						Yii::app()->user->setFlash('success', Yii::t('setting', 'Настройки сохранены!'));
-					}
-				}
-			}
-			else
-			{
-				Yii::app()->user->setFlash('error', Yii::t('setting', 'Произошла ошибка при сохранении!'));
-			}
-		}
-		$this->render('update', array('module' => $module, 'settings' => $settings));
-	}
+        $settings = $this->getSettingsToUpdate($module);
 
-	/**
-	 * @todo move to Model
-	 * @param CModule $module
-	 * @return array Setting[]
-	 * @throws CHttpException
-	 */
-	public function getSettingsToUpdate($module)
-	{
-		$settingLabels = $module->settingLabels;
-		if ( !count($settingLabels) )
-			throw new CHttpException(404, Yii::t('admin', "У модуля {name} нет настроек", array('{name}' => $module->name)));
+        if (isset($_POST['Setting'])) {
+            $valid = true;
+            //settingKey => settingData's etc..
+            foreach ($settings as $key => $setting) {
+                if (isset($_POST['Setting'][$key])) {
+                    $settings[$key]->setAttributes($_POST['Setting'][$key]);
+                    $valid = $settings[$key]->validate() && $valid;
+                }
+            }
+            if ($valid) {
+                foreach ($settings as $setting) {
+                    if ($setting->save()) {
+                        Yii::app()->user->setFlash('success', Yii::t('setting', 'Настройки сохранены!'));
+                    }
+                }
+            } else {
+                Yii::app()->user->setFlash('error', Yii::t('setting', 'Произошла ошибка при сохранении!'));
+            }
+        }
+        $this->render('update', array('module' => $module, 'settings' => $settings));
+    }
 
-		$settingKeys   = array_keys($settingLabels);
-		$settingData   = $module->settingData;
-		/** @var $settings Setting[] */
-		$settings = Setting::model()->getSettings($module->id, $settingKeys);
-		foreach ($module as $key => $value)//settingKey and settingValue
-		{
-			if ( in_array($key, $settingKeys) )
-			{
-				if ( !isset($settings[$key]) )
-				{
-					$settings[$key] = new Setting;
-					$settings[$key]->setAttributes(array(
-						'module_id' => $module->id,
-						'key'       => $key,
-						'value'     => $value,
-					));
-				}
-				$settings[$key]->label = $settingLabels[$key];
-				if ( isset($settingData[$key]['tag']) )
-					$settings[$key]->tag = $settingData[$key]['tag'];
+    /**
+     * @todo move to Model
+     * @param CModule $module
+     * @return array Setting[]
+     * @throws CHttpException
+     */
+    public function getSettingsToUpdate($module)
+    {
+        $settingLabels = $module->settingLabels;
+        if (!count($settingLabels)) {
+            throw new CHttpException(404, Yii::t(
+                'admin',
+                "У модуля {name} нет настроек",
+                array('{name}' => $module->name)
+            ));
+        }
 
-				if ( isset($settingData[$key]['data']) )
-					$settings[$key]->data = $settingData[$key]['data'];
-
-				if ( isset($settingData[$key]['htmlOptions']) )
-					$settings[$key]->htmlOptions = $settingData[$key]['htmlOptions'];
-			}
-		}
-		return $settings;
-	}
+        $settingKeys = array_keys($settingLabels);
+        $settingData = $module->settingData;
+        /** @var $settings Setting[] */
+        $settings = Setting::model()->getSettings($module->id, $settingKeys);
+        foreach ($module as $key => $value) //settingKey and settingValue
+        {
+            if (in_array($key, $settingKeys)) {
+                if (!isset($settings[$key])) {
+                    $settings[$key] = new Setting;
+                    $settings[$key]->setAttributes(
+                        array(
+                            'module_id' => $module->id,
+                            'key'       => $key,
+                            'value'     => $value,
+                        )
+                    );
+                }
+                $settings[$key]->label = $settingLabels[$key];
+                if (isset($settingData[$key]['tag'])) {
+                    $settings[$key]->tag = $settingData[$key]['tag'];
+                }
+                if (isset($settingData[$key]['data'])) {
+                    $settings[$key]->data = $settingData[$key]['data'];
+                }
+                if (isset($settingData[$key]['htmlOptions'])) {
+                    $settings[$key]->htmlOptions = $settingData[$key]['htmlOptions'];
+                }
+            }
+        }
+        return $settings;
+    }
 }

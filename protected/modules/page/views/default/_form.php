@@ -1,8 +1,10 @@
 <?php
-/** @var $model Page */
-/** @var $form TbActiveForm */
-/** @var $pages array */
-/** @var $this Controller */
+/**
+ * @var $form TbActiveForm
+ * @var $this Controller
+ * @var $model Page
+ * @var $pages array
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                   => 'page-form',
 	'focus'                => array($model, 'name'),
@@ -49,7 +51,7 @@ $("#ajaxPreview").click(function(e) {
 			<?php echo $form->textField($model, 'title', array('style' => 'width: 220px!important', 'maxlength' => 150, 'placeholder' => $model->getAttributeLabel('title'))); ?>
 		</div>
 		<div class="span4 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('slug');?>">
-			<?php echo $form->textField($model, 'slug', array('maxlength'=>150, 'placeholder' => $model->getAttributeLabel('slug'))); ?>
+			<?php echo $form->textField($model, 'slug', array('maxlength' =>150, 'placeholder' => $model->getAttributeLabel('slug'))); ?>
 		</div>
 	</div>
 
@@ -60,10 +62,10 @@ $("#ajaxPreview").click(function(e) {
 	</div>
 	<div>&nbsp;</div>
 	<div class="row-fluid control-group mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('keywords');?>">
-		<?php echo $form->textField($model, 'keywords', array('class' => 'span5', 'maxlength'=>150, 'placeholder' => $model->getAttributeLabel('keywords'))); ?>
+		<?php echo $form->textField($model, 'keywords', array('class' => 'span5', 'maxlength' =>150, 'placeholder' => $model->getAttributeLabel('keywords'))); ?>
 	</div>
 	<div class="row-fluid control-group mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('description');?>">
-		<?php echo $form->textField($model, 'description', array('class' => 'span5', 'maxlength'=>250, 'placeholder' => $model->getAttributeLabel('description'))); ?>
+		<?php echo $form->textField($model, 'description', array('class' => 'span5', 'maxlength' =>250, 'placeholder' => $model->getAttributeLabel('description'))); ?>
 	</div>
 	<div class="row-fluid control-group">
 		<?php #echo $form->label($model, 'is_protected'); ?>

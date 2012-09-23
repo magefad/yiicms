@@ -34,7 +34,10 @@ $this->menu = array(
 ?>
 <div class="row">
 <?php
-/** @var $dataProvider CDataProvider */
+/**
+ * @var $this Controller
+ * @var $dataProvider CDataProvider
+ */
 $this->widget('bootstrap.widgets.TbListView', array(
 	'dataProvider'       => $dataProvider,
 	'itemView'           => '_view',

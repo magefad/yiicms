@@ -1,11 +1,17 @@
 <?php
-/** @var $form TbActiveForm */
-/** @var $model Page */
-/** @var $this Controller */
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-	'action' => Yii::app()->createUrl($this->route),
-	'method' => 'get',
-));
+
+/**
+ * @var $form TbActiveForm
+ * @var $this Controller
+ * @var $model Page
+ */
+$form = $this->beginWidget(
+    'bootstrap.widgets.TbActiveForm',
+    array(
+        'action' => Yii::app()->createUrl($this->route),
+        'method' => 'get',
+    )
+);
 echo '<p>' . Yii::t('page', 'Используйте символы');?> (<b>&lt;</b>,
 <b>&lt;=</b>(<?php echo Yii::t('page', 'меньше или равно)'); ?>, <b>&gt;</b>, <b>&gt;=</b>,
 <b>&lt;&gt;</b><?php echo Yii::t('page', '(не равно) или'); ?>
@@ -27,10 +33,13 @@ echo '<p>' . Yii::t('page', 'Используйте символы');?> (<b>&lt;
 <?php echo $form->textFieldRow($model, 'is_protected', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'menu_order', array('class' => 'span5')); ?>
 <div class="form-actions">
-	<?php $this->widget('bootstrap.widgets.TbButton', array(
-	'buttonType' => 'submit',
-	'type'       => 'primary',
-	'label'      => Yii::t('page', 'Поиск'),
-)); ?>
+    <?php $this->widget(
+    'bootstrap.widgets.TbButton',
+    array(
+        'buttonType' => 'submit',
+        'type'       => 'primary',
+        'label'      => Yii::t('page', 'Поиск'),
+    )
+); ?>
 </div>
 <?php $this->endWidget(); ?>

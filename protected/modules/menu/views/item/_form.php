@@ -1,6 +1,9 @@
 <?php
-/** @var $form TbActiveForm */
-/** @var $model Item */
+/**
+ * @var $form TbActiveForm
+ * @var $this Controller
+ * @var $model Item
+ */
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                     => 'item-form',
 	'focus'                  => array($model, 'title'),
@@ -16,11 +19,11 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 
 <?php echo $form->dropDownListRow($model, 'menu_id', CHtml::listData(Menu::model()->findAll(), 'id', 'name'), array('empty' => Yii::t('menu', ' -выберите меню- '))); ?>
 <?php echo $form->dropDownListRow($model, 'parent_id', $model->parentList); ?>
-<?php echo $form->textFieldRow($model, 'title', array('class'=> 'span5', 'maxlength'=> 255)); ?>
-<?php echo $form->textFieldRow($model, 'href', array('class'=> 'span5', 'maxlength'=> 255)); ?>
-<?php #echo $form->textFieldRow($model,'type',array('class'=>'span5')); ?>
+<?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 255)); ?>
+<?php echo $form->textFieldRow($model, 'href', array('class' => 'span5', 'maxlength' => 255)); ?>
+<?php #echo $form->textFieldRow($model,'type',array('class' =>'span5')); ?>
 <?php echo $form->dropDownListRow($model, 'access', $model->accessList, array('empty' => 'Все')); ?>
-<?php echo $form->textFieldRow($model, 'sort', array('class'=> 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'sort', array('class' => 'span5')); ?>
 <?php echo $form->dropDownListRow($model, 'status', $model->getStatusList()); ?>
 
 <div class="form-actions">

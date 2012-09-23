@@ -10,8 +10,11 @@
  * @var string $slug
  * @var Gallery[] $albums
  */
-$this->widget('application.modules.gallery.widgets.photoManager', array(
-	'galleryId' => $galleryId,
-	'slug'      => $slug,
-	'albums'    => $albums,
-));
+$this->widget(
+    'application.modules.gallery.widgets.photoManager',
+    array(
+        'galleryId' => $galleryId,
+        'slug'      => $slug,
+        'albums'    => $albums,
+    )
+);

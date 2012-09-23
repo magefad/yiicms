@@ -29,4 +29,4 @@
 			'itemOptions'=>array('class'=>'item-operations'),
 		),
 	)
-));	?>
+));

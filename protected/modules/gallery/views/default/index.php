@@ -3,14 +3,17 @@
  * @var $this Controller
  */
 $this->breadcrumbs = array(
-	'Альбомы',
+    'Альбомы',
 );
 
 $this->menu = array(
-	array('icon' => 'list-alt', 'label' => Yii::t('page', 'Управление'), 'url' => array('/gallery/default/admin')),
-	array('icon' => 'file', 'label' => Yii::t('page', 'Добавить'), 'url' => array('create')),
+    array('icon' => 'list-alt', 'label' => Yii::t('page', 'Управление'), 'url' => array('/gallery/default/admin')),
+    array('icon' => 'file', 'label' => Yii::t('page', 'Добавить'), 'url' => array('create')),
 );
-$this->widget('bootstrap.widgets.TbListView', array(
-	'dataProvider' => $dataProvider,
-	'itemView'     => '_view',
-));
+$this->widget(
+    'bootstrap.widgets.TbListView',
+    array(
+        'dataProvider' => $dataProvider,
+        'itemView'     => '_view',
+    )
+);

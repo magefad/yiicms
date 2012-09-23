@@ -10,10 +10,12 @@ class Controller extends RController
      * meaning using a single column layout. See 'protected/views/layouts/column1.php'.
      */
     public $layout = '//layouts/main';
+
     /**
      * @var array context menu items. This property will be assigned to {@link CMenu::items}.
      */
     public $menu = array();
+
     /**
      * @var array the breadcrumbs of the current page. The value of this property will
      * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
@@ -26,17 +28,22 @@ class Controller extends RController
     /**
      * @var string the meta keywords of the current page.
      */
-	public $keywords = '';
-	/**
-	 * @var string the meta description of the current page.
-	 */
-	public $description = '';
+    public $keywords = '';
+
+    /**
+     * @var string the meta description of the current page.
+     */
+    public $description = '';
 
     /**
      * @var AdminModule for access to the global site settings
      */
     public $admin;
 
+    /**
+     * Set page title, seo meta tags (keywords and description)
+     * @param $seo
+     */
     public function setMetaTags($seo)
     {
         $this->pageTitle   = $seo->title;
@@ -53,81 +60,83 @@ class Controller extends RController
         parent::init();
     }
 
+    /**
+     * Register Meta tags to page
+     */
     public function afterRender()
     {
         Yii::app()->clientScript->registerMetaTag($this->keywords, 'keywords');
         Yii::app()->clientScript->registerMetaTag($this->description, 'description');
     }
 
-	public function actionActivate()
-	{
-		$status      = (int)Yii::app()->request->getQuery('status');
-		$id          = (int)Yii::app()->request->getQuery('id');
-		$modelClass  = Yii::app()->request->getQuery('model');
-		$statusField = Yii::app()->request->getQuery('statusField');
+    /**
+     * CGridView ajax activate/deactivate
+     * Update object status. Ex. active or draft
+     * @throws CHttpException
+     */
+    public function actionActivate()
+    {
+        $status      = (int)Yii::app()->request->getQuery('status');
+        $id          = (int)Yii::app()->request->getQuery('id');
+        $modelClass  = Yii::app()->request->getQuery('model');
+        $statusField = Yii::app()->request->getQuery('statusField');
 
-		if ( !isset($modelClass, $id, $status, $statusField) )
-		{
-			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
-		}
-		/** @var $model CActiveRecord */
-		$model = new $modelClass;
-		$model = $model->resetScope()->findByPk($id);
-		if ( !$model )
-		{
-			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
-		}
+        if (!isset($modelClass, $id, $status, $statusField)) {
+            throw new CHttpException(404, Yii::t('admin', 'Not found!'));
+        }
+        /** @var $model CActiveRecord */
+        $model = new $modelClass;
+        $model = $model->resetScope()->findByPk($id);
+        if (!$model) {
+            throw new CHttpException(404, Yii::t('admin', 'Not found!'));
+        }
 
-		$model->$statusField = $status;
-		$model->update(array($statusField));
+        $model->$statusField = $status;
+        $model->update(array($statusField));
 
-		if ( !Yii::app()->request->isAjaxRequest )
-		{
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
+        if (!Yii::app()->request->isAjaxRequest) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
+    }
 
-	}
+    /**
+     * CGridView ajax sort
+     * @throws CHttpException
+     */
+    public function actionSort()
+    {
+        $direction  = Yii::app()->request->getQuery('direction');
+        $id         = (int)Yii::app()->request->getQuery('id');
+        $modelClass = Yii::app()->request->getQuery('model');
+        $sortField  = Yii::app()->request->getQuery('sortField');
 
-	public function actionSort()
-	{
-		$direction  = Yii::app()->request->getQuery('direction');
-		$id         = (int)Yii::app()->request->getQuery('id');
-		$modelClass = Yii::app()->request->getQuery('model');
-		$sortField  = Yii::app()->request->getQuery('sortField');
+        if (!isset($direction, $id, $modelClass, $sortField)) {
+            throw new CHttpException(404, Yii::t('admin', 'Not found!'));
+        }
+        /** @var $model CActiveRecord */
+        /** @var $model_depends CActiveRecord */
+        $model         = new $modelClass;
+        $model_depends = new $modelClass;
+        $model         = $model->resetScope()->findByPk($id);
+        if (!$model) {
+            throw new CHttpException(404, Yii::t('admin', 'Not found!'));
+        }
 
-		if ( !isset($direction, $id, $modelClass, $sortField) )
-		{
-			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
-		}
-		/** @var $model CActiveRecord */
-		/** @var $model_depends CActiveRecord */
-		$model         = new $modelClass;
-		$model_depends = new $modelClass;
-		$model         = $model->resetScope()->findByPk($id);
-		if ( !$model )
-		{
-			throw new CHttpException(404, Yii::t('fad', 'Страница не найдена!'));
-		}
+        if ($direction === 'up') {
+            $model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField - 1)));
+            $model_depends->$sortField++;
+            $model->$sortField--; #example menu_order column in sql
+        } else {
+            $model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField + 1)));
+            $model_depends->$sortField--;
+            $model->$sortField++;
+        }
 
-		if ( $direction === 'up' )
-		{
-			$model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField - 1)));
-			$model_depends->$sortField++;
-			$model->$sortField--; #example menu_order column in sql
-		}
-		else
-		{
-			$model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField + 1)));
-			$model_depends->$sortField--;
-			$model->$sortField++;
-		}
+        $model->update(array($sortField));
+        $model_depends->update(array($sortField));
 
-		$model->update(array($sortField));
-		$model_depends->update(array($sortField));
-
-		if ( !Yii::app()->request->isAjaxRequest )
-		{
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-	}
+        if (!Yii::app()->request->isAjaxRequest) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+        }
+    }
 }

@@ -31,6 +31,6 @@ class LoginAction extends CAction
 			}
 		}
 		// display the login form
-		$this->controller->render('login', array('model'=> $model));
+		$this->controller->render('login', array('model' => $model));
 	}
 }

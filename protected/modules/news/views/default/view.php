@@ -1,10 +1,12 @@
 <?php
-/** @var $model News */
+/**
+ * @var $this Controller
+ * @var $model News
+ */
 $this->breadcrumbs = array(
 	Yii::t('news', 'Новости') => array('admin'),
 	$model->title,
 );
-
 $this->menu = array(
 	array('label' => Yii::t('news', 'Новости')),
 	array('icon' => 'list-alt', 'label' => Yii::t('news', 'Управление'), 'url' => array('admin')),
@@ -15,9 +17,8 @@ $this->menu = array(
 		'icon'       => 'remove',
 		'label'      => Yii::t('news', 'Удалить'),
 		'url'        => '#',
-		'linkOptions'=> array('submit' => array('delete', 'id' => $model->id), 'confirm' => Yii::t('news', 'Уверены?'))
+		'linkOptions' => array('submit' => array('delete', 'id' => $model->id), 'confirm' => Yii::t('news', 'Уверены?'))
 	),
-
 );
 $this->widget('bootstrap.widgets.TbTabs', array(
 	'type' => 'tabs', // 'tabs' or 'pills'

@@ -25,16 +25,17 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 ?>
 <fieldset>
 	<legend><?php echo Yii::t('admin', 'Настройки') . ' ' . $module->name?></legend>
-	<?php foreach ($settings as $key => $setting):?>
-	<?php
-		echo $form->hiddenField($setting, "[$key]module_id");
-		echo $form->hiddenField($setting, "[$key]key");
-		if ( count($setting->data) )
-			echo $form->{$setting->tag.'Row'}($setting, "[$key]value", $setting->data, $setting->htmlOptions);
-		else
-			echo $form->{$setting->tag.'Row'}($setting, "[$key]value", $setting->htmlOptions);
-	?>
-	<?php endforeach; ?>
+    <?php foreach ($settings as $key => $setting): ?>
+    <?php
+    echo $form->hiddenField($setting, "[$key]module_id");
+    echo $form->hiddenField($setting, "[$key]key");
+    if (count($setting->data)) {
+        echo $form->{$setting->tag . 'Row'}($setting, "[$key]value", $setting->data, $setting->htmlOptions);
+    } else {
+        echo $form->{$setting->tag . 'Row'}($setting, "[$key]value", $setting->htmlOptions);
+    }
+    ?>
+    <?php endforeach; ?>
 </fieldset>
 <div class="form-actions">
 	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'label' => Yii::t('setting', 'Сохранить'))); ?>
