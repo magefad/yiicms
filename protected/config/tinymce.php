@@ -17,6 +17,7 @@ return array(
         'theme_advanced_buttons2'         => "styleselect,formatselect,fontselect,fontsizeselect,|,tablecontrols,|",
         'theme_advanced_buttons3'         => "bold,italic,underline,strikethrough,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,anchor,image,cleanup,|,media,|,forecolor,backcolor,|,insertdate,inserttime,|,preview,|,spellchecker",
         #'theme_advanced_buttons4'        => "insertlayer,moveforward,movebackward,absolute,|,cite,abbr,acronym,del,ins|,visualchars,nonbreaking,template,pagebreak",
+        'theme_advanced_buttons4'         => "",
         'theme_advanced_toolbar_location' => "top",
         'theme_advanced_toolbar_align'    => "left",
         'external_link_list_url'          => '/page/default/MceListUrl',
