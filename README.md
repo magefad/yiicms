@@ -1,6 +1,6 @@
 #Yii Based Mini CMS (Dev)
 
-**What are using?
+**What are using?**
 
 * Yii 1.1.12
 * Tiwtter Bootstrap (http://www.yiiframework.com/extension/bootstrap/) (http://twitter.github.com/bootstrap/)
@@ -10,7 +10,7 @@
 * Image (Kohana Image Library) (http://www.yiiframework.com/extension/image/)
 * PSR-1/PSR-2 Code style
 
-**What is already there? (all as modules)
+**What is already there? (all as modules)**
 
 * Pages
 * News
@@ -21,7 +21,7 @@
 * Contact Form
 * Settings each module
 
-**Roadmap
+**Roadmap**
 
 * Blogs
 * Comments
@@ -31,7 +31,8 @@
 * Create templates for Rigts module
 * Installer
 
-Что используется?
+**Р§С‚Рѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ?**
+
 * Yii 1.1.12
 * Tiwtter Bootstrap (http://www.yiiframework.com/extension/bootstrap/) (http://twitter.github.com/bootstrap/)
 * Rights extension (http://www.yiiframework.com/extension/rights/) (http://en.wikipedia.org/wiki/Role-based_access_control)
@@ -39,25 +40,27 @@
 * Galleria (http://www.yiiframework.com/extension/galleria/) (http://galleria.io/)
 * Image (Kohana Image Library) (http://www.yiiframework.com/extension/image/)
 
-**Что есть?
-* страницы
-* новости
-* галерея фото (Galleria frontend)
-* пользователи
-* права доступа пользователям (Yii Rights)
-* меню
-* обратная связь
-* настройки модулей, перечисленных выше
+**Р§С‚Рѕ РµСЃС‚СЊ?**
+
+* СЃС‚СЂР°РЅРёС†С‹
+* РЅРѕРІРѕСЃС‚Рё
+* РіР°Р»РµСЂРµСЏ С„РѕС‚Рѕ (Galleria frontend)
+* РїРѕР»СЊР·РѕРІР°С‚РµР»Рё
+* РїСЂР°РІР° РґРѕСЃС‚СѓРїР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏРј (Yii Rights)
+* РјРµРЅСЋ
+* РѕР±СЂР°С‚РЅР°СЏ СЃРІСЏР·СЊ
+* РЅР°СЃС‚СЂРѕР№РєРё РјРѕРґСѓР»РµР№, РїРµСЂРµС‡РёСЃР»РµРЅРЅС‹С… РІС‹С€Рµ
 * PSR-1/PSR-2
 
-**Что планируется?
-* блоги
-* комментарии к любой сущности (страницы, новости, записи блога etc.)
-* авторизация через популярные сервисы (вконтакте, facebook, google etc.)
-* большая переработка формы создания/обновления страницы
-* возможность изменять страницу прямо на сайте (подобно Google Sites)
-* создание нечто блоков контента (подобно ModX)
-* создание шаблонов для управления правами пользователей (Rights ext) под CMS
-* инсталлятор
+**Р§С‚Рѕ РїР»Р°РЅРёСЂСѓРµС‚СЃСЏ?**
 
-Список будет пополняться и обновляться
+* Р±Р»РѕРіРё
+* РєРѕРјРјРµРЅС‚Р°СЂРёРё Рє Р»СЋР±РѕР№ СЃСѓС‰РЅРѕСЃС‚Рё (СЃС‚СЂР°РЅРёС†С‹, РЅРѕРІРѕСЃС‚Рё, Р·Р°РїРёСЃРё Р±Р»РѕРіР° etc.)
+* Р°РІС‚РѕСЂРёР·Р°С†РёСЏ С‡РµСЂРµР· РїРѕРїСѓР»СЏСЂРЅС‹Рµ СЃРµСЂРІРёСЃС‹ (РІРєРѕРЅС‚Р°РєС‚Рµ, facebook, google etc.)
+* Р±РѕР»СЊС€Р°СЏ РїРµСЂРµСЂР°Р±РѕС‚РєР° С„РѕСЂРјС‹ СЃРѕР·РґР°РЅРёСЏ/РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚СЂР°РЅРёС†С‹
+* РІРѕР·РјРѕР¶РЅРѕСЃС‚СЊ РёР·РјРµРЅСЏС‚СЊ СЃС‚СЂР°РЅРёС†Сѓ РїСЂСЏРјРѕ РЅР° СЃР°Р№С‚Рµ (РїРѕРґРѕР±РЅРѕ Google Sites)
+* СЃРѕР·РґР°РЅРёРµ РЅРµС‡С‚Рѕ Р±Р»РѕРєРѕРІ РєРѕРЅС‚РµРЅС‚Р° (РїРѕРґРѕР±РЅРѕ ModX)
+* СЃРѕР·РґР°РЅРёРµ С€Р°Р±Р»РѕРЅРѕРІ РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ РїСЂР°РІР°РјРё РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№ (Rights ext) РїРѕРґ CMS
+* РёРЅСЃС‚Р°Р»Р»СЏС‚РѕСЂ
+
+РЎРїРёСЃРѕРє Р±СѓРґРµС‚ РїРѕРїРѕР»РЅСЏС‚СЊСЃСЏ Рё РѕР±РЅРѕРІР»СЏС‚СЊСЃСЏ
