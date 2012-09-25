@@ -26,6 +26,7 @@
 * Blogs
 * Comments
 * Change create forms to more usability
+* Change sourceLanguage=en, translate en to ru (messages)
 * Allow change page text directly on site (like google sites)
 * Block contents (like ModX)
 * Create templates for Rigts module
@@ -58,6 +59,7 @@
 * комментарии к любой сущности (страницы, новости, записи блога etc.)
 * авторизация через популярные сервисы (вконтакте, facebook, google etc.)
 * большая переработка формы создания/обновления страницы
+* Переход на sourceLanguage=en
 * возможность изменять страницу прямо на сайте (подобно Google Sites)
 * создание нечто блоков контента (подобно ModX)
 * создание шаблонов для управления правами пользователей (Rights ext) под CMS
