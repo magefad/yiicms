@@ -139,4 +139,29 @@ class Controller extends RController
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
     }
+
+    public function actionAutoCompleteSearch()
+    {
+        $table     = Yii::app()->request->getQuery('table') ? '{{'.Yii::app()->request->getQuery('table').'}}' : '{{tag}}';
+        $nameField = Yii::app()->request->getQuery('nameField') ? Yii::app()->request->getQuery('nameField') : 'name';
+        $term      = Yii::app()->request->getQuery('term');
+
+        $variants = array();
+
+        if (Yii::app()->request->isAjaxRequest && !empty($term)) {
+            $tags = Yii::app()->db->createCommand()->select($nameField)->from($table)->where(
+                array('like', $nameField, $term . '%')
+            )->queryAll();
+            if (count($tags)) {
+                foreach ($tags as $tag) {
+                    $variants[] = $tag['name'];
+                }
+                echo CJSON::encode($variants);
+            } else {
+                throw new CHttpException(404, 'No words found.');
+            }
+        } else {
+            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+        }
+    }
 }
