@@ -6,12 +6,12 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 
-define('JUI-THEME', 'dark-hive');
 return array(
     'basePath'          => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name'              => 'Fad cms',
     'defaultController' => 'page/default/show',
     #'homeLink'         => '/',
+    'sourceLanguage'    => 'en',
     'language'          => 'ru',
     'theme'             => 'reflector',
     // preloading 'log' component
@@ -28,6 +28,7 @@ return array(
         'application.modules.contact.models.*',
         'application.modules.gallery.models.*',
         'application.modules.admin.models.*',
+        'application.modules.blog.models.*',
         // not base
         'application.helpers.*',
         'application.modules.rights.RightsModule',
@@ -50,6 +51,7 @@ return array(
         'contact',
         'gallery',
         'admin',
+        'blog',
         'rights' => array(
             'superuserName'      => 'Admin', // Name of the role with super user privileges.
             'authenticatedName'  => 'Authenticated', // Name of the authenticated user role.
@@ -86,7 +88,7 @@ return array(
                     'js'      => array('jquery.min.js'),
                 ),
                 'jquery.ui' => array(
-                    'baseUrl' => '//ajax.googleapis.com/ajax/libs/jqueryui/1.7/',
+                    'baseUrl' => '//ajax.googleapis.com/ajax/libs/jqueryui/1.8/',
                     'js'      => array('jquery-ui.min.js'),
                 ),
             ),
@@ -95,9 +97,9 @@ return array(
             'widgets' => array(
                 'TinyMce'        => require(dirname(__FILE__) . '/tinymce.php'),
                 'CJuiDatePicker' => array( // where <WidgetName> is the name of the JUI Widget (Tabs, DatePicker, etc.). Each CJuiWidget used must be declared
-                    'scriptUrl'      => '//ajax.googleapis.com/ajax/libs/jqueryui/1.7',
+                    'scriptUrl'      => '//ajax.googleapis.com/ajax/libs/jqueryui/1.8',
                     'i18nScriptFile' => 'i18n/jquery-ui-i18n.min.js',
-                    'themeUrl'       => '//ajax.googleapis.com/ajax/libs/jqueryui/1.7/themes',
+                    'themeUrl'       => '//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes',
                 ),
             ),
         ),
