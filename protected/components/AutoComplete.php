@@ -4,6 +4,7 @@ Yii::import('zii.widgets.jui.CJuiAutoComplete');
 class AutoComplete extends CJuiAutoComplete
 {
     public $splitter = ',';
+    public $multiple = false;
 
     /**
      * Run this widget.
@@ -11,6 +12,9 @@ class AutoComplete extends CJuiAutoComplete
      */
     public function run()
     {
+        if ( !$this->multiple ) {
+            return parent::run();
+        }
         list($name, $id) = $this->resolveNameID();
 
         if (isset($this->htmlOptions['id'])) {
