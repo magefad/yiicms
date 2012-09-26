@@ -138,9 +138,6 @@ class News extends CActiveRecord
                 'order' => 'creation_date DESC',
                 'limit' => 5,
             ),
-            'date'      => array(
-                'order' => 'date DESC',
-            )
         );
     }
 

@@ -117,9 +117,12 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $criteria     = Yii::app()->user->isGuest ? News::model()->published()->public()->date() : News::model(
-        )->published()->date();
-        $dataProvider = new CActiveDataProvider($criteria);
+        $criteria     = Yii::app()->user->isGuest ? News::model()->published()->public() : News::model()->published();
+        $dataProvider = new CActiveDataProvider($criteria, array(
+            'sort' => array(
+                'defaultOrder' => 'date DESC',
+            ),
+        ));
 
         $this->render('index', array('dataProvider' => $dataProvider));
     }
