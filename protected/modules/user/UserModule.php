@@ -22,6 +22,8 @@ class UserModule extends WebModule
         $this->setImport(
             array(
                 'user.models.*',
+                'user.components.*',
+                'user.extensions.*'
             )
         );
     }
