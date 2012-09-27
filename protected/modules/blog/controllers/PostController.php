@@ -31,9 +31,9 @@ class PostController extends Controller
         }
     }
 
-    public function actionTag($slug)
+    public function actionTag($tag)
     {
-        $tag               = CHtml::encode($slug);
+        $tag               = CHtml::encode($tag);
         $postsDataProvider = new CActiveDataProvider(Post::model()->published()->public()->taggedWith($tag), array(
             'sort' => array(
                 'defaultOrder' => 'publish_time DESC',

@@ -34,7 +34,7 @@ $tags              = $data->getTags();
         | <i class="icon-share"></i> <a href="#">39 Shares</a> -->
         | <i class="icon-tags"></i> <?php echo Yii::t('blog', 'Tags'); ?>:
         <?php foreach ($tags as $tag): ?>
-        <?php echo CHtml::link($tag, array('/blog/post/tag', 'slug' => $tag), array('class' => 'label label-info')); ?>
+        <?php echo CHtml::link($tag, array('/blog/post/tag', 'tag' => $tag), array('class' => 'label label-info')); ?>
         <?php endforeach; ?>
     </div>
 </div>

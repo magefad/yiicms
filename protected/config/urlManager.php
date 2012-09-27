@@ -10,6 +10,7 @@ return array(
         'page/about'                                                 => 'contact/default',
         'page/<slug:[\w\_-]+>'                                       => 'page/default/show',
         'news/show/<slug:[\w\_-]+>'                                  => 'news/default/show',
+        'blog/post/tag/<tag>'                                        => 'blog/post/tag',
         '<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>'        => '<module>/<controller>/<action>',
         '<module:\w+>/<controller:\w+>/<action:\w+>/<slug:[\w\_-]+>' => '<module>/<controller>/<action>',
         '<module:\w+>/<controller:\w+>/<action:\w+>'                 => '<module>/<controller>/<action>',
