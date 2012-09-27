@@ -55,7 +55,7 @@ $this->widget(
                 'name'        => 'icon',
                 'type'        => 'raw',
                 'value'       => 'CHtml::tag("i", array("class" => "icon-$data[icon]"))',
-                'header'      => '',
+                #'header'      => '',
                 'htmlOptions' => array('style' => 'text-align: center')
             ),
             array('name' => 'id', 'header' => 'ID'),

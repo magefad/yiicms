@@ -52,7 +52,7 @@ $('.search-form form').submit(function(){
         'type'                  => 'striped condensed',
         'dataProvider'          => $model->search(),
         'filter'                => $model,
-        'rowCssClassExpression' => '($data->status == 2) ? "moderation" : (($data->status) ? "published" : "draft")',
+        'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
         'columns'               => array(
             array(
                 'name'        => 'id',
