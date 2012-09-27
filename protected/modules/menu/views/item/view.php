@@ -33,7 +33,7 @@ $this->widget(
             'id',
             array(
                 'name'  => 'parent_id',
-                'value' => $model->parent,
+                'value' => $model->parent->title,
             ),
             array(
                 'name'  => 'menu_id',
