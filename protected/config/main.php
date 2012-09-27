@@ -87,8 +87,8 @@ return array(
                 ),
             ),
         ),
-        'urlManager'  => require(dirname(__FILE__) . '/urlManager.php'),
-        'db'          => require(dirname(__FILE__) . '/db.php'),
+        'urlManager'  => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'urlManager.php'),
+        'db'          => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php'),
         'authManager' => array(
             'class'           => 'RDbAuthManager',
             #default is Auth#'defaultRoles' => array('Guest'),
