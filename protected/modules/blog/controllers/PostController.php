@@ -11,6 +11,14 @@ class PostController extends Controller
     }
 
     /**
+     * @return string the actions that are always allowed separated by commas.
+     */
+    public function allowedActions()
+    {
+        return 'show';
+    }
+
+    /**
      * Show the post
      * @param string $slug
      * @throws CHttpException
