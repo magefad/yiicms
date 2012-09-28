@@ -8,7 +8,7 @@
  * @property IAuthManager $authManager The authorization manager component.
  * @property CAssetManager $assetManager The asset manager component.
  * @property CHttpSession $session The session component.
- * @property WebUser $user The user session information.
+ * @property CWebUser $user The user session information.
  * @property IViewRenderer $viewRenderer The view renderer.
  * @property CClientScript $clientScript The client script manager.
  * @property IWidgetFactory $widgetFactory The widget factory.
@@ -19,6 +19,6 @@
  * @property string $viewPath The root directory of view files. Defaults to 'protected/views'.
  * @property string $systemViewPath The root directory of system view files. Defaults to 'protected/views/system'.
  * @property string $layoutPath The root directory of layout files. Defaults to 'protected/views/layouts'.
-
+ * @property EAuth $eauth
  */
 class CApplication {}
