@@ -10,6 +10,11 @@
  * @property string $firstname
  * @property string $lastname
  * @property string $username
+ * @property string $sex
+ * @property string $bdate
+ * @property string $country
+ * @property string $city
+ * @property string $phone
  * @property string $email
  * @property string $password
  * @property string $salt
@@ -19,17 +24,23 @@
  * @property string $registration_date
  * @property string $registration_ip
  * @property string $activation_ip
+ * @property string $photo
  * @property string $avatar
  * @property integer $use_gravatar
  * @property string $activate_key
  * @property integer $email_confirm
  *
  * The followings are the available model relations:
- * @property Image[] $images
+ * @property Blog[] $blogs
+ * @property Blog[] $blogsUpdate
+ * @property Post[] $blogPosts
+ * @property Post[] $blogPostsUpdate
+ * @property Photo[] $galleryPhotos
+ * @property Photo[] $galleryPhotosUpdate
  * @property News[] $news
  * @property Page[] $pages
- * @property Page[] $pages1
- * @property RecoveryPassword[] $recoveryPasswords
+ * @property Page[] $pagesUpdate
+ * @property UserBlog[] $userBlogs
  */
 class User extends CActiveRecord
 {
@@ -76,9 +87,10 @@ class User extends CActiveRecord
             array('username, email', 'required'),
             array('status, access_level, use_gravatar, email_confirm', 'numerical', 'integerOnly' => true),
             array('firstname, lastname, username, email', 'length', 'max' => 150),
-            array('password, salt, activate_key', 'length', 'max' => 32),
+            array('sex', 'length', 'max' => 1),
+            array('country, city, password, salt, activate_key', 'length', 'max' => 32),
             array('registration_ip, activation_ip', 'length', 'max' => 20),
-            array('avatar', 'length', 'max' => 100),
+            array('photo, avatar', 'length', 'max' => 100),
             array('last_visit', 'safe'),
             array('email_confirm', 'in', 'range' => array_keys($this->getEmailConfirmStatusList())),
             array('use_gravatar', 'in', 'range' => array(0, 1)),
@@ -103,7 +115,7 @@ class User extends CActiveRecord
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array(
-                'id, creation_date, change_date, firstname, lastname, username, email, status, access_level, last_visit, registration_date, registration_ip, activation_ip, avatar, use_gravatar, email_confirm',
+                'id, creation_date, change_date, firstname, lastname, username, sex, bdate, country, city, phone, email, password, salt, status, access_level, last_visit, registration_date, registration_ip, activation_ip, photo, avatar, use_gravatar, activate_key, email_confirm',
                 'safe',
                 'on' => 'search'
             ),
@@ -116,11 +128,18 @@ class User extends CActiveRecord
     public function relations()
     {
         return array(
-            'images'            => array(self::HAS_MANY, 'Image', 'user_id'),
-            'news'              => array(self::HAS_MANY, 'News', 'user_id'),
-            'pages'             => array(self::HAS_MANY, 'Page', 'user_id'),
-            'pages1'            => array(self::HAS_MANY, 'Page', 'change_user_id'),
-            'recoveryPasswords' => array(self::HAS_MANY, 'RecoveryPassword', 'user_id'),
+            'blogs'               => array(self::HAS_MANY, 'Blog', 'create_user_id'),
+            'blogsUpdate'         => array(self::HAS_MANY, 'Blog', 'update_user_id'),
+            'blogPosts'           => array(self::HAS_MANY, 'BlogPost', 'create_user_id'),
+            'blogPostsUpdate'     => array(self::HAS_MANY, 'BlogPost', 'update_user_id'),
+            'galleryPhotos'       => array(self::HAS_MANY, 'GalleryPhoto', 'user_id'),
+            'galleryPhotosUpdate' => array(self::HAS_MANY, 'GalleryPhoto', 'change_user_id'),
+            'news'                => array(self::HAS_MANY, 'News', 'user_id'),
+            'pages'               => array(self::HAS_MANY, 'Page', 'user_id'),
+            'pagesUpdate'         => array(self::HAS_MANY, 'Page', 'change_user_id'),
+            'recoveryPasswords'   => array(self::HAS_MANY, 'RecoveryPassword', 'user_id'),
+            'userBlogs'           => array(self::HAS_MANY, 'UserBlog', 'user_id'),
+            'userIdentities'      => array(self::HAS_MANY, 'UserIdentity', 'user_id'),
         );
     }
 
@@ -136,6 +155,11 @@ class User extends CActiveRecord
             'firstname'         => Yii::t('user', 'Имя'),
             'lastname'          => Yii::t('user', 'Фамилия'),
             'username'          => Yii::t('user', 'Логин'),
+            'sex'               => Yii::t('user', 'Пол'),
+            'bdate'             => Yii::t('user', 'День рождения'),
+            'country'           => Yii::t('user', 'Страна'),
+            'city'              => Yii::t('user', 'Город'),
+            'phone'             => Yii::t('user', 'Телефон'),
             'email'             => Yii::t('user', 'Email'),
             'password'          => Yii::t('user', 'Пароль'),
             'salt'              => Yii::t('user', 'Соль'),
@@ -146,6 +170,7 @@ class User extends CActiveRecord
             'registration_ip'   => Yii::t('user', 'IP регистрации'),
             'activation_ip'     => Yii::t('user', 'IP активации'),
             'activate_key'      => Yii::t('user', 'Код активации'),
+            'photo'             => Yii::t('user', 'Фото'),
             'avatar'            => Yii::t('user', 'Аватар'),
             'use_gravatar'      => Yii::t('user', 'Граватар'),
             'email_confirm'     => Yii::t('user', 'Email подтвержден'),
@@ -166,6 +191,11 @@ class User extends CActiveRecord
         $criteria->compare('firstname', $this->firstname, true);
         $criteria->compare('lastname', $this->lastname, true);
         $criteria->compare('username', $this->username, true);
+        $criteria->compare('sex', $this->sex, true);
+        $criteria->compare('bdate', $this->bdate, true);
+        $criteria->compare('country', $this->country, true);
+        $criteria->compare('city', $this->city, true);
+        $criteria->compare('phone', $this->phone, true);
         $criteria->compare('email', $this->email, true);
         $criteria->compare('password', $this->password, true);
         $criteria->compare('salt', $this->salt, true);
@@ -175,6 +205,7 @@ class User extends CActiveRecord
         $criteria->compare('registration_date', $this->registration_date, true);
         $criteria->compare('registration_ip', $this->registration_ip, true);
         $criteria->compare('activation_ip', $this->activation_ip, true);
+        $criteria->compare('photo', $this->photo, true);
         $criteria->compare('avatar', $this->avatar, true);
         $criteria->compare('use_gravatar', $this->use_gravatar);
         $criteria->compare('activate_key', $this->activate_key, true);
