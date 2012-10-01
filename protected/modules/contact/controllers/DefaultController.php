@@ -49,11 +49,19 @@ class DefaultController extends Controller
                 $body .= "\r\nReferer: " . Yii::app()->request->getUrlReferrer();
                 $body .= "\r\nIP: " . Yii::app()->request->userHostAddress;
 
-                mail($this->admin->email, $model->subject, $body, $headers);
-                Yii::app()->user->setFlash(
-                    'success',
-                    Yii::t('contact', 'Спасибо за сообщение! Мы Вам обязательно ответим!')
-                );
+                if (mail($this->admin->email, $model->subject, $body, $headers)) {
+                    Yii::log($body);
+                    Yii::app()->user->setFlash(
+                        'success',
+                        Yii::t('contact', 'Спасибо за сообщение! Мы Вам обязательно ответим!')
+                    );
+                } else {
+                    Yii::log($body, CLogger::LEVEL_ERROR);
+                    Yii::app()->user->setFlash(
+                        'success',
+                        Yii::t('contact', 'Произошла проблема с отправкой письма! Обратитесь к администратоу: ' . $this->admin->email)
+                    );
+                }
                 $this->refresh();
             }
         }
