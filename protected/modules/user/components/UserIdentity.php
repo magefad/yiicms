@@ -27,16 +27,6 @@ class UserIdentity extends CUserIdentity
         } else {
             $this->_id      = $user->id;
             $this->username = $user->username;
-            Yii::app()->user->setState('id', $user->id);
-            Yii::app()->user->setState('access_level', $user->access_level);
-            Yii::app()->user->setState('username', $user->username);
-            Yii::app()->user->setState('email', $user->email);
-            Yii::app()->user->setState('loginTime', time());
-
-            if ($user->access_level == User::ACCESS_LEVEL_ADMIN) {
-                Yii::app()->user->setState('loginAdmTime', time());
-                Yii::app()->user->setState('isAdmin', $user->access_level);
-            }
 
             $user->last_visit = new CDbExpression('NOW()');
             $user->update(array('last_visit'));
