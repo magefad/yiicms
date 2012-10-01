@@ -10,7 +10,9 @@ $this->breadcrumbs = array(
 );
 ?>
 <div class="form">
-    <?php $form = $this->beginWidget(
+    <?php
+    $this->widget('bootstrap.widgets.TbAlert');
+    $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
         'id'                     => 'login-form',
@@ -57,3 +59,7 @@ $this->breadcrumbs = array(
     </div>
     <?php $this->endWidget(); ?>
 </div><!-- form -->
+<div class="span4 offset4 well">
+    <p align="center">Нажмите на иконку для входа через один из сайтов:</p>
+    <?php $this->widget('application.modules.user.extensions.eauth.EAuthWidget', array('action' => 'account/login')); ?>
+</div>

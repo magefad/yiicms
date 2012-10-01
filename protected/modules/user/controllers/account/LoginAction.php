@@ -6,11 +6,35 @@
  */
 class LoginAction extends CAction
 {
-	/**
+
+    /**
 	 * Displays the login page
 	 */
 	public function run()
 	{
+        $service = Yii::app()->request->getQuery('service');
+        /** if login from EAuth (facebook, google, vk etc. */
+        if (isset($service)) {
+            /** @var $authIdentity EAuthServiceBase */
+            $authIdentity              = Yii::app()->eauth->getIdentity($service);
+            $authIdentity->redirectUrl = Yii::app()->user->returnUrl;
+            $authIdentity->cancelUrl   = $this->controller->createAbsoluteUrl('/user/account/login');
+
+            if ($authIdentity->authenticate()) {
+                $identity = new CustomEAuthUserIdentity($authIdentity);
+                // success
+                if ($identity->authenticate()) {
+                    $duration = 3600 * 24 * 30; // 30 days
+                    Yii::app()->user->login($identity, $duration);
+                    $authIdentity->redirect();
+                } else {
+                    // close popup window and redirect to cancelUrl
+                    $authIdentity->cancel();
+                }
+            }
+            $authIdentity->redirect('/user/account/login');
+        }
+
 		$model = new LoginForm;
 
 		// if it is ajax validation request

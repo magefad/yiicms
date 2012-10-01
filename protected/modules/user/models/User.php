@@ -11,7 +11,7 @@
  * @property string $lastname
  * @property string $username
  * @property string $sex
- * @property string $bdate
+ * @property string $birth_date
  * @property string $country
  * @property string $city
  * @property string $phone
@@ -115,7 +115,7 @@ class User extends CActiveRecord
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array(
-                'id, creation_date, change_date, firstname, lastname, username, sex, bdate, country, city, phone, email, password, salt, status, access_level, last_visit, registration_date, registration_ip, activation_ip, photo, avatar, use_gravatar, activate_key, email_confirm',
+                'id, creation_date, change_date, firstname, lastname, username, sex, birth_date, country, city, phone, email, password, salt, status, access_level, last_visit, registration_date, registration_ip, activation_ip, photo, avatar, use_gravatar, activate_key, email_confirm',
                 'safe',
                 'on' => 'search'
             ),
@@ -156,7 +156,7 @@ class User extends CActiveRecord
             'lastname'          => Yii::t('user', 'Фамилия'),
             'username'          => Yii::t('user', 'Логин'),
             'sex'               => Yii::t('user', 'Пол'),
-            'bdate'             => Yii::t('user', 'День рождения'),
+            'birth_date'        => Yii::t('user', 'День рождения'),
             'country'           => Yii::t('user', 'Страна'),
             'city'              => Yii::t('user', 'Город'),
             'phone'             => Yii::t('user', 'Телефон'),
@@ -192,7 +192,7 @@ class User extends CActiveRecord
         $criteria->compare('lastname', $this->lastname, true);
         $criteria->compare('username', $this->username, true);
         $criteria->compare('sex', $this->sex, true);
-        $criteria->compare('bdate', $this->bdate, true);
+        $criteria->compare('birth_date', $this->birth_date, true);
         $criteria->compare('country', $this->country, true);
         $criteria->compare('city', $this->city, true);
         $criteria->compare('phone', $this->phone, true);
