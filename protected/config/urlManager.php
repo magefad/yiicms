@@ -14,7 +14,6 @@ return array(
         '<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>'        => '<module>/<controller>/<action>',
         '<module:\w+>/<controller:\w+>/<action:\w+>/<slug:[\w\_-]+>' => '<module>/<controller>/<action>',
         '<module:\w+>/<controller:\w+>/<action:\w+>'                 => '<module>/<controller>/<action>',
-        '<module:\w+>/<controller:\w+>'                              => '<module>/<controller>/index',
         'gii/<controller:\w+>'                                       => 'gii/<controller>',
         'gii/<controller:\w+>/<action:\w+>'                          => 'gii/<controller>/<action>',
         '<controller:\w+>/<id:\d+>'                                  => '<controller>/view',
