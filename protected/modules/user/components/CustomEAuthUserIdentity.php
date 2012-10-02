@@ -35,11 +35,10 @@ class CustomEAuthUserIdentity extends EAuthUserIdentity
                         'lastname'      => $attributes['lastname'],
                         'username'      => $attributes['username'],
                         'sex'           => $attributes['sex'],
-                        'birth_date'    => $attributes['birth_date'],
+                        'birth_date'    => date('Y-m-d', strtotime($attributes['birth_date'])),//@todo why empty?
                         'country'       => $attributes['country'],
                         'city'          => $attributes['city'],
                         'phone'         => $attributes['phone'],
-                        'email'         => 'test@mail.ru',
                         'status'        => User::STATUS_NOT_ACTIVE,
                         'access_status' => User::ACCESS_LEVEL_USER,
                         'photo'         => $attributes['photo'],
@@ -49,8 +48,8 @@ class CustomEAuthUserIdentity extends EAuthUserIdentity
                 );
                 $transaction = Yii::app()->db->beginTransaction();
                 try {
-                    if (!$user->save()) {
-                        throw new CDbException(Yii::t('user', 'Error when saving User'));
+                    if (!$user->save(false)) {
+                        throw new CDbException(Yii::t('user', 'Error when saving User' . print_r($user->getErrors())));
                     } else {
                         $userSocial = new UserSocial();
                         $userSocial->setAttributes(
@@ -61,8 +60,12 @@ class CustomEAuthUserIdentity extends EAuthUserIdentity
                                 'access_token'   => $attributes['access_token']
                             )
                         );
+                        if (isset($attributes['email'])) {
+                            $userSocial->setAttribute('email', $attributes['email']);
+                        }
+
                         if (!$userSocial->save()) {
-                            throw new CDbException(Yii::t('user', 'Error when saving UserSocial'));
+                            throw new CDbException(Yii::t('user', 'Error when saving UserSocial' . print_r($userSocial->getErrors())));
                         }
                         $transaction->commit();
                         $this->name = $user->username;
