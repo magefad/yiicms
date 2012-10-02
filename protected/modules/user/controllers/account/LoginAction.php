@@ -29,7 +29,7 @@ class LoginAction extends CAction
                     $authIdentity->redirect();
                 } else {
                     // close popup window and redirect to cancelUrl
-                    $authIdentity->cancel();
+                    #$authIdentity->cancel();
                 }
             }
             $authIdentity->redirect('/user/account/login');
