@@ -20,5 +20,6 @@
  * @property string $systemViewPath The root directory of system view files. Defaults to 'protected/views/system'.
  * @property string $layoutPath The root directory of layout files. Defaults to 'protected/views/layouts'.
  * @property EAuth $eauth
+ * @property YiiMailMessage $mail
  */
 class CApplication {}
