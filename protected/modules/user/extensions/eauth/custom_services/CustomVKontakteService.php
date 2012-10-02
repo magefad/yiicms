@@ -28,17 +28,15 @@ class CustomVKontakteService extends VKontakteOAuthService
             )
         );
 
-        $info = $info['response'][0];
-
+        $info                             = $info['response'][0];
         $this->attributes['id']           = $info->uid;
-        $this->attributes['service']      = $this->name;
         $this->attributes['access_token'] = $this->access_token;
 
         $this->attributes['firstname']  = $info->first_name;
         $this->attributes['lastname']   = $info->last_name;
-        $this->attributes['username']   = !empty($info->nickname) ? $info->nickname : 'id' . $info->uid;
+        $this->attributes['username']   = !empty($info->nickname) ? $info->nickname : $info->first_name;
         $this->attributes['sex']        = $info->sex == 1 ? 'f' : 'm';
-        $this->attributes['birth_date'] = $info->nickname;
+        $this->attributes['birth_date'] = $info->bdate;
         $this->attributes['country']    = $info->country;
         $this->attributes['city']       = $info->city;
         $this->attributes['phone']      = !empty($info->contacts->mobile_phone) ? $info->contacts->mobile_phone : '';

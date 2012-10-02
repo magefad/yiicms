@@ -13,7 +13,7 @@ class CustomTwitterService extends TwitterOAuthService {
 	
 	protected function fetchAttributes() {
 		$info = $this->makeSignedRequest('https://api.twitter.com/1/account/verify_credentials.json');
-	
+
 		$this->attributes['id'] = $info->id;
 		$this->attributes['name'] = $info->name;
 		$this->attributes['url'] = 'http://twitter.com/account/redirect_by_id?id='.$info->id_str;

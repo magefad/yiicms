@@ -7,20 +7,24 @@
  * @license http://www.opensource.org/licenses/bsd-license.php
  */
 
-require_once dirname(dirname(__FILE__)).'/services/GoogleOpenIDService.php';
+require_once dirname(dirname(__FILE__)) . '/services/GoogleOpenIDService.php';
 
-class CustomGoogleService extends GoogleOpenIDService {
-	
-	//protected $jsArguments = array('popup' => array('width' => 450, 'height' => 450));
-	
-	protected $requiredAttributes = array(
-		'name' => array('firstname', 'namePerson/first'),
-		'lastname' => array('lastname', 'namePerson/last'),
-		'email' => array('email', 'contact/email'),
-		'language' => array('language', 'pref/language'),
-	);
-	
-	protected function fetchAttributes() {
-		$this->attributes['fullname'] = $this->attributes['name'].' '.$this->attributes['lastname'];
-	}
+class CustomGoogleService extends GoogleOpenIDService
+{
+
+    //protected $jsArguments = array('popup' => array('width' => 450, 'height' => 450));
+
+    protected $requiredAttributes = array(
+        'firstname' => array('firstname', 'namePerson/first'),
+        'lastname'  => array('lastname', 'namePerson/last'),
+        'email'     => array('email', 'contact/email'),
+        'country'   => array('country', 'contact/country/home'),
+        #'language'  => array('language', 'pref/language'),
+    );
+
+    protected function fetchAttributes()
+    {
+        $this->attributes['username'] = $this->attributes['name'] . ' ' . $this->attributes['lastname'];
+        $this->attributes['country'] = $this->attributes['country'] == 'RU' ? 'Россия' : $this->attributes['country'];
+    }
 }
