@@ -27,6 +27,7 @@ return array(
         'application.modules.contact.models.*',
         'application.modules.gallery.models.*',
         'application.modules.blog.models.*',
+        'application.modules.social.models.*',
         'application.modules.admin.models.*',
         // not base
         'application.helpers.*',
@@ -43,6 +44,7 @@ return array(
         'contact',
         'gallery',
         'blog',
+        'social',
         'admin',
         'rights',
         'gii' => array(
