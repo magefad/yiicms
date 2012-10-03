@@ -54,7 +54,7 @@ class DefaultController extends Controller
         if (isset($_POST['News'])) {
             $model->attributes = $_POST['News'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('notice', Yii::t('news', 'Новость добавлена!'));
+                Yii::app()->user->setFlash('success', Yii::t('news', 'Новость добавлена!'));
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
@@ -82,7 +82,7 @@ class DefaultController extends Controller
             #rename image directory if slug (link) changed
             $model->attributes = $_POST['News'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('notice', Yii::t('news', 'Новость добавлена!'));
+                Yii::app()->user->setFlash('success', Yii::t('news', 'Новость добавлена!'));
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }

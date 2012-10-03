@@ -92,7 +92,7 @@ class DefaultController extends Controller
         if (isset($_POST['Blog'])) {
             $model->attributes = $_POST['Blog'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('notice', Yii::t('blog', 'Blog added!'));
+                Yii::app()->user->setFlash('success', Yii::t('blog', 'Blog added!'));
                 $this->redirect(array('update', 'id' => $model->id));
             }
         }
@@ -114,7 +114,7 @@ class DefaultController extends Controller
         if (isset($_POST['Blog'])) {
             $model->attributes = $_POST['Blog'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('notice', Yii::t('blog', 'Blog updated!'));
+                Yii::app()->user->setFlash('success', Yii::t('blog', 'Blog updated!'));
                 $this->redirect(array('update', 'id' => $model->id));
             }
         }
@@ -133,7 +133,7 @@ class DefaultController extends Controller
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $this->loadModel($id)->delete();
-            Yii::app()->user->setFlash('notice', Yii::t('blog', 'Blog deleted!'));
+            Yii::app()->user->setFlash('info', Yii::t('blog', 'Blog deleted!'));
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax'])) {
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

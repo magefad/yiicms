@@ -68,7 +68,7 @@ class DefaultController extends Controller
         if (isset($_POST['Page'])) {
             $model->attributes = $_POST['Page'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('notice', Yii::t('page', 'Страница добавлена!'));
+                Yii::app()->user->setFlash('success', Yii::t('page', 'Страница добавлена!'));
                 if (isset($_POST['saveAndClose'])) {
                     $this->redirect(array('admin'));
                 }
@@ -115,7 +115,7 @@ class DefaultController extends Controller
             }
 
             if ($model->save()) {
-                Yii::app()->user->setFlash('notice', Yii::t('page', 'Страница обновлена!'));
+                Yii::app()->user->setFlash('success', Yii::t('page', 'Страница обновлена!'));
                 if (isset($_POST['saveAndClose'])) {
                     $this->redirect(array('admin'));
                 }
