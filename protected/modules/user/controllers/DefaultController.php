@@ -66,7 +66,7 @@ class DefaultController extends Controller
             $model->setAttributes($_POST['User']);
 
             if ($model->save()) {
-                Yii::app()->user->setFlash('notice', Yii::t('user', 'Данные обновлены!'));
+                Yii::app()->user->setFlash('success', Yii::t('user', 'Данные обновлены!'));
                 $this->redirect(array('view', 'id' => $id));
             }
         }
@@ -131,7 +131,7 @@ class DefaultController extends Controller
             $form->setAttributes($_POST['ChangePasswordForm']);
             if ($form->validate() && $model->changePassword($form->password)) {
                 $model->changePassword($form->password);
-                Yii::app()->user->setFlash('notice', Yii::t('user', 'Пароль успешно изменен!'));
+                Yii::app()->user->setFlash('success', Yii::t('user', 'Пароль успешно изменен!'));
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
