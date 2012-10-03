@@ -8,7 +8,7 @@
  * @property IAuthManager $authManager The authorization manager component.
  * @property CAssetManager $assetManager The asset manager component.
  * @property CHttpSession $session The session component.
- * @property CWebUser $user The user session information.
+ * @property RWebUser $user The user session information.
  * @property IViewRenderer $viewRenderer The view renderer.
  * @property CClientScript $clientScript The client script manager.
  * @property IWidgetFactory $widgetFactory The widget factory.

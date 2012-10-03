@@ -1,12 +1,14 @@
 <?php
 /**
  * @var $user User
+ * @var $this Controller
  */
 $this->pageTitle = Yii::t('user', 'Профиль пользователя') . CHtml::encode($user->username);
 $this->breadcrumbs = array(
     Yii::t('user', 'Пользователи') => array('/user/people/index/'),
     CHtml::encode($user->username),
 );
+$this->widget('bootstrap.widgets.TbAlert');
 ?>
 <div class="span4 well">
     <div class="row">

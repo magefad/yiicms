@@ -12,6 +12,10 @@ class LoginAction extends CAction
 	 */
 	public function run()
 	{
+        if (!Yii::app()->user->isGuest) {
+            Yii::app()->user->setFlash('info', Yii::t('user', 'Вы уже вошли на сайт'));
+            $this->controller->redirect('/user/profile');
+        }
         $service = Yii::app()->request->getQuery('service');
         /** if login from EAuth (facebook, google, vk etc. */
         if (isset($service)) {
