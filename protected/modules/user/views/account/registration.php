@@ -25,7 +25,7 @@ $form = $this->beginWidget(
         'clientOptions'          => array(
             'validateOnSubmit' => true,
         ),
-        'htmlOptions'            => array('class' => 'span4 offset4 well'),
+        'htmlOptions'            => array('class' => 'span3 offset4 well'),
     )
 ); ?>
     <?php echo $form->errorSummary($model); ?>
@@ -34,15 +34,15 @@ $form = $this->beginWidget(
 </legend>
 <fieldset>
 <div class="control-group">
-    <?php echo $form->textField($model, 'username', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('username'))); ?>
+    <?php echo $form->textField($model, 'username', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('username'))); ?>
     <?php echo $form->error($model, 'username'); ?>
 </div>
 <div class="control-group">
-    <?php echo $form->textField($model, 'email', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('email'))); ?>
+    <?php echo $form->textField($model, 'email', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('email'))); ?>
     <?php echo $form->error($model, 'email'); ?>
 </div>
 <div class="control-group">
-    <?php echo $form->passwordField($model, 'password', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('password'))); ?>
+    <?php echo $form->passwordField($model, 'password', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('password'))); ?>
     <?php echo $form->error($model, 'password'); ?>
 </div>
     <?php if (CCaptcha::checkRequirements()): ?>
@@ -55,7 +55,7 @@ $form = $this->beginWidget(
     )); ?>
     </div>
     <div class="control-group">
-        <?php echo $form->textField($model, 'verifyCode', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('verifyCode'))); ?>
+        <?php echo $form->textField($model, 'verifyCode', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('verifyCode'))); ?>
         <?php echo $form->error($model, 'verifyCode'); ?>
     </div>
     <?php endif; ?>
