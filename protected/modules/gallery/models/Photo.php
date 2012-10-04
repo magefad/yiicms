@@ -11,8 +11,8 @@
  * @property string $description
  * @property string $keywords
  * @property string $file_name
- * @property string $creation_date
- * @property string $change_date
+ * @property string $create_time
+ * @property string $update_time
  * @property integer $user_id
  * @property integer $change_user_id
  * @property string $alt
@@ -79,7 +79,7 @@ class Photo extends CActiveRecord
     public function rules()
     {
         return array(
-            #array('gallery_id, name, file_name, creation_date, user_id, change_user_id, alt', 'required'),
+            #array('gallery_id, name, file_name, create_time, user_id, change_user_id, alt', 'required'),
             array('gallery_id', 'required'),
             array('sort, type, status', 'numerical', 'integerOnly' => true),
             array('gallery_id', 'length', 'max' => 11),
@@ -96,7 +96,7 @@ class Photo extends CActiveRecord
             array('alt', 'length', 'max' => 150),
             array('description', 'safe'),
             array(
-                'id, gallery_id, name, description, sort, file_name, creation_date, user_id, change_user_id, alt, type, status, author_search, changeAuthor_search, gallery_search',
+                'id, gallery_id, name, description, sort, file_name, create_time, user_id, change_user_id, alt, type, status, author_search, changeAuthor_search, gallery_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -129,7 +129,7 @@ class Photo extends CActiveRecord
             'description'         => 'Поисание',
             #'rank' => 'Rank',
             'file_name'           => 'Файл',
-            'creation_date'       => 'Создано',
+            'create_time'         => 'Создано',
             'user_id'             => 'Автор',
             'change_user_id'      => 'Изменил',
             'alt'                 => 'Alt',
@@ -157,7 +157,7 @@ class Photo extends CActiveRecord
         $criteria->compare('name', $this->name, true);
         $criteria->compare('description', $this->description, true);
         $criteria->compare('file_name', $this->file_name, true);
-        $criteria->compare('creation_date', $this->creation_date, true);
+        $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('user_id', $this->user_id, true);
         $criteria->compare('change_user_id', $this->change_user_id, true);
         $criteria->compare('alt', $this->alt, true);
@@ -204,14 +204,12 @@ class Photo extends CActiveRecord
 
     public function beforeSave()
     {
-        $this->change_date = new CDbExpression('now()');
-        $this->user_id     = Yii::app()->user->getId();
-
+        $this->user_id = Yii::app()->user->getId();
+        unset($this->update_time);//on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
-            $this->creation_date  = $this->change_date;
+            $this->create_time    = new CDbExpression('now()');
             $this->change_user_id = $this->user_id;
         }
-
         return parent::beforeSave();
     }
 

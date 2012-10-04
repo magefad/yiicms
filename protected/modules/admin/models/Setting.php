@@ -8,8 +8,8 @@
  * @property integer $module_id
  * @property string $key
  * @property string $value
- * @property string $creation_date
- * @property string $change_date
+ * @property string $create_time
+ * @property string $update_time
  * @property integer $user_id
  *
  * The followings are the available model relations:
@@ -58,21 +58,19 @@ class Setting extends CActiveRecord
             array('value', 'length', 'max' => 255),
             array('user_id', 'numerical', 'integerOnly' => true),
             array('module_id, key', 'match', 'pattern' => '/^[\w\_-]+$/'),
-            array('id, module_id, key, value, creation_date, change_date, user_id', 'safe', 'on' => 'search'),
+            array('id, module_id, key, value, create_time, update_time, user_id', 'safe', 'on' => 'search'),
         );
     }
 
     public function beforeSave()
     {
-        $this->change_date = new CDbExpression('NOW()');
+        unset($this->update_time);//on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
-            $this->creation_date = $this->change_date;
+            $this->create_time = new CDbExpression('NOW()');
         }
-
         if (!isset($this->user_id)) {
             $this->user_id = Yii::app()->user->id;
         }
-
         return parent::beforeSave();
     }
 
@@ -96,8 +94,8 @@ class Setting extends CActiveRecord
             'module_id'     => Yii::t('setting', 'Модуль'),
             'key'           => Yii::t('setting', 'Ключ'),
             'value'         => Yii::t('setting', 'Значение'),
-            'creation_date' => Yii::t('setting', 'Создано'),
-            'change_date'   => Yii::t('setting', 'Изменено'),
+            'create_time'   => Yii::t('setting', 'Создано'),
+            'update_time'   => Yii::t('setting', 'Изменено'),
             'user_id'       => Yii::t('setting', 'Автор'),
         );
     }
@@ -119,8 +117,8 @@ class Setting extends CActiveRecord
         $criteria->compare('module_id', $this->module_id, true);
         $criteria->compare('key', $this->key, true);
         $criteria->compare('value', $this->value, true);
-        $criteria->compare('creation_date', $this->creation_date, true);
-        $criteria->compare('change_date', $this->change_date, true);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('user_id', $this->user_id, true);
 
         return new CActiveDataProvider(get_class($this), array(
@@ -141,7 +139,7 @@ class Setting extends CActiveRecord
                 $criteria->compare('`key`', $keys);
             }
 
-            $dependency = new CDbCacheDependency('SELECT UNIX_TIMESTAMP(MAX(change_date)) FROM ' . $this->tableName(
+            $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . $this->tableName(
             ) . ' WHERE module_id="' . $module_id . '"');
             $settingsRows = $this->cache(Yii::app()->getModule('admin')->cachingDuration, $dependency, 2)->findAll(
                 $criteria

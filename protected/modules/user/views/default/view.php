@@ -37,8 +37,8 @@ $this->widget(
         'data'       => $model,
         'attributes' => array(
             'id',
-            'creation_date',
-            'change_date',
+            'create_time',
+            'update_time',
             'firstname',
             'lastname',
             'username',

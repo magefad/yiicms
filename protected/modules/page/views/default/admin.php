@@ -71,8 +71,8 @@ $('.search-form form').submit(function(){
                 'value' => 'CHtml::link($data->slug, array("show", "slug" => $data->slug), array("target" => "_blank"))',
             ),
             array(
-                'name'        => 'creation_date',
-                'value'       => 'date_format(date_create($data->creation_date), "Y-m-d")',
+                'name'        => 'create_time',
+                'value'       => 'date_format(date_create($data->create_time), "Y-m-d")',
                 'htmlOptions' => array('style' => 'width:70px; text-align:center;'),
             ),
             array(

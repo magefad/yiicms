@@ -6,8 +6,8 @@
  * The followings are the available columns in table '{{page}}':
  * @property integer $id
  * @property integer $parent_id
- * @property string $creation_date
- * @property string $change_date
+ * @property string $create_time
+ * @property string $update_time
  * @property string $user_id
  * @property string $change_user_id
  * @property string $name
@@ -85,7 +85,7 @@ class Page extends CActiveRecord
                 'message' => Yii::t('page', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, parent_id, creation_date, change_date, title, slug, body, keywords, description, status, menu_order, author_search, changeAuthor_search',
+                'id, parent_id, create_time, update_time, title, slug, body, keywords, description, status, menu_order, author_search, changeAuthor_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -113,8 +113,8 @@ class Page extends CActiveRecord
         return array(
             'id'                  => Yii::t('page', 'ID'),
             'parent_id'           => Yii::t('page', 'Родитель'),
-            'creation_date'       => Yii::t('page', 'Создано'),
-            'change_date'         => Yii::t('page', 'Изменено'),
+            'create_time'         => Yii::t('page', 'Создано'),
+            'update_time'         => Yii::t('page', 'Изменено'),
             'title'               => Yii::t('page', 'Заголовок (Seo title)'),
             'slug'                => Yii::t('page', 'Ссылка'),
             'body'                => Yii::t('page', 'Текст'),
@@ -146,14 +146,12 @@ class Page extends CActiveRecord
 
     public function beforeSave()
     {
-        $this->change_date = new CDbExpression('now()');
-        $this->user_id     = Yii::app()->user->getId();
-
+        $this->user_id = Yii::app()->user->getId();
+        unset($this->update_time);//on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
-            $this->creation_date  = $this->change_date;
+            $this->create_time  = new CDbExpression('now()');
             $this->change_user_id = $this->user_id;
         }
-
         return parent::beforeSave();
     }
 
@@ -202,8 +200,8 @@ class Page extends CActiveRecord
 
         $criteria->compare('id', $this->id, true);
         $criteria->compare('parent_id', $this->parent_id);
-        $criteria->compare('creation_date', $this->creation_date, true);
-        $criteria->compare('change_date', $this->change_date, true);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
 
         $criteria->compare('t.name', $this->name, true);
         $criteria->compare('title', $this->title, true);

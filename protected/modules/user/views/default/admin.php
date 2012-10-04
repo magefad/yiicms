@@ -65,9 +65,9 @@ $('.search-form form').submit(function(){
                 'htmlOptions' => array('style' => 'width: 80px; text-align: center'),
             ),
             'email',
-            'creation_date',
+            'create_time',
             'last_visit',
-            #'change_date',
+            #'update_time',
             'firstname',
             'lastname', /*
 		'status',

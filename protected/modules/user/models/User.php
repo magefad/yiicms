@@ -5,8 +5,8 @@
  *
  * The followings are the available columns in table '{{user}}':
  * @property integer $id
- * @property string $creation_date
- * @property string $change_date
+ * @property string $create_time
+ * @property string $update_time
  * @property string $firstname
  * @property string $lastname
  * @property string $username
@@ -115,7 +115,7 @@ class User extends CActiveRecord
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array(
-                'id, creation_date, change_date, firstname, lastname, username, sex, birth_date, country, city, phone, email, password, salt, status, access_level, last_visit, registration_date, registration_ip, activation_ip, photo, avatar, use_gravatar, activate_key, email_confirm',
+                'id, create_time, update_time, firstname, lastname, username, sex, birth_date, country, city, phone, email, password, salt, status, access_level, last_visit, registration_date, registration_ip, activation_ip, photo, avatar, use_gravatar, activate_key, email_confirm',
                 'safe',
                 'on' => 'search'
             ),
@@ -150,8 +150,8 @@ class User extends CActiveRecord
     {
         return array(
             'id'                => Yii::t('user', 'ID'),
-            'creation_date'     => Yii::t('user', 'Дата активации'),
-            'change_date'       => Yii::t('user', 'Дата изменения'),
+            'create_time'       => Yii::t('user', 'Дата активации'),
+            'update_time'       => Yii::t('user', 'Дата изменения'),
             'firstname'         => Yii::t('user', 'Имя'),
             'lastname'          => Yii::t('user', 'Фамилия'),
             'username'          => Yii::t('user', 'Логин'),
@@ -186,8 +186,8 @@ class User extends CActiveRecord
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id, true);
-        $criteria->compare('creation_date', $this->creation_date, true);
-        $criteria->compare('change_date', $this->change_date, true);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('firstname', $this->firstname, true);
         $criteria->compare('lastname', $this->lastname, true);
         $criteria->compare('username', $this->username, true);
@@ -221,10 +221,9 @@ class User extends CActiveRecord
      */
     public function beforeSave()
     {
-        $this->change_date = new CDbExpression('NOW()');
-
+        unset($this->update_time);//on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
-            $this->registration_date = $this->creation_date = $this->change_date;
+            $this->registration_date = $this->create_time = new CDbExpression('NOW()');
             $this->activate_key      = $this->generateActivationKey();
             $this->registration_ip   = $this->activation_ip = Yii::app()->request->userHostAddress;
         }

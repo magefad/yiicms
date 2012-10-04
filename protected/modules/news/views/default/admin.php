@@ -74,8 +74,8 @@ $this->widget(
                 'type'  => 'raw',
                 'value' => 'CHtml::link($data->slug, array("show", "slug" => $data->slug))',
             ),
-            'creation_date',
-            'change_date',
+            'create_time',
+            'update_time',
             array(
                 'name'        => 'author_search',
                 'value'       => '$data->author->username',
@@ -92,8 +92,8 @@ $this->widget(
                     2  => Yii::t('menu', 'На модерации')
                 ),
                 'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
-            ), /*'creation_date',
-		'change_date',
+            ), /*'create_time',
+		'update_time',
 		'date',
 		'title',
 		'slug',

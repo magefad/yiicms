@@ -10,12 +10,12 @@
     <?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id' => $data->id)); ?>
     <br/>
 
-    <b><?php echo CHtml::encode($data->getAttributeLabel('creation_date')); ?>:</b>
-    <?php echo CHtml::encode($data->creation_date); ?>
+    <b><?php echo CHtml::encode($data->getAttributeLabel('create_time')); ?>:</b>
+    <?php echo CHtml::encode($data->create_time); ?>
     <br/>
 
-    <b><?php echo CHtml::encode($data->getAttributeLabel('change_date')); ?>:</b>
-    <?php echo CHtml::encode($data->change_date); ?>
+    <b><?php echo CHtml::encode($data->getAttributeLabel('update_time')); ?>:</b>
+    <?php echo CHtml::encode($data->update_time); ?>
     <br/>
 
     <b><?php echo CHtml::encode($data->getAttributeLabel('firstname')); ?>:</b>

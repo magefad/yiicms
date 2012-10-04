@@ -44,8 +44,8 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
 	'data'    => $model,
 	'attributes' => array(
 		'id',
-		'creation_date',
-		'change_date',
+		'create_time',
+		'update_time',
 		'date',
 		'title',
 		'slug',

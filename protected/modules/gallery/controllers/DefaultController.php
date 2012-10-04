@@ -146,8 +146,7 @@ class DefaultController extends Controller
      */
     public function actionList()
     {
-        $dependency = new CDbCacheDependency('SELECT UNIX_TIMESTAMP(MAX(change_date)) FROM ' . Photo::model(
-        )->tableName());
+        $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . Photo::model()->tableName());
 
         $albums = Gallery::model()->public()->cache(Yii::app()->params['cacheTime'], $dependency)->findAll(
             array(

@@ -24,8 +24,8 @@ $form = $this->beginWidget(
 <?php echo $form->textAreaRow($model, 'description', array('rows' => 6, 'cols' => 50, 'class' => 'span8')); ?>
 <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 150)); ?>
 <?php echo $form->textFieldRow($model, 'file_name', array('class' => 'span5', 'maxlength' => 500)); ?>
-<?php echo $form->textFieldRow($model, 'creation_date', array('class' => 'span5')); ?>
-<?php echo $form->textFieldRow($model, 'change_date', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'create_time', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'update_time', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'user_id', array('class' => 'span5', 'maxlength' => 10)); ?>
 <?php echo $form->textFieldRow($model, 'change_user_id', array('class' => 'span5', 'maxlength' => 10)); ?>
 <?php echo $form->textFieldRow($model, 'alt', array('class' => 'span5', 'maxlength' => 150)); ?>

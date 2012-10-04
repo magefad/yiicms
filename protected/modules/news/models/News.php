@@ -5,8 +5,8 @@
  *
  * The followings are the available columns in table '{{news}}':
  * @property integer $id
- * @property string $creation_date
- * @property string $change_date
+ * @property string $create_time
+ * @property string $update_time
  * @property string $date
  * @property string $title
  * @property string $slug
@@ -99,7 +99,7 @@ class News extends CActiveRecord
                 'message' => Yii::t('news', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, creation_date, change_date, date, title, slug, body_cut, body, user_id, status, is_protected, keywords, description,   author_search',
+                'id, create_time, update_time, date, title, slug, body_cut, body, user_id, status, is_protected, keywords, description,   author_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -135,7 +135,7 @@ class News extends CActiveRecord
                 'params'    => array(':is_protected' => self::PROTECTED_NO)
             ),
             'recent'    => array(
-                'order' => 'creation_date DESC',
+                'order' => 'create_time DESC',
                 'limit' => 5,
             ),
         );
@@ -148,8 +148,8 @@ class News extends CActiveRecord
     {
         return array(
             'id'            => 'ID',
-            'creation_date' => Yii::t('news', 'Создано'),
-            'change_date'   => Yii::t('news', 'Изменено'),
+            'create_time'   => Yii::t('news', 'Создано'),
+            'update_time'   => Yii::t('news', 'Изменено'),
             'date'          => Yii::t('news', 'Дата'),
             'title'         => Yii::t('news', 'Заголовок'),
             'slug'          => Yii::t('news', 'Ссылка'),
@@ -175,8 +175,7 @@ class News extends CActiveRecord
 
     public function beforeSave()
     {
-        $this->change_date = new CDbExpression('NOW()');
-        $this->date        = date('Y-m-d', strtotime($this->date));
+        $this->date = date('Y-m-d', strtotime($this->date));
 
         if ($imageFile = CUploadedFile::getInstance($this, 'image')) {
             $uploadPath = $this->getUploadPath();
@@ -187,10 +186,10 @@ class News extends CActiveRecord
             $this->image = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.jpg';
             $this->setImage($imageFile->getTempName(), $uploadPath);
         }
-
+        unset($this->update_time);//on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
-            $this->creation_date = $this->change_date;
-            $this->user_id       = Yii::app()->user->getId();
+            $this->create_time = new CDbExpression('NOW()');
+            $this->user_id     = Yii::app()->user->getId();
         }
 
         return parent::beforeSave();
@@ -288,8 +287,8 @@ class News extends CActiveRecord
         $criteria->with = array('author');
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('creation_date', $this->creation_date, true);
-        $criteria->compare('change_date', $this->change_date, true);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('date', $this->date, true);
         $criteria->compare('title', $this->title, true);
         $criteria->compare('slug', $this->slug, true);
