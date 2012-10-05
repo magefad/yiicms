@@ -25,7 +25,7 @@ $form = $this->beginWidget(
 ); ?>
 <?php echo $form->labelEx($model, 'publish_time'); ?>
 <?php $this->widget(
-    'ext.jui.CJuiDateTimePicker',
+    'ext.jui.EJuiDateTimePicker',
     array(
         'model'     => $model,
         'attribute' => 'publish_time',

@@ -1,12 +1,12 @@
 <?php
 /**
- * CJuiDateTimePicker displays a DateTimePicker or TimePicker.
+ * EJuiDateTimePicker displays a DateTimePicker or TimePicker.
  *
- * CJuiDateTimePicker encapsulates the {@link http://trentrichardson.com/examples/timepicker/} addon.
+ * EJuiDateTimePicker encapsulates the {@link http://trentrichardson.com/examples/timepicker/} addon.
  *
  * To use this widget, you may insert the following code in a view:
  * <pre>
- * $this->widget('ext.jui.CJuiDateTimePicker', array(
+ * $this->widget('ext.jui.EJuiDateTimePicker', array(
  *     'model'     => $model,
  *     'attribute' => 'publish_time',
  *     // additional javascript options for the datetime picker plugin
@@ -23,7 +23,7 @@
  */
 
 Yii::import('zii.widgets.jui.CJuiDatePicker');
-class CJuiDateTimePicker extends CJuiDatePicker
+class EJuiDateTimePicker extends CJuiDatePicker
 {
     public $mode = 'datetime';
 
