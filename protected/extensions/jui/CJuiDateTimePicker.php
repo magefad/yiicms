@@ -82,7 +82,7 @@ class CJuiDateTimePicker extends CJuiDatePicker
             }
 
             //set now time..
-            $this->options['hour'] = date('h');
+            $this->options['hour'] = date('H');
             $this->options['minute'] = date('i');
             $this->options['second'] = date('s');
             $options = CJavaScript::encode($this->options);
