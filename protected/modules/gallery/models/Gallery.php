@@ -46,17 +46,12 @@ class Gallery extends CActiveRecord
      */
     public function rules()
     {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('name', 'required'),
-            array('status', 'numerical', 'integerOnly' => true),
-            array('name', 'length', 'max' => 300),
-            array('keywords, slug', 'length', 'max' => 150),
-            array('sort', 'length', 'max' => 10),
+            array('status, sort', 'numerical', 'integerOnly' => true),
+            array('name, keywords, slug', 'length', 'max' => 200),
+            array('description', 'length', 'max' => 255),
             array('description', 'safe'),
-            // The following rule is used by search().
-            // Please remove those attributes that should not be searched.
             array('id, name, description, keywords, slug, status, sort', 'safe', 'on' => 'search'),
         );
     }
@@ -66,8 +61,6 @@ class Gallery extends CActiveRecord
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
             'photos' => array(self::HAS_MANY, 'Photo', 'gallery_id', 'order' => '`sort` asc'),
         );
@@ -95,9 +88,6 @@ class Gallery extends CActiveRecord
      */
     public function search()
     {
-        // Warning: Please modify the following code to remove attributes that
-        // should not be searched.
-
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id, true);

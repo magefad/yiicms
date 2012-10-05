@@ -8,8 +8,8 @@
  * @property integer $parent_id
  * @property string $create_time
  * @property string $update_time
- * @property string $user_id
- * @property string $change_user_id
+ * @property integer $user_id
+ * @property integer $change_user_id
  * @property string $name
  * @property string $title
  * @property string $slug
@@ -65,9 +65,9 @@ class Page extends CActiveRecord
     {
         return array(
             array('name, title, slug, body, status, is_protected', 'required'),
-            array('parent_id, status, is_protected, menu_order', 'numerical', 'integerOnly' => true),
-            array('user_id, change_user_id', 'length', 'max' => 10),
-            array('name, title, slug, keywords', 'length', 'max' => 150),
+            array('parent_id, user_id, change_user_id, status, is_protected, menu_order', 'numerical', 'integerOnly' => true),
+            array('name', 'length', 'max' => 50),
+            array('title, slug, keywords', 'length', 'max' => 200),
             array('description', 'length', 'max' => 250),
             array('slug', 'unique'), #sulug is a link of page
             array('status', 'in', 'range' => array_keys($this->getStatusList())),

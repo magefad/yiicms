@@ -72,9 +72,9 @@ class News extends CActiveRecord
     {
         return array(
             array('date, title, body_cut', 'required', 'on' => array('update', 'insert')),
-            array('status, is_protected', 'numerical', 'integerOnly' => true),
+            array('user_id, status, is_protected', 'numerical', 'integerOnly' => true),
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
-            array('title, slug, keywords', 'length', 'max' => 150),
+            array('title, slug, keywords', 'length', 'max' => 200),
             array('slug', 'unique'),
             array('body_cut', 'length', 'max' => 400),
             array('description', 'length', 'max' => 250),

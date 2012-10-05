@@ -55,9 +55,7 @@ class Blog extends CActiveRecord
         return array(
             array('title, description', 'required', 'except' => 'search'),
             array('type, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
-            array('title, keywords, slug', 'length', 'max' => 128),
-            array('create_user_id, update_user_id', 'length', 'max' => 10),
-            array('create_time, update_time', 'length', 'max' => 11),
+            array('title, keywords, slug', 'length', 'max' => 200),
             array('type', 'in', 'range' => array_keys($this->getTypeList())),
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
             array('title, keywords, slug, description', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),

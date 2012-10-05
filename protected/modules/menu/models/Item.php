@@ -11,7 +11,6 @@
  * @property string $href
  * @property integer $type
  * @property string $access
- * @property integer $condition_denial
  * @property integer $sort
  * @property integer $status
  */
@@ -48,9 +47,10 @@ class Item extends CActiveRecord
     {
         return array(
             array('menu_id, title, href', 'required'),
-            array('type, sort, status, sort, status', 'numerical', 'integerOnly' => true),
-            array('parent_id, menu_id', 'length', 'max' => 10),
-            array('title, href, access', 'length', 'max' => 255),
+            array('parent_id, menu_id, type, sort, status, sort, status', 'numerical', 'integerOnly' => true),
+            array('title', 'length', 'max' => 100),
+            array('href, access', 'length', 'max' => 200),
+            array('access', 'length', 'max' => 50),
             array(
                 'id, parent_id, menu_id, title, href, type, access, sort, status,  menu_search, parent_search',
                 'safe',

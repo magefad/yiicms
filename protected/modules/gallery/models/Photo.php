@@ -81,9 +81,9 @@ class Photo extends CActiveRecord
         return array(
             #array('gallery_id, name, file_name, create_time, user_id, change_user_id, alt', 'required'),
             array('gallery_id', 'required'),
-            array('sort, type, status', 'numerical', 'integerOnly' => true),
-            array('gallery_id', 'length', 'max' => 11),
-            array('name', 'length', 'max' => 300),
+            array('gallery_id, user_id, change_user_id, type, status, sort', 'numerical', 'integerOnly' => true),
+            array('name, title, keywords', 'length', 'max' => 200),
+            array('alt', 'length', 'max' => 100),
             array('file_name', 'length', 'max' => 500),
             array(
                 'image',
@@ -92,8 +92,6 @@ class Photo extends CActiveRecord
                 'allowEmpty' => true,
                 'safe'       => false
             ),
-            array('user_id, change_user_id', 'length', 'max' => 10),
-            array('alt', 'length', 'max' => 150),
             array('description', 'safe'),
             array(
                 'id, gallery_id, name, description, sort, file_name, create_time, user_id, change_user_id, alt, type, status, author_search, changeAuthor_search, gallery_search',

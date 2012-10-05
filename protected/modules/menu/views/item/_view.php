@@ -34,10 +34,6 @@
     <br/>
 
     <?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('condition_denial')); ?>:</b>
-	<?php echo CHtml::encode($data->condition_denial); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('sort')); ?>:</b>
 	<?php echo CHtml::encode($data->sort); ?>
 	<br />

@@ -67,8 +67,7 @@ class Post extends CActiveRecord
                 'numerical',
                 'integerOnly' => true
             ),
-            array('blog_id, create_user_id, update_user_id', 'length', 'max' => 10),
-            array('title, slug, keywords, link', 'length', 'max' => 128),
+            array('title, slug, keywords, link', 'length', 'max' => 200),
             array('description', 'length', 'max' => 255),
             array('link', 'url'),
             array('comment_status', 'in', 'range' => array(0, 1)),

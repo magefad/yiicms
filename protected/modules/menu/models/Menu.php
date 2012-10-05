@@ -41,9 +41,9 @@ class Menu extends CActiveRecord
         return array(
             array('name, code', 'required'),
             array('status', 'numerical', 'integerOnly' => true),
-            array('name, code, description', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
-            array('name, description', 'length', 'max' => 300),
-            array('code', 'length', 'max' => 100),
+            array('name, description', 'length', 'max' => 200),
+            array('code', 'length', 'max' => 20),
+            array('name, description', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
             array(
                 'code',
                 'match',
