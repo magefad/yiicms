@@ -25,13 +25,12 @@ $form = $this->beginWidget(
 ); ?>
 <?php echo $form->labelEx($model, 'publish_time'); ?>
 <?php $this->widget(
-    'zii.widgets.jui.CJuiDatePicker',
+    'ext.jui.CJuiDateTimePicker',
     array(
         'model'     => $model,
         'attribute' => 'publish_time',
-        'language'  => Yii::app()->language,
         'options'   => array(
-            'dateFormat' => 'dd.mm.yy',
+            'dateFormat' => 'yy-mm-dd',
         ),
     )
 ); ?>

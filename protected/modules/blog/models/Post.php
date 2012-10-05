@@ -68,7 +68,6 @@ class Post extends CActiveRecord
                 'integerOnly' => true
             ),
             array('blog_id, create_user_id, update_user_id', 'length', 'max' => 10),
-            array('create_time, update_time, publish_time', 'length', 'max' => 11),
             array('title, slug, keywords, link', 'length', 'max' => 128),
             array('description', 'length', 'max' => 255),
             array('link', 'url'),
@@ -172,20 +171,15 @@ class Post extends CActiveRecord
         ));
     }
 
-    public function afterFind()
-    {
-        $this->publish_time = date('d-m-Y', $this->publish_time);
-        parent::afterFind();
-    }
-
     public function beforeSave()
     {
         if (parent::beforeSave()) {
-            $this->publish_time   = strtotime($this->publish_time . date(' H:m:s'));
-            $this->update_time    = time();
+            #$this->publish_time   = date('Y-m-d', strtotime($this->publish_time . date(' H:m:s')));
+
+            unset($this->update_time);//on update CURRENT_TIMESTAMP
             $this->update_user_id = Yii::app()->user->getId();
             if ($this->isNewRecord) {
-                $this->create_time    = $this->update_time;
+                $this->create_time    = new CDbExpression('now()');
                 $this->create_user_id = $this->update_user_id;
             }
             return true;

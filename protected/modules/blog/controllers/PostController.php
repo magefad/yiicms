@@ -33,6 +33,7 @@ class PostController extends Controller
         if (!$model) {
             throw new CHttpException(404, Yii::t('blog', 'Post not found!'));
         } else {
+            $model->publish_time = Yii::app()->dateFormatter->formatDateTime($model->publish_time, 'short', 'short');
             $model->content = str_replace('<cut>', '<a name="cut"></a>', $model->content);
             $this->setMetaTags($model);
             $this->render('show', array('model' => $model, 'tags' => $model->getTags()));
