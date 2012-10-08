@@ -45,7 +45,7 @@ class DefaultController extends Controller
             throw new CHttpException('404', Yii::t('page', 'Страница не найдена или удалена!'));
         }
         $this->setMetaTags($this->currentPage);
-        if (isset($this->currentPage->parent_id)) {
+        if (is_object($this->currentPage->parent)) {
             $this->breadcrumbs = array(
                 $this->currentPage->parent->name => array('default/show', 'slug' => $this->currentPage->parent->slug),
                 $this->currentPage->name,
