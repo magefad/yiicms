@@ -7,7 +7,7 @@
 ?>
 <?php if (Yii::app()->user->isGuest && !$model->isNewRecord) { ?>
 <div class="comment-not-logged">
-    <?php echo Yii::t('blog', 'Sorry, you have to login to leave a comment.'); ?>
+    <?php echo Yii::t('CommentModule.comment', 'Sorry, you have to login to leave a comment.'); ?>
 </div>
 <?php } else { ?>
 <div id="comment-form-<?php echo $model->isNewRecord ? 'new' : 'edit-' . $model->id; ?>" class="form">
@@ -35,7 +35,7 @@
         echo $form->hiddenField($model, 'model');
         echo $form->hiddenField($model, 'model_id');
         echo CHtml::ajaxSubmitButton(
-            Yii::t('blog', 'Submit'),
+            Yii::t('CommentModule.comment', 'Submit'),
             array('/comment/default/create'),
             array('replace' => '#comment-form-new'),
             array(
@@ -45,7 +45,7 @@
         );
     } else {
         echo CHtml::ajaxSubmitButton(
-            Yii::t('blog', 'Update'),
+            Yii::t('CommentModule.comment', 'Update'),
             array('/comment/default/update', 'id' => $model->id),
             array('replace' => '#comment-form-edit-' . $model->id),
             array(

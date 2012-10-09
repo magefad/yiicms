@@ -9,8 +9,9 @@
  * Time: 13:25
  */
 return array(
-    'sourcePath'  => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'modules/blog',
-    'messagePath' => dirname(__FILE__),
+    'sourcePath'  => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'modules/comment',
+    #'messagePath' => dirname(__FILE__),
+    'messagePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'modules/comment/messages',
     'languages'   => array('en', 'ru'),
     'fileTypes'   => array('php'),
     'overwrite'   => true,

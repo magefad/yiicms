@@ -36,7 +36,7 @@
                     'id'      => 'delete-comment-' . $data->id,
                     'title'   => Yii::t('CommentModule.comment', 'Remove'),
                     'rel'     => 'tooltip',
-                    'confirm' => Yii::t('blog', 'Are you sure you want to delete this item?'),
+                    'confirm' => Yii::t('CommentModule.comment', 'Are you sure you want to delete this item?'),
                 )
             );
         } ?>
