@@ -24,9 +24,11 @@ class BlogModule extends WebModule
     public function init()
     {
         parent::init();
-
         $this->setImport(
-            array('blog.models.*')
+            array(
+                'blog.models.*',
+                'application.modules.comment.models.*'
+            )
         );
     }
 }

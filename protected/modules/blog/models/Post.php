@@ -26,6 +26,7 @@
  * @property User $updateUser
  * @property Blog $blog
  *
+ * @method getComments() return Comment[]
  * @method getTags() return array Post Tags
  */
 class Post extends CActiveRecord
@@ -240,6 +241,9 @@ class Post extends CActiveRecord
                 'tagBindingTableTagId' => 'tag_id',
                 'cacheID'              => 'cache',
             ),
+            'comments' => array(
+                'class' => 'application.modules.comment.behaviors.CommentBehavior',
+            )
         );
     }
 }
