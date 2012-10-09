@@ -35,7 +35,7 @@ return array (
   'Blogs' => '',
   'Changed' => '',
   'Comment Status' => '',
-  'Comment|Comments' => '',
+  'Comment|Comments|Comments' => '',
   'Content' => '',
   'Create' => '',
   'Create Post' => '',

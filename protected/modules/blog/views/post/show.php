@@ -17,7 +17,7 @@ $this->breadcrumbs = array(
     <?php echo $model->content; ?>
     <i class="icon-user"></i> <?php echo $model->createUser->username; ?>
     | <i class="icon-calendar"></i> <?php echo $model->publish_time; ?>
-    | <i class="icon-comment"></i> <?php echo $model->getCommentCount() . ' ' . Yii::t('blog', 'Comment|Comments', $model->getCommentCount()); ?>
+    | <i class="icon-comment"></i> <?php echo $model->getCommentCount() . ' ' . Yii::t('blog', 'Comment|Comments|Comments', $model->getCommentCount()); ?>
     <!--| <i class="icon-share"></i> <a href="#">39 Shares</a> -->
     | <i class="icon-tags"></i> <?php echo Yii::t('blog', 'Tags'); ?>:
     <?php foreach ($tags as $tag): ?>

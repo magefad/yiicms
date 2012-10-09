@@ -33,7 +33,7 @@ $tags              = $data->getTags();
         | <i class="icon-comment"></i> <?php echo CHtml::link(
         ($data->getCommentCount() . ' ' . Yii::t(
             'blog',
-            'Comment|Comments',
+            'Comment|Comments|Comments',
             $data->getCommentCount()
         )),
         array('/blog/post/show/', 'slug' => $data->slug, '#' => 'comments')
