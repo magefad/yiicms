@@ -146,11 +146,11 @@ class Page extends CActiveRecord
 
     public function beforeSave()
     {
-        $this->user_id = Yii::app()->user->getId();
+        $this->change_user_id = Yii::app()->user->getId();
         unset($this->update_time);//on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
             $this->create_time  = new CDbExpression('now()');
-            $this->change_user_id = $this->user_id;
+            $this->user_id = $this->change_user_id;
         }
         return parent::beforeSave();
     }
