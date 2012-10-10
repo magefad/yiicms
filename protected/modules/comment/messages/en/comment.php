@@ -33,6 +33,7 @@ return array (
   'Manage' => '',
   'Model' => '',
   'Not approved' => '',
+  'Post Comment' => '',
   'Remove' => '',
   'Save' => '',
   'Search' => '',
