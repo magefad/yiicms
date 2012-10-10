@@ -5,8 +5,11 @@
  * @var CArrayDataProvider $comments
  * @var CController $this
  */
+
 $comments = $model->commentDataProvider;
 $comments->setPagination(false);
+echo ($comments->itemCount) ? '<h3>' . Yii::t('CommentModule.comment', '{n} Comment|{n} Comments', $comments->itemCount) . '</h3>' : '<div>&nbsp;</div>';
+
 $this->widget(
     'zii.widgets.CListView',
     array(
@@ -14,7 +17,9 @@ $this->widget(
         'itemView'           => 'application.modules.comment.views.default._view',
         'sortableAttributes' => array('create_time' => Yii::t('CommentModule.comment', 'Create Time')),
         #'enablePagination'  => false,
-        'template'           => '{sorter}{items}{pager}'
+        'template'           => '{items}',
+        'emptyText'          => '',
+        'htmlOptions'        => array('style' => 'padding-top:0'),
     )
 );
 $this->renderPartial(

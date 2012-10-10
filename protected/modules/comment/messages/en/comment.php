@@ -47,4 +47,5 @@ return array (
   'User' => '',
   'Verify Code' => '',
   'View' => '',
+  '{n} Comment|{n} Comments' => '',
 );
