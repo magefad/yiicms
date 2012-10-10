@@ -78,6 +78,6 @@ class CommentBehavior extends CActiveRecordBehavior
      */
     public function getCommentDataProvider()
     {
-        return new CArrayDataProvider($this->getComments());
+        return new CArrayDataProvider($this->getComments(), array('sort' => array('attributes' => array('create_time'))));
     }
 }

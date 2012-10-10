@@ -11,10 +11,14 @@
 </div>
 <?php } else { ?>
 <div id="comment-form-<?php echo $model->isNewRecord ? 'new' : 'edit-' . $model->id; ?>" class="form">
+<?php if ($model->isNewRecord): ?>
+    <span id="toggle-comment-form" onclick='$("#comment-form").toggle("fast")'><?php echo Yii::t('CommentModule.comment', 'Post Comment');?></span>
+<?php endif; ?>
     <?php $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
         'id'                   => 'comment-form',
+        'htmlOptions'          => array('style' => $model->isNewRecord && !count($model->errors) ? 'display:none' : ''),
         'enableAjaxValidation' => false
     )
 ); ?>
@@ -58,9 +62,4 @@
     </div>
     <?php $this->endWidget() ?>
 </div><!-- form -->
-<?php
-    Yii::app()->clientScript->registerScript(
-        'submit',
-        "$('#Comment_text').keydown(function (e) {if (e.ctrlKey && e.keyCode == 13){\$('#comment-submit').click();}});"
-    );
-} ?>
+<?php } ?>
