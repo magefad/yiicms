@@ -110,7 +110,7 @@ class Comment extends CActiveRecord
             'approved' => array(
                 'condition' => 'status = :status',
                 'params'    => array(':status' => self::STATUS_APPROVED),
-                'order'     => 'creation_date DESC',
+                'order'     => 'create_time DESC',
             ),
             'authored' => array(
                 'condition' => 'create_user_id is not null',
