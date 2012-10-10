@@ -22,3 +22,4 @@ $this->breadcrumbs = array(
         <b><?php echo $model->author->username?></b>
     </div>
 </div>
+<?php $this->renderPartial('application.modules.comment.views.default.commentList', array('model' => $model)); ?>
