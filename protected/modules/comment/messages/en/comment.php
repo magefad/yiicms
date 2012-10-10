@@ -29,9 +29,9 @@ return array (
   'Delete' => '',
   'Deleted' => '',
   'Edit' => '',
-  'Guest' => '',
   'Manage' => '',
   'Model' => '',
+  'Name' => '',
   'Not approved' => '',
   'Post Comment' => '',
   'Remove' => '',
@@ -45,5 +45,6 @@ return array (
   'Update' => '',
   'Update Time' => '',
   'User' => '',
+  'Verify Code' => '',
   'View' => '',
 );

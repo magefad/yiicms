@@ -5,7 +5,7 @@
 <div class="row-fluid">
     <div class="comment" id="comment-<?php echo $data->id; ?>">
 	<span class="comment-head muted">
-		<?php echo $data->username; ?>
+		<?php echo CHtml::encode($data->username); ?>
         <span class="comment-date">
 			<?php echo Yii::app()->getDateFormatter()->formatDateTime($data->create_time, 'short', 'short'); ?>
 		</span>

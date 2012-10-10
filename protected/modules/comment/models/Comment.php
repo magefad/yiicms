@@ -10,6 +10,7 @@
  * @property string $text
  * @property string $ip
  * @property integer $status
+ * @property string $username
  * @property string $create_time
  * @property integer $create_user_id
  * @property string $update_time
@@ -60,15 +61,23 @@ class Comment extends CActiveRecord
     {
         return array(
             array('model, model_id, text', 'required'),
+            array('username', 'checkUsername'),
             array('model_id, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('model', 'length', 'max' => 16),
-            array('ip', 'length', 'max' => 20),
-            array('model, text, ip', 'filter', 'filter' => 'trim'),
+            array('ip, username', 'length', 'max' => 20),
+            array('model, text, ip, username', 'filter', 'filter' => 'trim'),
             array('status', 'in', 'range' => array_keys($this->statusList)),
-            array('model, text', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
+            array('model, text, username', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
             array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements() || !Yii::app()->user->isGuest),
             array('id, model, model_id, text, ip, status, create_time, create_user_id, update_time, update_user_id', 'safe', 'on' => 'search'),
         );
+    }
+
+    public function checkUsername()
+    {
+        if ( empty($this->username) && Yii::app()->user->isGuest ) {
+            $this->addError('username', Yii::t('yii', '{attribute} cannot be blank.', array('{attribute}' => $this->getAttributeLabel('username'))));
+        }
     }
 
     /**
@@ -87,16 +96,16 @@ class Comment extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'             => 'ID',
             'model'          => Yii::t('CommentModule.comment', 'Model'),
             'model_id'       => Yii::t('CommentModule.comment', 'Model'),
             'text'           => Yii::t('CommentModule.comment', 'Comment Text'),
-            'ip'             => 'IP',
             'status'         => Yii::t('CommentModule.comment', 'Status'),
+            'username'       => Yii::t('CommentModule.comment', 'Name'),
             'create_time'    => Yii::t('CommentModule.comment', 'Create Time'),
             'create_user_id' => Yii::t('CommentModule.comment', 'User'),
             'update_time'    => Yii::t('CommentModule.comment', 'Update Time'),
             'update_user_id' => Yii::t('CommentModule.comment', 'Change User'),
+            'verifyCode'     => Yii::t('CommentModule.comment', 'Verify Code'),
         );
     }
 
@@ -132,6 +141,7 @@ class Comment extends CActiveRecord
         $criteria->compare('text', $this->text, true);
         $criteria->compare('ip', $this->ip, true);
         $criteria->compare('status', $this->status);
+        $criteria->compare('username', $this->username);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('create_user_id', $this->create_user_id, true);
         $criteria->compare('update_time', $this->update_time, true);
@@ -175,7 +185,7 @@ class Comment extends CActiveRecord
      */
     public function getUsername()
     {
-        return is_null($this->user) ? Yii::t('CommentModule.comment', 'Guest') : $this->user->{$this->module->usernameAttribute};
+        return is_null($this->user) ? $this->username : $this->user->{$this->module->usernameAttribute};
     }
 
     /**

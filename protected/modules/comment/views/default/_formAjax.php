@@ -27,12 +27,20 @@
         <?php echo $form->textArea($model, 'text', array('class' => 'span4', 'rows' => 5, 'placeholder' => $model->getAttributeLabel('text'))); ?>
         <?php echo $form->error($model, 'text'); ?>
     </div>
-    <?php if (Yii::app()->user->isGuest && CCaptcha::checkRequirements()): ?>
+    <?php if (Yii::app()->user->isGuest): ?>
+    <div class="control-group">
+        <div class="control-group">
+            <?php echo $form->textField($model, 'username', array('placeholder' => $model->getAttributeLabel('username'))); ?>
+            <?php echo $form->error($model, 'username'); ?>
+        </div>
+    </div>
+    <?php if (CCaptcha::checkRequirements()): ?>
         <div class="control-group">
             <?php echo $form->textField($model, 'verifyCode', array('placeholder' => $model->getAttributeLabel('verifyCode'))); ?>
             <?php $this->widget('CCaptcha', array('captchaAction' => Yii::app()->createUrl('/comment/default/captcha'), 'clickableImage' => true, 'showRefreshButton' => false)); ?>
             <?php echo $form->error($model, 'verifyCode'); ?>
         </div>
+    <?php endif; ?>
     <?php endif; ?>
     <div class="control-group">
         <?php if ($model->isNewRecord) {

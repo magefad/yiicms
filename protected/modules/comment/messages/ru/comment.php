@@ -29,9 +29,9 @@ return array (
   'Delete' => 'Удалить',
   'Deleted' => 'Удален',
   'Edit' => 'Изменить',
-  'Guest' => 'Гость',
   'Manage' => 'Управление',
   'Model' => 'Модель',
+  'Name' => 'Имя',
   'Not approved' => 'Не опубликован',
   'Post Comment' => 'Оставить комментарий',
   'Remove' => 'Удалить',
@@ -45,5 +45,6 @@ return array (
   'Update' => 'Сохранить',
   'Update Time' => 'Обновлено',
   'User' => 'Автор',
+  'Verify Code' => 'Проверочный код',
   'View' => 'Смотреть',
 );
