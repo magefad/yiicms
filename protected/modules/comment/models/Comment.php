@@ -5,15 +5,15 @@
  *
  * The followings are the available columns in table '{{comment}}':
  * @property integer $id
- * @property integer $create_user_id
- * @property integer $update_user_id
  * @property string $model
  * @property integer $model_id
- * @property string $create_time
- * @property string $update_time
  * @property string $text
- * @property integer $status
  * @property string $ip
+ * @property integer $status
+ * @property string $create_time
+ * @property integer $create_user_id
+ * @property string $update_time
+ * @property integer $update_user_id
  *
  * The followings are the available model relations:
  * @property User $user
@@ -60,14 +60,14 @@ class Comment extends CActiveRecord
     {
         return array(
             array('model, model_id, text', 'required'),
-            array('status, create_user_id, update_user_id, model_id', 'numerical', 'integerOnly' => true),
+            array('model_id, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('model', 'length', 'max' => 16),
             array('ip', 'length', 'max' => 20),
-            array('model, text', 'filter', 'filter' => 'trim'),
+            array('model, text, ip', 'filter', 'filter' => 'trim'),
             array('status', 'in', 'range' => array_keys($this->statusList)),
             array('model, text', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
             array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements() || !Yii::app()->user->isGuest),
-            array('id, create_user_id, update_user_id, model, model_id, create_time, update_time, text, status, ip', 'safe', 'on' => 'search'),
+            array('id, model, model_id, text, ip, status, create_time, create_user_id, update_time, update_user_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -87,16 +87,16 @@ class Comment extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'          => 'ID',
-            'create_user_id'     => Yii::t('CommentModule.comment', 'User'),
-            'update_user_id'  => Yii::t('CommentModule.comment', 'Change User'),
-            'model'       => Yii::t('CommentModule.comment', 'Model'),
-            'model_id'    => Yii::t('CommentModule.comment', 'Model'),
-            'create_time' => Yii::t('CommentModule.comment', 'Create Time'),
-            'update_time' => Yii::t('CommentModule.comment', 'Update Time'),
-            'text'        => Yii::t('CommentModule.comment', 'Comment Text'),
-            'status'      => Yii::t('CommentModule.comment', 'Status'),
-            'ip'          => 'IP',
+            'id'             => 'ID',
+            'model'          => Yii::t('CommentModule.comment', 'Model'),
+            'model_id'       => Yii::t('CommentModule.comment', 'Model'),
+            'text'           => Yii::t('CommentModule.comment', 'Comment Text'),
+            'ip'             => 'IP',
+            'status'         => Yii::t('CommentModule.comment', 'Status'),
+            'create_time'    => Yii::t('CommentModule.comment', 'Create Time'),
+            'create_user_id' => Yii::t('CommentModule.comment', 'User'),
+            'update_time'    => Yii::t('CommentModule.comment', 'Update Time'),
+            'update_user_id' => Yii::t('CommentModule.comment', 'Change User'),
         );
     }
 
@@ -127,15 +127,15 @@ class Comment extends CActiveRecord
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id, true);
-        $criteria->compare('create_user_id', $this->create_user_id, true);
-        $criteria->compare('update_user_id', $this->update_user_id, true);
         $criteria->compare('model', $this->model, true);
         $criteria->compare('model_id', $this->model_id, true);
-        $criteria->compare('create_time', $this->create_time, true);
-        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('text', $this->text, true);
-        $criteria->compare('status', $this->status);
         $criteria->compare('ip', $this->ip, true);
+        $criteria->compare('status', $this->status);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('create_user_id', $this->create_user_id, true);
+        $criteria->compare('update_time', $this->update_time, true);
+        $criteria->compare('update_user_id', $this->update_user_id, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
