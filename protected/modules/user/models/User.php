@@ -132,14 +132,15 @@ class User extends CActiveRecord
             'blogsUpdate'         => array(self::HAS_MANY, 'Blog', 'update_user_id'),
             'blogPosts'           => array(self::HAS_MANY, 'BlogPost', 'create_user_id'),
             'blogPostsUpdate'     => array(self::HAS_MANY, 'BlogPost', 'update_user_id'),
-            'galleryPhotos'       => array(self::HAS_MANY, 'GalleryPhoto', 'user_id'),
-            'galleryPhotosUpdate' => array(self::HAS_MANY, 'GalleryPhoto', 'change_user_id'),
-            'news'                => array(self::HAS_MANY, 'News', 'user_id'),
-            'pages'               => array(self::HAS_MANY, 'Page', 'user_id'),
-            'pagesUpdate'         => array(self::HAS_MANY, 'Page', 'change_user_id'),
+            'galleryPhotos'       => array(self::HAS_MANY, 'GalleryPhoto', 'create_user_id'),
+            'galleryPhotosUpdate' => array(self::HAS_MANY, 'GalleryPhoto', 'update_user_id'),
+            'news'                => array(self::HAS_MANY, 'News', 'create_user_id'),
+            'newsUpdate'          => array(self::HAS_MANY, 'News', 'update_user_id'),
+            'pages'               => array(self::HAS_MANY, 'Page', 'create_user_id'),
+            'pagesUpdate'         => array(self::HAS_MANY, 'Page', 'update_user_id'),
             'recoveryPasswords'   => array(self::HAS_MANY, 'RecoveryPassword', 'user_id'),
             'userBlogs'           => array(self::HAS_MANY, 'UserBlog', 'user_id'),
-            'userIdentities'      => array(self::HAS_MANY, 'UserIdentity', 'user_id'),
+            'userSocial'          => array(self::HAS_MANY, 'UserIdentity', 'user_id'),
         );
     }
 

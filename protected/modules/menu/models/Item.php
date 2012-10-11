@@ -104,7 +104,6 @@ class Item extends CActiveRecord
         #$criteria->compare('menu_id', $this->menu_id, true);
         $criteria->compare('menu.name', $this->menu_search, true);
         $criteria->compare('parent.title', $this->parent_search, true);
-        #$criteria->compare('change_user_id', $this->change_user_id);
         $criteria->compare('title', $this->title, true);
         $criteria->compare('href', $this->href, true);
         //$criteria->compare('type', $this->type);

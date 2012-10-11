@@ -99,7 +99,7 @@ $this->widget(
 		'slug',
 		'body_cut',
 		'body',
-		'user_id',
+		'create_user_id',
 		'status',
 		'is_protected',
 		'keywords',

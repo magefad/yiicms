@@ -53,7 +53,7 @@ $('.search-form form').submit(function(){
             array(
                 'name'        => 'id',
                 'htmlOptions' => array('style' => 'width: 20px; text-align: center'),
-            ), //'change_user_id',
+            ), //'update_user_id',
             array(
                 'name'  => 'name',
                 'type'  => 'raw',

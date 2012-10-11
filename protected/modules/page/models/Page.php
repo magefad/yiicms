@@ -8,8 +8,8 @@
  * @property integer $parent_id
  * @property string $create_time
  * @property string $update_time
- * @property integer $user_id
- * @property integer $change_user_id
+ * @property integer $create_user_id
+ * @property integer $update_user_id
  * @property string $name
  * @property string $title
  * @property string $slug
@@ -65,7 +65,7 @@ class Page extends CActiveRecord
     {
         return array(
             array('name, title, slug, body, status, is_protected', 'required'),
-            array('parent_id, user_id, change_user_id, status, is_protected, menu_order', 'numerical', 'integerOnly' => true),
+            array('parent_id, create_user_id, update_user_id, status, is_protected, menu_order', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
             array('title, slug, keywords', 'length', 'max' => 200),
             array('description', 'length', 'max' => 250),
@@ -100,8 +100,8 @@ class Page extends CActiveRecord
         return array(
             'children'     => array(self::HAS_MANY, 'Page', 'parent_id', 'order' => 'menu_order ASC'),
             'parent'       => array(self::BELONGS_TO, 'Page', 'parent_id'),
-            'author'       => array(self::BELONGS_TO, 'User', 'user_id'),
-            'changeAuthor' => array(self::BELONGS_TO, 'User', 'change_user_id'),
+            'author'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
+            'changeAuthor' => array(self::BELONGS_TO, 'User', 'update_user_id'),
         );
     }
 
@@ -123,8 +123,8 @@ class Page extends CActiveRecord
             'status'              => Yii::t('page', 'Статус'),
             'is_protected'        => Yii::t('page', 'Доступ только для авторизованных пользователей'),
             'name'                => Yii::t('page', 'Название в меню'),
-            #'user_id'            => Yii::t('page', 'Создал'),
-            #'change_user_id'     => Yii::t('page', 'Изменил'),
+            'create_user_id'      => Yii::t('page', 'Создал'),
+            'update_user_id'      => Yii::t('page', 'Изменил'),
             'menu_order'          => Yii::t('page', 'Порядок'),
             'author_search'       => Yii::t('page', 'Создал'),
             'changeAuthor_search' => Yii::t('page', 'Изменил'),
@@ -146,11 +146,11 @@ class Page extends CActiveRecord
 
     public function beforeSave()
     {
-        $this->change_user_id = Yii::app()->user->getId();
+        $this->update_user_id = Yii::app()->user->getId();
         unset($this->update_time);//on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
             $this->create_time  = new CDbExpression('now()');
-            $this->user_id = $this->change_user_id;
+            $this->create_user_id = $this->update_user_id;
         }
         return parent::beforeSave();
     }

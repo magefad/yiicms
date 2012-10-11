@@ -42,12 +42,12 @@
 	<?php echo CHtml::encode($data->update_time); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('user_id')); ?>:</b>
-	<?php echo CHtml::encode($data->user_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('create_user_id')); ?>:</b>
+	<?php echo CHtml::encode($data->create_user_id); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('change_user_id')); ?>:</b>
-	<?php echo CHtml::encode($data->change_user_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('update_user_id')); ?>:</b>
+	<?php echo CHtml::encode($data->update_user_id); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('alt')); ?>:</b>

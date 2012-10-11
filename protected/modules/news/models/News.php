@@ -13,7 +13,8 @@
  * @property string $body_cut
  * @property string $body
  * @property string $image
- * @property string $user_id
+ * @property integer $create_user_id
+ * @property integer $update_user_id
  * @property integer $status
  * @property integer $is_protected
  * @property string $keywords
@@ -81,7 +82,7 @@ class News extends CActiveRecord
     {
         return array(
             array('date, title, body_cut', 'required', 'on' => array('update', 'insert')),
-            array('user_id, status, is_protected', 'numerical', 'integerOnly' => true),
+            array('create_user_id, update_user_id status, is_protected', 'numerical', 'integerOnly' => true),
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
             array('title, slug, keywords', 'length', 'max' => 200),
             array('slug', 'unique'),
@@ -108,7 +109,7 @@ class News extends CActiveRecord
                 'message' => Yii::t('news', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, create_time, update_time, date, title, slug, body_cut, body, user_id, status, is_protected, keywords, description,   author_search',
+                'id, create_time, update_time, date, title, slug, body_cut, body, create_user_id, update_user_id, status, is_protected, keywords, description,   author_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -121,7 +122,8 @@ class News extends CActiveRecord
     public function relations()
     {
         return array(
-            'author' => array(self::BELONGS_TO, 'User', 'user_id'),
+            'author' => array(self::BELONGS_TO, 'User', 'create_user_id'),
+            'changeAuthor' => array(self::BELONGS_TO, 'User', 'update_user_id'),
         );
     }
 
@@ -165,7 +167,8 @@ class News extends CActiveRecord
             'body_cut'      => Yii::t('news', 'Превью'),
             'body'          => Yii::t('news', 'Текст'),
             'image'         => Yii::t('news', 'Изображение'),
-            #'user_id' 		=> Yii::t('news', 'Пользователь',
+            'create_user_id'=> Yii::t('news', 'Автор'),
+            'update_user_id'=> Yii::t('news', 'Изменил'),
             'status'        => Yii::t('news', 'Статус'),
             'is_protected'  => Yii::t('news', 'Доступ только для авторизованных пользователей'),
             'keywords'      => Yii::t('news', 'Ключевые слова (Seo)'),
@@ -196,9 +199,10 @@ class News extends CActiveRecord
             $this->setImage($imageFile->getTempName(), $uploadPath);
         }
         unset($this->update_time);//on update CURRENT_TIMESTAMP
+        $this->update_user_id = Yii::app()->user->id;
         if ($this->isNewRecord) {
-            $this->create_time = new CDbExpression('NOW()');
-            $this->user_id     = Yii::app()->user->getId();
+            $this->create_time    = new CDbExpression('NOW()');
+            $this->create_user_id = $this->update_user_id;
         }
 
         return parent::beforeSave();
@@ -307,7 +311,7 @@ class News extends CActiveRecord
             'author.username',
             $this->author_search,
             true
-        ); #$criteria->compare('user_id', $this->user_id,true);
+        ); #$criteria->compare('create_user_id', $this->create_user_id,true);
         #$criteria->compare('author.firstname', $this->author_search, true);
         if ($this->status != '') {
             $criteria->compare('status', $this->status);

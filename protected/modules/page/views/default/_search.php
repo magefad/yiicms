@@ -21,8 +21,8 @@ echo '<p>' . Yii::t('page', 'Используйте символы');?> (<b>&lt;
 <?php echo $form->textFieldRow($model, 'parent_id', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'create_time', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'update_time', array('class' => 'span5')); ?>
-<?php echo $form->textFieldRow($model, 'user_id', array('class' => 'span5', 'maxlength' => 10)); ?>
-<?php echo $form->textFieldRow($model, 'change_user_id', array('class' => 'span5', 'maxlength' => 10)); ?>
+<?php echo $form->textFieldRow($model, 'create_user_id', array('class' => 'span5', 'maxlength' => 11)); ?>
+<?php echo $form->textFieldRow($model, 'update_user_id', array('class' => 'span5', 'maxlength' => 11)); ?>
 <?php echo $form->textFieldRow($model, 'name', array('class' => 'span5', 'maxlength' => 150)); ?>
 <?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 150)); ?>
 <?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 150)); ?>

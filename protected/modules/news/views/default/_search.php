@@ -21,7 +21,8 @@ $form = $this->beginWidget(
 <?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 150)); ?>
 <?php echo $form->textFieldRow($model, 'body_cut', array('class' => 'span5', 'maxlength' => 400)); ?>
 <?php echo $form->textAreaRow($model, 'body', array('rows' => 6, 'cols' => 50, 'class' => 'span8')); ?>
-<?php echo $form->textFieldRow($model, 'user_id', array('class' => 'span5', 'maxlength' => 11)); ?>
+<?php echo $form->textFieldRow($model, 'create_user_id', array('class' => 'span5', 'maxlength' => 11)); ?>
+<?php echo $form->textFieldRow($model, 'update_user_id', array('class' => 'span5', 'maxlength' => 11)); ?>
 <?php echo $form->dropDownListRow(
     $model,
     'status',

@@ -47,12 +47,12 @@ $this->widget(
             'create_time',
             'update_time',
             array(
-                'name'  => 'user_id',
+                'name'  => 'create_user_id',
                 'value' => $model->author->getFullName()
             ),
             'menu_order',
             array(
-                'name'  => 'change_user_id',
+                'name'  => 'update_user_id',
                 'value' => $model->changeAuthor->getFullName()
             ),
             'name',

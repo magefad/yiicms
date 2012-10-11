@@ -13,8 +13,8 @@
  * @property string $file_name
  * @property string $create_time
  * @property string $update_time
- * @property integer $user_id
- * @property integer $change_user_id
+ * @property integer $create_user_id
+ * @property integer $update_user_id
  * @property string $alt
  * @property integer $type
  * @property integer $status
@@ -79,9 +79,9 @@ class Photo extends CActiveRecord
     public function rules()
     {
         return array(
-            #array('gallery_id, name, file_name, create_time, user_id, change_user_id, alt', 'required'),
+            #array('gallery_id, name, file_name, create_time, create_user_id, update_user_id, alt', 'required'),
             array('gallery_id', 'required'),
-            array('gallery_id, user_id, change_user_id, type, status, sort', 'numerical', 'integerOnly' => true),
+            array('gallery_id, create_user_id, update_user_id, type, status, sort', 'numerical', 'integerOnly' => true),
             array('name, title, keywords', 'length', 'max' => 200),
             array('alt', 'length', 'max' => 100),
             array('file_name', 'length', 'max' => 500),
@@ -94,7 +94,7 @@ class Photo extends CActiveRecord
             ),
             array('description', 'safe'),
             array(
-                'id, gallery_id, name, description, sort, file_name, create_time, user_id, change_user_id, alt, type, status, author_search, changeAuthor_search, gallery_search',
+                'id, gallery_id, name, description, sort, file_name, create_time, create_user_id, update_user_id, alt, type, status, author_search, changeAuthor_search, gallery_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -107,9 +107,9 @@ class Photo extends CActiveRecord
     public function relations()
     {
         return array(
-            'changeAuthor' => array(self::BELONGS_TO, 'User', 'change_user_id'),
+            'changeAuthor' => array(self::BELONGS_TO, 'User', 'update_user_id'),
             'gallery'      => array(self::BELONGS_TO, 'Gallery', 'gallery_id'),
-            'author'       => array(self::BELONGS_TO, 'User', 'user_id'),
+            'author'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
         );
     }
 
@@ -128,8 +128,8 @@ class Photo extends CActiveRecord
             #'rank' => 'Rank',
             'file_name'           => 'Файл',
             'create_time'         => 'Создано',
-            'user_id'             => 'Автор',
-            'change_user_id'      => 'Изменил',
+            'create_user_id'      => 'Автор',
+            'update_user_id'      => 'Изменил',
             'alt'                 => 'Alt',
             'type'                => 'Тип',
             'status'              => 'Статус',
@@ -156,8 +156,8 @@ class Photo extends CActiveRecord
         $criteria->compare('description', $this->description, true);
         $criteria->compare('file_name', $this->file_name, true);
         $criteria->compare('create_time', $this->create_time, true);
-        $criteria->compare('user_id', $this->user_id, true);
-        $criteria->compare('change_user_id', $this->change_user_id, true);
+        $criteria->compare('create_user_id', $this->create_user_id, true);
+        $criteria->compare('update_user_id', $this->update_user_id, true);
         $criteria->compare('alt', $this->alt, true);
         $criteria->compare('type', $this->type);
         $criteria->compare('t.status', $this->status);
@@ -202,11 +202,11 @@ class Photo extends CActiveRecord
 
     public function beforeSave()
     {
-        $this->change_user_id = Yii::app()->user->getId();
+        $this->update_user_id = Yii::app()->user->getId();
         unset($this->update_time);//on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
             $this->create_time    = new CDbExpression('now()');
-            $this->user_id = $this->change_user_id;
+            $this->create_user_id = $this->update_user_id;
         }
         return parent::beforeSave();
     }
