@@ -15,7 +15,7 @@
 .input-block-level {
   display:block;
   width:100%;
-  min-height:30px;
+  min-height:28px;
   -webkit-box-sizing:border-box;
   -moz-box-sizing:border-box;
   box-sizing:border-box;
@@ -37,8 +37,10 @@
   border-top:none;
   display:block;
 }
+.grid-view table.items th:hover a:after {content:""; display:block; position:absolute; top:0; right:-10px; width:14px; height:14px; line-height:14px; vertical-align:text-top; background-image:url("../img/glyphicons-halflings.png"); background-position:-312px -96px; background-repeat:no-repeat;}
+.grid-view table.items th:hover a.asc:after {background-position:-289px -96px;}
 .grid-view table.items tr.selected td { background:#eeeeee; }
-.grid-view .filters .filter-container { padding:0 15px 0 0; }
+.grid-view .filters .filter-container { padding:0 10px 0 0; }
 .grid-view .filters input, .grid-view .filters select {
   margin-bottom:0;
   width:100%;

@@ -20,7 +20,6 @@
 <?php endforeach; ?>
 	<div class="form-actions">
 		<?php echo "<?php \$this->widget('bootstrap.widgets.TbButton', array(
-		    'buttonType'=>'submit'
 			'type'=>'primary',
 			'label'=>'Search',
 		)); ?>\n"; ?>

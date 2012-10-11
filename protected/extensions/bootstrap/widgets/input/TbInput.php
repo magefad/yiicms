@@ -27,6 +27,9 @@ abstract class TbInput extends CInputWidget
 	const TYPE_TEXT = 'textfield';
 	const TYPE_CAPTCHA = 'captcha';
 	const TYPE_UNEDITABLE = 'uneditable';
+	const TYPE_DATEPICKER = 'datepicker';
+	const TYPE_REDACTOR = 'redactor';
+	const TYPE_DATERANGEPICKER = 'daterangepicker';
 
 	/**
 	 * @var TbActiveForm the associated form widget.
@@ -229,7 +232,15 @@ abstract class TbInput extends CInputWidget
 			case self::TYPE_UNEDITABLE:
 				$this->uneditableField();
 				break;
-
+			case self::TYPE_DATEPICKER:
+				$this->datepickerField();
+				break;
+			case self::TYPE_REDACTOR:
+				$this->redactorJs();
+				break;
+			case self::TYPE_DATERANGEPICKER:
+				$this->dateRangeField();
+				break;
 			default:
 				throw new CException(__CLASS__.': Failed to run widget! Type is invalid.');
 		}
@@ -467,4 +478,25 @@ abstract class TbInput extends CInputWidget
 	 * @abstract
 	 */
 	abstract protected function uneditableField();
+
+	/**
+	 * Renders a datepicker field.
+	 * @return string the rendered content
+	 * @abstract
+	 */
+	abstract protected function datepickerField();
+
+	/**
+	 * Renders a redactorJS wysiwyg field.
+	 * @abstract
+	 * @return mixed
+	 */
+	abstract protected function redactorJs();
+
+	/**
+	 * Renders a daterange picker field
+	 * @abstract
+	 * @return mixed
+	 */
+	abstract protected function dateRangeField();
 }
