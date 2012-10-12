@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $model User
- * @var $this CController
+ * @var $this Controller
  */
 $this->breadcrumbs = array(
     Yii::t('user', 'Пользователи') => array('admin'),
@@ -37,8 +37,6 @@ $this->widget(
         'data'       => $model,
         'attributes' => array(
             'id',
-            'create_time',
-            'update_time',
             'firstname',
             'lastname',
             'username',
@@ -62,6 +60,8 @@ $this->widget(
                 'name'  => 'email_confirm',
                 'value' => $model->getEmailConfirmStatus(),
             ),
+            'create_time',
+            'update_time',
         ),
     )
 );

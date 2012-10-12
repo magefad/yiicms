@@ -6,19 +6,19 @@
  * The followings are the available columns in table '{{page}}':
  * @property integer $id
  * @property integer $parent_id
+ * @property string $name
+ * @property string $title
+ * @property string $keywords
+ * @property string $description
+ * @property string $body
+ * @property string $slug
+ * @property integer $status
+ * @property integer $is_protected
+ * @property integer $menu_order
  * @property string $create_time
  * @property string $update_time
  * @property integer $create_user_id
  * @property integer $update_user_id
- * @property string $name
- * @property string $title
- * @property string $slug
- * @property string $body
- * @property string $keywords
- * @property string $description
- * @property integer $status
- * @property integer $is_protected
- * @property integer $menu_order
  *
  * The followings are the available model relations:
  * @property Page $children
@@ -64,15 +64,15 @@ class Page extends CActiveRecord
     public function rules()
     {
         return array(
-            array('name, title, slug, body, status, is_protected', 'required'),
-            array('parent_id, create_user_id, update_user_id, status, is_protected, menu_order', 'numerical', 'integerOnly' => true),
+            array('name, title, body, slug, status, is_protected', 'required'),
+            array('parent_id, status, is_protected, menu_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
-            array('title, slug, keywords', 'length', 'max' => 200),
+            array('title, keywords, slug', 'length', 'max' => 200),
             array('description', 'length', 'max' => 250),
             array('slug', 'unique'), #sulug is a link of page
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
             array('is_protected', 'in', 'range' => array_keys($this->getProtectedStatusList())),
-            array('title, slug, body, description, keywords, name', 'filter', 'filter' => 'trim'),
+            array('name, title, keywords, description, body, slug', 'filter', 'filter' => 'trim'),
             array(
                 'title, slug, description, keywords, name',
                 'filter',
@@ -85,7 +85,7 @@ class Page extends CActiveRecord
                 'message' => Yii::t('page', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, parent_id, create_time, update_time, title, slug, body, keywords, description, status, menu_order, author_search, changeAuthor_search',
+                'id, parent_id, name, title, keywords, description, slug, body, status, menu_order, create_time, update_time, author_search, changeAuthor_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -113,19 +113,19 @@ class Page extends CActiveRecord
         return array(
             'id'                  => Yii::t('page', 'ID'),
             'parent_id'           => Yii::t('page', 'Родитель'),
-            'create_time'         => Yii::t('page', 'Создано'),
-            'update_time'         => Yii::t('page', 'Изменено'),
+            'name'                => Yii::t('page', 'Название в меню'),
             'title'               => Yii::t('page', 'Заголовок (Seo title)'),
-            'slug'                => Yii::t('page', 'Ссылка'),
-            'body'                => Yii::t('page', 'Текст'),
             'keywords'            => Yii::t('page', 'Ключевые слова (Seo keywords)'),
             'description'         => Yii::t('page', 'Описание (Seo description)'),
+            'body'                => Yii::t('page', 'Текст'),
+            'slug'                => Yii::t('page', 'Ссылка'),
             'status'              => Yii::t('page', 'Статус'),
             'is_protected'        => Yii::t('page', 'Доступ только для авторизованных пользователей'),
-            'name'                => Yii::t('page', 'Название в меню'),
+            'menu_order'          => Yii::t('page', 'Порядок'),
             'create_user_id'      => Yii::t('page', 'Создал'),
             'update_user_id'      => Yii::t('page', 'Изменил'),
-            'menu_order'          => Yii::t('page', 'Порядок'),
+            'create_time'         => Yii::t('page', 'Создано'),
+            'update_time'         => Yii::t('page', 'Изменено'),
             'author_search'       => Yii::t('page', 'Создал'),
             'changeAuthor_search' => Yii::t('page', 'Изменил'),
         );
@@ -200,19 +200,20 @@ class Page extends CActiveRecord
 
         $criteria->compare('id', $this->id, true);
         $criteria->compare('parent_id', $this->parent_id);
-        $criteria->compare('create_time', $this->create_time, true);
-        $criteria->compare('update_time', $this->update_time, true);
 
         $criteria->compare('t.name', $this->name, true);
         $criteria->compare('title', $this->title, true);
-        $criteria->compare('slug', $this->slug, true);
-        $criteria->compare('body', $this->body, true);
         $criteria->compare('keywords', $this->keywords, true);
         $criteria->compare('description', $this->description, true);
+        $criteria->compare('body', $this->body, true);
+        $criteria->compare('slug', $this->slug, true);
+
 
         $criteria->compare('t.status', $this->status);
         $criteria->compare('is_protected', $this->is_protected);
         $criteria->compare('menu_order', $this->menu_order);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('author.username', $this->author_search, true);
         $criteria->compare('changeAuthor.username', $this->changeAuthor_search, true);
 
@@ -231,17 +232,17 @@ class Page extends CActiveRecord
         );
 
         return new CActiveDataProvider($this, array(
-            'criteria'    => $criteria,
-            'sort'        => $sort
+            'criteria' => $criteria,
+            'sort'     => $sort
         ));
     }
 
     public function getStatusList()
     {
         return array(
-            self::STATUS_PUBLISHED     => Yii::t('page', 'Опубликовано'),
-            self::STATUS_DRAFT         => Yii::t('page', 'Черновик'),
-            self::STATUS_MODERATION    => Yii::t('page', 'На модерации')
+            self::STATUS_PUBLISHED  => Yii::t('page', 'Опубликовано'),
+            self::STATUS_DRAFT      => Yii::t('page', 'Черновик'),
+            self::STATUS_MODERATION => Yii::t('page', 'На модерации')
         );
     }
 

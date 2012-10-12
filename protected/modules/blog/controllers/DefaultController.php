@@ -70,12 +70,7 @@ class DefaultController extends Controller
                 'defaultOrder' => 'publish_time DESC',
             )
         ));
-        $this->render(
-            'show',
-            array(
-                'postsDataProvider'   => $postsDataProvider,
-            )
-        );
+        $this->render('show', array('postsDataProvider' => $postsDataProvider));
     }
 
     /**

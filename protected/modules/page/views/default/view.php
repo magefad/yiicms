@@ -44,23 +44,13 @@ $this->widget(
         'data'       => $model,
         'attributes' => array(
             'id',
-            'create_time',
-            'update_time',
-            array(
-                'name'  => 'create_user_id',
-                'value' => $model->author->getFullName()
-            ),
             'menu_order',
-            array(
-                'name'  => 'update_user_id',
-                'value' => $model->changeAuthor->getFullName()
-            ),
             'name',
             'title',
-            'slug',
-            'body',
             'keywords',
             'description',
+            'body',
+            'slug',
             array(
                 'name'  => 'status',
                 'value' => $model->getStatus()
@@ -68,7 +58,17 @@ $this->widget(
             array(
                 'name'  => 'is_protected',
                 'value' => $model->getProtectedStatus()
-            )
+            ),
+            array(
+                'name'  => 'create_user_id',
+                'value' => $model->author->getFullName()
+            ),
+            array(
+                'name'  => 'update_user_id',
+                'value' => $model->changeAuthor->getFullName()
+            ),
+            'create_time',
+            'update_time',
         ),
     )
 );

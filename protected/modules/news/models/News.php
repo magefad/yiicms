@@ -5,20 +5,20 @@
  *
  * The followings are the available columns in table '{{news}}':
  * @property integer $id
- * @property string $create_time
- * @property string $update_time
  * @property string $date
  * @property string $title
- * @property string $slug
- * @property string $body_cut
- * @property string $body
- * @property string $image
- * @property integer $create_user_id
- * @property integer $update_user_id
- * @property integer $status
- * @property integer $is_protected
  * @property string $keywords
  * @property string $description
+ * @property string $body_cut
+ * @property string $body
+ * @property string $slug
+ * @property string $image
+ * @property integer $status
+ * @property integer $is_protected
+ * @property integer $create_user_id
+ * @property integer $update_user_id
+ * @property string $create_time
+ * @property string $update_time
  *
  * The followings are the available model relations:
  * @property User $author
@@ -82,13 +82,13 @@ class News extends CActiveRecord
     {
         return array(
             array('date, title, body_cut', 'required', 'on' => array('update', 'insert')),
-            array('create_user_id, update_user_id status, is_protected', 'numerical', 'integerOnly' => true),
+            array('status, is_protected, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
-            array('title, slug, keywords', 'length', 'max' => 200),
-            array('slug', 'unique'),
+            array('title, keywords, slug', 'length', 'max' => 200),
             array('body_cut', 'length', 'max' => 400),
             array('description', 'length', 'max' => 250),
             array('image', 'length', 'max' => 300),
+            array('slug', 'unique'),
             array(
                 'image',
                 'file',
@@ -96,7 +96,7 @@ class News extends CActiveRecord
                 'allowEmpty' => true,
                 'safe'       => false
             ),
-            array('title, slug, body_cut, body, keywords, description', 'filter', 'filter' => 'trim'),
+            array('title, keywords, description, body_cut, body, slug', 'filter', 'filter' => 'trim'),
             array(
                 'title, slug, keywords, description',
                 'filter',
@@ -109,7 +109,7 @@ class News extends CActiveRecord
                 'message' => Yii::t('news', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, create_time, update_time, date, title, slug, body_cut, body, create_user_id, update_user_id, status, is_protected, keywords, description,   author_search',
+                'id, date, title, keywords, description, slug, body_cut, body, status, is_protected, create_user_id, update_user_id, create_time, update_time,   author_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -159,21 +159,21 @@ class News extends CActiveRecord
     {
         return array(
             'id'            => 'ID',
-            'create_time'   => Yii::t('news', 'Создано'),
-            'update_time'   => Yii::t('news', 'Изменено'),
             'date'          => Yii::t('news', 'Дата'),
             'title'         => Yii::t('news', 'Заголовок'),
-            'slug'          => Yii::t('news', 'Ссылка'),
-            'body_cut'      => Yii::t('news', 'Превью'),
-            'body'          => Yii::t('news', 'Текст'),
-            'image'         => Yii::t('news', 'Изображение'),
-            'create_user_id'=> Yii::t('news', 'Автор'),
-            'update_user_id'=> Yii::t('news', 'Изменил'),
-            'status'        => Yii::t('news', 'Статус'),
-            'is_protected'  => Yii::t('news', 'Доступ только для авторизованных пользователей'),
             'keywords'      => Yii::t('news', 'Ключевые слова (Seo)'),
             'description'   => Yii::t('news', 'Описание (Seo)'),
+            'body_cut'      => Yii::t('news', 'Превью'),
+            'body'          => Yii::t('news', 'Текст'),
+            'slug'          => Yii::t('news', 'Ссылка'),
+            'image'         => Yii::t('news', 'Изображение'),
+            'status'        => Yii::t('news', 'Статус'),
+            'is_protected'  => Yii::t('news', 'Доступ только для авторизованных пользователей'),
             'author_search' => Yii::t('page', 'Автор'),
+            'create_user_id'=> Yii::t('news', 'Автор'),
+            'update_user_id'=> Yii::t('news', 'Изменил'),
+            'create_time'   => Yii::t('news', 'Создано'),
+            'update_time'   => Yii::t('news', 'Изменено'),
         );
     }
 
@@ -300,25 +300,25 @@ class News extends CActiveRecord
         $criteria->with = array('author');
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('create_time', $this->create_time, true);
-        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('date', $this->date, true);
         $criteria->compare('title', $this->title, true);
-        $criteria->compare('slug', $this->slug, true);
+        $criteria->compare('keywords', $this->keywords, true);
+        $criteria->compare('description', $this->description, true);
         $criteria->compare('body_cut', $this->body_cut, true);
         $criteria->compare('body', $this->body, true);
-        $criteria->compare(
-            'author.username',
-            $this->author_search,
-            true
-        ); #$criteria->compare('create_user_id', $this->create_user_id,true);
-        #$criteria->compare('author.firstname', $this->author_search, true);
+        $criteria->compare('slug', $this->slug, true);
+        $criteria->compare('iamge', $this->image, true);
         if ($this->status != '') {
             $criteria->compare('status', $this->status);
         }
         $criteria->compare('is_protected', $this->is_protected);
-        $criteria->compare('keywords', $this->keywords, true);
-        $criteria->compare('description', $this->description, true);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
+        $criteria->compare(
+            'author.username',
+            $this->author_search,
+            true
+        );
 
         $sort               = new CSort;
         $sort->defaultOrder = 't.date DESC';

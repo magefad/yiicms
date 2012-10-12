@@ -30,11 +30,11 @@ $this->widget(
             'id',
             'user_id',
             'blog_id',
-            'create_time',
-            'update_time',
             'role',
             'status',
             'note',
+            'create_time',
+            'update_time',
         ),
     )
 );

@@ -45,13 +45,13 @@ $("#ajaxPreview").click(function(e) {
 	</div>
 	<div class="row-fluid control-group">
 		<div class="span3 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('name');?>">
-			<?php echo $form->textField($model, 'name', array('style' => 'width: 220px!important', 'maxlength' => 150, 'placeholder' => $model->getAttributeLabel('name'))); ?>
+			<?php echo $form->textField($model, 'name', array('style' => 'width: 220px!important', 'maxlength' => 50, 'placeholder' => $model->getAttributeLabel('name'))); ?>
 		</div>
 		<div class="span3 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('title');?>">
-			<?php echo $form->textField($model, 'title', array('style' => 'width: 220px!important', 'maxlength' => 150, 'placeholder' => $model->getAttributeLabel('title'))); ?>
+			<?php echo $form->textField($model, 'title', array('style' => 'width: 220px!important', 'maxlength' => 200, 'placeholder' => $model->getAttributeLabel('title'))); ?>
 		</div>
 		<div class="span4 mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('slug');?>">
-			<?php echo $form->textField($model, 'slug', array('maxlength' =>150, 'placeholder' => $model->getAttributeLabel('slug'))); ?>
+			<?php echo $form->textField($model, 'slug', array('maxlength' => 200, 'placeholder' => $model->getAttributeLabel('slug'))); ?>
 		</div>
 	</div>
 
@@ -62,13 +62,12 @@ $("#ajaxPreview").click(function(e) {
 	</div>
 	<div>&nbsp;</div>
 	<div class="row-fluid control-group mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('keywords');?>">
-		<?php echo $form->textField($model, 'keywords', array('class' => 'span5', 'maxlength' =>150, 'placeholder' => $model->getAttributeLabel('keywords'))); ?>
+		<?php echo $form->textField($model, 'keywords', array('class' => 'span5', 'maxlength' => 200, 'placeholder' => $model->getAttributeLabel('keywords'))); ?>
 	</div>
 	<div class="row-fluid control-group mytip" title="<?php if ( !$model->isNewRecord ) echo $model->getAttributeLabel('description');?>">
-		<?php echo $form->textField($model, 'description', array('class' => 'span5', 'maxlength' =>250, 'placeholder' => $model->getAttributeLabel('description'))); ?>
+		<?php echo $form->textField($model, 'description', array('class' => 'span5', 'maxlength' => 250, 'placeholder' => $model->getAttributeLabel('description'))); ?>
 	</div>
 	<div class="row-fluid control-group">
-		<?php #echo $form->label($model, 'is_protected'); ?>
 		<div class="row-fluid control-group">
 			<?php echo $form->checkBoxRow($model, 'is_protected'); ?>
 		</div>
@@ -78,11 +77,5 @@ $("#ajaxPreview").click(function(e) {
 	'type'       => 'primary',
 	'label'      => $model->isNewRecord ? Yii::t('page', 'Добавить') : Yii::t('page', 'Сохранить')
 ));
-/*$this->widget('bootstrap.widgets.TbButton', array(
-		'buttonType' => 'submit', 'type' => 'primary',
-		'label' => $model->isNewRecord  ? Yii::t('page', 'Добавить и закрыть')
-										: Yii::t('page', 'Сохранить и закрыть'),
-		#array('name' => 'saveAndClose', 'id' => 'saveAndClose')
-	)); */
 $this->endWidget();
 ?>

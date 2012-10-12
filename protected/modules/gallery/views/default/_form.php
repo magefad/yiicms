@@ -23,9 +23,9 @@ $form = $this->beginWidget(
     'Поля, отмеченные <span class="required">*</span> обязательны для заполнения.'
 )?></p>
 <?php echo $form->errorSummary($model); ?>
-<?php echo $form->textFieldRow($model, 'name', array('class' => 'span5', 'maxlength' => 300)); ?>
+<?php echo $form->textFieldRow($model, 'name', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textAreaRow($model, 'description', array('rows' => 6, 'cols' => 50, 'class' => 'span8')); ?>
-<?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 150)); ?>
+<?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textFieldRow(
     $model,
     'slug',

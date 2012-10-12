@@ -17,11 +17,11 @@ $form = $this->beginWidget(
 <?php echo $form->textFieldRow($model, 'id', array('class' => 'span5', 'maxlength' => 10)); ?>
 <?php echo $form->dropDownListRow($model, 'user_id', CHtml::listData(User::model()->findAll(), 'id', 'username')); ?>
 <?php echo $form->dropDownListRow($model, 'blog_id', CHtml::listData(Blog::model()->findAll(), 'id', 'title')); ?>
-<?php echo $form->textFieldRow($model, 'create_time', array('class' => 'span5', 'maxlength' => 10)); ?>
-<?php echo $form->textFieldRow($model, 'update_time', array('class' => 'span5', 'maxlength' => 10)); ?>
 <?php echo $form->dropDownListRow($model, 'role', $model->getRoleList()); ?>
 <?php echo $form->dropDownListRow($model, 'status', $model->getStatusList()); ?>
 <?php echo $form->textFieldRow($model, 'note', array('class' => 'span5', 'maxlength' => 255)); ?>
+<?php echo $form->textFieldRow($model, 'create_time', array('class' => 'span5', 'maxlength' => 19)); ?>
+<?php echo $form->textFieldRow($model, 'update_time', array('class' => 'span5', 'maxlength' => 19)); ?>
 <div class="form-actions">
     <?php $this->widget(
     'bootstrap.widgets.TbButton',

@@ -12,7 +12,7 @@ class DefaultController extends Controller
 
     public function allowedActions()
     {
-        return 'list,show';
+        return 'list, show';
     }
 
     /**
@@ -63,8 +63,8 @@ class DefaultController extends Controller
 
         if (isset($_POST['Gallery'])) {
             /*
-                * If change sort order num
-                */
+             * If change sort order num
+             */
             if ($model->attributes['slug'] != $_POST['Gallery']['slug']) {
                 $model->renamePath($_POST['Gallery']['slug']);
             }

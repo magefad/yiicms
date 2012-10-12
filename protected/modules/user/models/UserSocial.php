@@ -8,6 +8,7 @@
  * @property integer $user_id
  * @property string $service
  * @property string $access_token
+ * @property string $email
  *
  * The followings are the available model relations:
  * @property User $user
@@ -39,8 +40,9 @@ class UserSocial extends CActiveRecord
     {
         return array(
             array('id, user_id, service', 'required'),
+            array('user_id', 'numerical', 'integerOnly' => true),
+            array('email', 'email'),
             array('id, access_token', 'length', 'max' => 255),
-            array('user_id', 'length', 'max' => 10),
             array('service', 'length', 'max' => 64),
 
             array('id', 'unique', 'message' => Yii::t('user', 'Identity is invalid or already taken')),

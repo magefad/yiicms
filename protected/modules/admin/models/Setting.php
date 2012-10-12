@@ -8,9 +8,9 @@
  * @property integer $module_id
  * @property string $key
  * @property string $value
+ * @property integer $user_id
  * @property string $create_time
  * @property string $update_time
- * @property integer $user_id
  *
  * The followings are the available model relations:
  * @property User $user
@@ -94,9 +94,9 @@ class Setting extends CActiveRecord
             'module_id'     => Yii::t('setting', 'Модуль'),
             'key'           => Yii::t('setting', 'Ключ'),
             'value'         => Yii::t('setting', 'Значение'),
+            'user_id'       => Yii::t('setting', 'Автор'),
             'create_time'   => Yii::t('setting', 'Создано'),
             'update_time'   => Yii::t('setting', 'Изменено'),
-            'user_id'       => Yii::t('setting', 'Автор'),
         );
     }
 
@@ -117,9 +117,9 @@ class Setting extends CActiveRecord
         $criteria->compare('module_id', $this->module_id, true);
         $criteria->compare('key', $this->key, true);
         $criteria->compare('value', $this->value, true);
+        $criteria->compare('user_id', $this->user_id, true);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('update_time', $this->update_time, true);
-        $criteria->compare('user_id', $this->user_id, true);
 
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,

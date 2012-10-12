@@ -6,20 +6,20 @@
  * The followings are the available columns in table '{{blog_post}}':
  * @property integer $id
  * @property integer $blog_id
- * @property integer $create_user_id
- * @property integer $update_user_id
- * @property integer $create_time
- * @property integer $update_time
- * @property integer $publish_time
  * @property string $title
- * @property string $slug
- * @property string $content
  * @property string $keywords
  * @property string $description
+ * @property string $content
+ * @property string $slug
  * @property string $link
  * @property integer $status
  * @property integer $comment_status
  * @property integer $access_type
+ * @property integer $create_user_id
+ * @property integer $update_user_id
+ * @property integer $publish_time
+ * @property integer $create_time
+ * @property integer $update_time
  *
  * The followings are the available model relations:
  * @property User $createUser
@@ -28,6 +28,7 @@
  *
  * @method getComments() return Comment[]
  * @method getTags() return array Post Tags
+ * @method setTags() Set one or more tags.
  */
 class Post extends CActiveRecord
 {
@@ -62,13 +63,13 @@ class Post extends CActiveRecord
     public function rules()
     {
         return array(
-            array('blog_id, publish_time, title, content', 'required', 'except' => 'search'),
+            array('blog_id, title, content, publish_time', 'required', 'except' => 'search'),
             array(
-                'blog_id, create_user_id, update_user_id, status, comment_status, access_type',
+                'blog_id, status, comment_status, access_type, create_user_id, update_user_id',
                 'numerical',
                 'integerOnly' => true
             ),
-            array('title, slug, keywords, link', 'length', 'max' => 200),
+            array('title, keywords, slug, link', 'length', 'max' => 200),
             array('description', 'length', 'max' => 255),
             array('link', 'url'),
             array('comment_status', 'in', 'range' => array(0, 1)),
@@ -76,12 +77,12 @@ class Post extends CActiveRecord
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
             array('slug', 'unique'),
             array(
-                'title, slug, link, keywords, description, publish_time',
+                'title, keywords, description, slug, link, publish_time',
                 'filter',
                 'filter' => array($obj = new CHtmlPurifier(), 'purify')
             ),
             array(
-                'id, blog_id, create_user_id, update_user_id, create_time, update_time, publish_time, title, slug, content, keywords, description, link, status, comment_status, access_type',
+                'id, blog_id, title, keywords, description, slug, content, link, status, comment_status, access_type, create_user_id, update_user_id, publish_time, create_time, update_time',
                 'safe',
                 'on' => 'search'
             ),
@@ -108,21 +109,21 @@ class Post extends CActiveRecord
         return array(
             'id'             => Yii::t('blog', 'ID'),
             'blog_id'        => Yii::t('blog', 'Blog'),
-            'create_user_id' => Yii::t('blog', 'Author'),
-            'update_user_id' => Yii::t('blog', 'Changed'),
-            'create_time'    => Yii::t('blog', 'Create Time'),
-            'update_time'    => Yii::t('blog', 'Update Time'),
-            'publish_time'   => Yii::t('blog', 'Publish Time'),
             'title'          => Yii::t('blog', 'Title'),
-            'slug'           => Yii::t('blog', 'URL'),
-            'content'        => Yii::t('blog', 'Content'),
-            'tags'           => Yii::t('blog', 'Tags'),
             'keywords'       => Yii::t('blog', 'Keywords'),
             'description'    => Yii::t('blog', 'Description'),
+            'content'        => Yii::t('blog', 'Content'),
+            'slug'           => Yii::t('blog', 'URL'),
             'link'           => Yii::t('blog', 'Link'),
             'status'         => Yii::t('blog', 'Status'),
             'comment_status' => Yii::t('blog', 'Comment Status'),
             'access_type'    => Yii::t('blog', 'Access Type'),
+            'create_user_id' => Yii::t('blog', 'Author'),
+            'update_user_id' => Yii::t('blog', 'Changed'),
+            'publish_time'   => Yii::t('blog', 'Publish Time'),
+            'create_time'    => Yii::t('blog', 'Create Time'),
+            'update_time'    => Yii::t('blog', 'Update Time'),
+            'tags'           => Yii::t('blog', 'Tags'),
         );
     }
 
@@ -150,20 +151,20 @@ class Post extends CActiveRecord
 
         $criteria->compare('id', $this->id, true);
         $criteria->compare('blog_id', $this->blog_id, true);
-        $criteria->compare('create_user_id', $this->create_user_id, true);
-        $criteria->compare('update_user_id', $this->update_user_id, true);
-        $criteria->compare('create_time', $this->create_time, true);
-        $criteria->compare('update_time', $this->update_time, true);
-        $criteria->compare('publish_time', $this->publish_time, true);
         $criteria->compare('title', $this->title, true);
-        $criteria->compare('slug', $this->slug, true);
-        $criteria->compare('content', $this->content, true);
         $criteria->compare('keywords', $this->keywords, true);
         $criteria->compare('description', $this->description, true);
+        $criteria->compare('content', $this->content, true);
+        $criteria->compare('slug', $this->slug, true);
         $criteria->compare('link', $this->link, true);
         $criteria->compare('status', $this->status);
         $criteria->compare('comment_status', $this->comment_status);
         $criteria->compare('access_type', $this->access_type);
+        $criteria->compare('create_user_id', $this->create_user_id, true);
+        $criteria->compare('update_user_id', $this->update_user_id, true);
+        $criteria->compare('publish_time', $this->publish_time, true);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
         $criteria->with = array('createUser', 'updateUser', 'blog');
 
         return new CActiveDataProvider($this, array(
@@ -175,7 +176,6 @@ class Post extends CActiveRecord
     {
         if (parent::beforeSave()) {
             #$this->publish_time   = date('Y-m-d', strtotime($this->publish_time . date(' H:m:s')));
-
             unset($this->update_time);//on update CURRENT_TIMESTAMP
             $this->update_user_id = Yii::app()->user->getId();
             if ($this->isNewRecord) {

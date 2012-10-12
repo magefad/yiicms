@@ -5,8 +5,6 @@
  *
  * The followings are the available columns in table '{{user}}':
  * @property integer $id
- * @property string $create_time
- * @property string $update_time
  * @property string $firstname
  * @property string $lastname
  * @property string $username
@@ -29,6 +27,8 @@
  * @property integer $use_gravatar
  * @property string $activate_key
  * @property integer $email_confirm
+ * @property string $create_time
+ * @property string $update_time
  *
  * The followings are the available model relations:
  * @property Blog[] $blogs
@@ -78,13 +78,13 @@ class User extends CActiveRecord
     public function rules()
     {
         return array(
-            array('username, firstname, lastname, email', 'filter', 'filter' => 'trim'),
+            array('username, email', 'required'),
+            array('firstname, lastname, username, email', 'filter', 'filter' => 'trim'),
             array(
-                'username, firstname, lastname, email',
+                'firstname, lastname, email, username',
                 'filter',
                 'filter' => array($obj = new CHtmlPurifier(), 'purify')
             ),
-            array('username, email', 'required'),
             array('status, access_level, use_gravatar, email_confirm', 'numerical', 'integerOnly' => true),
             array('firstname, lastname, username, email', 'length', 'max' => 150),
             array('sex', 'length', 'max' => 1),
@@ -115,7 +115,7 @@ class User extends CActiveRecord
             // The following rule is used by search().
             // Please remove those attributes that should not be searched.
             array(
-                'id, create_time, update_time, firstname, lastname, username, sex, birth_date, country, city, phone, email, password, salt, status, access_level, last_visit, registration_date, registration_ip, activation_ip, photo, avatar, use_gravatar, activate_key, email_confirm',
+                'id, firstname, lastname, username, sex, birth_date, country, city, phone, email, password, salt, status, access_level, last_visit, registration_date, registration_ip, activation_ip, photo, avatar, use_gravatar, activate_key, email_confirm, create_time, update_time',
                 'safe',
                 'on' => 'search'
             ),
@@ -151,8 +151,6 @@ class User extends CActiveRecord
     {
         return array(
             'id'                => Yii::t('user', 'ID'),
-            'create_time'       => Yii::t('user', 'Дата активации'),
-            'update_time'       => Yii::t('user', 'Дата изменения'),
             'firstname'         => Yii::t('user', 'Имя'),
             'lastname'          => Yii::t('user', 'Фамилия'),
             'username'          => Yii::t('user', 'Логин'),
@@ -175,6 +173,8 @@ class User extends CActiveRecord
             'avatar'            => Yii::t('user', 'Аватар'),
             'use_gravatar'      => Yii::t('user', 'Граватар'),
             'email_confirm'     => Yii::t('user', 'Email подтвержден'),
+            'create_time'       => Yii::t('user', 'Дата активации'),
+            'update_time'       => Yii::t('user', 'Дата изменения'),
         );
     }
 
@@ -187,8 +187,6 @@ class User extends CActiveRecord
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id, true);
-        $criteria->compare('create_time', $this->create_time, true);
-        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('firstname', $this->firstname, true);
         $criteria->compare('lastname', $this->lastname, true);
         $criteria->compare('username', $this->username, true);
@@ -211,6 +209,8 @@ class User extends CActiveRecord
         $criteria->compare('use_gravatar', $this->use_gravatar);
         $criteria->compare('activate_key', $this->activate_key, true);
         $criteria->compare('email_confirm', $this->email_confirm);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

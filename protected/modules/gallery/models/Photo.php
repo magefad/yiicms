@@ -8,17 +8,17 @@
  * @property integer $gallery_id
  * @property string $name
  * @property string $title
- * @property string $description
  * @property string $keywords
+ * @property string $description
  * @property string $file_name
- * @property string $create_time
- * @property string $update_time
- * @property integer $create_user_id
- * @property integer $update_user_id
  * @property string $alt
  * @property integer $type
  * @property integer $status
  * @property integer $sort
+ * @property string $create_time
+ * @property string $update_time
+ * @property integer $create_user_id
+ * @property integer $update_user_id
  *
  * The followings are the available model relations:
  * @property User $changeUser
@@ -81,7 +81,7 @@ class Photo extends CActiveRecord
         return array(
             #array('gallery_id, name, file_name, create_time, create_user_id, update_user_id, alt', 'required'),
             array('gallery_id', 'required'),
-            array('gallery_id, create_user_id, update_user_id, type, status, sort', 'numerical', 'integerOnly' => true),
+            array('gallery_id, type, status, sort, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name, title, keywords', 'length', 'max' => 200),
             array('alt', 'length', 'max' => 100),
             array('file_name', 'length', 'max' => 500),
@@ -94,7 +94,7 @@ class Photo extends CActiveRecord
             ),
             array('description', 'safe'),
             array(
-                'id, gallery_id, name, description, sort, file_name, create_time, create_user_id, update_user_id, alt, type, status, author_search, changeAuthor_search, gallery_search',
+                'id, gallery_id, name, description, sort, file_name, alt, type, status, author_search, create_time, create_user_id, update_user_id, changeAuthor_search, gallery_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -107,9 +107,9 @@ class Photo extends CActiveRecord
     public function relations()
     {
         return array(
+            'author'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
             'changeAuthor' => array(self::BELONGS_TO, 'User', 'update_user_id'),
             'gallery'      => array(self::BELONGS_TO, 'Gallery', 'gallery_id'),
-            'author'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
         );
     }
 
@@ -155,13 +155,14 @@ class Photo extends CActiveRecord
         $criteria->compare('name', $this->name, true);
         $criteria->compare('description', $this->description, true);
         $criteria->compare('file_name', $this->file_name, true);
-        $criteria->compare('create_time', $this->create_time, true);
-        $criteria->compare('create_user_id', $this->create_user_id, true);
-        $criteria->compare('update_user_id', $this->update_user_id, true);
         $criteria->compare('alt', $this->alt, true);
         $criteria->compare('type', $this->type);
         $criteria->compare('t.status', $this->status);
         $criteria->compare('t.sort', $this->sort);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
+        $criteria->compare('create_user_id', $this->create_user_id, true);
+        $criteria->compare('update_user_id', $this->update_user_id, true);
 
         $criteria->compare('author.username', $this->author_search, true);
         $criteria->compare('changeAuthor.username', $this->changeAuthor_search, true);

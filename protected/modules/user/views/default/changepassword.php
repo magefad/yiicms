@@ -8,7 +8,7 @@
  * @var $model User
  * @var $form TbActiveForm
  * @var $changePasswordForm changePasswordForm
- * @var $this CController
+ * @var $this Controller
  */
 
 $this->pageTitle   = Yii::t('user', 'Изменение пароля');

@@ -16,7 +16,7 @@ class DefaultController extends Controller
      */
     public function allowedActions()
     {
-        return 'show,index';
+        return 'show, index';
     }
 
     public function actionShow($slug)

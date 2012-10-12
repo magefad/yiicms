@@ -50,7 +50,6 @@ class Gallery extends CActiveRecord
             array('name', 'required'),
             array('status, sort', 'numerical', 'integerOnly' => true),
             array('name, keywords, slug', 'length', 'max' => 200),
-            array('description', 'length', 'max' => 255),
             array('description', 'safe'),
             array('id, name, description, keywords, slug, status, sort', 'safe', 'on' => 'search'),
         );

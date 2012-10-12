@@ -11,10 +11,10 @@
  * @property string $ip
  * @property integer $status
  * @property string $username
- * @property string $create_time
  * @property integer $create_user_id
- * @property string $update_time
  * @property integer $update_user_id
+ * @property string $create_time
+ * @property string $update_time
  *
  * The followings are the available model relations:
  * @property User $user
@@ -69,7 +69,7 @@ class Comment extends CActiveRecord
             array('status', 'in', 'range' => array_keys($this->statusList)),
             array('model, text, username', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
             array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements() || !Yii::app()->user->isGuest),
-            array('id, model, model_id, text, ip, status, create_time, create_user_id, update_time, update_user_id', 'safe', 'on' => 'search'),
+            array('id, model, model_id, text, ip, status, create_user_id, update_user_id, create_time, update_time', 'safe', 'on' => 'search'),
         );
     }
 
@@ -101,10 +101,10 @@ class Comment extends CActiveRecord
             'text'           => Yii::t('CommentModule.comment', 'Comment Text'),
             'status'         => Yii::t('CommentModule.comment', 'Status'),
             'username'       => Yii::t('CommentModule.comment', 'Name'),
-            'create_time'    => Yii::t('CommentModule.comment', 'Create Time'),
             'create_user_id' => Yii::t('CommentModule.comment', 'User'),
-            'update_time'    => Yii::t('CommentModule.comment', 'Update Time'),
             'update_user_id' => Yii::t('CommentModule.comment', 'Change User'),
+            'create_time'    => Yii::t('CommentModule.comment', 'Create Time'),
+            'update_time'    => Yii::t('CommentModule.comment', 'Update Time'),
             'verifyCode'     => Yii::t('CommentModule.comment', 'Verify Code'),
         );
     }
@@ -142,10 +142,10 @@ class Comment extends CActiveRecord
         $criteria->compare('ip', $this->ip, true);
         $criteria->compare('status', $this->status);
         $criteria->compare('username', $this->username);
-        $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('create_user_id', $this->create_user_id, true);
-        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('update_user_id', $this->update_user_id, true);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

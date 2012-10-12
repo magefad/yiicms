@@ -11,8 +11,8 @@
  * @property string $href
  * @property integer $type
  * @property string $access
- * @property integer $sort
  * @property integer $status
+ * @property integer $sort
  */
 class Item extends CActiveRecord
 {
@@ -47,12 +47,12 @@ class Item extends CActiveRecord
     {
         return array(
             array('menu_id, title, href', 'required'),
-            array('parent_id, menu_id, type, sort, status, sort, status', 'numerical', 'integerOnly' => true),
+            array('parent_id, menu_id, type, status, sort', 'numerical', 'integerOnly' => true),
             array('title', 'length', 'max' => 100),
             array('href, access', 'length', 'max' => 200),
             array('access', 'length', 'max' => 50),
             array(
-                'id, parent_id, menu_id, title, href, type, access, sort, status,  menu_search, parent_search',
+                'id, parent_id, menu_id, title, href, type, access, status, sort,  menu_search, parent_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -83,8 +83,8 @@ class Item extends CActiveRecord
             'title'         => Yii::t('menu', 'Заголовок'),
             'href'          => Yii::t('menu', 'Ссылка'),
             'access'        => Yii::t('menu', 'Уровень доступа'),
-            'sort'          => Yii::t('menu', 'Порядок'),
             'status'        => Yii::t('menu', 'Статус'),
+            'sort'          => Yii::t('menu', 'Порядок'),
             'menu_search'   => Yii::t('menu', 'Меню'),
             'parent_search' => Yii::t('menu', 'Родитель'),
         );

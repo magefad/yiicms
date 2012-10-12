@@ -19,8 +19,6 @@ echo '<p>' . Yii::t('user', 'Используйте символы');?> (<strong
 ?>
 
 <?php echo $form->textFieldRow($model, 'id', array('class' => 'span5', 'maxlength' => 10)); ?>
-<?php echo $form->textFieldRow($model, 'create_time', array('class' => 'span5')); ?>
-<?php echo $form->textFieldRow($model, 'update_time', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'firstname', array('class' => 'span5', 'maxlength' => 150)); ?>
 <?php echo $form->textFieldRow($model, 'lastname', array('class' => 'span5', 'maxlength' => 150)); ?>
 <?php echo $form->textFieldRow($model, 'username', array('class' => 'span5', 'maxlength' => 150)); ?>
@@ -36,6 +34,8 @@ echo '<p>' . Yii::t('user', 'Используйте символы');?> (<strong
 <?php echo $form->textFieldRow($model, 'use_gravatar', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'activate_key', array('class' => 'span5', 'maxlength' => 32)); ?>
 <?php echo $form->textFieldRow($model, 'email_confirm', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'create_time', array('class' => 'span5', 'maxlength' => 19)); ?>
+<?php echo $form->textFieldRow($model, 'update_time', array('class' => 'span5', 'maxlength' => 19)); ?>
 <div class="form-actions">
     <?php $this->widget(
     'bootstrap.widgets.TbButton',

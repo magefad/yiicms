@@ -7,11 +7,11 @@
  * @property integer $id
  * @property integer $user_id
  * @property integer $blog_id
- * @property integer $create_time
- * @property integer $update_time
  * @property integer $role
  * @property integer $status
  * @property string $note
+ * @property integer $create_time
+ * @property integer $update_time
  *
  * The followings are the available model relations:
  * @property User $user
@@ -57,7 +57,7 @@ class UserBlog extends CActiveRecord
             array('role', 'in', 'range' => array_keys($this->getRoleList())),
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
             array('note', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
-            array('id, user_id, blog_id, create_time, update_time, role, status, note', 'safe', 'on'=> 'search'),
+            array('id, user_id, blog_id, role, status, note, create_time, update_time', 'safe', 'on'=> 'search'),
         );
     }
 
@@ -81,11 +81,11 @@ class UserBlog extends CActiveRecord
             'id'          => Yii::t('blog', 'ID'),
             'user_id'     => Yii::t('blog', 'User'),
             'blog_id'     => Yii::t('blog', 'Blog'),
-            'create_time' => Yii::t('blog', 'Create Time'),
-            'update_time' => Yii::t('blog', 'Update Time'),
             'role'        => Yii::t('blog', 'Role'),
             'status'      => Yii::t('blog', 'Status'),
             'note'        => Yii::t('blog', 'Note'),
+            'create_time' => Yii::t('blog', 'Create Time'),
+            'update_time' => Yii::t('blog', 'Update Time'),
         );
     }
 
@@ -100,11 +100,11 @@ class UserBlog extends CActiveRecord
         $criteria->compare('id', $this->id, true);
         $criteria->compare('user_id', $this->user_id, true);
         $criteria->compare('blog_id', $this->blog_id, true);
-        $criteria->compare('create_time', $this->create_time, true);
-        $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('role', $this->role);
         $criteria->compare('status', $this->status);
         $criteria->compare('note', $this->note, true);
+        $criteria->compare('create_time', $this->create_time, true);
+        $criteria->compare('update_time', $this->update_time, true);
         $criteria->with = array('user', 'blog');
         return new CActiveDataProvider($this, array(
             'criteria'=> $criteria,

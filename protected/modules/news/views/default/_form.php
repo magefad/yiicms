@@ -31,8 +31,8 @@ $form = $this->beginWidget(
     )
 ); ?>
 <?php echo $form->error($model, 'date'); ?>
-<?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 150)); ?>
-<?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 150)); ?>
+<?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 200)); ?>
+<?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 200)); ?>
 
 <?php if ($model->image): ?>
 <p><?php echo CHtml::image($model->getThumbnailUrl()); ?></p>
@@ -74,7 +74,7 @@ $this->widget(
 
 <?php echo $form->dropDownListRow($model, 'status', $model->StatusList); ?>
 <?php echo $form->checkBoxRow($model, 'is_protected', $model->ProtectedStatusList); ?>
-<?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 150)); ?>
+<?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textFieldRow($model, 'description', array('class' => 'span5', 'maxlength' => 250)); ?>
 <div class="form-actions">
     <?php $this->widget(
