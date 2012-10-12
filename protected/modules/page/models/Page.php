@@ -106,6 +106,31 @@ class Page extends CActiveRecord
     }
 
     /**
+     * @return array
+     */
+    public function scopes()
+    {
+        return array(
+            'published' => array(
+                'condition' => 'status = :status',
+                'params'    => array('status' => self::STATUS_PUBLISHED)
+            ),
+            'protected' => array(
+                'condition' => 'is_protected = :is_protected',
+                'params'    => array(':is_protected' => self::PROTECTED_YES)
+            ),
+            'public'    => array(
+                'condition' => 'is_protected = :is_protected',
+                'params'    => array(':is_protected' => self::PROTECTED_NO)
+            ),
+            'root'      => array(
+                'condition' => 'parent_id = :parent_id',
+                'params'    => array(':parent_id' => self::ROOT_YES)
+            )
+        );
+    }
+
+    /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels()
@@ -153,31 +178,6 @@ class Page extends CActiveRecord
             $this->create_user_id = $this->update_user_id;
         }
         return parent::beforeSave();
-    }
-
-    /**
-     * @return array
-     */
-    public function scopes()
-    {
-        return array(
-            'published' => array(
-                'condition' => 'status = :status',
-                'params'    => array('status' => self::STATUS_PUBLISHED)
-            ),
-            'protected' => array(
-                'condition' => 'is_protected = :is_protected',
-                'params'    => array(':is_protected' => self::PROTECTED_YES)
-            ),
-            'public'    => array(
-                'condition' => 'is_protected = :is_protected',
-                'params'    => array(':is_protected' => self::PROTECTED_NO)
-            ),
-            'root'      => array(
-                'condition' => 'parent_id = :parent_id',
-                'params'    => array(':parent_id' => self::ROOT_YES)
-            )
-        );
     }
 
     /**

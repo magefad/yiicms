@@ -79,7 +79,6 @@ class Photo extends CActiveRecord
     public function rules()
     {
         return array(
-            #array('gallery_id, name, file_name, create_time, create_user_id, update_user_id, alt', 'required'),
             array('gallery_id', 'required'),
             array('gallery_id, type, status, sort, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name, title, keywords', 'length', 'max' => 200),
@@ -97,6 +96,19 @@ class Photo extends CActiveRecord
                 'id, gallery_id, name, description, sort, file_name, alt, type, status, author_search, create_time, create_user_id, update_user_id, changeAuthor_search, gallery_search',
                 'safe',
                 'on' => 'search'
+            ),
+        );
+    }
+
+    public function behaviors()
+    {
+        return array(
+            'galleria' => array(
+                'class'       => 'application.extensions.galleria.GalleriaBehavior',
+                'image'       => 'file_name',//required, will be image name of src
+                'imagePrefix' => 'id',//optional, not required
+                'description' => 'description',//optional, not required
+                'title'       => 'name',//optional, not required
             ),
         );
     }
@@ -350,22 +362,5 @@ class Photo extends CActiveRecord
     {
         return Yii::app()->request->baseUrl . '/' . Yii::app()->getModule('admin')->uploadDir . '/' . Yii::app(
         )->getModule('gallery')->uploadDir . '/' . $this->getFileName() . '.' . $this->galleryExt;
-    }
-
-    public function behaviors()
-    {
-        return array(
-            'galleria' => array(
-                'class'       => 'application.extensions.galleria.GalleriaBehavior',
-                'image'       => 'file_name',
-                //required, will be image name of src
-                'imagePrefix' => 'id',
-                //optional, not required
-                'description' => 'description',
-                //optional, not required
-                'title'       => 'name',
-                //optional, not required
-            ),
-        );
     }
 }

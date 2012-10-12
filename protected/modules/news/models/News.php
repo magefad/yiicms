@@ -66,15 +66,6 @@ class News extends CActiveRecord
         return '{{news}}';
     }
 
-    public function behaviors()
-    {
-        return array(
-            'comments' => array(
-                'class' => 'application.modules.comment.behaviors.CommentBehavior',
-            )
-        );
-    }
-
     /**
      * @return array validation rules for model attributes.
      */
@@ -113,6 +104,15 @@ class News extends CActiveRecord
                 'safe',
                 'on' => 'search'
             ),
+        );
+    }
+
+    public function behaviors()
+    {
+        return array(
+            'comments' => array(
+                'class' => 'application.modules.comment.behaviors.CommentBehavior',
+            )
         );
     }
 

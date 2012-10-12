@@ -102,6 +102,20 @@ class Blog extends CActiveRecord
         );
     }
 
+    public function scopes()
+    {
+        return array(
+            'published' => array(
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_ACTIVE),
+            ),
+            'public'    => array(
+                'condition' => 'type = :type',
+                'params'    => array(':type' => self::TYPE_PUBLIC),
+            )
+        );
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -194,20 +208,6 @@ class Blog extends CActiveRecord
     {
         $data = $this->getStatusList();
         return isset($data[$this->status]) ? $data[$this->status] : Yii::t('blog', 'unknown');
-    }
-
-    public function scopes()
-    {
-        return array(
-            'published' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_ACTIVE),
-            ),
-            'public'    => array(
-                'condition' => 'type = :type',
-                'params'    => array(':type' => self::TYPE_PUBLIC),
-            )
-        );
     }
 
     /**

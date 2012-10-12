@@ -26,7 +26,7 @@ class CommentModule extends WebModule
         $this->setImport(
             array(
                 'comment.models.*',
-                'comment.behaviours.*',
+                'comment.behaviors.*',
             )
         );
     }

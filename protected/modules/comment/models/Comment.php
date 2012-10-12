@@ -90,6 +90,24 @@ class Comment extends CActiveRecord
         );
     }
 
+    public function scopes()
+    {
+        return array(
+            'new'      => array(
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_NOT_APPROVED),
+            ),
+            'approved' => array(
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_APPROVED),
+                'order'     => 'create_time DESC',
+            ),
+            'authored' => array(
+                'condition' => 'create_user_id is not null',
+            ),
+        );
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
@@ -106,24 +124,6 @@ class Comment extends CActiveRecord
             'create_time'    => Yii::t('CommentModule.comment', 'Create Time'),
             'update_time'    => Yii::t('CommentModule.comment', 'Update Time'),
             'verifyCode'     => Yii::t('CommentModule.comment', 'Verify Code'),
-        );
-    }
-
-    public function scopes()
-    {
-        return array(
-            'new'      => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_NOT_APPROVED),
-            ),
-            'approved' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_APPROVED),
-                'order'     => 'create_time DESC',
-            ),
-            'authored' => array(
-                'condition' => 'create_user_id is not null',
-            ),
         );
     }
 

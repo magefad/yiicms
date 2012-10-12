@@ -81,6 +81,20 @@ class Gallery extends CActiveRecord
         );
     }
 
+    public function scopes()
+    {
+        return array(
+            'public' => array(
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_PUBLIC)
+            ),
+            'draft'  => array(
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_DRAFT)
+            ),
+        );
+    }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
@@ -103,20 +117,6 @@ class Gallery extends CActiveRecord
             'criteria' => $criteria,
             'sort'     => $sort
         ));
-    }
-
-    public function scopes()
-    {
-        return array(
-            'public' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_PUBLIC)
-            ),
-            'draft'  => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_DRAFT)
-            ),
-        );
     }
 
     /*public function defaultScope()

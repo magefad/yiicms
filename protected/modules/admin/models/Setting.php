@@ -62,18 +62,6 @@ class Setting extends CActiveRecord
         );
     }
 
-    public function beforeSave()
-    {
-        unset($this->update_time);//on update CURRENT_TIMESTAMP
-        if ($this->isNewRecord) {
-            $this->create_time = new CDbExpression('NOW()');
-        }
-        if (!isset($this->user_id)) {
-            $this->user_id = Yii::app()->user->id;
-        }
-        return parent::beforeSave();
-    }
-
     /**
      * @return array relational rules.
      */
@@ -124,6 +112,18 @@ class Setting extends CActiveRecord
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,
         ));
+    }
+
+    public function beforeSave()
+    {
+        unset($this->update_time);//on update CURRENT_TIMESTAMP
+        if ($this->isNewRecord) {
+            $this->create_time = new CDbExpression('NOW()');
+        }
+        if (!isset($this->user_id)) {
+            $this->user_id = Yii::app()->user->id;
+        }
+        return parent::beforeSave();
     }
 
     public function getSettings($module_id, $keys)

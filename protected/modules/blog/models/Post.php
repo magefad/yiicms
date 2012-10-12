@@ -89,6 +89,23 @@ class Post extends CActiveRecord
         );
     }
 
+    public function behaviors()
+    {
+        return array(
+            'tags' => array(
+                'class'                => 'blog.extensions.taggable.ETaggableBehavior',
+                'tagTable'             => Yii::app()->db->tablePrefix . 'tag',
+                'tagBindingTable'      => Yii::app()->db->tablePrefix . 'blog_post_tag',
+                'modelTableFk'         => 'post_id',
+                'tagBindingTableTagId' => 'tag_id',
+                'cacheID'              => 'cache',
+            ),
+            'comments' => array(
+                'class' => 'application.modules.comment.behaviors.CommentBehavior',
+            )
+        );
+    }
+
     /**
      * @return array relational rules.
      */
@@ -98,6 +115,20 @@ class Post extends CActiveRecord
             'createUser' => array(self::BELONGS_TO, 'User', 'create_user_id'),
             'updateUser' => array(self::BELONGS_TO, 'User', 'update_user_id'),
             'blog'       => array(self::BELONGS_TO, 'Blog', 'blog_id'),
+        );
+    }
+
+    public function scopes()
+    {
+        return array(
+            'published' => array(
+                'condition' => 't.status = :status',
+                'params'    => array(':status' => self::STATUS_PUBLISHED),
+            ),
+            'public'    => array(
+                'condition' => 't.access_type = :access_type',
+                'params'    => array(':access_type' => self::ACCESS_PUBLIC),
+            ),
         );
     }
 
@@ -124,20 +155,6 @@ class Post extends CActiveRecord
             'create_time'    => Yii::t('blog', 'Create Time'),
             'update_time'    => Yii::t('blog', 'Update Time'),
             'tags'           => Yii::t('blog', 'Tags'),
-        );
-    }
-
-    public function scopes()
-    {
-        return array(
-            'published' => array(
-                'condition' => 't.status = :status',
-                'params'    => array(':status' => self::STATUS_PUBLISHED),
-            ),
-            'public'    => array(
-                'condition' => 't.access_type = :access_type',
-                'params'    => array(':access_type' => self::ACCESS_PUBLIC),
-            ),
         );
     }
 
@@ -175,7 +192,6 @@ class Post extends CActiveRecord
     public function beforeSave()
     {
         if (parent::beforeSave()) {
-            #$this->publish_time   = date('Y-m-d', strtotime($this->publish_time . date(' H:m:s')));
             unset($this->update_time);//on update CURRENT_TIMESTAMP
             $this->update_user_id = Yii::app()->user->getId();
             if ($this->isNewRecord) {
@@ -228,22 +244,5 @@ class Post extends CActiveRecord
     public function getCommentStatus()
     {
         return $this->comment_status ? Yii::t('blog', 'Yes') : Yii::t('blog', 'No');
-    }
-
-    public function behaviors()
-    {
-        return array(
-            'tags' => array(
-                'class'                => 'blog.extensions.taggable.ETaggableBehavior',
-                'tagTable'             => Yii::app()->db->tablePrefix . 'tag',
-                'tagBindingTable'      => Yii::app()->db->tablePrefix . 'blog_post_tag',
-                'modelTableFk'         => 'post_id',
-                'tagBindingTableTagId' => 'tag_id',
-                'cacheID'              => 'cache',
-            ),
-            'comments' => array(
-                'class' => 'application.modules.comment.behaviors.CommentBehavior',
-            )
-        );
     }
 }

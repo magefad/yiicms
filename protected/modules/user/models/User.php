@@ -145,6 +145,35 @@ class User extends CActiveRecord
     }
 
     /**
+     * @return array
+     */
+    public function scopes()
+    {
+        return array(
+            'active'       => array(
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_ACTIVE)
+            ),
+            'blocked'      => array(
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_BLOCK)
+            ),
+            'notActivated' => array(
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_NOT_ACTIVE)
+            ),
+            'admin'        => array(
+                'condition' => 'access_level = :access_level',
+                'params'    => array(':access_level' => self::ACCESS_LEVEL_ADMIN)
+            ),
+            'user'         => array(
+                'condition' => 'access_level = :access_level',
+                'params'    => array(':access_level' => self::ACCESS_LEVEL_USER)
+            ),
+        );
+    }
+
+    /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels()
@@ -229,35 +258,6 @@ class User extends CActiveRecord
             $this->registration_ip   = $this->activation_ip = Yii::app()->request->userHostAddress;
         }
         return parent::beforeSave();
-    }
-
-    /**
-     * @return array
-     */
-    public function scopes()
-    {
-        return array(
-            'active'       => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_ACTIVE)
-            ),
-            'blocked'      => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_BLOCK)
-            ),
-            'notActivated' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_NOT_ACTIVE)
-            ),
-            'admin'        => array(
-                'condition' => 'access_level = :access_level',
-                'params'    => array(':access_level' => self::ACCESS_LEVEL_ADMIN)
-            ),
-            'user'         => array(
-                'condition' => 'access_level = :access_level',
-                'params'    => array(':access_level' => self::ACCESS_LEVEL_USER)
-            ),
-        );
     }
 
     /**
