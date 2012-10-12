@@ -1,6 +1,9 @@
 <?php
 
-/** @var $model News */
+/**
+ * @var $model News
+ * @var $this Controller
+ */
 $this->pageTitle   = $model->title;
 $this->breadcrumbs = array(
     Yii::t('news', 'Новости') => array('/news'),
@@ -16,7 +19,7 @@ $this->breadcrumbs = array(
         array('style' => 'float:left; margin: 0 15px 15px 0')
     );
 }?>
-    <?php echo $model->body; ?>
+    <?php echo $model->content; ?>
     <div class="nav">
         <span class="label"><?php echo $model->date; ?></span> <i class="icon-user"></i>
         <b><?php echo $model->author->username?></b>

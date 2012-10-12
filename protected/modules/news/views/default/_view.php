@@ -15,5 +15,5 @@
     ?>
     <h5><?php echo CHtml::link($data->title, array('default/show', 'slug' => $data->slug));?></h5>
     <span class="label"><?php echo $data->date;?></span>
-    <?php echo $data->body_cut;?>
+    <?php echo $data->content_short;?>
 </div>

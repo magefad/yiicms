@@ -38,13 +38,13 @@ $form = $this->beginWidget(
 <p><?php echo CHtml::image($model->getThumbnailUrl()); ?></p>
 <?php endif; ?>
 <?php echo $form->fileFieldRow($model, 'image'); ?>
-<?php echo $form->labelEx($model, 'body_cut'); ?>
+<?php echo $form->labelEx($model, 'content_short'); ?>
 <?php
 $this->widget(
     'ext.tinymce.TinyMce',
     array(
         'model'     => $model,
-        'attribute' => 'body_cut',
+        'attribute' => 'content_short',
         'settings'  => array(
             'height'                  => '25px',
             'theme_advanced_buttons1' => 'bold,italic,underline,strikethrough,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,anchor,image,cleanup,|,media,|,forecolor,backcolor,|,insertdate,inserttime,|,preview,|,spellchecker',
@@ -58,12 +58,12 @@ $this->widget(
 );
 ?>
 <div>&nbsp;</div>
-<?php echo $form->labelEx($model, 'body'); ?>
+<?php echo $form->labelEx($model, 'content'); ?>
 <?php $this->widget(
     'ext.tinymce.TinyMce',
     array(
         'model'     => $model,
-        'attribute' => 'body',
+        'attribute' => 'content',
         'settings'  => array(
             'content_css' => Yii::app()->assetManager->getPublishedUrl(
                 Yii::getPathOfAlias('ext.bootstrap.assets')

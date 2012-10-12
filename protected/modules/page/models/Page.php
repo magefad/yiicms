@@ -10,7 +10,7 @@
  * @property string $title
  * @property string $keywords
  * @property string $description
- * @property string $body
+ * @property string $content
  * @property string $slug
  * @property integer $status
  * @property integer $is_protected
@@ -64,7 +64,7 @@ class Page extends CActiveRecord
     public function rules()
     {
         return array(
-            array('name, title, body, slug, status, is_protected', 'required'),
+            array('name, title, content, slug, status, is_protected', 'required'),
             array('parent_id, status, is_protected, menu_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
             array('title, keywords, slug', 'length', 'max' => 200),
@@ -72,7 +72,7 @@ class Page extends CActiveRecord
             array('slug', 'unique'), #sulug is a link of page
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
             array('is_protected', 'in', 'range' => array_keys($this->getProtectedStatusList())),
-            array('name, title, keywords, description, body, slug', 'filter', 'filter' => 'trim'),
+            array('name, title, keywords, description, content, slug', 'filter', 'filter' => 'trim'),
             array(
                 'title, slug, description, keywords, name',
                 'filter',
@@ -85,7 +85,7 @@ class Page extends CActiveRecord
                 'message' => Yii::t('page', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, parent_id, name, title, keywords, description, slug, body, status, menu_order, create_time, update_time, author_search, changeAuthor_search',
+                'id, parent_id, name, title, keywords, description, slug, content, status, menu_order, create_time, update_time, author_search, changeAuthor_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -117,7 +117,7 @@ class Page extends CActiveRecord
             'title'               => Yii::t('page', 'Заголовок (Seo title)'),
             'keywords'            => Yii::t('page', 'Ключевые слова (Seo keywords)'),
             'description'         => Yii::t('page', 'Описание (Seo description)'),
-            'body'                => Yii::t('page', 'Текст'),
+            'content'             => Yii::t('page', 'Текст'),
             'slug'                => Yii::t('page', 'Ссылка'),
             'status'              => Yii::t('page', 'Статус'),
             'is_protected'        => Yii::t('page', 'Доступ только для авторизованных пользователей'),
@@ -205,7 +205,7 @@ class Page extends CActiveRecord
         $criteria->compare('title', $this->title, true);
         $criteria->compare('keywords', $this->keywords, true);
         $criteria->compare('description', $this->description, true);
-        $criteria->compare('body', $this->body, true);
+        $criteria->compare('content', $this->content, true);
         $criteria->compare('slug', $this->slug, true);
 
 

@@ -37,8 +37,8 @@
 	<?php echo CHtml::encode($data->slug); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('body')); ?>:</b>
-	<?php echo CHtml::encode($data->body); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('content')); ?>:</b>
+	<?php echo CHtml::encode($data->content); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('keywords')); ?>:</b>

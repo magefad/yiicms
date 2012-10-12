@@ -48,7 +48,7 @@ $('.search-form form').submit(function(){
 		'create_time',
 		'update_time',
 		/*
-		'text',
+		'content',
 		'status',
 		'ip',
 		*/

@@ -18,7 +18,7 @@ $("#ajaxPreview").click(function(e) {
 	$.ajax({
   		type: "POST",
   		url: "'. $this->createUrl('/page/default/ajaxPreview') .'",
-  		data: { body: $("#Page_body").html() },
+  		data: { content: $("#Page_content").html() },
 	}).success(function( data ) {
 		var win = window.open("","Preview","width="+(screen.width-10)+",height="+(screen.height-100)+"");
 		with(win.document) {
@@ -57,7 +57,7 @@ $("#ajaxPreview").click(function(e) {
 
 	<div>
 	<?php
-		$this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'body', 'settings' => array('content_css' => Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css')));
+		$this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'content', 'settings' => array('content_css' => Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css')));
 	?>
 	</div>
 	<div>&nbsp;</div>

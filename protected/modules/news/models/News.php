@@ -9,8 +9,8 @@
  * @property string $title
  * @property string $keywords
  * @property string $description
- * @property string $body_cut
- * @property string $body
+ * @property string $content_short
+ * @property string $content
  * @property string $slug
  * @property string $image
  * @property integer $status
@@ -81,11 +81,11 @@ class News extends CActiveRecord
     public function rules()
     {
         return array(
-            array('date, title, body_cut', 'required', 'on' => array('update', 'insert')),
+            array('date, title, content_short', 'required', 'on' => array('update', 'insert')),
             array('status, is_protected, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('status', 'in', 'range' => array_keys($this->getStatusList())),
             array('title, keywords, slug', 'length', 'max' => 200),
-            array('body_cut', 'length', 'max' => 400),
+            array('content_short', 'length', 'max' => 400),
             array('description', 'length', 'max' => 250),
             array('image', 'length', 'max' => 300),
             array('slug', 'unique'),
@@ -96,7 +96,7 @@ class News extends CActiveRecord
                 'allowEmpty' => true,
                 'safe'       => false
             ),
-            array('title, keywords, description, body_cut, body, slug', 'filter', 'filter' => 'trim'),
+            array('title, keywords, description, content_short, content, slug', 'filter', 'filter' => 'trim'),
             array(
                 'title, slug, keywords, description',
                 'filter',
@@ -109,7 +109,7 @@ class News extends CActiveRecord
                 'message' => Yii::t('news', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, date, title, keywords, description, slug, body_cut, body, status, is_protected, create_user_id, update_user_id, create_time, update_time,   author_search',
+                'id, date, title, keywords, description, slug, content_short, content, status, is_protected, create_user_id, update_user_id, create_time, update_time,   author_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -163,8 +163,8 @@ class News extends CActiveRecord
             'title'         => Yii::t('news', 'Заголовок'),
             'keywords'      => Yii::t('news', 'Ключевые слова (Seo)'),
             'description'   => Yii::t('news', 'Описание (Seo)'),
-            'body_cut'      => Yii::t('news', 'Превью'),
-            'body'          => Yii::t('news', 'Текст'),
+            'content_short' => Yii::t('news', 'Превью'),
+            'content'       => Yii::t('news', 'Текст'),
             'slug'          => Yii::t('news', 'Ссылка'),
             'image'         => Yii::t('news', 'Изображение'),
             'status'        => Yii::t('news', 'Статус'),
@@ -304,10 +304,10 @@ class News extends CActiveRecord
         $criteria->compare('title', $this->title, true);
         $criteria->compare('keywords', $this->keywords, true);
         $criteria->compare('description', $this->description, true);
-        $criteria->compare('body_cut', $this->body_cut, true);
-        $criteria->compare('body', $this->body, true);
+        $criteria->compare('content_short', $this->content_short, true);
+        $criteria->compare('content', $this->content, true);
         $criteria->compare('slug', $this->slug, true);
-        $criteria->compare('iamge', $this->image, true);
+        $criteria->compare('image', $this->image, true);
         if ($this->status != '') {
             $criteria->compare('status', $this->status);
         }

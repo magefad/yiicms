@@ -45,7 +45,7 @@
         <?php if (is_object($data->user)): ?>
         <span class="pull-left" style="padding: 3px 5px 0 0;"><?php echo $data->user->getAvatar(32); ?></span>
         <?php endif; ?>
-        <div><?php echo nl2br(CHtml::encode($data->text)); ?></div>
+        <div><?php echo nl2br(CHtml::encode($data->content)); ?></div>
         <br style="clear: both;"/>
     </div>
 </div>

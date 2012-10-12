@@ -7,7 +7,7 @@
  * @property integer $id
  * @property string $model
  * @property integer $model_id
- * @property string $text
+ * @property string $content
  * @property string $ip
  * @property integer $status
  * @property string $username
@@ -60,16 +60,16 @@ class Comment extends CActiveRecord
     public function rules()
     {
         return array(
-            array('model, model_id, text', 'required'),
+            array('model, model_id, content', 'required'),
             array('username', 'checkUsername'),
             array('model_id, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('model', 'length', 'max' => 16),
             array('ip, username', 'length', 'max' => 20),
-            array('model, text, ip, username', 'filter', 'filter' => 'trim'),
+            array('model, content, ip, username', 'filter', 'filter' => 'trim'),
             array('status', 'in', 'range' => array_keys($this->statusList)),
-            array('model, text, username', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
+            array('model, content, username', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
             array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements() || !Yii::app()->user->isGuest),
-            array('id, model, model_id, text, ip, status, create_user_id, update_user_id, create_time, update_time', 'safe', 'on' => 'search'),
+            array('id, model, model_id, content, ip, status, create_user_id, update_user_id, create_time, update_time', 'safe', 'on' => 'search'),
         );
     }
 
@@ -98,7 +98,7 @@ class Comment extends CActiveRecord
         return array(
             'model'          => Yii::t('CommentModule.comment', 'Model'),
             'model_id'       => Yii::t('CommentModule.comment', 'Model'),
-            'text'           => Yii::t('CommentModule.comment', 'Comment Text'),
+            'content'        => Yii::t('CommentModule.comment', 'Comment Text'),
             'status'         => Yii::t('CommentModule.comment', 'Status'),
             'username'       => Yii::t('CommentModule.comment', 'Name'),
             'create_user_id' => Yii::t('CommentModule.comment', 'User'),
@@ -138,7 +138,7 @@ class Comment extends CActiveRecord
         $criteria->compare('id', $this->id, true);
         $criteria->compare('model', $this->model, true);
         $criteria->compare('model_id', $this->model_id, true);
-        $criteria->compare('text', $this->text, true);
+        $criteria->compare('content', $this->content, true);
         $criteria->compare('ip', $this->ip, true);
         $criteria->compare('status', $this->status);
         $criteria->compare('username', $this->username);

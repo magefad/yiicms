@@ -5,4 +5,4 @@
  * Time: 17:14
  */
 /** @var $page array */
-echo $page['body'];
+echo $page['content'];

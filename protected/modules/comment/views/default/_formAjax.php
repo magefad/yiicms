@@ -24,8 +24,8 @@
 ); ?>
     <?php echo $form->errorSummary($model); ?>
     <div class="control-group">
-        <?php echo $form->textArea($model, 'text', array('class' => 'span4', 'rows' => 5, 'placeholder' => $model->getAttributeLabel('text'))); ?>
-        <?php echo $form->error($model, 'text'); ?>
+        <?php echo $form->textArea($model, 'content', array('class' => 'span4', 'rows' => 5, 'placeholder' => $model->getAttributeLabel('content'))); ?>
+        <?php echo $form->error($model, 'content'); ?>
     </div>
     <?php if (Yii::app()->user->isGuest): ?>
     <div class="control-group">

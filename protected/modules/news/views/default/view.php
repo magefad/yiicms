@@ -28,14 +28,14 @@ $this->widget('bootstrap.widgets.TbTabs', array(
 			'content' => '<h6><span class="label">' . $model->date . '</span> ' . CHtml::link($model->title, array(
 				'/news/show',
 				'title' => $model->slug
-			)) . '</h6>' . $model->body_cut,
+			)) . '</h6>' . $model->content_short,
 			'active'  => true
 		), array(
 			'label'   => Yii::t('news', 'Полная новость'),
 			'content' => '<h3>' . CHtml::link($model->title, array(
 				'/news/show',
 				'title' => $model->slug
-			)) . '</h3>' . $model->body . '<span class="label">' . $model->date . '</span> <i class="icon-user"></i>' . CHtml::link($model->author->username, array('/user/people/' . $model->author->username)) . '<br />'
+			)) . '</h3>' . $model->content . '<span class="label">' . $model->date . '</span> <i class="icon-user"></i>' . CHtml::link($model->author->username, array('/user/people/' . $model->author->username)) . '<br />'
 		)
 	)
 ));
@@ -48,8 +48,8 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
 		'title',
         'keywords',
         'description',
-		#'body_cut',
-		#'body',
+		#'content_short',
+		#'content',
         'slug',
 		'status',
 		'is_protected',

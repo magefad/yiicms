@@ -22,7 +22,7 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
 		'id',
 		'model',
 		'model_id',
-		'text',
+		'content',
 		'status',
 		'ip',
         'create_user_id',

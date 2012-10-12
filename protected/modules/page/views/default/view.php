@@ -49,7 +49,7 @@ $this->widget(
             'title',
             'keywords',
             'description',
-            'body',
+            'content',
             'slug',
             array(
                 'name'  => 'status',

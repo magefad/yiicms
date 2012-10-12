@@ -199,7 +199,7 @@ class DefaultController extends Controller
         header('Content-type: text/plain');
         header("Cache-Control: no-cache");
         header("Pragma: no-cache");
-        $page['body'] = $purifier->purify($_REQUEST['body']);
+        $page['content'] = $purifier->purify($_REQUEST['content']);
         $this->render('show', array('page' => $page));
         Yii::app()->end();
     }
