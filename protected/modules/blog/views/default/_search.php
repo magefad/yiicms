@@ -28,7 +28,7 @@ $form = $this->beginWidget(
     array(
         'buttonType' => 'submit',
         'type'       => 'primary',
-        'label'      => Yii::t('blog', 'Search'),
+        'label'      => Yii::t('BlogModule.blog', 'Search'),
     )
 ); ?>
 </div>

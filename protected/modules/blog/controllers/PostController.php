@@ -31,7 +31,7 @@ class PostController extends Controller
             array(':slug' => $slug)
         ) : Post::model()->published()->find('slug = :slug', array(':slug' => $slug));
         if (!$model) {
-            throw new CHttpException(404, Yii::t('blog', 'Post not found!'));
+            throw new CHttpException(404, Yii::t('BlogModule.blog', 'Post not found!'));
         } else {
             $model->publish_time = Yii::app()->dateFormatter->formatDateTime($model->publish_time, 'short', 'short');
             $model->content = str_replace('<cut>', '<a name="cut"></a>', $model->content);

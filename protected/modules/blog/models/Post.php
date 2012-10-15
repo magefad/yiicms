@@ -138,23 +138,23 @@ class Post extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'             => Yii::t('blog', 'ID'),
-            'blog_id'        => Yii::t('blog', 'Blog'),
-            'title'          => Yii::t('blog', 'Title'),
-            'keywords'       => Yii::t('blog', 'Keywords'),
-            'description'    => Yii::t('blog', 'Description'),
-            'content'        => Yii::t('blog', 'Content'),
-            'slug'           => Yii::t('blog', 'URL'),
-            'link'           => Yii::t('blog', 'Link'),
-            'status'         => Yii::t('blog', 'Status'),
-            'comment_status' => Yii::t('blog', 'Comment Status'),
-            'access_type'    => Yii::t('blog', 'Access Type'),
-            'create_user_id' => Yii::t('blog', 'Author'),
-            'update_user_id' => Yii::t('blog', 'Changed'),
-            'publish_time'   => Yii::t('blog', 'Publish Time'),
-            'create_time'    => Yii::t('blog', 'Create Time'),
-            'update_time'    => Yii::t('blog', 'Update Time'),
-            'tags'           => Yii::t('blog', 'Tags'),
+            'id'             => Yii::t('BlogModule.blog', 'ID'),
+            'blog_id'        => Yii::t('BlogModule.blog', 'Blog'),
+            'title'          => Yii::t('BlogModule.blog', 'Title'),
+            'keywords'       => Yii::t('BlogModule.blog', 'Keywords'),
+            'description'    => Yii::t('BlogModule.blog', 'Description'),
+            'content'        => Yii::t('BlogModule.blog', 'Content'),
+            'slug'           => Yii::t('BlogModule.blog', 'URL'),
+            'link'           => Yii::t('BlogModule.blog', 'Link'),
+            'status'         => Yii::t('BlogModule.blog', 'Status'),
+            'comment_status' => Yii::t('BlogModule.blog', 'Comment Status'),
+            'access_type'    => Yii::t('BlogModule.blog', 'Access Type'),
+            'create_user_id' => Yii::t('BlogModule.blog', 'Author'),
+            'update_user_id' => Yii::t('BlogModule.blog', 'Changed'),
+            'publish_time'   => Yii::t('BlogModule.blog', 'Publish Time'),
+            'create_time'    => Yii::t('BlogModule.blog', 'Create Time'),
+            'update_time'    => Yii::t('BlogModule.blog', 'Update Time'),
+            'tags'           => Yii::t('BlogModule.blog', 'Tags'),
         );
     }
 
@@ -215,34 +215,34 @@ class Post extends CActiveRecord
     public function getStatusList()
     {
         return array(
-            self::STATUS_SCHEDULED  => Yii::t('blog', 'Scheduled'),
-            self::STATUS_DRAFT      => Yii::t('blog', 'Draft'),
-            self::STATUS_PUBLISHED  => Yii::t('blog', 'Published'),
+            self::STATUS_SCHEDULED  => Yii::t('BlogModule.blog', 'Scheduled'),
+            self::STATUS_DRAFT      => Yii::t('BlogModule.blog', 'Draft'),
+            self::STATUS_PUBLISHED  => Yii::t('BlogModule.blog', 'Published'),
         );
     }
 
     public function getStatus()
     {
         $data = $this->getStatusList();
-        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('blog', 'unknown');
+        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('BlogModule.blog', 'unknown');
     }
 
     public function getAccessTypeList()
     {
         return array(
-            self::ACCESS_PRIVATE => Yii::t('blog', 'Private'),
-            self::ACCESS_PUBLIC  => Yii::t('blog', 'Public')
+            self::ACCESS_PRIVATE => Yii::t('BlogModule.blog', 'Private'),
+            self::ACCESS_PUBLIC  => Yii::t('BlogModule.blog', 'Public')
         );
     }
 
     public function getAccessType()
     {
         $data = $this->getAccessTypeList();
-        return isset($data[$this->access_type]) ? $data[$this->access_type] : Yii::t('blog', 'unknown');
+        return isset($data[$this->access_type]) ? $data[$this->access_type] : Yii::t('BlogModule.blog', 'unknown');
     }
 
     public function getCommentStatus()
     {
-        return $this->comment_status ? Yii::t('blog', 'Yes') : Yii::t('blog', 'No');
+        return $this->comment_status ? Yii::t('BlogModule.blog', 'Yes') : Yii::t('BlogModule.blog', 'No');
     }
 }

@@ -78,14 +78,14 @@ class UserBlog extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'          => Yii::t('blog', 'ID'),
-            'user_id'     => Yii::t('blog', 'User'),
-            'blog_id'     => Yii::t('blog', 'Blog'),
-            'role'        => Yii::t('blog', 'Role'),
-            'status'      => Yii::t('blog', 'Status'),
-            'note'        => Yii::t('blog', 'Note'),
-            'create_time' => Yii::t('blog', 'Create Time'),
-            'update_time' => Yii::t('blog', 'Update Time'),
+            'id'          => Yii::t('BlogModule.blog', 'ID'),
+            'user_id'     => Yii::t('BlogModule.blog', 'User'),
+            'blog_id'     => Yii::t('BlogModule.blog', 'Blog'),
+            'role'        => Yii::t('BlogModule.blog', 'Role'),
+            'status'      => Yii::t('BlogModule.blog', 'Status'),
+            'note'        => Yii::t('BlogModule.blog', 'Note'),
+            'create_time' => Yii::t('BlogModule.blog', 'Create Time'),
+            'update_time' => Yii::t('BlogModule.blog', 'Update Time'),
         );
     }
 
@@ -127,29 +127,29 @@ class UserBlog extends CActiveRecord
     public function getRoleList()
     {
         return array(
-            self::ROLE_USER      => Yii::t('blog', 'Member'),
-            self::ROLE_MODERATOR => Yii::t('blog', 'Moderator'),
-            self::ROLE_ADMIN     => Yii::t('blog', 'Administrator'),
+            self::ROLE_USER      => Yii::t('BlogModule.blog', 'Member'),
+            self::ROLE_MODERATOR => Yii::t('BlogModule.blog', 'Moderator'),
+            self::ROLE_ADMIN     => Yii::t('BlogModule.blog', 'Administrator'),
         );
     }
 
     public function getRole()
     {
         $data = $this->getRoleList();
-        return isset($data[$this->role]) ? $data[$this->role] : Yii::t('blog', 'unknown');
+        return isset($data[$this->role]) ? $data[$this->role] : Yii::t('BlogModule.blog', 'unknown');
     }
 
     public function getStatusList()
     {
         return array(
-            self::STATUS_ACTIVE => Yii::t('blog', 'Active'),
-            self::STATUS_BLOCK  => Yii::t('blog', 'Blocked'),
+            self::STATUS_ACTIVE => Yii::t('BlogModule.blog', 'Active'),
+            self::STATUS_BLOCK  => Yii::t('BlogModule.blog', 'Blocked'),
         );
     }
 
     public function getStatus()
     {
         $data = $this->getStatusList();
-        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('blog', 'unknown');
+        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('BlogModule.blog', 'unknown');
     }
 }

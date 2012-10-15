@@ -63,7 +63,7 @@ class Blog extends CActiveRecord
                 'slug',
                 'match',
                 'pattern' => '/^[a-zA-Z0-9_\-]+$/',
-                'message' => Yii::t('blog', 'String contains illegal characters. Allowed: {attribute}')
+                'message' => Yii::t('BlogModule.blog', 'String contains illegal characters. Allowed: {attribute}')
             ),
             array('slug', 'unique'),
             array(
@@ -122,17 +122,17 @@ class Blog extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'             => Yii::t('blog', 'ID'),
-            'title'          => Yii::t('blog', 'Title'),
-            'keywords'       => Yii::t('blog', 'Keywords'),
-            'description'    => Yii::t('blog', 'Description'),
-            'slug'           => Yii::t('blog', 'URL'),
-            'type'           => Yii::t('blog', 'Type'),
-            'status'         => Yii::t('blog', 'Status'),
-            'create_user_id' => Yii::t('blog', 'Author'),
-            'update_user_id' => Yii::t('blog', 'Changed'),
-            'create_time'    => Yii::t('blog', 'Create Time'),
-            'update_time'    => Yii::t('blog', 'Update Time'),
+            'id'             => Yii::t('BlogModule.blog', 'ID'),
+            'title'          => Yii::t('BlogModule.blog', 'Title'),
+            'keywords'       => Yii::t('BlogModule.blog', 'Keywords'),
+            'description'    => Yii::t('BlogModule.blog', 'Description'),
+            'slug'           => Yii::t('BlogModule.blog', 'URL'),
+            'type'           => Yii::t('BlogModule.blog', 'Type'),
+            'status'         => Yii::t('BlogModule.blog', 'Status'),
+            'create_user_id' => Yii::t('BlogModule.blog', 'Author'),
+            'update_user_id' => Yii::t('BlogModule.blog', 'Changed'),
+            'create_time'    => Yii::t('BlogModule.blog', 'Create Time'),
+            'update_time'    => Yii::t('BlogModule.blog', 'Update Time'),
         );
     }
 
@@ -184,30 +184,30 @@ class Blog extends CActiveRecord
     public function getTypeList()
     {
         return array(
-            self::TYPE_PUBLIC  => Yii::t('blog', 'public'),
-            self::TYPE_PRIVATE => Yii::t('blog', 'private'),
+            self::TYPE_PUBLIC  => Yii::t('BlogModule.blog', 'public'),
+            self::TYPE_PRIVATE => Yii::t('BlogModule.blog', 'private'),
         );
     }
 
     public function getType()
     {
         $data = $this->getTypeList();
-        return isset($data[$this->type]) ? $data[$this->type] : Yii::t('blog', 'unknown');
+        return isset($data[$this->type]) ? $data[$this->type] : Yii::t('BlogModule.blog', 'unknown');
     }
 
     public function getStatusList()
     {
         return array(
-            self::STATUS_ACTIVE  => Yii::t('blog', 'Active'),
-            self::STATUS_BLOCKED => Yii::t('blog', 'Blocked'),
-            self::STATUS_DELETED => Yii::t('blog', 'Deleted'),
+            self::STATUS_ACTIVE  => Yii::t('BlogModule.blog', 'Active'),
+            self::STATUS_BLOCKED => Yii::t('BlogModule.blog', 'Blocked'),
+            self::STATUS_DELETED => Yii::t('BlogModule.blog', 'Deleted'),
         );
     }
 
     public function getStatus()
     {
         $data = $this->getStatusList();
-        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('blog', 'unknown');
+        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('BlogModule.blog', 'unknown');
     }
 
     /**

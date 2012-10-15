@@ -7,9 +7,9 @@
  * @var $blog Blog
  * @var $postsDataProvider CActiveDataProvider
  */
-$tagBreadcrumb     = isset($tag) ? Yii::t('blog', 'Tagged') . ' «' . $tag . '»' : Yii::t('blog', 'All posts');
+$tagBreadcrumb     = isset($tag) ? Yii::t('BlogModule.blog', 'Tagged') . ' «' . $tag . '»' : Yii::t('BlogModule.blog', 'All posts');
 $this->breadcrumbs = array(
-    Yii::t('blog', 'Blogs') => array('/blog/default/index'),
+    Yii::t('BlogModule.blog', 'Blogs') => array('/blog/default/index'),
     $tagBreadcrumb
 );
 $this->widget(

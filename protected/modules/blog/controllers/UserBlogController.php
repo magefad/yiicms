@@ -37,7 +37,7 @@ class UserBlogController extends Controller
                 }
             }
         } catch (Exception $e) {
-            Yii::app()->user->setFlash('warning', Yii::t('blog', 'User already in blog!'));
+            Yii::app()->user->setFlash('warning', Yii::t('BlogModule.blog', 'User already in blog!'));
             $this->redirect(array('admin'));
         }
         $this->render('create', array('model' => $model));

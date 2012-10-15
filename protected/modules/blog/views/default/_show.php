@@ -17,7 +17,7 @@ $tags              = $data->getTags();
             $this->widget(
                 'bootstrap.widgets.TbButton',
                 array(
-                    'label'=> Yii::t('blog', 'Read more →'),
+                    'label'=> Yii::t('BlogModule.blog', 'Read more →'),
                     'size' => 'mini',
                     'url'  => array('/blog/post/show/', 'slug' => $data->slug, '#' => 'cut'),
                 )
@@ -39,7 +39,7 @@ $tags              = $data->getTags();
         array('/blog/post/show/', 'slug' => $data->slug, '#' => 'comments')
     ); ?>
         <?php if (count($tags)): ?>
-        | <i class="icon-tags"></i> <?php echo Yii::t('blog', 'Tags'); ?>:
+        | <i class="icon-tags"></i> <?php echo Yii::t('BlogModule.blog', 'Tags'); ?>:
         <?php foreach ($tags as $tag): ?>
             <?php echo CHtml::link(
                 $tag,

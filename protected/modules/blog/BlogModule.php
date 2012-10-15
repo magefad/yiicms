@@ -8,12 +8,12 @@ class BlogModule extends WebModule
 {
     public function getName()
     {
-        return Yii::t('blog', 'Blogs');
+        return Yii::t('BlogModule.blog', 'Blogs');
     }
 
     public function getDescription()
     {
-        return Yii::t('blog', 'Manage blogs, posts and members');
+        return Yii::t('BlogModule.blog', 'Manage blogs, posts and members');
     }
 
     public function getIcon()

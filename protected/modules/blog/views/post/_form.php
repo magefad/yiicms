@@ -21,7 +21,7 @@ $form = $this->beginWidget(
     $model,
     'blog_id',
     CHtml::listData(Blog::model()->findAll(), 'id', 'title'),
-    array('empty' => Yii::t('blog', 'select blog'), 'class' => 'span5')
+    array('empty' => Yii::t('BlogModule.blog', 'select blog'), 'class' => 'span5')
 ); ?>
 <?php echo $form->labelEx($model, 'publish_time'); ?>
 <?php $this->widget(
@@ -73,7 +73,7 @@ $form = $this->beginWidget(
     array(
         'buttonType' => 'submit',
         'type'       => 'primary',
-        'label'      => $model->isNewRecord ? Yii::t('blog', 'Create') : Yii::t('blog', 'Save'),
+        'label'      => $model->isNewRecord ? Yii::t('BlogModule.blog', 'Create') : Yii::t('BlogModule.blog', 'Save'),
     )
 ); ?>
 </div>

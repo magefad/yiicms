@@ -4,17 +4,17 @@
  * @var $model Blog
  */
 $this->breadcrumbs = array(
-    Yii::t('blog', 'Blogs') => array('admin'),
-    Yii::t('blog', 'Manage'),
+    Yii::t('BlogModule.blog', 'Blogs') => array('admin'),
+    Yii::t('BlogModule.blog', 'Manage'),
 );
 
 $this->menu = array(
-    array('label' => Yii::t('blog', 'Blogs')),
-    array('icon' => 'list-alt', 'label' => Yii::t('blog', 'Manage'), 'url' => array('/blog/default/admin')),
-    array('icon' => 'file', 'label' => Yii::t('blog', 'Create'), 'url' => array('create')),
-    array('icon' => 'list-alt', 'label' => Yii::t('blog', 'Manage Posts'), 'url' => array('post/admin')),
-    array('icon' => 'file', 'label' => Yii::t('blog', 'Create Post'), 'url' => array('post/create')),
-    array('icon' => 'list-alt', 'label' => Yii::t('blog', 'Manage Users'), 'url' => array('userBlog/admin')),
+    array('label' => Yii::t('BlogModule.blog', 'Blogs')),
+    array('icon' => 'list-alt', 'label' => Yii::t('BlogModule.blog', 'Manage'), 'url' => array('/blog/default/admin')),
+    array('icon' => 'file', 'label' => Yii::t('BlogModule.blog', 'Create'), 'url' => array('create')),
+    array('icon' => 'list-alt', 'label' => Yii::t('BlogModule.blog', 'Manage Posts'), 'url' => array('post/admin')),
+    array('icon' => 'file', 'label' => Yii::t('BlogModule.blog', 'Create Post'), 'url' => array('post/create')),
+    array('icon' => 'list-alt', 'label' => Yii::t('BlogModule.blog', 'Manage Users'), 'url' => array('userBlog/admin')),
 );
 
 Yii::app()->clientScript->registerScript(
@@ -33,7 +33,7 @@ $('.search-form form').submit(function(){
 "
 );
 ?>
-<?php echo CHtml::link(Yii::t('blog', 'Search'), '#', array('class' => 'search-button btn btn-small')); ?>
+<?php echo CHtml::link(Yii::t('BlogModule.blog', 'Search'), '#', array('class' => 'search-button btn btn-small')); ?>
 <div class="search-form" style="display:none">
     <?php $this->renderPartial('_search', array('model' => $model)); ?>
 </div><!-- search-form -->
@@ -57,11 +57,11 @@ $('.search-form form').submit(function(){
                 'value' => 'CHtml::link($data->title, array("update", "id" => $data->id))',
             ),
             array(
-                'header'  => Yii::t('blog', 'Posts'),
+                'header'  => Yii::t('BlogModule.blog', 'Posts'),
                 'value'   => '$data->postsCount',
             ),
             array(
-                'header'  => Yii::t('blog', 'Members'),
+                'header'  => Yii::t('BlogModule.blog', 'Members'),
                 'value'   => '$data->membersCount',
             ),
             array(
@@ -101,10 +101,10 @@ $('.search-form form').submit(function(){
                 'type'        => 'raw',
                 'value'       => '$this->grid->returnBootstrapStatusHtml($data)',
                 'filter'      => array(
-                    '' => Yii::t('blog', 'All'),
-                    1  => Yii::t('blog', 'Public'),
-                    0  => Yii::t('blog', 'Draft'),
-                    2  => Yii::t('blog', 'On moderation')
+                    '' => Yii::t('BlogModule.blog', 'All'),
+                    1  => Yii::t('BlogModule.blog', 'Public'),
+                    0  => Yii::t('BlogModule.blog', 'Draft'),
+                    2  => Yii::t('BlogModule.blog', 'On moderation')
                 ),
                 'htmlOptions' => array('style' => 'width: 40px; text-align: center;'),
             ),

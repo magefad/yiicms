@@ -28,7 +28,7 @@ $form = $this->beginWidget(
     array(
         'buttonType' => 'submit',
         'type'       => 'primary',
-        'label'      => $model->isNewRecord ? Yii::t('blog', 'Create') : Yii::t('blog', 'Save'),
+        'label'      => $model->isNewRecord ? Yii::t('BlogModule.blog', 'Create') : Yii::t('BlogModule.blog', 'Save'),
     )
 ); ?>
 </div>
