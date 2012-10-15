@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="<?php echo Yii::app()->language; ?>">
 <head>
     <meta charset="utf-8">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
