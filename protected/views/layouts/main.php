@@ -10,7 +10,6 @@
     <?php
     if (Yii::app()->user->isSuperUser) {
         echo "<script src='" . Yii::app()->request->baseUrl . "/js/admin.js'></script>\n";
-        echo "<script type='text/javascript'>$(function() { $('.mytip').tooltip(); });</script>\n";
     }
     ?>
 </head>

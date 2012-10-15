@@ -94,10 +94,6 @@ class CustomTbGridView extends TbGridView
             )
         );
 
-        $options = array(
-            'onclick' => 'ajaxSetStatus(this, "' . $this->id . '"); return false;',
-        );
-
         $text = method_exists($data, 'getStatus') ? $data->getStatus() : '';
         $text .= ". " . Yii::t(
             'global',
@@ -106,7 +102,12 @@ class CustomTbGridView extends TbGridView
                 'Опубликовать?'
             )
         );
-        $icon = '<i rel="tooltip" class="mytip icon icon-' . (isset($icons[$data->$statusField]) ? $icons[$data->$statusField] : 'question-sign') . "\" title='" . $text . "'></i>";
+        $options = array(
+            'rel'     => 'tooltip',
+            'title'   => $text,
+            'onclick' => 'ajaxSetStatus(this, "' . $this->id . '"); return false;',
+        );
+        $icon = '<i class="icon icon-' . (isset($icons[$data->$statusField]) ? $icons[$data->$statusField] : 'question-sign') . "\"></i>";
         return CHtml::link($icon, $url, $options);
     }
 
@@ -122,16 +123,14 @@ class CustomTbGridView extends TbGridView
             Yii::app()->assetManager->publish(
                 Yii::getPathOfAlias('zii.widgets.assets.gridview') . '/down.gif'
             ),
-            Yii::t('global', 'Опустить ниже'),
-            array('title' => Yii::t('global', 'Опустить ниже'), 'class' => 'mytip')
+            '&#x25B2;'
         );
 
         $upUrlImage = CHtml::image(
             Yii::app()->assetManager->publish(
                 Yii::getPathOfAlias('zii.widgets.assets.gridview') . '/up.gif'
             ),
-            Yii::t('global', 'Поднять выше'),
-            array('title' => Yii::t('global', 'Поднять выше'), 'class' => 'mytip')
+           '&#x25BC;'
         );
 
         $urlUp = Yii::app()->controller->createUrl(
@@ -154,11 +153,18 @@ class CustomTbGridView extends TbGridView
             )
         );
 
-        $options = array(
+        $optionsUp   = array(
             'onclick' => 'ajaxSetSort(this, "' . $this->id . '"); return false;',
+            'title'   => Yii::t('global', 'Поднять выше'),
+            'rel'     => 'tooltip'
+        );
+        $optionsDown = array(
+            'onclick' => 'ajaxSetSort(this, "' . $this->id . '"); return false;',
+            'title'   => Yii::t('global', 'Опустить ниже'),
+            'rel'     => 'tooltip'
         );
 
-        $return = ($data->{$this->sortField} != 1) ? CHtml::link($upUrlImage, $urlUp, $options) : '&nbsp;';
-        return $return . ' ' . $data->{$this->sortField} . ' ' . CHtml::link($downUrlImage, $urlDown, $options);
+        $return = ($data->{$this->sortField} != 1) ? CHtml::link($upUrlImage, $urlUp, $optionsUp) : '&nbsp;';
+        return $return . ' ' . $data->{$this->sortField} . ' ' . CHtml::link($downUrlImage, $urlDown, $optionsDown);
     }
 }

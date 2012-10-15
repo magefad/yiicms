@@ -12,7 +12,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'enableAjaxValidation' => false,
 ));
 
-Yii::app()->clientScript->registerScript('ajaxPreview', '
+Yii::app()->clientScript->registerScript('page', '
+$(".mytip").tooltip();
 $("#ajaxPreview").click(function(e) {
 	e.preventDefault();
 	$.ajax({
