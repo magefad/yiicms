@@ -3,7 +3,7 @@
  * @var $data Post
  * @var $this Controller
  */
-$tags              = $data->getTags();
+$tags = $data->getTags();
 ?>
 <div class="row">
     <h2 class="span12">
@@ -31,11 +31,7 @@ $tags              = $data->getTags();
         <i class="icon-user"></i> <?php echo $data->createUser->username; ?>
         | <i class="icon-calendar"></i> <?php echo $data->publish_time; ?>
         | <i class="icon-comment"></i> <?php echo CHtml::link(
-        ($data->getCommentCount() . ' ' . Yii::t(
-            'blog',
-            'Comment|Comments|Comments',
-            $data->getCommentCount()
-        )),
+        Yii::t('BlogModule.blog', '{n} Comment|{n} Comments', $data->commentCount),
         array('/blog/post/show/', 'slug' => $data->slug, '#' => 'comments')
     ); ?>
         <?php if (count($tags)): ?>

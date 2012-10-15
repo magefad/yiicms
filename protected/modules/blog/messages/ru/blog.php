@@ -35,7 +35,7 @@ return array (
   'Blogs' => 'Блоги',
   'Changed' => 'Изменено',
   'Comment Status' => 'Комменатарии',
-  'Comment|Comments|Comments' => 'Комментарий|Комментария|Комментариев',
+  '{n} Comment|{n} Comments' => '{n} Комментарий|{n} Комментария|{n} Комментариев',
   'Content' => 'Контент',
   'Create' => 'Создать',
   'Create Post' => 'Создать пост',
