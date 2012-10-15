@@ -21,7 +21,7 @@ $flashSuccess = (Yii::app()->user->hasFlash('success') == 1) ? true : false;
 <?php
 if ($page) {
     $this->pageTitle = $page->title;
-    echo $page->body;
+    echo $page->content;
 }
 ?>
 
