@@ -3,15 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
-    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap.css">
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <?php
-    if (Yii::app()->user->isSuperUser) {
-        echo "<script src='" . Yii::app()->request->baseUrl . "/js/admin.js'></script>\n";
-    }
-    ?>
+    <!--[if lt IE 9]><script type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
 <?php

@@ -57,6 +57,10 @@ class Controller extends RController
         $this->pageTitle   = $this->admin->siteName;
         $this->keywords    = $this->admin->siteKeywords;
         $this->description = $this->admin->siteDescription;
+        if ( Yii::app()->user->isSuperUser) {
+            $assets = Yii::app()->assetManager->publish('js');
+            Yii::app()->clientScript->registerScriptFile($assets . '/' . 'admin.js');
+        }
         parent::init();
     }
 
