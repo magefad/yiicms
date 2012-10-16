@@ -2,8 +2,6 @@
 
 class DefaultController extends Controller
 {
-    public $currentPage;
-
     /**
      * @return array action filters
      */
@@ -30,28 +28,48 @@ class DefaultController extends Controller
     {
         if (empty($slug)) {
             $slug = Yii::app()->params['index'];
+        } else if ( $slug == Yii::app()->params['index']) {
+            $this->redirect('/', true, 301);
         }
-        /** @var $this->currentPage Page */
-        $this->currentPage = null;
-
-        // превью
+        /** @var $page Page */
+        $page = null;
+        // preview
         if ((int)Yii::app()->request->getQuery('preview') === 1 && Yii::app()->user->isSuperUser) {
-            $this->currentPage = Page::model()->find('slug = :slug', array(':slug' => $slug));
+            $page = Page::model()->find('slug = :slug', array(':slug' => $slug));
         } else {
-            $this->currentPage = Page::model()->published()->find('slug = :slug', array(':slug' => $slug));
+            $page = Page::model()->published()->find('slug = :slug', array(':slug' => $slug));
         }
 
-        if (!$this->currentPage || ($this->currentPage->is_protected == Page::PROTECTED_YES)) {
+        if (!$page) {
             throw new CHttpException('404', Yii::t('page', 'Страница не найдена или удалена!'));
         }
-        $this->setMetaTags($this->currentPage);
-        if (is_object($this->currentPage->parent)) {
-            $this->breadcrumbs = array(
-                $this->currentPage->parent->name => array('default/show', 'slug' => $this->currentPage->parent->slug),
-                $this->currentPage->name,
-            );
+        if ($page->is_protected == Page::PROTECTED_YES && Yii::app()->user->isGuest) {
+            Yii::app()->user->setFlash('warning', Yii::t('page', 'Страница доступна только для авторизованных пользователей'));
+            $this->redirect(Yii::app()->user->loginUrl);
         }
-        $this->render('show', array('page' => $this->currentPage));
+        $this->setMetaTags($page);
+        if ((int)$page->parent_id) {
+            $this->breadcrumbs = $this->getPageBreadCrumbs($page->parent);
+            array_push($this->breadcrumbs, $page->title);
+        }
+        $this->render('show', array('page' => $page));
+    }
+
+    /**
+     * Recursively get page parents to put in breadcrumbs
+     * @param Page $page
+     * @return array
+     */
+    public function getPageBreadCrumbs(Page $page)
+    {
+        $pages              = array();
+        $pages[$page->name] = array('default/show', 'slug' => $page->slug);
+        if ((int)$page->parent_id) {
+            if ($parent = $page->parent) {
+                $pages += $this->getPageBreadCrumbs($parent);
+            }
+        }
+        return array_reverse($pages);
     }
 
     /**

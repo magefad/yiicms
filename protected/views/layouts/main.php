@@ -74,7 +74,7 @@ $this->widget(
     ); ?><!-- breadcrumbs -->
     <?php endif?>
     <?php $this->widget('bootstrap.widgets.TbAlert');?>
-    <?php if (isset($this->currentPage) && $this->currentPage['slug'] == Yii::app()->params['index']): ?>
+    <?php if (isset($this->module) && $this->module->id == 'page' && $this->action->id == 'show' && !isset($_GET['slug'])): ?>
     <div class="news" style="float: right">
         <?php $this->widget(
         'application.modules.news.widgets.LastNews',
