@@ -9,9 +9,6 @@ $this->breadcrumbs = array(
     Yii::t('user', 'Регистрация'),
 );
 ?>
-<?php
-$this->widget('bootstrap.widgets.TbAlert');
-?>
 <div class="form">
 <?php
 $form = $this->beginWidget(

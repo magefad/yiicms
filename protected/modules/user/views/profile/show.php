@@ -8,7 +8,6 @@ $this->breadcrumbs = array(
     Yii::t('user', 'Пользователи') => array('/user/people/index/'),
     CHtml::encode($user->username),
 );
-$this->widget('bootstrap.widgets.TbAlert');
 ?>
 <div class="span5 offset3 well">
     <div class="row">

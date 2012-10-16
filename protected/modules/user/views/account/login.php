@@ -10,7 +10,6 @@ $this->breadcrumbs = array(
 );
 ?>
 <?php
-$this->widget('bootstrap.widgets.TbAlert');
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(

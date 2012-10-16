@@ -14,9 +14,6 @@ $this->breadcrumbs = array(
 	Yii::t('admin', 'Настройки'),
 );
 
-$this->widget('bootstrap.widgets.TbAlert', array(
-	'alerts'   => array('success', 'error'),
-));
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'          => 'horizontalForm',
 	'type'        => 'horizontal',
