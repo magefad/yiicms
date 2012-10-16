@@ -10,12 +10,6 @@
 /**
  * @var $this Controller
  */
-#Кешируем меню с ссылками на страницы
-if (!$topMenu = Yii::app()->cache->get('top-menu')) {
-    Yii::app()->cache->set('top-menu', Menu::getItems('top-menu'), 3600); #кэшируем меню на час
-    $topMenu = Yii::app()->cache->get('top-menu');
-}
-#####################################
 $this->widget(
     'bootstrap.widgets.TbNavbar',
     array(
@@ -27,14 +21,14 @@ $this->widget(
         'items'        => array(
             array(
                 'class' => 'bootstrap.widgets.TbMenu',
-                'items' => $topMenu,
+                'items' => Menu::model()->getItems('top'),
             ),
             '<form class="navbar-search pull-left" action=""><input type="text" class="search-query span2" placeholder="Что ищем?"></form>',
             array(
                 'class'       => 'bootstrap.widgets.TbMenu',
                 'htmlOptions' => array('class' => 'pull-right'),
                 'items'       => array_merge(
-                    Menu::getItems('admin-menu'),
+                    Menu::model()->getItems('admin'),
                     array(
                         array(
                             'label'  => 'Войти',

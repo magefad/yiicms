@@ -120,45 +120,65 @@ class Menu extends CActiveRecord
         return isset($data[$this->status]) ? $data[$this->status] : Yii::t('menu', 'неизвестно');
     }
 
-    // @todo полностью переделать функцию, добавить кэширование
     /**
-     * @param $code
+     * Get items for CMenu or bootstrap.widgets.TbMenu
+     * @param string $code menu code
+     * @return array items array for CMenu or bootstrap.widgets.TbMenu
+     */
+    public function getItems($code)
+    {
+        $cacheKey = 'menu_'.$code;
+        if (!Yii::app()->cache->get($cacheKey)) {
+            Yii::app()->cache->set($cacheKey, $this->getItemsFromDb($code));
+        }
+        return $this->getItemActive(Yii::app()->cache->get($cacheKey));
+    }
+
+    /**
+     * Set active class if current page is menu item
+     * @param array $items
+     * @return array $items
+     */
+    private function getItemActive($items = array())
+    {
+        $requestUri = rtrim(Yii::app()->request->requestUri, '/');
+        $count = count($items);
+        for ($i=0; $i<$count; $i++) {
+            if (rtrim($items[$i]['url'], '/#') == $requestUri) {
+                $items[$i]['itemOptions'] = array('class' => 'active');
+                return $items;
+            }
+        }
+        return $items;
+    }
+
+    /**
+     * Select items from Database
+     * @param string $code
      * @param int $parent_id
      * @return array
      */
-    public function getItems($code, $parent_id = 0)
+    private function getItemsFromDb($code, $parent_id = 0)
     {
-        $requestUri = rtrim(Yii::app()->request->requestUri, '/');
-        $command    = Yii::app()->getDb()->createCommand();
-        $results    = $command->select('item.id, item.title, item.href, item.access')->from('{{menu_item}} item')->join(
-            '{{menu}} menu',
-            'item.menu_id=menu.id'
-        )->where(
-            'menu.code=:code AND item.parent_id=:pid AND item.status=1',
-            array(':code' => $code, ':pid' => (int)$parent_id)
-        )->order('item.sort ASC')->queryAll();
-
+        $results = Yii::app()->getDb()->createCommand()
+            ->select('item.id, item.title, item.href, item.access')
+            ->from(Item::model()->tableName() . ' item')
+            ->join($this->tableName() . ' menu', 'item.menu_id=menu.id')
+            ->where(
+                array('and', 'menu.code=:code', 'item.parent_id=:pid', 'item.status=1'),
+                array(':code' => $code, ':pid' => (int)$parent_id)
+            )
+            ->order('item.sort ASC')->queryAll();
         $items = array();
         if (empty($results)) {
             return $items;
         }
-
         foreach ($results as $result) {
-
-            $childItems = Menu::getItems($code, $result['id']);
-            $items[]    = array(
-                'label'           => $result['title'],
-                'url'             => $result['href'],
-                'itemOptions'     => (rtrim(
-                    $result['href'],
-                    '/#'
-                ) == $requestUri) ? array('class' => 'active') : array(),
-                'linkOptions'     => array('title' => $result['title']),
-                #'submenuOptions' => array(),
-                'items'           => $childItems,
-                'visible'         => (isset($result['access']) && $result['access']) ? Yii::app()->user->checkAccess(
-                    $result['access']
-                ) : 1,
+            $items[] = array(
+                'label'       => $result['title'],
+                'url'         => $result['href'],
+                'items'       => $this->getItemsFromDb($code, $result['id']),
+                'visible'     => (!empty($result['access'])) ? Yii::app()->user->checkAccess($result['access']) : 1,
             );
         }
         return $items;

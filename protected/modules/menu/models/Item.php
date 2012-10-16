@@ -13,6 +13,11 @@
  * @property string $access
  * @property integer $status
  * @property integer $sort
+ *
+ * The followings are the available model relations:
+ * @property Item $children
+ * @property Item $parent
+ * @property Menu $menu
  */
 class Item extends CActiveRecord
 {
