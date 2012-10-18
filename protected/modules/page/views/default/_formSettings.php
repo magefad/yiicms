@@ -28,7 +28,7 @@ Yii::app()->clientScript->registerScript(
     '
     $("#Page_rich_editor").change(function() {
         $("#' . $form->id . '").submit().fadeTo(2500, 0.4);
-        $("input, select, textarea").attr("disabled", true);
+        $("input, select, textarea").attr("readonly", true);
     });
     '
 );
