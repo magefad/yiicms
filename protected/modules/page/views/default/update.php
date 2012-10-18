@@ -9,7 +9,7 @@ $this->pageTitle   = Yii::t('page', 'Редактирование страниц
 $this->breadcrumbs = array(
     Yii::t('page', 'Страницы') => array('admin'), #index
     $model->title              => array('show', 'slug' => $model->slug), #
-    Yii::t('page', 'Изменение страницы') . ' «' . $model->title . '»',
+    Yii::t('page', 'Изменение страницы'),
 );
 if (!$model->isNewRecord) {
     $viewLink = array(
