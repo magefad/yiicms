@@ -12,6 +12,7 @@
  * @property string $description
  * @property string $content
  * @property string $slug
+ * @property integer $rich_editor
  * @property integer $status
  * @property integer $is_protected
  * @property integer $menu_order
@@ -64,8 +65,8 @@ class Page extends CActiveRecord
     public function rules()
     {
         return array(
-            array('name, title, content, status, is_protected', 'required'),
-            array('parent_id, status, is_protected, menu_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('name, title, content, status', 'required'),
+            array('parent_id, rich_editor, status, is_protected, menu_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
             array('title, keywords, slug', 'length', 'max' => 200),
             array('description', 'length', 'max' => 250),
@@ -144,6 +145,7 @@ class Page extends CActiveRecord
             'description'         => Yii::t('page', 'Описание (Seo description)'),
             'content'             => Yii::t('page', 'Текст'),
             'slug'                => Yii::t('page', 'Ссылка'),
+            'rich_editor'         => Yii::t('page', 'Использовать HTML редактор'),
             'status'              => Yii::t('page', 'Статус'),
             'is_protected'        => Yii::t('page', 'Доступ только для авторизованных пользователей'),
             'menu_order'          => Yii::t('page', 'Порядок'),
@@ -207,8 +209,7 @@ class Page extends CActiveRecord
         $criteria->compare('description', $this->description, true);
         $criteria->compare('content', $this->content, true);
         $criteria->compare('slug', $this->slug, true);
-
-
+        $criteria->compare('rich_editor', $this->rich_editor, true);
         $criteria->compare('t.status', $this->status);
         $criteria->compare('is_protected', $this->is_protected);
         $criteria->compare('menu_order', $this->menu_order);

@@ -21,3 +21,15 @@
     </span>
 </div>
 <?php echo $form->checkBoxRow($model, 'is_protected'); ?>
+<?php echo $form->checkBoxRow($model, 'rich_editor'); ?>
+<?php
+Yii::app()->clientScript->registerScript(
+    'rich_editor',
+    '
+    $("#Page_rich_editor").change(function() {
+        $("#' . $form->id . '").submit().fadeTo(2500, 0.4);
+        $("input, select, textarea").attr("disabled", true);
+    });
+    '
+);
+?>

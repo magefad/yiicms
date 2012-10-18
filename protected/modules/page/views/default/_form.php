@@ -8,9 +8,13 @@
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
-        'id'                   => 'page-form',
-        'focus'                => array($model, 'name'),
-        'enableAjaxValidation' => false,
+        'id'                     => 'page-form',
+        'focus'                  => array($model, 'name'),
+        'enableAjaxValidation'   => false,
+        'enableClientValidation' => true,
+        'clientOptions'          => array(
+            'validateOnSubmit' => true
+        )
     )
 );
 
@@ -32,8 +36,19 @@ $this->widget(
         )
     )
 );
-$this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'content', 'settings' => array('height' => 380, 'content_css' => Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css')));
+if ( $model->rich_editor) {
+    $this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'content', 'settings' => array('height' => 380, 'content_css' => Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css')));
+} else {
+    echo $form->hiddenField($model, 'content');
+    $this->widget('ext.aceEditor.AceEditor', array('model' => $model, 'attribute' => 'content'));
+    Yii::app()->clientScript->registerScript('onSubmit', '
+        $("#' . $form->id . '").submit(function() {
+            $("#Page_content").val(editor.getSession().getValue());
+        });
+    ');
+}
 echo '<div>&nbsp;</div>';
+
 $this->widget(
     'bootstrap.widgets.TbButton',
     array(
