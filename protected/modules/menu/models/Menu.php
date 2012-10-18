@@ -131,20 +131,23 @@ class Menu extends CActiveRecord
         if (!Yii::app()->cache->get($cacheKey)) {
             Yii::app()->cache->set($cacheKey, $this->getItemsFromDb($code));
         }
-        return $this->getItemActive(Yii::app()->cache->get($cacheKey));
+        return $this->getUserItems(Yii::app()->cache->get($cacheKey));
     }
 
     /**
-     * Set active class if current page is menu item
+     * Set visibility for current user and set active class if current page is menu item
      * @param array $items
      * @return array $items
      */
-    private function getItemActive($items = array())
+    private function getUserItems($items = array())
     {
         $requestUri = rtrim(Yii::app()->request->requestUri, '/');
         $count = count($items);
         for ($i=0; $i<$count; $i++) {
-            if (rtrim($items[$i]['url'], '/#') == $requestUri) {
+            if ((!empty($items[$i]['access']))) {
+                $items[$i]['visible'] = Yii::app()->user->checkAccess($items[$i]['access']);
+            }
+            if ($items[$i]['visible'] && rtrim($items[$i]['url'], '/#') == $requestUri) {
                 $items[$i]['itemOptions'] = array('class' => 'active');
                 return $items;
             }
@@ -178,7 +181,7 @@ class Menu extends CActiveRecord
                 'label'       => $result['title'],
                 'url'         => $result['href'],
                 'items'       => $this->getItemsFromDb($code, $result['id']),
-                'visible'     => (!empty($result['access'])) ? Yii::app()->user->checkAccess($result['access']) : 1,
+                'access'      => $result['access'],
             );
         }
         return $items;
