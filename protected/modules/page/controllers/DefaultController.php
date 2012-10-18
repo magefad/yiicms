@@ -133,7 +133,6 @@ class DefaultController extends Controller
             }
 
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', Yii::t('page', 'Страница обновлена!'));
                 if (isset($_POST['saveAndClose'])) {
                     $this->redirect(array('admin'));
                 }
