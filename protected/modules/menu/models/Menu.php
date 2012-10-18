@@ -144,9 +144,7 @@ class Menu extends CActiveRecord
         $requestUri = rtrim(Yii::app()->request->requestUri, '/');
         $count = count($items);
         for ($i=0; $i<$count; $i++) {
-            if ((!empty($items[$i]['access']))) {
-                $items[$i]['visible'] = Yii::app()->user->checkAccess($items[$i]['access']);
-            }
+            $items[$i]['visible'] = !empty($items[$i]['access']) ? Yii::app()->user->checkAccess($items[$i]['access']) : 1;
             if ($items[$i]['visible'] && rtrim($items[$i]['url'], '/#') == $requestUri) {
                 $items[$i]['itemOptions'] = array('class' => 'active');
                 return $items;
