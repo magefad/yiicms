@@ -73,7 +73,6 @@ class ItemController extends Controller
                 );
             }
             if ($model->save()) {
-                Yii::app()->cache->delete('menu_' . $model->menu->code);
                 $this->redirect(array('admin'));
             }
         }
