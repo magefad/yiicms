@@ -64,7 +64,7 @@ class Page extends CActiveRecord
     public function rules()
     {
         return array(
-            array('name, title, content, slug, status, is_protected', 'required'),
+            array('name, title, content, status, is_protected', 'required'),
             array('parent_id, status, is_protected, menu_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
             array('title, keywords, slug', 'length', 'max' => 200),
