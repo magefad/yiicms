@@ -90,7 +90,7 @@ class TbRelationalColumn extends TbDataColumn
 				$options['class'] = $class;
 		}
 		echo CHtml::openTag('td', $options);
-		echo CHtml::openTag('span', array('class' => $this->cssClass, 'data-rowid' => $data->id));
+		echo CHtml::openTag('span', array('class' => $this->cssClass, 'data-rowid' => $data->primaryKey));
 		$this->renderDataCellContent($row, $data);
 		echo '</span>';
 		echo '</td>';
@@ -163,7 +163,7 @@ $(document).on('click','.{$this->cssClass}', function(){
 		var td = $('<td/>').html('{$loadingPic}').attr({'colspan':$span});
 		tr = $('<tr/>').prop({'id':'relatedinfo'+rowid}).append(td);
 		/* we need to maintain zebra styles :) */
-		var fake = $('<tr/>').append($('<td/>').attr({'colspan':$span})).css('display','none');
+		var fake = $('<tr class="hide"/>').append($('<td/>').attr({'colspan':$span}));
 		parent.after(tr);
 		tr.after(fake);
 	}
