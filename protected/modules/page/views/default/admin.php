@@ -47,6 +47,7 @@ $('.search-form form').submit(function(){
         'type'                  => 'striped condensed',
         'sortField'             => 'menu_order',
         'dataProvider'          => $model->search(),
+        'enableHistory'         => true,
         'filter'                => $model,
         'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
         'columns'               => array(

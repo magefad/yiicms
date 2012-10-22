@@ -16,6 +16,7 @@ $this->widget(
     'bootstrap.widgets.TbListView',
     array(
         'dataProvider'       => $postsDataProvider,
+        'enableHistory'      => true,
         'itemView'           => 'blog.views.default._show',
         'sortableAttributes' => array(
             'title',

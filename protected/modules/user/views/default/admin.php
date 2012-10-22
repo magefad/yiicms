@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $model User
- * @var $this CController
+ * @var $this Controller
  */
 
 $this->breadcrumbs = array(
@@ -51,6 +51,7 @@ $('.search-form form').submit(function(){
         'id'                    => 'user-grid',
         'type'                  => 'striped condensed',
         'dataProvider'          => $model->search(),
+        'enableHistory'         => true,
         'filter'                => $model,
         'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
         'columns'               => array(
