@@ -148,7 +148,7 @@ class PhotoController extends Controller
             echo CJSON::encode(
                 array(
                     'id'          => $model->id,
-                    'sort'        => $model->sort,
+                    'sort_order'  => $model->sort_order,
                     'name'        => (string)$model->name,
                     //@todo: something wrong with model - it returns null, but it must return an empty string
                     'description' => (string)$model->description,
@@ -188,7 +188,7 @@ class PhotoController extends Controller
             foreach ($models as $model) {
                 $resp[] = array(
                     'id'          => $model->id,
-                    'sort'        => $model->sort,
+                    'sort_order'  => $model->sort_order,
                     'name'        => (string)$model->name,
                     //@todo: something wrong with model - it returns null, but it must return an empty string
                     'description' => (string)$model->description,
@@ -203,13 +203,13 @@ class PhotoController extends Controller
 
     /**
      * Saves images order according to request.
-     * Variable $_POST['order'] - new arrange of image ids, to be saved
+     * Variable $_POST['sort_order'] - new arrange of image ids, to be saved
      * @throws CHttpException
      */
     public function actionOrder()
     {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
-            $gp     = $_POST['order'];
+            $gp     = $_POST['sort_order'];
             $orders = array();
             $i      = 0;
             foreach ($gp as $k => $v) {
@@ -223,8 +223,8 @@ class PhotoController extends Controller
             $i = 0;
             foreach ($gp as $k => $v) {
                 /** @var $p Photo */
-                $p       = Photo::model()->findByPk($k);
-                $p->sort = $orders[$i];
+                $p             = Photo::model()->findByPk($k);
+                $p->sort_order = $orders[$i];
                 $p->save(false);
                 $i++;
             }

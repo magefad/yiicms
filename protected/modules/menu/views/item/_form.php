@@ -24,7 +24,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 <?php echo $form->textFieldRow($model, 'href', array('maxlength' => 200)); ?>
 <?php #echo $form->textFieldRow($model,'type',array('class' =>'span5')); ?>
 <?php echo $form->dropDownListRow($model, 'access', $model->accessList, array('empty' => 'Все')); ?>
-<?php echo $form->textFieldRow($model, 'sort', array('class' => 'span1')); ?>
+<?php echo $form->textFieldRow($model, 'sort_order', array('class' => 'span1')); ?>
 <?php echo $form->dropDownListRow($model, 'status', $model->getStatusList()); ?>
 
 <div class="form-actions">

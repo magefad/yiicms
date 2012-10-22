@@ -37,7 +37,7 @@ $this->widget(
             'alt',
             'type',
             'status',
-            'sort',
+            'sort_order',
             'create_user_id',
             'update_user_id',
             'create_time',

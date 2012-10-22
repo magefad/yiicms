@@ -52,12 +52,12 @@ class Item extends CActiveRecord
     {
         return array(
             array('menu_id, title, href', 'required'),
-            array('parent_id, menu_id, type, status, sort', 'numerical', 'integerOnly' => true),
+            array('parent_id, menu_id, type, status, sort_order', 'numerical', 'integerOnly' => true),
             array('title', 'length', 'max' => 100),
             array('href, access', 'length', 'max' => 200),
             array('access', 'length', 'max' => 50),
             array(
-                'id, parent_id, menu_id, title, href, type, access, status, sort,  menu_search, parent_search',
+                'id, parent_id, menu_id, title, href, type, access, status, sort_order,  menu_search, parent_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -70,7 +70,7 @@ class Item extends CActiveRecord
     public function relations()
     {
         return array(
-            'children' => array(self::HAS_MANY, 'Item', 'parent_id' /*, 'order' => 'sort ASC'*/),
+            'children' => array(self::HAS_MANY, 'Item', 'parent_id' /*, 'order' => 'sort_order ASC'*/),
             'parent'   => array(self::BELONGS_TO, 'Item', 'parent_id'),
             'menu'     => array(self::BELONGS_TO, 'Menu', 'menu_id'),
         );
@@ -89,7 +89,7 @@ class Item extends CActiveRecord
             'href'          => Yii::t('menu', 'Ссылка'),
             'access'        => Yii::t('menu', 'Уровень доступа'),
             'status'        => Yii::t('menu', 'Статус'),
-            'sort'          => Yii::t('menu', 'Порядок'),
+            'sort_order'    => Yii::t('menu', 'Порядок'),
             'menu_search'   => Yii::t('menu', 'Меню'),
             'parent_search' => Yii::t('menu', 'Родитель'),
         );
@@ -123,11 +123,11 @@ class Item extends CActiveRecord
         $criteria->compare('href', $this->href, true);
         //$criteria->compare('type', $this->type);
         $criteria->compare('t.access', $this->access, true);
-        $criteria->compare('sort', $this->sort);
+        $criteria->compare('sort_order', $this->sort_order);
         $criteria->compare('t.status', $this->status);
 
         $sort               = new CSort;
-        $sort->defaultOrder = 't.sort';
+        $sort->defaultOrder = 't.sort_order';
         $sort->attributes   = array(
             'menu_search'   => array(
                 'asc' => 'menu.name',
@@ -167,7 +167,7 @@ class Item extends CActiveRecord
             array(
                 'select'     => 'id, title',
                 'condition'  => 'parent_id is null OR parent_id=0',
-                'order'      => 'sort'
+                'order'      => 'sort_order'
             )
         );
         // add parent_id = 0 (Root)

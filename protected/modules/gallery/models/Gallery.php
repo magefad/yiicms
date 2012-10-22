@@ -10,7 +10,7 @@
  * @property string $keywords
  * @property string $slug
  * @property integer $status
- * @property integer $sort
+ * @property integer $sort_order
  *
  * The followings are the available model relations:
  * @property Photo[] $photos
@@ -48,10 +48,10 @@ class Gallery extends CActiveRecord
     {
         return array(
             array('name', 'required'),
-            array('status, sort', 'numerical', 'integerOnly' => true),
+            array('status, sort_order', 'numerical', 'integerOnly' => true),
             array('name, keywords, slug', 'length', 'max' => 200),
             array('description', 'safe'),
-            array('id, name, description, keywords, slug, status, sort', 'safe', 'on' => 'search'),
+            array('id, name, description, keywords, slug, status, sort_order', 'safe', 'on' => 'search'),
         );
     }
 
@@ -61,7 +61,7 @@ class Gallery extends CActiveRecord
     public function relations()
     {
         return array(
-            'photos' => array(self::HAS_MANY, 'Photo', 'gallery_id', 'order' => '`sort` asc'),
+            'photos' => array(self::HAS_MANY, 'Photo', 'gallery_id', 'order' => 'sort_order asc'),
         );
     }
 
@@ -77,7 +77,7 @@ class Gallery extends CActiveRecord
             'keywords'    => 'Ключевые слова',
             'slug'        => 'Ссылка',
             'status'      => 'Статус',
-            'sort'        => 'Порядок',
+            'sort_order'  => 'Порядок',
         );
     }
 
@@ -109,10 +109,10 @@ class Gallery extends CActiveRecord
         $criteria->compare('keywords', $this->keywords, true);
         $criteria->compare('slug', $this->slug, true);
         $criteria->compare('status', $this->status);
-        $criteria->compare('sort', $this->sort, true);
+        $criteria->compare('sort_order', $this->sort_order, true);
 
         $sort               = new CSort;
-        $sort->defaultOrder = 'sort ASC';
+        $sort->defaultOrder = 'sort_order ASC';
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
             'sort'     => $sort

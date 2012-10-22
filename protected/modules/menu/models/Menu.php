@@ -169,7 +169,7 @@ class Menu extends CActiveRecord
                 array('and', 'menu.code=:code', 'item.parent_id=:pid', 'item.status=1'),
                 array(':code' => $code, ':pid' => (int)$parent_id)
             )
-            ->order('item.sort ASC')->queryAll();
+            ->order('item.sort_order ASC')->queryAll();
         $items = array();
         if (empty($results)) {
             return $items;

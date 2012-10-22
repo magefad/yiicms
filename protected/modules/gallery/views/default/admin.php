@@ -74,7 +74,7 @@ $('.search-form form').submit(function(){
                 'value' => 'CHtml::link($data->slug, array("/album/$data->slug"))',
             ),
             array(
-                'name'        => 'sort',
+                'name'        => 'sort_order',
                 'type'        => 'raw',
                 'value'       => '$this->grid->getUpDownButtons($data)',
                 'htmlOptions' => array('style' => 'width: 30px; text-align: center'),

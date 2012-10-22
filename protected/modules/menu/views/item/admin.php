@@ -43,11 +43,12 @@ echo CHtml::link(
 </div><!-- search-form -->
 
 <?php $this->widget(
-    'CustomTbGridView',
+    'bootstrap.widgets.TbExtendedGridView',
     array(
         'id'                    => 'item-grid',
         'type'                  => 'striped condensed',
         'dataProvider'          => $model->search(),
+        'enableHistory'         => true,
         'filter'                => $model,
         'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
         'columns'               => array(
@@ -69,12 +70,12 @@ echo CHtml::link(
                 'name' => 'parent_search',
             ),
             array(
-                'name'        => 'sort',
-                'type'        => 'raw',
-                'value'       => '$this->grid->getUpDownButtons($data)',
+                'name'        => 'sort_order',
+                //'type'        => 'raw',
+                //'value'       => '$this->grid->getUpDownButtons($data)',
                 'htmlOptions' => array('style' => 'width: 30px; text-align: center'),
             ),
-            array(
+            /*array(
                 'name'        => 'status',
                 'type'        => 'raw',
                 'value'       => '$this->grid->returnBootstrapStatusHtml($data)',
@@ -84,7 +85,7 @@ echo CHtml::link(
                     0   => Yii::t('menu', 'Выключено')
                 ),
                 'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
-            ), #'type',
+            ), #'type',*/
             'access',
             array(
                 'class'       => 'bootstrap.widgets.TbButtonColumn',

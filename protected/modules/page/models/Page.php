@@ -15,7 +15,7 @@
  * @property integer $rich_editor
  * @property integer $status
  * @property integer $is_protected
- * @property integer $menu_order
+ * @property integer $sort_order
  * @property string $create_time
  * @property string $update_time
  * @property integer $create_user_id
@@ -66,7 +66,7 @@ class Page extends CActiveRecord
     {
         return array(
             array('name, title, content, status', 'required'),
-            array('parent_id, rich_editor, status, is_protected, menu_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('parent_id, rich_editor, status, is_protected, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
             array('title, keywords, slug', 'length', 'max' => 200),
             array('description', 'length', 'max' => 250),
@@ -86,7 +86,7 @@ class Page extends CActiveRecord
                 'message' => Yii::t('page', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, parent_id, name, title, keywords, description, slug, content, status, menu_order, create_time, update_time, author_search, changeAuthor_search',
+                'id, parent_id, name, title, keywords, description, slug, content, status, sort_order, create_time, update_time, author_search, changeAuthor_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -99,7 +99,7 @@ class Page extends CActiveRecord
     public function relations()
     {
         return array(
-            'children'     => array(self::HAS_MANY, 'Page', 'parent_id', 'order' => 'menu_order ASC'),
+            'children'     => array(self::HAS_MANY, 'Page', 'parent_id', 'order' => 'sort_order ASC'),
             'parent'       => array(self::BELONGS_TO, 'Page', 'parent_id'),
             'author'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
             'changeAuthor' => array(self::BELONGS_TO, 'User', 'update_user_id'),
@@ -148,7 +148,7 @@ class Page extends CActiveRecord
             'rich_editor'         => Yii::t('page', 'Использовать HTML редактор'),
             'status'              => Yii::t('page', 'Статус'),
             'is_protected'        => Yii::t('page', 'Доступ только для авторизованных пользователей'),
-            'menu_order'          => Yii::t('page', 'Порядок'),
+            'sort_order'          => Yii::t('page', 'Порядок'),
             'create_user_id'      => Yii::t('page', 'Создал'),
             'update_user_id'      => Yii::t('page', 'Изменил'),
             'create_time'         => Yii::t('page', 'Создано'),
@@ -212,14 +212,14 @@ class Page extends CActiveRecord
         $criteria->compare('rich_editor', $this->rich_editor, true);
         $criteria->compare('t.status', $this->status);
         $criteria->compare('is_protected', $this->is_protected);
-        $criteria->compare('menu_order', $this->menu_order);
+        $criteria->compare('sort_order', $this->sort_order);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('author.username', $this->author_search, true);
         $criteria->compare('changeAuthor.username', $this->changeAuthor_search, true);
 
         $sort               = new CSort;
-        $sort->defaultOrder = 't.menu_order ASC';
+        $sort->defaultOrder = 't.sort_order ASC';
         $sort->attributes   = array(
             'author_search'       => array(
                 'asc' => 'author.username',
@@ -286,7 +286,7 @@ class Page extends CActiveRecord
             array(
                 'select'    => 'id, title, name',
                 'condition' => 'parent_id is null OR parent_id=0',
-                'order'     => 'menu_order'
+                'order'     => 'sort_order'
             )
         );
         $tree    = new Tree();

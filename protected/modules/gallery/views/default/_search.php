@@ -19,7 +19,7 @@ $form = $this->beginWidget(
 <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textFieldRow($model, 'status', array('class' => 'span5')); ?>
-<?php echo $form->textFieldRow($model, 'sort', array('class' => 'span5', 'maxlength' => 10)); ?>
+<?php echo $form->textFieldRow($model, 'sort_order', array('class' => 'span5', 'maxlength' => 10)); ?>
 
 <div class="form-actions">
     <?php $this->widget(

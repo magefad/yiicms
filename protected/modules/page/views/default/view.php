@@ -44,7 +44,7 @@ $this->widget(
         'data'       => $model,
         'attributes' => array(
             'id',
-            'menu_order',
+            'sort_order',
             'name',
             'title',
             'keywords',

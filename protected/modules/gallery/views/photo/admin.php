@@ -91,7 +91,7 @@ $('.search-form form').submit(function(){
 		'alt',
 		'type',
 		'status',
-		'sort',
+		'sort_order',
 		*/
             array(
                 'class'       => 'bootstrap.widgets.TbButtonColumn',

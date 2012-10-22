@@ -45,7 +45,7 @@ $('.search-form form').submit(function(){
     array(
         'id'                    => 'page-grid',
         'type'                  => 'striped condensed',
-        'sortField'             => 'menu_order',
+        'sortField'             => 'sort_order',
         'dataProvider'          => $model->search(),
         'enableHistory'         => true,
         'filter'                => $model,
@@ -87,7 +87,7 @@ $('.search-form form').submit(function(){
                 'htmlOptions' => array('style' => 'width: 60px;text-align: center;'),
             ),
             array(
-                'name'        => 'menu_order',
+                'name'        => 'sort_order',
                 'type'        => 'raw',
                 'value'       => '$this->grid->getUpDownButtons($data)',
                 'htmlOptions' => array('style' => 'width: 30px; text-align: center'),

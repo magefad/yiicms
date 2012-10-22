@@ -129,7 +129,7 @@ class Controller extends RController
         if ($direction === 'up') {
             $model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField - 1)));
             $model_depends->$sortField++;
-            $model->$sortField--; #example menu_order column in sql
+            $model->$sortField--; #example sort_order column in sql
         } else {
             $model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField + 1)));
             $model_depends->$sortField--;

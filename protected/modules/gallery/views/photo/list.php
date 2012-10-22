@@ -13,7 +13,7 @@ $photos        = new CActiveDataProvider('Photo', array(
     'criteria'      => array(
         #'condition' => 'status=1',
         'condition' => 'gallery_id = :gallery_id',
-        'order'     => 't.sort',
+        'order'     => 't.sort_order',
         'params'    => array(
             ':gallery_id' => $galleryId,
         )

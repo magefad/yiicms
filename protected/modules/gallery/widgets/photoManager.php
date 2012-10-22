@@ -79,7 +79,7 @@ class photoManager extends Widget
                 'photos' => $model->findAll(
                     array(
                         'condition' => 'gallery_id=:gallery_id',
-                        'order'     => 'sort',
+                        'order'     => 'sort_order',
                         'params'    => array(':gallery_id' => $this->galleryId)
                     )
                 )

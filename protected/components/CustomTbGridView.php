@@ -13,7 +13,7 @@ class CustomTbGridView extends TbGridView
 
     public $showStatusText = false;
 
-    public $sortField = 'sort';
+    public $sortField = 'sort_order';
 
     public function init()
     {

@@ -57,8 +57,8 @@
 	<?php echo CHtml::encode($data->is_protected); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('menu_order')); ?>:</b>
-	<?php echo CHtml::encode($data->menu_order); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('sort_order')); ?>:</b>
+	<?php echo CHtml::encode($data->sort_order); ?>
 	<br />
 
 	*/ ?>

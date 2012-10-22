@@ -41,7 +41,7 @@ $this->widget(
             ),
             'title',
             'href',
-            'sort',
+            'sort_order',
             array(
                 'name'  => 'status',
                 'value' => $model->getStatus(),

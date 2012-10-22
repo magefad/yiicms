@@ -63,7 +63,7 @@
                 </div>
                 <div class="actions">
                     <?php
-                    echo CHtml::hiddenField('order[' . $photo->id . ']', $photo->sort);
+                    echo CHtml::hiddenField('order[' . $photo->id . ']', $photo->sort_order);
                     echo '<span data-photo-id="' . $photo->id . '" class="editPhoto btn btn-primary"><i class="icon-edit icon-white"></i></span>';
                     echo ' <span data-photo-id="' . $photo->id . '" class="deletePhoto btn btn-danger"><i class="icon-remove icon-white"></i></span>';
                     ?>

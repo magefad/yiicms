@@ -33,7 +33,7 @@ $this->widget(
             'keywords',
             'slug',
             'status',
-            'sort',
+            'sort_order',
         ),
     )
 );

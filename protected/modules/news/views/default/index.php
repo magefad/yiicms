@@ -38,13 +38,16 @@ $this->menu = array(
  * @var $this Controller
  * @var $dataProvider CDataProvider
  */
-$this->widget('bootstrap.widgets.TbListView', array(
-	'dataProvider'       => $dataProvider,
-	'itemView'           => '_view',
-	'sortableAttributes' => array(
-		'title',
-		'date',
-	),
-	'htmlOptions'  => array('style' => 'padding-top:0'),
-)); ?>
+    $this->widget(
+        'bootstrap.widgets.TbListView',
+        array(
+            'dataProvider'       => $dataProvider,
+            'itemView'           => '_view',
+            'sortableAttributes' => array(
+                'title',
+                'date',
+            ),
+            'htmlOptions'        => array('style' => 'padding-top:0'),
+        )
+    ); ?>
 </div>

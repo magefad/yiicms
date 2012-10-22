@@ -14,7 +14,7 @@
  * @property string $alt
  * @property integer $type
  * @property integer $status
- * @property integer $sort
+ * @property integer $sort_order
  * @property string $create_time
  * @property string $update_time
  * @property integer $create_user_id
@@ -80,7 +80,7 @@ class Photo extends CActiveRecord
     {
         return array(
             array('gallery_id', 'required'),
-            array('gallery_id, type, status, sort, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('gallery_id, type, status, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name, title, keywords', 'length', 'max' => 200),
             array('alt', 'length', 'max' => 100),
             array('file_name', 'length', 'max' => 500),
@@ -93,7 +93,7 @@ class Photo extends CActiveRecord
             ),
             array('description', 'safe'),
             array(
-                'id, gallery_id, name, description, sort, file_name, alt, type, status, author_search, create_time, create_user_id, update_user_id, changeAuthor_search, gallery_search',
+                'id, gallery_id, name, description, sort_order, file_name, alt, type, status, author_search, create_time, create_user_id, update_user_id, changeAuthor_search, gallery_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -145,7 +145,7 @@ class Photo extends CActiveRecord
             'alt'                 => 'Alt',
             'type'                => 'Тип',
             'status'              => 'Статус',
-            'sort'                => 'Порядок',
+            'sort_order'          => 'Порядок',
             'author_search'       => Yii::t('gallery', 'Автор'),
             'changeAuthor_search' => Yii::t('gallery', 'Изменил'),
             'gallery_search'      => Yii::t('gallery', 'Альбом'),
@@ -170,7 +170,7 @@ class Photo extends CActiveRecord
         $criteria->compare('alt', $this->alt, true);
         $criteria->compare('type', $this->type);
         $criteria->compare('t.status', $this->status);
-        $criteria->compare('t.sort', $this->sort);
+        $criteria->compare('t.sort_order', $this->sort_order);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('update_time', $this->update_time, true);
         $criteria->compare('create_user_id', $this->create_user_id, true);
@@ -181,7 +181,7 @@ class Photo extends CActiveRecord
         $criteria->compare('gallery.name', $this->gallery_search, true);
 
         $sort               = new CSort;
-        $sort->defaultOrder = 't.sort ASC';
+        $sort->defaultOrder = 't.sort_order ASC';
         $sort->attributes   = array(
             'author_search'       => array(
                 'asc' => 'author.username',
@@ -227,8 +227,8 @@ class Photo extends CActiveRecord
     public function save($runValidation = true, $attributes = null)
     {
         parent::save($runValidation, $attributes);
-        if ($this->sort == null) {
-            $this->sort = $this->id;
+        if ($this->sort_order == null) {
+            $this->sort_order = $this->id;
             $this->setIsNewRecord(false);
             $this->save(false);
         }

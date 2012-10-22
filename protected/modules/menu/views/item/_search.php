@@ -18,7 +18,7 @@ $form = $this->beginWidget(
 <?php echo $form->textFieldRow($model, 'href', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textFieldRow($model, 'type', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'access', array('class' => 'span5', 'maxlength' => 50)); ?>
-<?php echo $form->textFieldRow($model, 'sort', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'sort_order', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'status', array('class' => 'span5')); ?>
 <div class="form-actions">
     <?php $this->widget(

@@ -94,9 +94,9 @@ class DefaultController extends Controller
             }
         }
         $criteria          = new CDbCriteria;
-        $criteria->select  = new CDbExpression('MAX(menu_order) as menu_order');
+        $criteria->select  = new CDbExpression('MAX(sort_order) as sort_order');
         $max               = $model->find($criteria);
-        $model->menu_order = $max->menu_order + 1;
+        $model->sort_order = $max->sort_order + 1;
 
         $this->render('create', array('model' => $model, 'pages' => Page::model()->allPagesList));
     }
@@ -115,20 +115,20 @@ class DefaultController extends Controller
             /*
             * If change sort order num
              */
-            $currentMenuOrder  = $model->attributes['menu_order'];
+            $currentSortOrder  = $model->attributes['sort_order'];
             $model->attributes = $_POST['Page'];
-            if ($model->attributes['menu_order'] > $currentMenuOrder) {
+            if ($model->attributes['sort_order'] > $currentSortOrder) {
                 $model->updateCounters(
-                    array('menu_order' => -1),
-                    'menu_order<=:menu_order AND menu_order>=:current_menu_order',
-                    array('menu_order' => $model->attributes['menu_order'], 'current_menu_order' => $currentMenuOrder)
+                    array('sort_order' => -1),
+                    'sort_order<=:sort_order AND sort_order>=:current_sort_order',
+                    array('sort_order' => $model->attributes['sort_order'], 'current_sort_order' => $currentSortOrder)
                 );
             }
-            if ($model->attributes['menu_order'] < $currentMenuOrder) {
+            if ($model->attributes['sort_order'] < $currentSortOrder) {
                 $model->updateCounters(
-                    array('menu_order' => +1),
-                    'menu_order>=:menu_order AND menu_order<=:current_menu_order',
-                    array('menu_order' => $model->attributes['menu_order'], 'current_menu_order' => $currentMenuOrder)
+                    array('sort_order' => +1),
+                    'sort_order>=:sort_order AND sort_order<=:current_sort_order',
+                    array('sort_order' => $model->attributes['sort_order'], 'current_sort_order' => $currentSortOrder)
                 );
             }
 
