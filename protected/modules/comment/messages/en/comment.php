@@ -32,6 +32,7 @@ return array (
   'Manage' => '',
   'Model' => '',
   'Name' => '',
+  'Post author' => '',
   'Not approved' => '',
   'Post Comment' => '',
   'Remove' => '',

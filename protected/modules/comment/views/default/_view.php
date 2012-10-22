@@ -1,10 +1,16 @@
 <?php
-/** @var $data Comment */
+/**
+ * @var $data Comment
+ * @var $modelAuthorId
+ */
 ?>
 <a id="comments"></a>
 <div class="row-fluid">
     <div class="comment" id="comment-<?php echo $data->id; ?>">
 	<span class="comment-head muted">
+        <?php if ($data->create_user_id == $modelAuthorId): ?>
+        <?php echo '<i class="icon-user" title="' . Yii::t('CommentModule.comment', 'Post author') . '"></i>'; ?>
+        <?php endif; ?>
 		<?php echo CHtml::encode($data->getUsername()); ?>
         <span class="comment-date">
 			<?php echo Yii::app()->getDateFormatter()->formatDateTime($data->create_time, 'short', 'short'); ?>

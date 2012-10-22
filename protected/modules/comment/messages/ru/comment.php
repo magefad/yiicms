@@ -33,6 +33,7 @@ return array (
   'Model' => 'Модель',
   'Name' => 'Имя',
   'Not approved' => 'Не опубликован',
+  'Post author' => 'Автор публикации',
   'Post Comment' => 'Оставить комментарий',
   'Remove' => 'Удалить',
   'Save' => 'Сохранить',
