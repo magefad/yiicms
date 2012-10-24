@@ -131,10 +131,7 @@ class DefaultController extends Controller
                 $this->render('update', array('model' => $model));
             }
         } else {
-            throw new CHttpException(401, Yii::t(
-                'global',
-                'You don"t have permission to access this function'
-            ));
+            throw new CHttpException(401, Yii::t('global', 'You don"t have permission to access this function'));
         }
     }
 
@@ -153,10 +150,7 @@ class DefaultController extends Controller
             if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isSuperuser) {
                 $this->loadModel($id)->delete();
             } else {
-                throw new CHttpException(401, Yii::t(
-                    'global',
-                    'You don"t have permission to access this function'
-                ));
+                throw new CHttpException(401, Yii::t('global', 'You don"t have permission to access this function'));
             }
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
