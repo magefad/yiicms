@@ -75,6 +75,19 @@ class Blog extends CActiveRecord
     }
 
     /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
+    public function behaviors()
+    {
+        return array(
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            )
+        );
+    }
+
+    /**
      * @return array relational rules.
      */
     public function relations()
@@ -160,25 +173,6 @@ class Blog extends CActiveRecord
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
         ));
-    }
-
-    /**
-     * This is invoked before the record is saved.
-     * @return boolean whether the record should be saved.
-     */
-    protected function beforeSave()
-    {
-        if (parent::beforeSave()) {
-            $this->update_time    = time();
-            $this->update_user_id = Yii::app()->user->getId();
-            if ($this->isNewRecord) {
-                $this->create_time    = $this->update_time;
-                $this->create_user_id = $this->update_user_id;
-            }
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public function getTypeList()

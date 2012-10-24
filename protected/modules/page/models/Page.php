@@ -94,6 +94,19 @@ class Page extends CActiveRecord
     }
 
     /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
+    public function behaviors()
+    {
+        return array(
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            )
+        );
+    }
+
+    /**
      * @return array relational rules.
      */
     public function relations()
@@ -168,18 +181,6 @@ class Page extends CActiveRecord
             $this->slug = Text::translit($this->title);
         }
         return parent::beforeValidate();
-    }
-
-
-    public function beforeSave()
-    {
-        $this->update_user_id = Yii::app()->user->getId();
-        unset($this->update_time);//on update CURRENT_TIMESTAMP
-        if ($this->isNewRecord) {
-            $this->create_time  = new CDbExpression('now()');
-            $this->create_user_id = $this->update_user_id;
-        }
-        return parent::beforeSave();
     }
 
     /**

@@ -22,6 +22,7 @@
  *
  * The followings are the available model relations:
  * @property User $author
+ * @property User $changeAuthor
  */
 class News extends CActiveRecord
 {
@@ -107,9 +108,16 @@ class News extends CActiveRecord
         );
     }
 
+    /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
     public function behaviors()
     {
         return array(
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
             'comments' => array(
                 'class' => 'application.modules.comment.behaviors.CommentBehavior',
             )
@@ -187,25 +195,20 @@ class News extends CActiveRecord
 
     public function beforeSave()
     {
-        $this->date = date('Y-m-d', strtotime($this->date));
+        if (parent::beforeSave()) {
+            $this->date = date('Y-m-d', strtotime($this->date));
 
-        if ($imageFile = CUploadedFile::getInstance($this, 'image')) {
-            $uploadPath = $this->getUploadPath();
-            if (!$this->isNewRecord && is_dir($uploadPath)) {
-                $this->deleteImage($uploadPath); // удаляем старое изображение, если обновляем новость
+            if ($imageFile = CUploadedFile::getInstance($this, 'image')) {
+                $uploadPath = $this->getUploadPath();
+                if (!$this->isNewRecord && is_dir($uploadPath)) {
+                    $this->deleteImage($uploadPath); // удаляем старое изображение, если обновляем новость
+                }
+                mkdir($uploadPath, 0777);
+                $this->image = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.jpg';
+                $this->setImage($imageFile->getTempName(), $uploadPath);
             }
-            mkdir($uploadPath, 0777);
-            $this->image = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.jpg';
-            $this->setImage($imageFile->getTempName(), $uploadPath);
+            return true;
         }
-        unset($this->update_time);//on update CURRENT_TIMESTAMP
-        $this->update_user_id = Yii::app()->user->id;
-        if ($this->isNewRecord) {
-            $this->create_time    = new CDbExpression('NOW()');
-            $this->create_user_id = $this->update_user_id;
-        }
-
-        return parent::beforeSave();
     }
 
     public function beforeDelete()

@@ -8,7 +8,8 @@
  * @property integer $module_id
  * @property string $key
  * @property string $value
- * @property integer $user_id
+ * @property integer $create_user_id
+ * @property integer $update_user_id
  * @property string $create_time
  * @property string $update_time
  *
@@ -56,9 +57,22 @@ class Setting extends CActiveRecord
             array('module_id, key', 'required'),
             array('module_id, key', 'length', 'max' => 32),
             array('value', 'length', 'max' => 255),
-            array('user_id', 'numerical', 'integerOnly' => true),
+            array('create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('module_id, key', 'match', 'pattern' => '/^[\w\_-]+$/'),
-            array('id, module_id, key, value, create_time, update_time, user_id', 'safe', 'on' => 'search'),
+            array('id, module_id, key, value, create_time, update_time, create_user_id, update_user_id', 'safe', 'on' => 'search'),
+        );
+    }
+
+    /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
+    public function behaviors()
+    {
+        return array(
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            )
         );
     }
 
@@ -68,7 +82,8 @@ class Setting extends CActiveRecord
     public function relations()
     {
         return array(
-            'user' => array(self::BELONGS_TO, 'User', 'user_id'),
+            'user'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
+            'changeUser' => array(self::BELONGS_TO, 'User', 'update_user_id')
         );
     }
 
@@ -78,13 +93,14 @@ class Setting extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'            => Yii::t('setting', 'ID'),
-            'module_id'     => Yii::t('setting', 'Модуль'),
-            'key'           => Yii::t('setting', 'Ключ'),
-            'value'         => Yii::t('setting', 'Значение'),
-            'user_id'       => Yii::t('setting', 'Автор'),
-            'create_time'   => Yii::t('setting', 'Создано'),
-            'update_time'   => Yii::t('setting', 'Изменено'),
+            'id'             => Yii::t('setting', 'ID'),
+            'module_id'      => Yii::t('setting', 'Модуль'),
+            'key'            => Yii::t('setting', 'Ключ'),
+            'value'          => Yii::t('setting', 'Значение'),
+            'create_user_id' => Yii::t('setting', 'Автор'),
+            'update_user_id' => Yii::t('settings', 'Изменил'),
+            'create_time'    => Yii::t('setting', 'Создано'),
+            'update_time'    => Yii::t('setting', 'Изменено'),
         );
     }
 
@@ -105,25 +121,14 @@ class Setting extends CActiveRecord
         $criteria->compare('module_id', $this->module_id, true);
         $criteria->compare('key', $this->key, true);
         $criteria->compare('value', $this->value, true);
-        $criteria->compare('user_id', $this->user_id, true);
+        $criteria->compare('create_user_id', $this->create_user_id, true);
+        $criteria->compare('update_user_id', $this->update_user_id, true);
         $criteria->compare('create_time', $this->create_time, true);
         $criteria->compare('update_time', $this->update_time, true);
 
         return new CActiveDataProvider(get_class($this), array(
             'criteria' => $criteria,
         ));
-    }
-
-    public function beforeSave()
-    {
-        unset($this->update_time);//on update CURRENT_TIMESTAMP
-        if ($this->isNewRecord) {
-            $this->create_time = new CDbExpression('NOW()');
-        }
-        if (!isset($this->user_id)) {
-            $this->user_id = Yii::app()->user->id;
-        }
-        return parent::beforeSave();
     }
 
     public function getSettings($module_id, $keys)

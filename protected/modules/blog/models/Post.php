@@ -89,9 +89,16 @@ class Post extends CActiveRecord
         );
     }
 
+    /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
     public function behaviors()
     {
         return array(
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
             'tags' => array(
                 'class'                => 'blog.extensions.taggable.ETaggableBehavior',
                 'tagTable'             => Yii::app()->db->tablePrefix . 'tag',
@@ -187,21 +194,6 @@ class Post extends CActiveRecord
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
         ));
-    }
-
-    public function beforeSave()
-    {
-        if (parent::beforeSave()) {
-            unset($this->update_time);//on update CURRENT_TIMESTAMP
-            $this->update_user_id = Yii::app()->user->getId();
-            if ($this->isNewRecord) {
-                $this->create_time    = new CDbExpression('now()');
-                $this->create_user_id = $this->update_user_id;
-            }
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public function beforeValidate()

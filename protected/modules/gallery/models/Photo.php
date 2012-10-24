@@ -100,15 +100,22 @@ class Photo extends CActiveRecord
         );
     }
 
+    /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
     public function behaviors()
     {
         return array(
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
             'galleria' => array(
                 'class'       => 'application.extensions.galleria.GalleriaBehavior',
-                'image'       => 'file_name',//required, will be image name of src
-                'imagePrefix' => 'id',//optional, not required
-                'description' => 'description',//optional, not required
-                'title'       => 'name',//optional, not required
+                'image'       => 'file_name', //required, will be image name of src
+                'imagePrefix' => 'id', //optional, not required
+                'description' => 'description', //optional, not required
+                'title'       => 'name', //optional, not required
             ),
         );
     }
@@ -211,17 +218,6 @@ class Photo extends CActiveRecord
             self::STATUS_DRAFT       => Yii::t('page', 'Скрыто'),
             #self::STATUS_MODERATION => Yii::t('page', 'На модерации')
         );
-    }
-
-    public function beforeSave()
-    {
-        $this->update_user_id = Yii::app()->user->getId();
-        unset($this->update_time);//on update CURRENT_TIMESTAMP
-        if ($this->isNewRecord) {
-            $this->create_time    = new CDbExpression('now()');
-            $this->create_user_id = $this->update_user_id;
-        }
-        return parent::beforeSave();
     }
 
     public function save($runValidation = true, $attributes = null)

@@ -42,6 +42,7 @@ class AdminModule extends WebModule
         parent::init();
         $this->setImport(
             array(
+                'admin.behaviors.*',
                 'admin.models.*',
                 'admin.components.*',
             )

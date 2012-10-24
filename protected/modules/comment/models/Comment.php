@@ -73,6 +73,19 @@ class Comment extends CActiveRecord
         );
     }
 
+    /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
+    public function behaviors()
+    {
+        return array(
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            )
+        );
+    }
+
     public function checkUsername()
     {
         if ( empty($this->username) && Yii::app()->user->isGuest ) {
@@ -154,14 +167,10 @@ class Comment extends CActiveRecord
 
     public function beforeSave()
     {
-        $this->update_user_id = Yii::app()->user->id;
-        unset($this->update_time);//on update CURRENT_TIMESTAMP
-        if ($this->isNewRecord) {
-            $this->create_time  = new CDbExpression('now()');
-            $this->create_user_id = $this->update_user_id;
+        if (parent::beforeSave() && $this->isNewRecord) {
             $this->ip = Yii::app()->request->userHostAddress;
+            return true;
         }
-        return parent::beforeSave();
     }
 
     public function getStatusList()
