@@ -27,6 +27,29 @@ class ItemController extends Controller
     }
 
     /**
+     * This method is invoked right after an action is executed.
+     * You may override this method to do some postprocessing for the action.
+     * @param CAction $action the action just executed.
+     */
+    protected function afterAction($action)
+    {
+        if ($action->id == 'sortable') {
+            $ids = array();
+            foreach($_POST['sortOrder'] as $id) {
+                $ids[] = intval($id);
+            }
+            $criteria         = new CDbCriteria;
+            $criteria->select = 'title';
+            $criteria->with = array('menu' => array('select' => 'code'));
+            $criteria->group = 'menu_id';
+            $items = Item::model()->findAllByAttributes(array('id' => $ids), $criteria);
+            foreach ($items as $item) {
+                Yii::app()->cache->delete('menu_' . $item->menu->code);
+            }
+        }
+    }
+
+    /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
      */
