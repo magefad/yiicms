@@ -50,6 +50,9 @@ echo CHtml::link(
         'dataProvider'          => $model->search(),
         'enableHistory'         => true,
         'filter'                => $model,
+        'sortableRows'          => true,
+        //'sortableAjaxSave'=>false,
+        #'afterSortableUpdate'   => 'js:function(sortKeyValue){ $.ajax({url: "'.$this->createUrl('sortSave').'", data: sortKeyValue}); }',
         'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
         'columns'               => array(
             array(
@@ -74,6 +77,17 @@ echo CHtml::link(
                 //'type'        => 'raw',
                 //'value'       => '$this->grid->getUpDownButtons($data)',
                 'htmlOptions' => array('style' => 'width: 30px; text-align: center'),
+            ),
+            array(
+                'class'                => 'bootstrap.widgets.TbToggleColumn',
+                'checkedButtonLabel'   => Yii::t('global', 'Опубликовано. Скрыть?'),
+                'uncheckedButtonLabel' => Yii::t('global', 'Скрыто. Опубликовтаь?'),
+                'name'                 => 'status',
+                'filter'      => array(
+                    1  => Yii::t('menu', 'Скрыто'),
+                    0  => Yii::t('menu', 'Опубликовано')
+                ),
+                'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
             ),
             /*array(
                 'name'        => 'status',

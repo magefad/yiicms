@@ -12,7 +12,7 @@
  * @property integer $type
  * @property string $access
  * @property integer $status
- * @property integer $sort
+ * @property integer $sort_order
  *
  * The followings are the available model relations:
  * @property Item $children
