@@ -29,11 +29,7 @@ class SettingController extends Controller
         $module_id = $slug;
         unset($slug);
         if (!$module = Yii::app()->getModule($module_id)) {
-            throw new CHttpException(404, Yii::t(
-                'admin',
-                'Модуль "{module}" не найден!',
-                array('{module}' => $module_id)
-            ));
+            throw new CHttpException(404, Yii::t('yii', 'The system is unable to find the requested action "{action}".', array('{action}' => $module_id)));
         }
 
         $settings = $this->getSettingsToUpdate($module);

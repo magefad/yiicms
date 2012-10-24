@@ -131,7 +131,7 @@ class DefaultController extends Controller
                 $this->render('update', array('model' => $model));
             }
         } else {
-            throw new CHttpException(403, Yii::t(
+            throw new CHttpException(401, Yii::t(
                 'global',
                 'You don"t have permission to access this function'
             ));
@@ -153,7 +153,7 @@ class DefaultController extends Controller
             if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isSuperuser) {
                 $this->loadModel($id)->delete();
             } else {
-                throw new CHttpException(403, Yii::t(
+                throw new CHttpException(401, Yii::t(
                     'global',
                     'You don"t have permission to access this function'
                 ));
@@ -164,10 +164,7 @@ class DefaultController extends Controller
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
         } else {
-            throw new CHttpException(400, Yii::t(
-                'global',
-                'Invalid request. Please do not repeat this request again.'
-            ));
+            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
         }
     }
 

@@ -86,13 +86,13 @@ class Controller extends RController
         $statusField = Yii::app()->request->getQuery('statusField');
 
         if (!isset($modelClass, $id, $status, $statusField)) {
-            throw new CHttpException(404, Yii::t('admin', 'Not found!'));
+            throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
         /** @var $model CActiveRecord */
         $model = new $modelClass;
         $model = $model->resetScope()->findByPk($id);
         if (!$model) {
-            throw new CHttpException(404, Yii::t('admin', 'Not found!'));
+            throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
 
         $model->$statusField = $status;
@@ -115,7 +115,7 @@ class Controller extends RController
         $sortField  = Yii::app()->request->getQuery('sortField');
 
         if (!isset($direction, $id, $modelClass, $sortField)) {
-            throw new CHttpException(404, Yii::t('admin', 'Not found!'));
+            throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
         /** @var $model CActiveRecord */
         /** @var $model_depends CActiveRecord */
@@ -123,7 +123,7 @@ class Controller extends RController
         $model_depends = new $modelClass;
         $model         = $model->resetScope()->findByPk($id);
         if (!$model) {
-            throw new CHttpException(404, Yii::t('admin', 'Not found!'));
+            throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
 
         if ($direction === 'up') {
@@ -161,11 +161,10 @@ class Controller extends RController
                     $variants[] = $tag['name'];
                 }
                 echo CJSON::encode($variants);
-            } else {
-                throw new CHttpException(404, 'No words found.');
             }
+            Yii::app()->end();
         } else {
-            throw new CHttpException(400, 'Invalid request. Please do not repeat this request again.');
+            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
         }
     }
 }
