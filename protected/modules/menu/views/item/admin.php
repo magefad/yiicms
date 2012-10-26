@@ -51,8 +51,6 @@ echo CHtml::link(
         'enableHistory'         => true,
         'filter'                => $model,
         'sortableRows'          => true,
-        //'sortableAjaxSave'=>false,
-        #'afterSortableUpdate'   => 'js:function(sortKeyValue){ $.ajax({url: "'.$this->createUrl('sortSave').'", data: sortKeyValue}); }',
         'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
         'columns'               => array(
             array(
@@ -74,9 +72,7 @@ echo CHtml::link(
             ),
             array(
                 'name'        => 'sort_order',
-                //'type'        => 'raw',
-                //'value'       => '$this->grid->getUpDownButtons($data)',
-                'htmlOptions' => array('style' => 'width: 30px; text-align: center'),
+                'htmlOptions' => array('style' => 'width: 10px; text-align: center'),
             ),
             array(
                 'class'                => 'bootstrap.widgets.TbToggleColumn',

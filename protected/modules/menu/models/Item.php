@@ -65,6 +65,19 @@ class Item extends CActiveRecord
     }
 
     /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
+    public function behaviors()
+    {
+        return array(
+            'sortable' => array(
+                'class' => 'application.modules.admin.behaviors.SortableBehavior',
+            )
+        );
+    }
+
+    /**
      * @return array relational rules.
      */
     public function relations()
@@ -119,7 +132,7 @@ class Item extends CActiveRecord
         #$criteria->compare('menu_id', $this->menu_id, true);
         $criteria->compare('menu.name', $this->menu_search, true);
         $criteria->compare('parent.title', $this->parent_search, true);
-        $criteria->compare('title', $this->title, true);
+        $criteria->compare('t.title', $this->title, true);
         $criteria->compare('href', $this->href, true);
         //$criteria->compare('type', $this->type);
         $criteria->compare('t.access', $this->access, true);

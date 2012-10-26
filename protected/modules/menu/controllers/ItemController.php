@@ -75,11 +75,6 @@ class ItemController extends Controller
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
-        $criteria         = new CDbCriteria;
-        $criteria->select = new CDbExpression('MAX(sort_order) as sort_order');
-        $max              = $model->find($criteria);
-        $model->sort_order= $max->sort_order + 1;
-
         $this->render('create', array('model' => $model));
     }
 
@@ -93,22 +88,7 @@ class ItemController extends Controller
         $model = $this->loadModel($id);
         // $this->performAjaxValidation($model);
         if (isset($_POST['Item'])) {
-            $currentSort       = $model->attributes['sort_order'];
             $model->attributes = $_POST['Item'];
-            if ($model->attributes['sort_order'] > $currentSort) {
-                $model->updateCounters(
-                    array('sort_order' => -1),
-                    'sort_order<=:sort_order AND sort_order>=:current_sort',
-                    array('sort_order' => $model->attributes['sort_order'], 'current_sort' => $currentSort)
-                );
-            }
-            if ($model->attributes['sort_order'] < $currentSort) {
-                $model->updateCounters(
-                    array('sort_order' => +1),
-                    'sort_order>=:sort_order AND sort_order<=:current_sort',
-                    array('sort_order' => $model->attributes['sort_order'], 'current_sort' => $currentSort)
-                );
-            }
             if ($model->save()) {
                 $this->redirect(array('admin'));
             }
