@@ -129,7 +129,7 @@ class Post extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 't.status = :status',
+                'condition' => 'status = :status AND publish_time < ' . new CDbExpression('NOW()'),
                 'params'    => array(':status' => self::STATUS_PUBLISHED),
             ),
             'public'    => array(
