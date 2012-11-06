@@ -72,11 +72,13 @@ $('.search-form form').submit(function(){
                 'name'  => 'create_user_id',
                 'type'  => 'raw',
                 'value' => 'CHtml::link($data->createUser->username, array("/user/default/view/", "id" => $data->createUser->id))',
+                'htmlOptions' => array('style' => 'width: 50px')
             ),
             array(
                 'name'  => 'update_user_id',
                 'type'  => 'raw',
-                'value' => 'CHtml::link($data->updateUser->username, array("/user/default/view/", "id" => $data->updateUser->id))',
+                'value' => 'isset($data->updateUser->username) ? CHtml::link($data->updateUser->username, array("/user/default/view/", "id" => $data->updateUser->id)) : ""',
+                'htmlOptions' => array('style' => 'width: 50px')
             ),
             array(
                 'name'  => 'publish_time',
@@ -86,10 +88,10 @@ $('.search-form form').submit(function(){
                 'name'  => 'create_time',
                 'value' => 'Yii::app()->getDateFormatter()->formatDateTime($data->create_time, "short", "short")',
             ),
-            array(
+            /*array(
                 'name'  => 'update_time',
                 'value' => 'Yii::app()->getDateFormatter()->formatDateTime($data->update_time, "short", "short")',
-            ),
+            ),*/
             array(
                 'name'  => 'status',
                 'type'  => 'raw',
