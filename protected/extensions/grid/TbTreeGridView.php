@@ -9,6 +9,8 @@ Yii::import('ext.bootstrap.widgets.TbExtendedGridView');
 
 class TbTreeGridView extends TbExtendedGridView
 {
+    public $enablePagination = false;
+
     /**
      * @var array Custom options for treeTable and draggable
      */
