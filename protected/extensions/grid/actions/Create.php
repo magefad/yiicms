@@ -17,7 +17,7 @@ class Create extends CAction
         /** @var $model CActiveRecord|NestedSetBehavior */
         $model = new $this->modelName;
         if ($root) {
-            $model->scenario = 'createRoot';
+            $model->scenario = 'insertRoot';
         }
         if (method_exists($this->controller, 'performAjaxValidation')) {
             try {
