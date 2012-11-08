@@ -27,7 +27,7 @@ class Create extends CAction
             }
         }
 
-        if ($_POST[$this->modelName]) {
+        if (isset($_POST[$this->modelName])) {
             $model->attributes = $_POST[$this->modelName];
             try {
                 if ($model->tree->hasManyRoots == true) {
