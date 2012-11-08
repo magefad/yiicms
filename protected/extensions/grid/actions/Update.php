@@ -16,7 +16,7 @@ class Update extends CAction
     {
         /** @var $model CActiveRecord|NestedSetBehavior */
         $model = CActiveRecord::model($this->modelName)->findByPk((int)$id);
-        $model->parentId = $model->parent()->find()->id;
+        $model->parentId = $model->isRoot() ? $model->primaryKey : $model->parent()->find()->id;
         if ( $model->isRoot()) {
             $model->scenario = 'updateRoot';
         }
