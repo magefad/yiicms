@@ -108,8 +108,9 @@ class TbTreeGridView extends TbExtendedGridView
         $cs->registerScriptFile($assets . '/javascripts/jquery.treeTable' . $min . '.js', CClientScript::POS_END);
         $cs->registerScriptFile($assets . '/jquery.treeAble.gridview' . $min . '.js', CClientScript::POS_END);
 
-        $treeTableOptions = CJavaScript::encode($this->options['treeTable']);
-        $draggableOptions = CJavaScript::encode($this->options['draggable']);
+        $treeTableOptions = isset($this->options['treeTable']) ? CJavaScript::encode($this->options['treeTable']) : 'null';
+        $draggableOptions = isset($this->options['draggable']) ? CJavaScript::encode($this->options['draggable']) : 'null';
+
         $afterTreeAbleUpdate = CJavaScript::encode($afterTreeAbleUpdate);
         if ($this->treeAbleAction == 'moveNode') //route is default
         {
