@@ -1,26 +1,22 @@
 <?php
 /**
  * @var $this Controller
- * @var $model Menu
+ * @var $model Menu|NestedSetBehavior
  */
 $this->breadcrumbs = array(
-    Yii::t('menu', 'Изменение') => array('admin'),
-    $model->name                => array('view', 'id' => $model->id),
-    Yii::t('menu', 'Изменение'),
+    Yii::t('menu', 'Меню')        => array('default/admin'),
+    Yii::t('menu', 'Изменение ' . $model->title),
 );
-
-$this->menu = array(
+$this->menu        = array(
     array('label' => Yii::t('menu', 'Меню')),
     array('icon' => 'list', 'label' => Yii::t('menu', 'Управление'), 'url' => array('admin')),
-    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить'), 'url' => array('create')),
+    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить меню'), 'url' => array('create', 'root' => 1)),
+    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить пункт'), 'url' => array('create')),
     array(
-        'icon'       => 'pencil white',
+        'icon'        => 'pencil white',
         'encodeLabel' => false,
-        'label'      => Yii::t('page', 'Изменение'),
-        'url'        => array('/menu/default/update', 'id' => $model->id)
+        'label'       => Yii::t('page', 'Изменение'),
+        'url'         => array('/menu/default/update', 'id' => $model->id)
     ),
-    array('label' => Yii::t('menu', 'Пункты меню')),
-    array('icon' => 'list-alt', 'label' => Yii::t('menu', 'Управление'), 'url' => array('item/admin')),
-    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить'), 'url' => array('item/create')),
 );
-echo $this->renderPartial('_form', array('model' => $model)); ?>
+echo $this->renderPartial('_form', array('model' => $model, 'root' => $model->isRoot()));

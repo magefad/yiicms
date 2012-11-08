@@ -12,6 +12,53 @@ class DefaultController extends Controller
         return array('rights');
     }
 
+    public function actions()
+    {
+        return array(
+            'toggle' => array(
+                'class'     => 'ext.grid.actions.TbTreeToggleAction',
+                'modelName' => 'Menu',
+            ),
+            'create'   => array(
+                'class'     => 'ext.grid.actions.Create',
+                'modelName' => 'Menu'
+            ),
+            'update'   => array(
+                'class'     => 'ext.grid.actions.Update',
+                'modelName' => 'Menu'
+            ),
+            'delete'   => array(
+                'class'     => 'ext.grid.actions.Delete',
+                'modelName' => 'Menu'
+            ),
+            'moveNode'   => array(
+                'class'     => 'ext.grid.actions.MoveNode',
+                'modelName' => 'Menu'
+            ),
+            'makeRoot'   => array(
+                'class'     => 'ext.grid.actions.MakeRoot',
+                'modelName' => 'Menu'
+            ),
+        );
+    }
+
+    /**
+     * This method is invoked right after an action is executed.
+     * You may override this method to do some postprocessing for the action.
+     * @param CAction $action the action just executed.
+     * @todo Костыль удаления кэшей меню при перемещении узла, расширить NestedSetBehavior - добавить event afterMove()
+     */
+    protected function afterAction($action)
+    {
+        if ($action->id == 'moveNode') {
+            $menus = Menu::model()->roots()->findAll();
+            foreach ( $menus as $menu ) {
+                /** @var $menu Menu */
+                Yii::app()->cache->delete('menu_' . $menu->code);
+            }
+        }
+    }
+
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
@@ -21,61 +68,7 @@ class DefaultController extends Controller
         $this->render('view', array('model' => $this->loadModel($id)));
     }
 
-    /**
-     * Creates a new model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     */
-    public function actionCreate()
-    {
-        $model = new Menu;
-        // $this->performAjaxValidation($model);
-        if (isset($_POST['Menu'])) {
-            $model->attributes = $_POST['Menu'];
-            if ($model->save()) {
-                $this->redirect(array('view', 'id' => $model->id));
-            }
-        }
-        $this->render('create', array('model' => $model));
-    }
 
-    /**
-     * Updates a particular model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->loadModel($id);
-        // $this->performAjaxValidation($model);
-        if (isset($_POST['Menu'])) {
-            $model->attributes = $_POST['Menu'];
-            if ($model->save()) {
-                $this->redirect(array('view', 'id' => $model->id));
-            }
-        }
-        $this->render('update', array('model' => $model));
-    }
-
-    /**
-     * Deletes a particular model.
-     * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
-     * @throws CHttpException
-     * @return void
-     */
-    public function actionDelete($id)
-    {
-        if (Yii::app()->request->isPostRequest) {
-            // we only allow deletion via POST request
-            $this->loadModel($id)->delete();
-            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-            if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-            }
-        } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
-        }
-    }
 
     /**
      * Lists all models.
@@ -91,7 +84,6 @@ class DefaultController extends Controller
      */
     public function actionAdmin()
     {
-
         $model = new Menu('search');
         $model->unsetAttributes(); // clear any default values
         if (isset($_GET['Menu'])) {
@@ -121,7 +113,7 @@ class DefaultController extends Controller
      * Performs the AJAX validation.
      * @param CModel $model the model to be validated
      */
-    protected function performAjaxValidation($model)
+    public function performAjaxValidation($model)
     {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'menu-form') {
             echo CActiveForm::validate($model);

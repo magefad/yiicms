@@ -1,25 +1,35 @@
-<?php /** @var $data Menu */ ?>
+<?php
+/**
+ * @var $data Menu
+ */
+?>
 <div class="view">
 
     <b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
     <?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id' => $data->id)); ?>
     <br/>
 
-    <b><?php echo CHtml::encode($data->getAttributeLabel('name')); ?>:</b>
-    <?php echo CHtml::encode($data->name); ?>
+    <b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b>
+    <?php echo CHtml::encode($data->title); ?>
     <br/>
 
-    <b><?php echo CHtml::encode($data->getAttributeLabel('code')); ?>:</b>
-    <?php echo CHtml::encode($data->code); ?>
+    <b><?php echo CHtml::encode($data->getAttributeLabel('href')); ?>:</b>
+    <?php echo CHtml::encode($data->href); ?>
     <br/>
 
-    <b><?php echo CHtml::encode($data->getAttributeLabel('description')); ?>:</b>
-    <?php echo CHtml::encode($data->description); ?>
+    <b><?php echo CHtml::encode($data->getAttributeLabel('type')); ?>:</b>
+    <?php echo CHtml::encode($data->type); ?>
     <br/>
 
-    <b><?php echo CHtml::encode($data->getAttributeLabel('status')); ?>:</b>
-    <?php echo CHtml::encode($data->status); ?>
+    <b><?php echo CHtml::encode($data->getAttributeLabel('access')); ?>:</b>
+    <?php echo CHtml::encode($data->access); ?>
     <br/>
 
+    <?php /*
+	<b><?php echo CHtml::encode($data->getAttributeLabel('status')); ?>:</b>
+	<?php echo CHtml::encode($data->status); ?>
+	<br />
+
+	*/ ?>
 
 </div>

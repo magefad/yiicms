@@ -1,16 +1,18 @@
 <?php
 /**
+ * @var $model Menu
  * @var $this Controller
  */
-$this->breadcrumbs = array(Yii::t('menu', 'Управление меню'));
+$this->breadcrumbs = array(
+    Yii::t('menu', 'Меню')        => array('default/admin'),
+    Yii::t('menu', 'Управление'),
+);
 
 $this->menu = array(
     array('label' => Yii::t('menu', 'Меню')),
-    array('icon' => 'list white', 'label' => Yii::t('menu', 'Управление'), 'url' => array('/menu/default/admin')),
-    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить'), 'url' => array('create')),
-    array('label' => Yii::t('menu', 'Пункты меню')),
-    array('icon' => 'list-alt', 'label' => Yii::t('menu', 'Управление'), 'url' => array('item/admin')),
-    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить'), 'url' => array('item/create')),
+    array('icon' => 'list', 'label' => Yii::t('menu', 'Управление'), 'url' => array('/menu/default/admin')),
+    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить меню'), 'url' => array('create', 'root' => 1)),
+    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить пункт'), 'url' => array('create')),
 );
 
 Yii::app()->clientScript->registerScript(
@@ -28,31 +30,47 @@ $('.search-form form').submit(function(){
 });
 "
 );
-?>
-<?php #echo CHtml::link(Yii::t('page', '<i class="icon-search"></i> Поиск меню <span class="caret"></span>'),'#',array('class' => 'search-button btn btn-small'))?>
+echo CHtml::link(
+    Yii::t('page', '<i class="icon-search"></i> Поиск меню <span class="caret"></span>'),
+    '#',
+    array('class' => 'search-button btn btn-small')
+) ?>
 <div class="search-form" style="display:none">
-    <?php #$this->renderPartial('_search', array('model' => $model)); ?>
+    <?php $this->renderPartial('_search', array('model' => $model)); ?>
 </div><!-- search-form -->
 
-<?php
-/** @var $model Menu */
-$this->widget(
-    'bootstrap.widgets.TbGridView',
+<?php $this->widget(
+    //'bootstrap.widgets.TbExtendedGridView',
+    'ext.grid.TbTreeGridView',
     array(
         'id'                    => 'menu-grid',
-        'type'                  => 'striped condensed',
+        'type'                  => 'condensed',
         'dataProvider'          => $model->search(),
-        'enableHistory'         => true,
-        'filter'                => $model,
+        //'ajaxUpdate' => false,
         'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
         'columns'               => array(
             array(
                 'name'        => 'id',
                 'htmlOptions' => array('style' => 'width: 20px; text-align: center'),
             ),
-            'name',
-            'code',
-            'description',
+            'title',
+            array(
+                'name' => 'href',
+                'value' => '$data->href ? $data->href : "Menu::model()->getItems(\'".$data->code."\')"',
+            ),
+            array(
+                'class'                => 'bootstrap.widgets.TbToggleColumn',
+                'checkedButtonLabel'   => Yii::t('global', 'Опубликовано. Скрыть?'),
+                'uncheckedButtonLabel' => Yii::t('global', 'Скрыто. Опубликовтаь?'),
+                'name'                 => 'status',
+                'filter'      => array(
+                    1  => Yii::t('menu', 'Скрыто'),
+                    0  => Yii::t('menu', 'Опубликовано')
+                ),
+                'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
+            ),
+            'access',
+            'update_time',
             array(
                 'class'       => 'bootstrap.widgets.TbButtonColumn',
                 'htmlOptions' => array('style' => 'width:60px; text-align: center;')

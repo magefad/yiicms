@@ -5,15 +5,34 @@
  *
  * The followings are the available columns in table '{{menu}}':
  * @property integer $id
- * @property string $name
+ * @property integer $root
+ * @property integer $lft
+ * @property integer $rgt
+ * @property integer $level
  * @property string $code
- * @property string $description
+ * @property string $title
+ * @property string $href
+ * @property integer $type
+ * @property string $access
  * @property integer $status
+ * @property string $create_time
+ * @property string $update_time
+ * @property integer $create_user_id
+ * @property integer $update_user_id
+ *
+ * @method roots() Named scope. Gets root node(s).
+ * @method children() Named scope. Gets children for node (direct descendants only).
+ * @method ancestors(int $depth=null) Named scope. Gets ancestors for node.
+ * @method parent() Named scope. Gets parent of node.
+ * @method isLeaf() Determines if node is leaf.
+ * @method isRoot() Determines if node is root.
  */
 class Menu extends CActiveRecord
 {
     const STATUS_ACTIVE   = 1;
     const STATUS_DISABLED = 0;
+
+    public $parentId = 0;
 
     /**
      * Returns the static model of the specified AR class.
@@ -39,30 +58,35 @@ class Menu extends CActiveRecord
     public function rules()
     {
         return array(
-            array('name, code', 'required'),
-            array('status', 'numerical', 'integerOnly' => true),
-            array('name, description', 'length', 'max' => 200),
+            array('root, title, href', 'required', 'on' => 'create, update'),
+            array('code, title', 'required', 'on' => 'createRoot, updateRoot'),
+            array('root, lft, rgt, level, type, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('code', 'length', 'max' => 20),
-            array('name, description', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
+            array('title', 'length', 'max' => 100),
+            array('href, access', 'length', 'max' => 200),
+            array('access', 'length', 'max' => 50),
             array(
-                'code',
-                'match',
-                'pattern' => '/^[a-zA-Z0-9_\-]+$/',
-                'message' => Yii::t('menu', 'Строка содержит запрещенные символы {attribute}')
+                'id, root, lft, rgt, level, code, title, href, type, access, status, create_time, update_time, create_user_id, update_user_id',
+                'safe',
+                'on' => 'search'
             ),
-            array('code', 'unique'),
-            array('status', 'in', 'range' => array_keys($this->getStatusList())),
-            array('id, name, code, description, status', 'safe', 'on' => 'search'),
         );
     }
 
     /**
-     * @return array relational rules.
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
      */
-    public function relations()
+    public function behaviors()
     {
         return array(
-            'menuItems' => array(self::HAS_MANY, 'Item', 'menu_id'),
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
+            'tree' => array(
+                'class'        => 'application.modules.admin.behaviors.NestedSetBehavior',
+                'hasManyRoots' => true
+            )
         );
     }
 
@@ -72,12 +96,38 @@ class Menu extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'          => Yii::t('menu', 'ID'),
-            'name'        => Yii::t('menu', 'Название'),
-            'code'        => Yii::t('menu', 'Уникальный код'),
-            'description' => Yii::t('menu', 'Описание'),
-            'status'      => Yii::t('menu', 'Статус'),
+            'id'             => Yii::t('menu', 'ID'),
+            'root'           => Yii::t('menu', 'Родитель'),
+            'level'          => Yii::t('menu', 'Уровень вложенности'),
+            'code'           => Yii::t('menu', 'Уникальный код меню'),
+            'title'          => Yii::t('menu', 'Заголовок'),
+            'href'           => Yii::t('menu', 'Ссылка'),
+            'access'         => Yii::t('menu', 'Уровень доступа'),
+            'status'         => Yii::t('menu', 'Статус'),
+            'create_time'    => Yii::t('menu', 'Создано'),
+            'update_time'    => Yii::t('menu', 'Изменено'),
+            'create_user_id' => Yii::t('menu', 'Автор'),
+            'update_user_id' => Yii::t('menu', 'Изменил'),
         );
+    }
+
+    public function beforeSave()
+    {
+        if (parent::beforeSave()) {
+            // need to delete menu cache when move node...
+            if ($this->parentId && $this->parent()->find()->id != $this->parentId) {
+                /** @var $oldParent Menu|NestedSetBehavior //see updateAction where setted parentId after load model */
+                if ($oldParent = $this->findByPk($this->parentId)) {
+                    Yii::app()->cache->delete(
+                        'menu_' . ($oldParent->isRoot() ? $oldParent->code : $oldParent->ancestors()->find()->code)
+                    );
+                }
+            }
+            Yii::app()->cache->delete('menu_' . $this->ancestors()->find()->code);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -86,22 +136,34 @@ class Menu extends CActiveRecord
      */
     public function search()
     {
-        $criteria = new CDbCriteria;
+        $criteria       = new CDbCriteria;
 
         $criteria->compare('id', $this->id, true);
-        $criteria->compare('name', $this->name, true);
+        $criteria->compare('root', $this->root, true);
+        $criteria->compare('lft', $this->lft, true);
+        $criteria->compare('rgt', $this->rgt, true);
+        $criteria->compare('level', $this->level, true);
         $criteria->compare('code', $this->code, true);
-        $criteria->compare('description', $this->description, true);
-        $criteria->compare('status', $this->status);
+        $criteria->compare('t.title', $this->title, true);
+        $criteria->compare('href', $this->href, true);
+        //$criteria->compare('type', $this->type);
+        $criteria->compare('t.access', $this->access, true);
+        $criteria->compare('t.status', $this->status);
+        $criteria->compare('create_time', $this->create_time);
+        $criteria->compare('update_time', $this->update_time);
+        $criteria->compare('create_user_id', $this->create_user_id);
+        $criteria->compare('update_user_id', $this->update_user_id);
+
+        $sort               = new CSort;
+        $sort->defaultOrder = 't.root, t.lft';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
+            'pagination' => array('pageSize' => $this->count()),
+            'sort'     => $sort
         ));
     }
 
-    /**
-     * @return array statuses
-     */
     public function getStatusList()
     {
         return array(
@@ -110,14 +172,37 @@ class Menu extends CActiveRecord
         );
     }
 
-    /**
-     * @return string status text
-     */
     public function getStatus()
     {
-        $data = $this->getStatusList();
-
+        $data = $this->statusList;
         return isset($data[$this->status]) ? $data[$this->status] : Yii::t('menu', 'неизвестно');
+    }
+
+    public function getAccessList()
+    {
+        Yii::import("application.modules.rights.components.dataproviders.RAuthItemDataProvider");
+        $all_roles = new RAuthItemDataProvider('roles', array(
+            'type' => 2,
+        ));
+        return CHtml::listData($all_roles->fetchData(), 'name', 'description');
+    }
+
+    public function getConditionDenialList()
+    {
+        return array(
+            self::STATUS_DISABLED => Yii::t('menu', 'да'),
+            self::STATUS_ACTIVE   => Yii::t('menu', 'нет'),
+        );
+    }
+
+    public function getParentsData()
+    {
+        $rows = Yii::app()->db->createCommand("SELECT id, level, title FROM {$this->tableName()} ORDER BY root, lft")->queryAll();
+        $data = array();
+        foreach ($rows as $item) {
+            $data[$item['id']] = str_repeat('→', ($item['level'] - 1)) . ' ' . $item['title'];
+        }
+        return $data;
     }
 
     /**
@@ -156,32 +241,29 @@ class Menu extends CActiveRecord
     /**
      * Select items from Database
      * @param string $code
-     * @param int $parent_id
+     * @param Menu $menu
      * @return array
      */
-    private function getItemsFromDb($code, $parent_id = 0)
+    public function getItemsFromDb($code = null, $menu = null)
     {
-        $results = Yii::app()->getDb()->createCommand()
-            ->select('item.id, item.title, item.href, item.access')
-            ->from(Item::model()->tableName() . ' item')
-            ->join($this->tableName() . ' menu', 'item.menu_id=menu.id')
-            ->where(
-                array('and', 'menu.code=:code', 'item.parent_id=:pid', 'item.status=1'),
-                array(':code' => $code, ':pid' => (int)$parent_id)
-            )
-            ->order('item.sort_order ASC')->queryAll();
-        $items = array();
-        if (empty($results)) {
-            return $items;
+        $return = array();
+        /** @var $menu Menu|NestedSetBehavior */
+        if (!is_null($code) && is_null($menu)) {
+            $menu = Menu::model()->findByAttributes(array('code' => $code, 'status' => 1));
+        } else if (!is_object($menu)) {
+            return new CHttpException(500, Yii::t('yii', 'Your request is invalid.'));
         }
-        foreach ($results as $result) {
-            $items[] = array(
-                'label'       => $result['title'],
-                'url'         => $result['href'],
-                'items'       => $this->getItemsFromDb($code, $result['id']),
-                'access'      => $result['access'],
+
+        $items = $menu->children()->findAllByAttributes(array('status' => 1));
+        foreach ($items as $item) {
+            /** @var $item Menu|NestedSetBehavior */
+            $return[] = array(
+                'label'       => $item->title,
+                'url'         => $item->href,
+                'items'       => !$item->isLeaf() ? $this->getItemsFromDb(null, $item) : array(),
+                'access'      => $item->access,
             );
         }
-        return $items;
+        return $return;
     }
 }
