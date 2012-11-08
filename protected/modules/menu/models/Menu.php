@@ -58,8 +58,8 @@ class Menu extends CActiveRecord
     public function rules()
     {
         return array(
-            array('root, title, href', 'required', 'on' => 'create, update'),
-            array('code, title', 'required', 'on' => 'createRoot, updateRoot'),
+            array('root, title, href', 'required', 'on' => 'insert, update'),
+            array('code, title', 'required', 'on' => 'insertRoot, updateRoot'),
             array('root, lft, rgt, level, type, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('code', 'length', 'max' => 20),
             array('title', 'length', 'max' => 100),
