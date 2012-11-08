@@ -18,10 +18,10 @@ class Delete extends CAction
             /** @var $model CActiveRecord|NestedSetBehavior */
             $model = CActiveRecord::model($this->modelName)->findByPk((int)$id);
             if ($model === null) {
-                $this->controller->redirect(Yii::app()->request->urlReferrer);
+                throw new CHttpException(404, 'The requested page does not exist.');
             }
             if ($model->tree->hasManyRoots == false && $model->isRoot()) {
-                $this->controller->redirect(Yii::app()->request->urlReferrer);
+                throw new CHttpException(400, Yii::t('grid', 'You can not remove root in one tree mode.'));
             }
             $model->deleteNode();
 

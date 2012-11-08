@@ -45,9 +45,7 @@ class MoveNode extends CAction
                         }
                         break;
                 }
-                if (Yii::app()->request->isAjaxRequest) {
-                    Yii::app()->end(1);
-                } else {
+                if (!Yii::app()->request->isAjaxRequest) {
                     $this->controller->redirect(Yii::app()->request->urlReferrer);
                 }
             } catch ( Exception $e ) {

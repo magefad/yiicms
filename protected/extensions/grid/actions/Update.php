@@ -16,14 +16,33 @@ class Update extends CAction
     {
         /** @var $model CActiveRecord|NestedSetBehavior */
         $model = CActiveRecord::model($this->modelName)->findByPk((int)$id);
+        $model->parentId = $model->parent()->find()->id;
+        if ( $model->isRoot()) {
+            $model->scenario = 'updateRoot';
+        }
         if ($model === null) {
-            $this->controller->redirect(Yii::app()->request->urlReferrer);
+            throw new CHttpException(404, 'The requested page does not exist.');
+        }
+        if (method_exists($this->controller, 'performAjaxValidation')) {
+            try {
+                $this->controller->performAjaxValidation($model);
+            } catch ( Exception $e ) {
+                $model->addError('error', $e->getMessage());
+            }
+        }
+
+        if (isset($_POST['parentId']) && (int)$_POST['parentId'] != $model->parentId) {
+            $newParent = CActiveRecord::model($this->modelName)->findByPk((int)$_POST['parentId']);
+            if ($newParent && $model->moveAsLast($newParent)) {
+                #$model = CActiveRecord::model($this->modelName)->findByPk((int)$id);
+                $model->refresh();
+            }
         }
 
         if (isset($_POST[$this->modelName])) {
             $model->attributes = $_POST[$this->modelName];
             if ($model->saveNode()) {
-                $this->controller->redirect(array(Yii::app()->request->urlReferrer));
+                $this->controller->redirect(array('admin'));
             }
         }
         $this->controller->render('update', array('model' => $model));
