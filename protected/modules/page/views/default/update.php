@@ -2,7 +2,6 @@
 
 /**
  * @var $model Page
- * @var $pages array
  * @var $this Controller
  */
 $this->pageTitle   = Yii::t('page', 'Редактирование страницы');
@@ -37,4 +36,4 @@ $this->menu = array(
     ),
     $viewLink
 );
-echo $this->renderPartial('_form', array('model' => $model, 'pages' => $pages));
+echo $this->renderPartial('_form', array('model' => $model));

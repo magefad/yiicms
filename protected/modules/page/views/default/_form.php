@@ -3,7 +3,6 @@
  * @var $form TbActiveForm
  * @var $this Controller
  * @var $model Page
- * @var $pages array
  */
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
@@ -31,7 +30,7 @@ $this->widget(
             ),
             array(
                 'label'   => Yii::t('page', 'Дополнительно'),
-                'content' => $this->renderPartial('_formSettings', array('model' => $model, 'form' => $form, 'pages' => $pages), true),
+                'content' => $this->renderPartial('_formSettings', array('model' => $model, 'form' => $form), true),
             )
         )
     )

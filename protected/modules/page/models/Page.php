@@ -102,6 +102,10 @@ class Page extends CActiveRecord
         return array(
             'SaveBehavior' => array(
                 'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
+            'treeArray' => array(
+                'class' => 'application.modules.admin.behaviors.AdjacencyListBehavior',
+                'textAttribute' => 'name'
             )
         );
     }
@@ -275,23 +279,6 @@ class Page extends CActiveRecord
     {
         $data = $this->getProtectedStatusList();
         return array_key_exists($this->is_protected, $data) ? $data[$this->is_protected] : Yii::t('page', 'неизвестно');
-    }
-
-    /**
-     *
-     * @return array
-     */
-    public function getAllPagesList()
-    {
-        $parents = $this->findAll(
-            array(
-                'select'    => 'id, title, name',
-                'condition' => 'parent_id is null OR parent_id=0',
-                'order'     => 'sort_order'
-            )
-        );
-        $tree    = new Tree();
-        return $tree->makeDropDown($parents);
     }
 
     /**

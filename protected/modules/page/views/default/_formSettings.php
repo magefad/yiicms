@@ -2,7 +2,6 @@
 /**
  * @var $form TbActiveForm
  * @var $model Page
- * @var $pages array
  */
 ?>
 <div class="row-fluid">
@@ -11,7 +10,7 @@
 </div>
 <div class="row-fluid">
     <span class="span2">
-        <?php echo $form->dropDownListRow($model, 'parent_id', $pages, array('style' => 'width: 100% !important;', 'empty' => Yii::t('page', '- нет родительской страницы -'))); ?>
+        <?php echo $form->dropDownListRow($model, 'parent_id', $model->treeArray->listData, array('style' => 'width: 100% !important;', 'empty' => Yii::t('page', '- нет родительской страницы -'))); ?>
     </span>
     <span class="span3">
         <?php echo $form->dropDownListRow($model, 'status', $model->getStatusList(), array('style' => 'width: 100% !important')) ?>

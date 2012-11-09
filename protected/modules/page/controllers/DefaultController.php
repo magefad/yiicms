@@ -98,7 +98,7 @@ class DefaultController extends Controller
         $max               = $model->find($criteria);
         $model->sort_order = $max->sort_order + 1;
 
-        $this->render('create', array('model' => $model, 'pages' => Page::model()->allPagesList));
+        $this->render('create', array('model' => $model));
     }
 
     /**
@@ -139,7 +139,7 @@ class DefaultController extends Controller
                 $this->redirect(array('update', 'id' => $model->id));
             }
         }
-        $this->render('update', array('model' => $model, 'pages' => Page::model()->getAllPagesList($model->id)));
+        $this->render('update', array('model' => $model));
     }
 
     /**
