@@ -17,6 +17,8 @@ Yii::import('bootstrap.widgets.TbGridView');
  *  - Display an extended summary of the records shown. The extended summary can be configured to any of the
  *  {@link TbOperation} type of widgets.
  *  - Automatic chart display (using TbHighCharts widget), where user can 'switch' between views.
+ *  - Selectable cells
+ *  - Sortable rows
  */
 class TbExtendedGridView extends TbGridView
 {
@@ -103,21 +105,28 @@ class TbExtendedGridView extends TbGridView
 	public $sortableRows = false;
 
 	/**
-	 * @var string Database field name for sorting
+	 * @var string Database field name for row sorting
 	 */
 	public $sortableAttribute = 'sort_order';
 
 	/**
-	 * @var boolean Save sort order by ajax
+	 * @var boolean Save sort order by ajax defaults to false
 	 * @see bootstrap.action.TbSortableAction for an easy way to use with your controller
 	 */
-	public $sortableAjaxSave = true;
+	public $sortableAjaxSave = false;
 
 	/**
 	 * @var string Name of the action to call and sort values
 	 * @see bootstrap.action.TbSortableAction for an easy way to use with your controller
+	 *
+	 * <pre>
+	 *  'sortableAction'=>'module/controller/sortable' | 'controller/sortable'
+	 * </pre>
+	 *
+	 * The widget will make use of the string to create the URL and then append $sortableAttribute
+	 * @see $sortableAttribute
 	 */
-	public $sortableAction = 'sortable';
+	public $sortableAction;
 
 	/**
 	 * @var string a javascript function that will be invoked after a successful sorting is done.
@@ -225,17 +234,68 @@ class TbExtendedGridView extends TbGridView
 	 */
 	public function renderKeys()
 	{
-		if(!$this->sortableRows)
+		$data = $this->dataProvider->getData();
+
+		if(!$this->sortableRows || !$this->getAttribute($data[0], $this->sortableAttribute))
+		{
 			return parent::renderKeys();
+		}
 
 		echo CHtml::openTag('div',array(
 			'class'=>'keys',
 			'style'=>'display:none',
 			'title'=>Yii::app()->getRequest()->getUrl(),
 		));
-		foreach($this->dataProvider->getData() as $data)
-			echo CHtml::tag('span',array('data-order' => (int)$data->{$this->sortableAttribute}), CHtml::encode($data->id));
+		foreach($data as $d)
+			echo CHtml::tag('span',array('data-order' => $this->getAttribute($d, $this->sortableAttribute), CHtml::encode($this->getPrimaryKey($d))));
 		echo "</div>\n";
+	}
+
+	/**
+	 * Helper function to get an attribute from the data
+	 *
+	 * @param $data
+	 * @param $attribute the attribute to get
+	 * @return mixed the attribute value null if none found
+	 */
+	protected function getAttribute($data, $attribute)
+	{
+		if($this->dataProvider instanceof CActiveDataProvider && $data->hasAttribute($attribute))
+		{
+			return $data->{$attribute};
+		}
+		if($this->dataProvider instanceof CArrayDataProvider)
+		{
+			if (is_object($data) && isset($data->{$attribute}))
+			{
+				return $data->{$attribute};
+			}
+			if (isset($data[$attribute]))
+			{
+				return $data[$attribute];
+			}
+		}
+		return null;
+	}
+	/**
+	 * Helper function to return the primary key of the $data
+	 * IMPORTANT: composite keys on CActiveDataProviders will return the keys joined by comma
+	 *
+	 * @param $data
+	 * @return null|string
+	 */
+	protected function getPrimaryKey($data)
+	{
+		if($this->dataProvider instanceof CActiveDataProvider)
+		{
+			$key=$this->grid->dataProvider->keyAttribute===null ? $data->getPrimaryKey() : $data->{$this->keyAttribute};
+			return is_array($key) ? implode(',',$key) : $key;
+		}
+		if($this->dataProvider instanceof CArrayDataProvider)
+		{
+			return is_object($data) ? $data->{$this->dataProvider->keyField} : $data[$this->dataProvider->keyField];
+		}
+		return null;
 	}
 
 	/**
@@ -497,18 +557,9 @@ class TbExtendedGridView extends TbGridView
 			$cs->registerCoreScript('jquery.ui');
 			Yii::app()->bootstrap->registerAssetJs('jquery.sortable.gridview.js');
 
-			if($this->sortableAjaxSave)
+			if($this->sortableAjaxSave && $this->sortableAction !== null)
 			{
-				if($this->sortableAction=='sortable')//route is default
-				{
-					if($module=$this->controller->module->id)
-						$sortableAction = $module . '/' . $this->controller->id . '/' . $this->sortableAction;
-					else
-						$sortableAction = $this->controller->id . '/' . $this->sortableAction;
-				}
-				else
-					$sortableAction = $this->sortableAction;
-				$sortableAction = Yii::app()->createUrl($sortableAction, array('sortableAttribute' => $this->sortableAttribute));
+				$sortableAction = Yii::app()->createUrl($this->sortableAction, array('sortableAttribute' => $this->sortableAttribute));
 			}
 			else
 				$sortableAction = '';
@@ -585,7 +636,7 @@ class TbExtendedGridView extends TbGridView
 			// add the required column object in
 			$config['column'] = $column;
 			// build the summary operation object
-			$op = $this->getSummaryOperationInstance($config);
+			$op = $this->getSummaryOperationInstance($column->name, $config);
 			// process the value
 			$op->processValue($value);
 		}
@@ -594,11 +645,12 @@ class TbExtendedGridView extends TbGridView
 
 	/**
 	 * Each type of 'extended' summary
-	 * @param $config
+	 * @param $name the name of the column
+	 * @param $config the configuration of the column at the extendedSummary
 	 * @return mixed
 	 * @throws CException
 	 */
-	protected function getSummaryOperationInstance($config)
+	protected function getSummaryOperationInstance($name, $config)
 	{
 		if (!isset($config['class']))
 			throw new CException(Yii::t('zii', 'Column summary configuration must be an array containing a "type" element.'));
@@ -606,12 +658,13 @@ class TbExtendedGridView extends TbGridView
 		if (!in_array($config['class'], $this->extendedSummaryOperations))
 			throw new CException(Yii::t('zii', '"{operation}" is an unsupported class operation.', array('{operation}' => $config['class'])));
 
-		if (!isset($this->extendedSummaryTypes[$config['class']]))
+		// name of the column should be unique
+		if (!isset($this->extendedSummaryTypes[$name]))
 		{
-			$this->extendedSummaryTypes[$config['class']] = Yii::createComponent($config);
-			$this->extendedSummaryTypes[$config['class']]->init();
+			$this->extendedSummaryTypes[$name] = Yii::createComponent($config);
+			$this->extendedSummaryTypes[$name]->init();
 		}
-		return $this->extendedSummaryTypes[$config['class']];
+		return $this->extendedSummaryTypes[$name];
 	}
 
 	/**

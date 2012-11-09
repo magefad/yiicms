@@ -267,11 +267,25 @@ class TbActiveForm extends CActiveForm
 	 * @param array $htmlOptions additional HTML attributes. 'events' and 'options' key specify the events
 	 * and configuration options of datepicker respectively.
 	 * @return string the generated row
-	 * @since 0.10.0
+	 * @since 1.0.2 Booster
 	 */
 	public function datepickerRow($model, $attribute, $htmlOptions = array())
 	{
 		return $this->inputRow(TbInput::TYPE_DATEPICKER, $model, $attribute, null, $htmlOptions);
+	}
+
+	/**
+	 * Renders a colorpicker field row.
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. 'events' and 'options' key specify the events
+	 * and configuration options of colorpicker respectively.
+	 * @return string the generated row
+	 * @since 1.0.3 Booster
+	 */
+	public function colorpickerRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->inputRow(TbInput::TYPE_COLORPICKER, $model, $attribute, null, $htmlOptions);
 	}
 
 	/**
@@ -284,7 +298,20 @@ class TbActiveForm extends CActiveForm
 	{
 		return $this->inputRow(TbInput::TYPE_DATERANGEPICKER, $model, $attribute, null, $htmlOptions);
 	}
-
+	
+	/**
+     * Renders a timepicker field row.
+     * @param CModel $model the data model
+     * @param string $attribute the attribute
+     * @param array $htmlOptions additional HTML attributes
+     * @return string the generated row
+     * @since 0.10.0
+     */
+    public function timepickerRow($model, $attribute, $htmlOptions = array())
+    {
+        return $this->inputRow(TbInput::TYPE_TIMEPICKER, $model, $attribute, null, $htmlOptions);
+    }
+	
 	/**
 	 * Renders a checkbox list for a model attribute.
 	 * This method is a wrapper of {@link CHtml::activeCheckBoxList}.
@@ -333,6 +360,13 @@ class TbActiveForm extends CActiveForm
 	{
 		CHtml::resolveNameID($model, $attribute, $htmlOptions);
 		$select = CHtml::resolveValue($model, $attribute);
+		if (is_array($select) && !empty($select) &&  is_object($select[0])) {
+			$pks = array();
+			foreach ($select as $select_item) {
+				$pks[] = $select_item->getPrimaryKey();
+			}
+			$select = $pks;
+		}
 
 		if ($model->hasErrors($attribute))
 		{
@@ -384,7 +418,7 @@ class TbActiveForm extends CActiveForm
 
 		foreach ($data as $value => $label)
 		{
-			$checked = !is_array($select) && !strcmp($value, $select) || is_array($select) && in_array($value, $select);
+			$checked = !is_array($select) && !strcmp($value, $select) || is_array($select) && in_array($value, $select);			
 			$htmlOptions['value'] = $value;
 			$htmlOptions['id'] = $baseID . '_' . $id++;
 			$option = CHtml::$method($name, $checked, $htmlOptions);
