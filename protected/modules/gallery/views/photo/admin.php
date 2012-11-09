@@ -41,7 +41,7 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget(
-    'CustomTbGridView',
+    'bootstrap.widgets.TbExtendedGridView',
     array(
         'id'                    => 'photo-grid',
         'type'                  => 'striped condensed',
@@ -71,13 +71,13 @@ $('.search-form form').submit(function(){
                 'htmlOptions' => array('style' => 'width: 60px;text-align: center;'),
             ),
             array(
-                'name'        => 'status',
-                'type'        => 'raw',
-                'value'       => '$this->grid->returnBootstrapStatusHtml($data)',
+                'class'                => 'bootstrap.widgets.TbToggleColumn',
+                'checkedButtonLabel'   => Yii::t('global', 'Опубликовано. Скрыть?'),
+                'uncheckedButtonLabel' => Yii::t('global', 'Скрыто. Опубликовтаь?'),
+                'name'                 => 'status',
                 'filter'      => array(
-                    '' => Yii::t('menu', 'Все'),
-                    1  => Yii::t('menu', 'Опубликовано'),
-                    0  => Yii::t('menu', 'Скрыто')
+                    0  => Yii::t('menu', 'Скрыто'),
+                    1  => Yii::t('menu', 'Опубликовано')
                 ),
                 'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
             ), /*'title',

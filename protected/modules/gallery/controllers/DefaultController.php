@@ -10,6 +10,20 @@ class DefaultController extends Controller
         return array('rights');
     }
 
+    public function actions()
+    {
+        return array(
+            'toggle' => array(
+                'class'     => 'ext.bootstrap.actions.TbToggleAction',
+                'modelName' => 'Gallery',
+            ),
+            'sortable' => array(
+                'class'     => 'ext.bootstrap.actions.TbSortableAction',
+                'modelName' => 'Gallery',
+            )
+        );
+    }
+
     public function allowedActions()
     {
         return 'list, show';

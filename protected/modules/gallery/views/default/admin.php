@@ -48,10 +48,13 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget(
-    'CustomTbGridView',
+    'bootstrap.widgets.TbExtendedGridView',
     array(
         'id'                    => 'gallery-grid',
         'type'                  => 'striped condensed',
+        #'sortableRows'          => true,
+        #'sortableAjaxSave'      => true,
+        #'sortableAction'        => 'menu/default/sortable',
         'dataProvider'          => $model->search(),
         'enableHistory'         => true,
         'filter'                => $model,
@@ -73,20 +76,20 @@ $('.search-form form').submit(function(){
                 'type'  => 'raw',
                 'value' => 'CHtml::link($data->slug, array("/album/$data->slug"))',
             ),
-            array(
+            /*array(
                 'name'        => 'sort_order',
                 'type'        => 'raw',
                 'value'       => '$this->grid->getUpDownButtons($data)',
                 'htmlOptions' => array('style' => 'width: 30px; text-align: center'),
-            ),
+            ),*/
             array(
-                'name'        => 'status',
-                'type'        => 'raw',
-                'value'       => '$this->grid->returnBootstrapStatusHtml($data)',
+                'class'                => 'bootstrap.widgets.TbToggleColumn',
+                'checkedButtonLabel'   => Yii::t('global', 'Опубликовано. Скрыть?'),
+                'uncheckedButtonLabel' => Yii::t('global', 'Скрыто. Опубликовтаь?'),
+                'name'                 => 'status',
                 'filter'      => array(
-                    '' => Yii::t('menu', 'Все'),
-                    1  => Yii::t('menu', 'Опубликовано'),
-                    0  => Yii::t('menu', 'Скрыто')
+                    0  => Yii::t('menu', 'Скрыто'),
+                    1  => Yii::t('menu', 'Опубликовано')
                 ),
                 'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
             ),

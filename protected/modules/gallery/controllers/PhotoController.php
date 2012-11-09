@@ -10,6 +10,16 @@ class PhotoController extends Controller
         return array('rights');
     }
 
+    public function actions()
+    {
+        return array(
+            'toggle' => array(
+                'class'     => 'ext.bootstrap.actions.TbToggleAction',
+                'modelName' => 'Photo',
+            )
+        );
+    }
+
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
