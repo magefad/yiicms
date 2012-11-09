@@ -182,7 +182,7 @@ class DefaultController extends Controller
         if (isset($_GET['Page'])) {
             $model->attributes = $_GET['Page'];
         }
-        $this->render('admin', array('model' => $model, 'pages' => Page::model()->allPagesList));
+        $this->render('admin', array('model' => $model));
     }
 
     /**
