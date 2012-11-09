@@ -133,7 +133,7 @@ class UserBlogController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-to-blog-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'user-blog-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

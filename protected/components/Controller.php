@@ -83,9 +83,9 @@ class Controller extends RController
         $status      = (int)Yii::app()->request->getQuery('status');
         $id          = (int)Yii::app()->request->getQuery('id');
         $modelClass  = Yii::app()->request->getQuery('model');
-        $statusField = Yii::app()->request->getQuery('statusField');
+        $statusAttribute = Yii::app()->request->getQuery('statusAttribute');
 
-        if (!isset($modelClass, $id, $status, $statusField)) {
+        if (!isset($modelClass, $id, $status, $statusAttribute)) {
             throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
         /** @var $model CActiveRecord */
@@ -95,8 +95,8 @@ class Controller extends RController
             throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
 
-        $model->$statusField = $status;
-        $model->update(array($statusField));
+        $model->$statusAttribute = $status;
+        $model->update(array($statusAttribute));
 
         if (!Yii::app()->request->isAjaxRequest) {
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

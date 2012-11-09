@@ -41,16 +41,12 @@ $('.search-form form').submit(function(){
     <?php $this->renderPartial('_search', array('model' => $model)); ?>
 </div><!-- search-form -->
 <?php $this->widget(
-    'CustomTbGridView',
+    'FadTbGridView',
     array(
-        'id'                    => 'page-grid',
-        'type'                  => 'striped condensed',
-        'sortField'             => 'sort_order',
-        'dataProvider'          => $model->search(),
-        'enableHistory'         => true,
-        'filter'                => $model,
-        'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
-        'columns'               => array(
+        'id'           => 'page-grid',
+        'dataProvider' => $model->search(),
+        'filter'       => $model,
+        'columns'      => array(
             array(
                 'name'        => 'id',
                 'htmlOptions' => array('style' => 'width: 20px; text-align: center'),

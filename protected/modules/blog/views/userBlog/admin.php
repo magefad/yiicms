@@ -37,15 +37,13 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget(
-    'CustomTbGridView',
+    'FadTbGridView',
     array(
-        'id'                    => 'user-to-blog-grid',
-        'type'                  => 'striped condensed',
-        'dataProvider'          => $model->search(),
-        'enableHistory'         => true,
-        'filter'                => $model,
-        'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
-        'columns'               => array(
+        'id'            => 'user-to-blog-grid',
+        'dataProvider'  => $model->search(),
+        'enableHistory' => true,
+        'filter'        => $model,
+        'columns'       => array(
             array(
                 'name'        => 'id',
                 'htmlOptions' => array('style' => 'width: 20px; text-align: center'),

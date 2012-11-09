@@ -40,14 +40,11 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget(
-    'CustomTbGridView',
+    'FadTbGridView',
     array(
         'id'                    => 'post-grid',
-        'type'                  => 'striped condensed',
         'dataProvider'          => $model->search(),
-        'enableHistory'         => true,
         'filter'                => $model,
-        'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
         'columns'               => array(
             array(
                 'name'        => 'id',

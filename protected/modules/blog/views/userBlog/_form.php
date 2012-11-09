@@ -7,7 +7,7 @@
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
-        'id'                     => 'user-to-blog-form',
+        'id'                     => 'user-blog-form',
         'enableAjaxValidation'   => false,
         'enableClientValidation' => true,
         'type'                   => 'horizontal',

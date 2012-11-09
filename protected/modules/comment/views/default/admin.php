@@ -38,7 +38,6 @@ $('.search-form form').submit(function(){
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
     'id'           => 'comment-grid',
     'dataProvider' => $model->search(),
-    'enableHistory'=> true,
     'filter'       => $model,
     'columns'      => array(
 		'id',

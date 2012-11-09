@@ -50,16 +50,13 @@ $('.search-form form').submit(function(){
 <?php $this->widget(
     'bootstrap.widgets.TbExtendedGridView',
     array(
-        'id'                    => 'gallery-grid',
-        'type'                  => 'striped condensed',
-        #'sortableRows'          => true,
-        #'sortableAjaxSave'      => true,
-        #'sortableAction'        => 'menu/default/sortable',
-        'dataProvider'          => $model->search(),
-        'enableHistory'         => true,
-        'filter'                => $model,
-        'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
-        'columns'               => array(
+        'id'           => 'gallery-grid',
+        #'sortableRows' => true,
+        #'sortableAjaxSave' => true,
+        #'sortableAction' => 'menu/default/sortable',
+        'dataProvider' => $model->search(),
+        'filter'       => $model,
+        'columns'      => array(
             array(
                 'name'        => 'id',
                 'htmlOptions' => array('style' => 'width: 20px; text-align: center'),
