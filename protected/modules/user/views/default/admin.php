@@ -41,7 +41,7 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget(
-    'bootstrap.widgets.TbGridView',
+    'FadTbGridView',
     array(
         'id'           => 'user-grid',
         'dataProvider' => $model->search(),
