@@ -78,7 +78,11 @@ class FadTbGridView extends TbGridView
                 'statusAttribute' => $statusAttribute,
             )
         );
-        $options = array('onclick' => 'ajaxSetStatus(this, "' . $this->id . '"); return false;');
+        $options = array(
+            'rel'     => 'tooltip',
+            'title'   => $text,
+            'onclick' => 'ajaxSetStatus(this, "' . $this->id . '"); return false;'
+        );
         return CHtml::link($icon, $url, $options);
     }
 
