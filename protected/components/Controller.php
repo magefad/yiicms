@@ -57,10 +57,6 @@ class Controller extends RController
         $this->pageTitle   = $this->admin->siteName;
         $this->keywords    = $this->admin->siteKeywords;
         $this->description = $this->admin->siteDescription;
-        if ( Yii::app()->user->isSuperUser) {
-            $assets = Yii::app()->assetManager->publish('js');
-            Yii::app()->clientScript->registerScriptFile($assets . '/' . 'admin.js');
-        }
         parent::init();
     }
 
@@ -78,10 +74,9 @@ class Controller extends RController
      * Update object status. Ex. active or draft
      * @throws CHttpException
      */
-    public function actionActivate()
+    public function actionActivate($id)
     {
         $status      = Yii::app()->request->getQuery('status');
-        $id          = (int)Yii::app()->request->getQuery('id');
         $modelClass  = Yii::app()->request->getQuery('model');
         $statusAttribute = Yii::app()->request->getQuery('statusAttribute');
 
@@ -90,7 +85,7 @@ class Controller extends RController
         }
         /** @var $model CActiveRecord */
         $model = new $modelClass;
-        $model = $model->resetScope()->findByPk($id);
+        $model = $model->resetScope()->findByPk((int)$id);
         if (!$model) {
             throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
@@ -107,37 +102,33 @@ class Controller extends RController
      * CGridView ajax sort
      * @throws CHttpException
      */
-    public function actionSort()
+    public function actionSort($id)
     {
         $direction  = Yii::app()->request->getQuery('direction');
-        $id         = (int)Yii::app()->request->getQuery('id');
         $modelClass = Yii::app()->request->getQuery('model');
-        $sortField  = Yii::app()->request->getQuery('sortField');
-
-        if (!isset($direction, $id, $modelClass, $sortField)) {
+        $sortAttribute  = Yii::app()->request->getQuery('sortAttribute');
+        if (!isset($direction, $id, $modelClass, $sortAttribute)) {
             throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
-        /** @var $model CActiveRecord */
-        /** @var $model_depends CActiveRecord */
-        $model         = new $modelClass;
-        $model_depends = new $modelClass;
-        $model         = $model->resetScope()->findByPk($id);
-        if (!$model) {
+
+        $model = CActiveRecord::model($modelClass)->resetScope()->findByPk((int)$id);
+        if (!isset($model)) {
             throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
         }
 
         if ($direction === 'up') {
-            $model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField - 1)));
-            $model_depends->$sortField++;
-            $model->$sortField--; #example sort_order column in sql
-        } else {
-            $model_depends = $model_depends->findByAttributes(array($sortField => ($model->$sortField + 1)));
-            $model_depends->$sortField--;
-            $model->$sortField++;
+            CActiveRecord::model($modelClass)->resetScope()->updateCounters(
+                array($sortAttribute => +1),
+                $sortAttribute . '=' . ($model->{$sortAttribute} - 1)
+            );
+            $model->saveCounters(array($sortAttribute => -1));
+        } else if ($direction === 'down') {
+            CActiveRecord::model($modelClass)->resetScope()->updateCounters(
+                array($sortAttribute => -1),
+                $sortAttribute . '=' . ($model->{$sortAttribute} + 1)
+            );
+            $model->saveCounters(array($sortAttribute => +1));
         }
-
-        $model->update(array($sortField));
-        $model_depends->update(array($sortField));
 
         if (!Yii::app()->request->isAjaxRequest) {
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

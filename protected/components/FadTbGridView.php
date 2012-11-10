@@ -28,16 +28,16 @@ class FadTbGridView extends TbGridView
      * the row, and <code>$this</code> is the grid object.
      * @see rowCssClass
      */
-    public $rowCssClassExpression = '($data->status == "moderation") ? "error" : (($data->status == "published") ? "published" : (($data->status == "moderation") ? "warning" : ""))';
-
-    public $activeStatus = 1;
-    public $inActiveStatus = 0;
-
-    public $showStatusText = false;
-
-    public $sortField = 'sort_order';
+    public $rowCssClassExpression = '($data->status == "moderation") ? "error" : (($data->status == "published") ? "published" : (($data->status == "draft") ? "warning" : ""))';
 
 
+    /**
+     * @param $data CActiveRecord
+     * @param string $statusAttribute
+     * @param string $property
+     * @param array $icons
+     * @return string
+     */
     public function getStatus(
         $data,
         $statusAttribute = 'status',
@@ -57,7 +57,7 @@ class FadTbGridView extends TbGridView
         }
         $text       = $data->$property->getText();
         $iconStatus = isset($icons[$data->$statusAttribute]) ? $icons[$data->$statusAttribute] : 'question-sign';
-        $icon       = '<i class="icon icon-' . $iconStatus . '" title="' . $text . '"></i>';
+        $icon       = '<i class="icon icon-' . $iconStatus . '"></i>';
 
         $statusList = $data->$property->getList();
         reset($statusList);
@@ -71,9 +71,9 @@ class FadTbGridView extends TbGridView
                 }
             }
         }
-        $url = Yii::app()->controller->createUrl("activate", array(
+        $url = Yii::app()->controller->createUrl('activate', array(
                 'model'           => $this->dataProvider->modelClass,
-                'id'              => $data->id,
+                'id'              => $data->primaryKey,
                 'status'          => $status,
                 'statusAttribute' => $statusAttribute,
             )
@@ -81,65 +81,71 @@ class FadTbGridView extends TbGridView
         $options = array(
             'rel'     => 'tooltip',
             'title'   => $text,
-            'onclick' => 'ajaxSetStatus(this, "' . $this->id . '"); return false;'
+            'class'   => $statusAttribute . '_switch'
         );
+
+        $this->registerCustomClientScript($options['class']);
         return CHtml::link($icon, $url, $options);
     }
 
     /**
      * Sort buttons (up-down)
      * @todo Remove down button of the end element
-     * @param $data
+     * @param $data CActiveRecord
      * @return string
      */
-    public function getUpDownButtons($data)
+    public function getUpDownButtons($data, $sortAttribute = 'sort_order')
     {
-        $downUrlImage = CHtml::image(
-            Yii::app()->assetManager->publish(
-                Yii::getPathOfAlias('zii.widgets.assets.gridview') . '/down.gif'
-            ),
-            '&#x25B2;'
-        );
+        $path         = Yii::getPathOfAlias('zii.widgets.assets.gridview');
+        $downUrlImage = CHtml::image(Yii::app()->assetManager->publish($path . '/down.gif'), '&#x25B2;');
+        $upUrlImage   = CHtml::image(Yii::app()->assetManager->publish($path . '/up.gif'), '&#x25BC;');
 
-        $upUrlImage = CHtml::image(
-            Yii::app()->assetManager->publish(
-                Yii::getPathOfAlias('zii.widgets.assets.gridview') . '/up.gif'
-            ),
-           '&#x25BC;'
+        $params = array(
+            'model'         => $this->dataProvider->modelClass,
+            'id'            => $data->primaryKey,
+            'sortAttribute' => $sortAttribute,
+            'direction'     => 'up'
         );
+        $urlUp = Yii::app()->controller->createUrl('sort', $params);
+        $params['direction'] = 'down';
+        $urlDown = Yii::app()->controller->createUrl('sort', $params);
 
-        $urlUp = Yii::app()->controller->createUrl(
-            'sort',
-            array(
-                'model'     => $this->dataProvider->modelClass,
-                'id'        => $data->id,
-                'sortField' => $this->sortField,
-                'direction' => 'up'
-            )
+        $options   = array(
+            'rel'     => 'tooltip',
+            'class'   => $sortAttribute . '_button'
         );
+        $options['title'] = Yii::t('global', 'Поднять выше');
+        $optionsUp = $options;
+        $options['title'] = Yii::t('global', 'Опустить ниже');
+        $optionsDown = $options;
+        $return = ($data->{$sortAttribute} != 1) ? CHtml::link($upUrlImage, $urlUp, $optionsUp) : '&nbsp;';
+        $this->registerCustomClientScript($options['class']);
+        return $return . ' ' . $data->{$sortAttribute} . ' ' . CHtml::link($downUrlImage, $urlDown, $optionsDown);
+    }
 
-        $urlDown = Yii::app()->controller->createUrl(
-            'sort',
-            array(
-                'model'     => $this->dataProvider->modelClass,
-                'id'        => $data->id,
-                'sortField' => $this->sortField,
-                'direction' => 'down'
-            )
-        );
-
-        $optionsUp   = array(
-            'onclick' => 'ajaxSetSort(this, "' . $this->id . '"); return false;',
-            'title'   => Yii::t('global', 'Поднять выше'),
-            'rel'     => 'tooltip'
-        );
-        $optionsDown = array(
-            'onclick' => 'ajaxSetSort(this, "' . $this->id . '"); return false;',
-            'title'   => Yii::t('global', 'Опустить ниже'),
-            'rel'     => 'tooltip'
-        );
-
-        $return = ($data->{$this->sortField} != 1) ? CHtml::link($upUrlImage, $urlUp, $optionsUp) : '&nbsp;';
-        return $return . ' ' . $data->{$this->sortField} . ' ' . CHtml::link($downUrlImage, $urlDown, $optionsDown);
+    /**
+     * Registers the client scripts for switch and upDown buttons.
+     */
+    protected function registerCustomClientScript($class = '')
+    {
+        $csrf = '';
+        if (Yii::app()->request->enableCsrfValidation) {
+            $csrfTokenName = Yii::app()->request->csrfTokenName;
+            $csrfToken     = Yii::app()->request->csrfToken;
+            $csrf          = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken' },";
+        }
+        $function = "
+function() {
+	$.fn.yiiGridView.update('{$this->id}', {
+		type: 'GET',
+		url: $(this).attr('href'),{$csrf}
+		success: function(data) {
+			$.fn.yiiGridView.update('{$this->id}');
+		}
+	});
+	return false;
+}
+";
+        Yii::app()->clientScript->registerScript($class . '#' . $this->id, "$(document).on('click', '#{$this->id} a.{$class}', $function);");
     }
 }
