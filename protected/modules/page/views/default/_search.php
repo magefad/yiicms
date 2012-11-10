@@ -25,8 +25,8 @@ echo '<p>' . Yii::t('page', 'Используйте символы');?> (<b>&lt;
 <?php echo $form->textFieldRow($model, 'description', array('class' => 'span5', 'maxlength' => 250)); ?>
 <?php echo $form->textAreaRow($model, 'content', array('rows' => 6, 'cols' => 50, 'class' => 'span8')); ?>
 <?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 200)); ?>
-<?php echo $form->textFieldRow($model, 'status', array('class' => 'span5')); ?>
-<?php echo $form->textFieldRow($model, 'is_protected', array('class' => 'span5')); ?>
+<?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
+<?php echo $form->checkBoxRow($model, 'is_protected'); ?>
 <?php echo $form->textFieldRow($model, 'sort_order', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'create_user_id', array('class' => 'span5', 'maxlength' => 10)); ?>
 <?php echo $form->textFieldRow($model, 'update_user_id', array('class' => 'span5', 'maxlength' => 10)); ?>

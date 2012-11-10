@@ -8,7 +8,7 @@
  * @property integer $user_id
  * @property integer $blog_id
  * @property integer $role
- * @property integer $status
+ * @property boolean $status
  * @property string $note
  * @property integer $create_time
  * @property integer $update_time
@@ -16,6 +16,9 @@
  * The followings are the available model relations:
  * @property User $user
  * @property Blog $blog
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
  */
 class UserBlog extends CActiveRecord
 {
@@ -24,7 +27,7 @@ class UserBlog extends CActiveRecord
     const ROLE_ADMIN     = 3;
 
     const STATUS_ACTIVE = 1;
-    const STATUS_BLOCK  = 2;
+    const STATUS_BLOCK  = 0;
 
     /**
      * Returns the static model of the specified AR class.
@@ -51,13 +54,33 @@ class UserBlog extends CActiveRecord
     {
         return array(
             array('user_id, blog_id', 'required', 'except' => 'search'),
-            array('role, status, user_id, blog_id', 'numerical', 'integerOnly'=> true),
+            array('role, user_id, blog_id', 'numerical', 'integerOnly'=> true),
             array('user_id, blog_id, create_time, update_time', 'length', 'max'=> 10),
             array('note', 'length', 'max'=> 255),
             array('role', 'in', 'range' => array_keys($this->getRoleList())),
-            array('status', 'in', 'range' => array_keys($this->getStatusList())),
+            array('status', 'boolean'),
             array('note', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
             array('id, user_id, blog_id, role, status, note, create_time, update_time', 'safe', 'on'=> 'search'),
+        );
+    }
+
+    /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
+    public function behaviors()
+    {
+        return array(
+            'CTimestampBehavior' => array(
+                'class' => 'zii.behaviors.CTimestampBehavior'
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'list'  => array(
+                    Yii::t('BlogModule.blog', 'Blocked'),
+                    Yii::t('BlogModule.blog', 'Active')
+                )
+            ),
         );
     }
 
@@ -111,19 +134,6 @@ class UserBlog extends CActiveRecord
         ));
     }
 
-    public function beforeSave()
-    {
-        if (parent::beforeSave()) {
-            $this->update_time = time();
-            if ($this->isNewRecord) {
-                $this->create_time = $this->update_time;
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public function getRoleList()
     {
         return array(
@@ -137,19 +147,5 @@ class UserBlog extends CActiveRecord
     {
         $data = $this->getRoleList();
         return isset($data[$this->role]) ? $data[$this->role] : Yii::t('BlogModule.blog', 'unknown');
-    }
-
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_ACTIVE => Yii::t('BlogModule.blog', 'Active'),
-            self::STATUS_BLOCK  => Yii::t('BlogModule.blog', 'Blocked'),
-        );
-    }
-
-    public function getStatus()
-    {
-        $data = $this->getStatusList();
-        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('BlogModule.blog', 'unknown');
     }
 }

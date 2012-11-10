@@ -72,8 +72,8 @@ $this->widget(
     )
 ); ?>
 
-<?php echo $form->dropDownListRow($model, 'status', $model->StatusList); ?>
-<?php echo $form->checkBoxRow($model, 'is_protected', $model->ProtectedStatusList); ?>
+<?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
+<?php echo $form->checkBoxRow($model, 'is_protected'); ?>
 <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textFieldRow($model, 'description', array('class' => 'span5', 'maxlength' => 250)); ?>
 <div class="form-actions">

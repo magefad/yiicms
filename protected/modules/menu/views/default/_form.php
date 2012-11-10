@@ -37,7 +37,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <?php echo $form->textFieldRow($model, 'href', array('maxlength' => 200)); ?>
 <?php endif; ?>
 <?php echo $form->dropDownListRow($model, 'access', $model->accessList, array('empty' => 'Все')); ?>
-<?php echo $form->dropDownListRow($model, 'status', $model->getStatusList()); ?>
+<?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 
 <div class="form-actions">
 	<?php $this->widget('bootstrap.widgets.TbButton', array(

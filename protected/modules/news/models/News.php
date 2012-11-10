@@ -13,8 +13,8 @@
  * @property string $content
  * @property string $slug
  * @property string $image
- * @property integer $status
- * @property integer $is_protected
+ * @property string $status
+ * @property boolean $is_protected
  * @property integer $create_user_id
  * @property integer $update_user_id
  * @property string $create_time
@@ -23,16 +23,14 @@
  * The followings are the available model relations:
  * @property User $author
  * @property User $changeAuthor
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
+ * @property StatusBehavior $statusProtected
  */
 class News extends CActiveRecord
 {
     public $author_search;
-    const STATUS_DRAFT      = 0;
-    const STATUS_PUBLISHED  = 1;
-    const STATUS_MODERATION = 2;
-
-    const PROTECTED_NO  = 0;
-    const PROTECTED_YES = 1;
 
     public $versions = array(
         'thumb'    => array( //thumb is required
@@ -74,8 +72,9 @@ class News extends CActiveRecord
     {
         return array(
             array('date, title, content_short', 'required', 'on' => array('update', 'insert')),
-            array('status, is_protected, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
-            array('status', 'in', 'range' => array_keys($this->getStatusList())),
+            array('create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
+            array('is_protected', 'boolean'),
             array('title, keywords, slug', 'length', 'max' => 200),
             array('content_short', 'length', 'max' => 400),
             array('description', 'length', 'max' => 250),
@@ -120,6 +119,17 @@ class News extends CActiveRecord
             ),
             'comments' => array(
                 'class' => 'application.modules.comment.behaviors.CommentBehavior',
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior'
+            ),
+            'statusProtected' => array(
+                'class'     => 'application.modules.admin.behaviors.StatusBehavior',
+                'attribute' => 'is_protected',
+                'list'      => array(
+                    Yii::t('news', 'Нет'),
+                    Yii::t('news', 'Да')
+                )
             )
         );
     }
@@ -130,7 +140,7 @@ class News extends CActiveRecord
     public function relations()
     {
         return array(
-            'author' => array(self::BELONGS_TO, 'User', 'create_user_id'),
+            'author'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
             'changeAuthor' => array(self::BELONGS_TO, 'User', 'update_user_id'),
         );
     }
@@ -142,21 +152,18 @@ class News extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_PUBLISHED)
+                'condition' => 'status = "published"'
             ),
             'protected' => array(
-                'condition' => 'is_protected = :is_protected',
-                'params'    => array(':is_protected' => self::PROTECTED_YES)
+                'condition' => 'is_protected = 1'
             ),
             'public'    => array(
-                'condition' => 'is_protected = :is_protected',
-                'params'    => array(':is_protected' => self::PROTECTED_NO)
+                'condition' => 'is_protected = 0'
             ),
             'recent'    => array(
                 'order' => 'create_time DESC',
-                'limit' => 5,
-            ),
+                'limit' => 5
+            )
         );
     }
 
@@ -333,39 +340,9 @@ class News extends CActiveRecord
             '*',
         );
         return new CActiveDataProvider($this, array(
-            'criteria'   => $criteria,
-            'sort'       => $sort
+            'criteria' => $criteria,
+            'sort'     => $sort
         ));
-    }
-
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_DRAFT      => Yii::t('news', 'Черновик'),
-            self::STATUS_PUBLISHED  => Yii::t('news', 'Опубликовано'),
-            self::STATUS_MODERATION => Yii::t('news', 'На модерации')
-        );
-    }
-
-    public function getStatus()
-    {
-        $data = $this->getStatusList();
-        return array_key_exists($this->status, $data) ? $data[$this->status] : Yii::t('news', 'неизвестно');
-    }
-
-
-    public function getProtectedStatusList()
-    {
-        return array(
-            self::PROTECTED_NO  => Yii::t('news', 'нет'),
-            self::PROTECTED_YES => Yii::t('news', 'да')
-        );
-    }
-
-    public function getProtectedStatus()
-    {
-        $data = $this->getProtectedStatusList();
-        return array_key_exists($this->is_protected, $data) ? $data[$this->is_protected] : Yii::t('news', 'неизвестно');
     }
 
     /**

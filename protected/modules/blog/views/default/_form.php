@@ -20,8 +20,8 @@ $form = $this->beginWidget(
 <?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textAreaRow($model, 'description', array('rows' => 6, 'cols' => 50, 'class' => 'span8')); ?>
 <?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 200)); ?>
-<?php echo $form->dropDownListRow($model, 'type', $model->getTypeList()); ?>
-<?php echo $form->dropDownListRow($model, 'status', $model->getStatusList()); ?>
+<?php echo $form->dropDownListRow($model, 'type', $model->statusType->getList()); ?>
+<?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 <div class="form-actions">
     <?php $this->widget(
     'bootstrap.widgets.TbButton',

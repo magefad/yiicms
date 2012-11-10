@@ -49,15 +49,15 @@ $this->widget(
             'title',
             'keywords',
             'description',
-            'content',
+            //'content',
             'slug',
             array(
                 'name'  => 'status',
-                'value' => $model->getStatus()
+                'value' => $model->statusMain->getText()
             ),
             array(
                 'name'  => 'is_protected',
-                'value' => $model->getProtectedStatus()
+                'value' => $model->statusProtected->getText()
             ),
             array(
                 'name'  => 'create_user_id',

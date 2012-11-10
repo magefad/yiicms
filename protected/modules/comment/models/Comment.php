@@ -9,7 +9,7 @@
  * @property integer $model_id
  * @property string $content
  * @property string $ip
- * @property integer $status
+ * @property string $status
  * @property string $username
  * @property integer $create_user_id
  * @property integer $update_user_id
@@ -18,14 +18,12 @@
  *
  * The followings are the available model relations:
  * @property User $user
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
  */
 class Comment extends CActiveRecord
 {
-    const STATUS_NOT_APPROVED = 0;
-    const STATUS_APPROVED     = 1;
-    const STATUS_SPAM         = 2;
-    const STATUS_DELETED      = 3;
-
     public $verifyCode;
 
     /**
@@ -62,11 +60,11 @@ class Comment extends CActiveRecord
         return array(
             array('model, model_id, content', 'required'),
             array('username', 'checkUsername'),
-            array('model_id, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('model_id, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('model', 'length', 'max' => 16),
             array('ip, username', 'length', 'max' => 20),
             array('model, content, ip, username', 'filter', 'filter' => 'trim'),
-            array('status', 'in', 'range' => array_keys($this->statusList)),
+            array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('model, content, username', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
             array('verifyCode', 'captcha', 'allowEmpty' => !CCaptcha::checkRequirements() || !Yii::app()->user->isGuest),
             array('id, model, model_id, content, ip, status, create_user_id, update_user_id, create_time, update_time', 'safe', 'on' => 'search'),
@@ -82,6 +80,15 @@ class Comment extends CActiveRecord
         return array(
             'SaveBehavior' => array(
                 'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'list' => array(
+                    'not_approved' => Yii::t('CommentModule.comment', 'Not approved'),
+                    'approved'     => Yii::t('CommentModule.comment', 'Approved'),
+                    'spam'         => Yii::t('CommentModule.comment', 'Spam'),
+                    'deleted'      => Yii::t('CommentModule.comment', 'Deleted')
+                )
             )
         );
     }
@@ -107,17 +114,15 @@ class Comment extends CActiveRecord
     {
         return array(
             'new'      => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_NOT_APPROVED),
+                'condition' => 'status = "not_approved"'
             ),
             'approved' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_APPROVED),
-                'order'     => 'create_time DESC',
+                'condition' => 'status = "approved"',
+                'order'     => 'create_time DESC'
             ),
             'authored' => array(
-                'condition' => 'create_user_id is not null',
-            ),
+                'condition' => 'create_user_id is not null'
+            )
         );
     }
 
@@ -171,22 +176,7 @@ class Comment extends CActiveRecord
             $this->ip = Yii::app()->request->userHostAddress;
             return true;
         }
-    }
-
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_APPROVED     => Yii::t('CommentModule.comment', 'Approved'),
-            self::STATUS_DELETED      => Yii::t('CommentModule.comment', 'Deleted'),
-            self::STATUS_NOT_APPROVED => Yii::t('CommentModule.comment', 'Not approved'),
-            self::STATUS_SPAM         => Yii::t('CommentModule.comment', 'Spam'),
-        );
-    }
-
-    public function getStatus()
-    {
-        $list = $this->getStatusList();
-        return isset($list[$this->status]) ? $list[$this->status] : Yii::t('CommentModule.comment', 'Unknown status');
+        return true;
     }
 
     /**

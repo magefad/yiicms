@@ -69,7 +69,7 @@ $('.search-form form').submit(function(){
             ),
             array(
                 'name'        => 'type',
-                'value'       => '$data->getType()',
+                'value'       => '$data->statusType->getText()',
                 'htmlOptions' => array('style' => 'width: 60px; text-align: center;'),
             ),
             array(
@@ -98,12 +98,7 @@ $('.search-form form').submit(function(){
                 'name'        => 'status',
                 'type'        => 'raw',
                 'value'       => '$this->grid->returnBootstrapStatusHtml($data)',
-                'filter'      => array(
-                    '' => Yii::t('BlogModule.blog', 'All'),
-                    1  => Yii::t('BlogModule.blog', 'Public'),
-                    0  => Yii::t('BlogModule.blog', 'Draft'),
-                    2  => Yii::t('BlogModule.blog', 'On moderation')
-                ),
+                'filter'      => $model->statusMain->getList(),
                 'htmlOptions' => array('style' => 'width: 40px; text-align: center;'),
             ),
             array(

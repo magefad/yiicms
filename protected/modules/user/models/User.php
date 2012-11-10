@@ -16,7 +16,7 @@
  * @property string $email
  * @property string $password
  * @property string $salt
- * @property integer $status
+ * @property string $status
  * @property integer $access_level
  * @property string $last_visit
  * @property string $registration_date
@@ -24,9 +24,9 @@
  * @property string $activation_ip
  * @property string $photo
  * @property string $avatar
- * @property integer $use_gravatar
+ * @property boolean $use_gravatar
  * @property string $activate_key
- * @property integer $email_confirm
+ * @property boolean $email_confirm
  * @property string $create_time
  * @property string $update_time
  *
@@ -41,15 +41,13 @@
  * @property Page[] $pages
  * @property Page[] $pagesUpdate
  * @property UserBlog[] $userBlogs
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
+ * @property StatusBehavior statusEmailConfirm
  */
 class User extends CActiveRecord
 {
-    const STATUS_ACTIVE     = 1;
-    const STATUS_BLOCK      = 0;
-    const STATUS_NOT_ACTIVE = 2;
-
-    const EMAIL_CONFIRM_YES = 1;
-    const EMAIL_CONFIRM_NO  = 0;
 
     const ACCESS_LEVEL_USER  = 0;
     const ACCESS_LEVEL_ADMIN = 1;
@@ -85,16 +83,16 @@ class User extends CActiveRecord
                 'filter',
                 'filter' => array($obj = new CHtmlPurifier(), 'purify')
             ),
-            array('status, access_level, use_gravatar, email_confirm', 'numerical', 'integerOnly' => true),
+            array('access_level, use_gravatar, email_confirm', 'numerical', 'integerOnly' => true),
             array('firstname, lastname, username, email', 'length', 'max' => 150),
             array('sex', 'length', 'max' => 1),
             array('country, city, password, salt, activate_key', 'length', 'max' => 32),
             array('registration_ip, activation_ip', 'length', 'max' => 20),
             array('photo, avatar', 'length', 'max' => 100),
             array('last_visit', 'safe'),
-            array('email_confirm', 'in', 'range' => array_keys($this->getEmailConfirmStatusList())),
+            array('email_confirm', 'boolean'),
             array('use_gravatar', 'in', 'range' => array(0, 1)),
-            array('status', 'in', 'range' => array_keys($this->getStatusList())),
+            array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('access_level', 'in', 'range' => array_keys($this->getAccessLevelsList())),
             array(
                 'username',
@@ -118,6 +116,32 @@ class User extends CActiveRecord
                 'id, firstname, lastname, username, sex, birth_date, country, city, phone, email, password, salt, status, access_level, last_visit, registration_date, registration_ip, activation_ip, photo, avatar, use_gravatar, activate_key, email_confirm, create_time, update_time',
                 'safe',
                 'on' => 'search'
+            ),
+        );
+    }
+
+    /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
+    public function behaviors()
+    {
+        return array(
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'list' => array(
+                    'blocked'    => Yii::t('user', 'Заблокирован'),
+                    'active'     => Yii::t('user', 'Активен'),
+                    'not_active' => Yii::t('user', 'Не активирован')
+                )
+            ),
+            'statusEmailConfirm' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'attribute' => 'email_confirm',
+                'list' => array(
+                    1 => Yii::t('user', 'Да'),
+                    0 => Yii::t('user', 'Нет'),
+                )
             ),
         );
     }
@@ -151,16 +175,13 @@ class User extends CActiveRecord
     {
         return array(
             'active'       => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_ACTIVE)
+                'condition' => 'status = "active"',
             ),
             'blocked'      => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_BLOCK)
+                'condition' => 'status = "blocked"',
             ),
             'notActivated' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_NOT_ACTIVE)
+                'condition' => 'status = "not_active"',
             ),
             'admin'        => array(
                 'condition' => 'access_level = :access_level',
@@ -286,35 +307,6 @@ class User extends CActiveRecord
         );
     }
 
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_ACTIVE     => Yii::t('user', 'Активен'),
-            self::STATUS_BLOCK      => Yii::t('user', 'Заблокирован'),
-            self::STATUS_NOT_ACTIVE => Yii::t('user', 'Не активирован')
-        );
-    }
-
-    public function getStatus()
-    {
-        $data = $this->getStatusList();
-        return array_key_exists($this->status, $data) ? $data[$this->status] : Yii::t('user', 'нет статуса');
-    }
-
-    public function getEmailConfirmStatusList()
-    {
-        return array(
-            self::EMAIL_CONFIRM_YES => Yii::t('user', 'Да'),
-            self::EMAIL_CONFIRM_NO  => Yii::t('user', 'Нет'),
-        );
-    }
-
-    public function getEmailConfirmStatus()
-    {
-        $data = $this->getEmailConfirmStatusList();
-        return isset($data[$this->email_confirm]) ? $data[$this->email_confirm] : Yii::t('user', 'неизвестно');
-    }
-
     /**
      * @param $password
      * @param $salt
@@ -393,8 +385,8 @@ class User extends CActiveRecord
     public function activate()
     {
         $this->activation_ip = Yii::app()->request->userHostAddress;
-        $this->status        = self::STATUS_ACTIVE;
-        $this->email_confirm = self::EMAIL_CONFIRM_YES;
+        $this->status        = 'active';
+        $this->email_confirm = true;
 
         return $this->save();
     }

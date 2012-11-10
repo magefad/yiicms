@@ -48,7 +48,7 @@ $('.search-form form').submit(function(){
 </div><!-- search-form -->
 
 <?php $this->widget(
-    'bootstrap.widgets.TbExtendedGridView',
+    'FadTbGridView',
     array(
         'id'           => 'gallery-grid',
         #'sortableRows' => true,

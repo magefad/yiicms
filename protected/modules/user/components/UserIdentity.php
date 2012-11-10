@@ -36,21 +36,6 @@ class UserIdentity extends CUserIdentity
         return $this->errorCode == self::ERROR_NONE;
     }
 
-    public function getEmailConfirmStatusList()
-    {
-        return array(
-            self::EMAIL_CONFIRM_YES => Yii::t('user', 'Да'),
-            self::EMAIL_CONFIRM_NO  => Yii::t('user', 'Нет'),
-        );
-    }
-
-    public function getEmailConfirmStatus()
-    {
-        $data = $this->getEmailConfirmStatusList();
-
-        return isset($data[$this->email_confirm]) ? $data[$this->email_confirm] : Yii::t('user', 'неизвестно');
-    }
-
     /**
      * @return int|mixed|string
      */

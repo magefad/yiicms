@@ -49,7 +49,6 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new News;
-        $model->setAttribute('status', 1);
         // $this->performAjaxValidation($model);
         if (isset($_POST['News'])) {
             $model->attributes = $_POST['News'];

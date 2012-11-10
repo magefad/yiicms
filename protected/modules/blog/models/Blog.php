@@ -10,7 +10,7 @@
  * @property string $description
  * @property string $slug
  * @property integer $type
- * @property integer $status
+ * @property string $status
  * @property integer $create_user_id
  * @property integer $update_user_id
  * @property integer $create_time
@@ -19,16 +19,13 @@
  * The followings are the available model relations:
  * @property User $createUser
  * @property User $updateUser
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
+ * @property StatusBehavior $statusType
  */
 class Blog extends CActiveRecord
 {
-    const TYPE_PUBLIC  = 1;
-    const TYPE_PRIVATE = 2;
-
-    const STATUS_ACTIVE  = 1;
-    const STATUS_BLOCKED = 2;
-    const STATUS_DELETED = 3;
-
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -54,10 +51,10 @@ class Blog extends CActiveRecord
     {
         return array(
             array('title, description', 'required', 'except' => 'search'),
-            array('type, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('title, keywords, slug', 'length', 'max' => 200),
-            array('type', 'in', 'range' => array_keys($this->getTypeList())),
-            array('status', 'in', 'range' => array_keys($this->getStatusList())),
+            array('type', 'in', 'range' => array_keys($this->statusType->getList())),
+            array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('title, keywords, slug, description', 'filter', 'filter' => array($obj = new CHtmlPurifier(), 'purify')),
             array(
                 'slug',
@@ -83,6 +80,22 @@ class Blog extends CActiveRecord
         return array(
             'SaveBehavior' => array(
                 'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'list'  => array(
+                    'active'  => Yii::t('BlogModule.blog', 'Active'),
+                    'blocked' => Yii::t('BlogModule.blog', 'Blocked'),
+                    'deleted' => Yii::t('BlogModule.blog', 'Deleted'),
+                )
+            ),
+            'statusType' => array(
+                'class'     => 'application.modules.admin.behaviors.StatusBehavior',
+                'attribute' => 'type',
+                'list'      => array(
+                    'public'  => Yii::t('BlogModule.blog', 'Public'),
+                    'private' => Yii::t('BlogModule.blog', 'Private')
+                )
             )
         );
     }
@@ -96,14 +109,13 @@ class Blog extends CActiveRecord
             'createUser'   => array(self::BELONGS_TO, 'User', 'create_user_id'),
             'updateUser'   => array(self::BELONGS_TO, 'User', 'update_user_id'),
             'posts'        => array(self::HAS_MANY, 'Post', 'blog_id'),
-            'userBlog'   => array(self::HAS_MANY, 'UserBlog', 'blog_id'),
+            'userBlog'     => array(self::HAS_MANY, 'UserBlog', 'blog_id'),
             'members'      => array(self::HAS_MANY, 'User', array('user_id' => 'id'), 'through' => 'userBlog'),
             'postsCount'   => array(
                 self::STAT,
                 'Post',
                 'blog_id',
-                'condition' => 'status = :status',
-                'params'    => array(':status' => Post::STATUS_PUBLISHED)
+                'condition' => 'status = "published"'
             ),
             'membersCount' => array(
                 self::STAT,
@@ -119,12 +131,10 @@ class Blog extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_ACTIVE),
+                'condition' => 'status = "active"'
             ),
             'public'    => array(
-                'condition' => 'type = :type',
-                'params'    => array(':type' => self::TYPE_PUBLIC),
+                'condition' => 'type = "public"'
             )
         );
     }
@@ -173,35 +183,6 @@ class Blog extends CActiveRecord
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
         ));
-    }
-
-    public function getTypeList()
-    {
-        return array(
-            self::TYPE_PUBLIC  => Yii::t('BlogModule.blog', 'public'),
-            self::TYPE_PRIVATE => Yii::t('BlogModule.blog', 'private'),
-        );
-    }
-
-    public function getType()
-    {
-        $data = $this->getTypeList();
-        return isset($data[$this->type]) ? $data[$this->type] : Yii::t('BlogModule.blog', 'unknown');
-    }
-
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_ACTIVE  => Yii::t('BlogModule.blog', 'Active'),
-            self::STATUS_BLOCKED => Yii::t('BlogModule.blog', 'Blocked'),
-            self::STATUS_DELETED => Yii::t('BlogModule.blog', 'Deleted'),
-        );
-    }
-
-    public function getStatus()
-    {
-        $data = $this->getStatusList();
-        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('BlogModule.blog', 'unknown');
     }
 
     /**

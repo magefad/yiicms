@@ -9,17 +9,21 @@
  * @property string $description
  * @property string $keywords
  * @property string $slug
- * @property integer $status
+ * @property string $status
  * @property integer $sort_order
+ * @property integer $create_user_id
+ * @property integer $update_user_id
+ * @property integer $create_time
+ * @property integer $update_time
  *
  * The followings are the available model relations:
  * @property Photo[] $photos
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
  */
 class Gallery extends CActiveRecord
 {
-    const STATUS_PUBLIC = 1;
-    const STATUS_DRAFT  = 0;
-
     /** @var array versions for resize images */
     public $versions = array();
 
@@ -48,10 +52,31 @@ class Gallery extends CActiveRecord
     {
         return array(
             array('name', 'required'),
-            array('status, sort_order', 'numerical', 'integerOnly' => true),
+            array('sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name, keywords, slug', 'length', 'max' => 200),
+            array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('description', 'safe'),
-            array('id, name, description, keywords, slug, status, sort_order', 'safe', 'on' => 'search'),
+            array('id, name, description, keywords, slug, status, sort_order, create_user_id, update_user_id, create_time, update_time', 'safe', 'on' => 'search'),
+        );
+    }
+
+    /**
+     * Returns a list of behaviors that this model should behave as.
+     * @return array the behavior configurations (behavior name=>behavior configuration)
+     */
+    public function behaviors()
+    {
+        return array(
+            'SaveBehavior' => array(
+                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'list'  => array(
+                    'published' => Yii::t('gallery', 'Опубликовано'),
+                    'draft'     => Yii::t('gallery', 'Скрыто'),
+                )
+            ),
         );
     }
 
@@ -85,13 +110,11 @@ class Gallery extends CActiveRecord
     {
         return array(
             'public' => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_PUBLIC)
+                'condition' => 'status = "public"'
             ),
             'draft'  => array(
-                'condition' => 'status = :status',
-                'params'    => array(':status' => self::STATUS_DRAFT)
-            ),
+                'condition' => 'status = "draft"'
+            )
         );
     }
 
@@ -118,14 +141,6 @@ class Gallery extends CActiveRecord
             'sort'     => $sort
         ));
     }
-
-    /*public function defaultScope()
-     {
-         return array(
-             'condition' => 'status = :status',
-             'params' => array(':status' => self::STATUS_PUBLIC)
-         );
-     }*/
 
     /**
      * If slug (link) is empty, translit title to slug (link)
@@ -183,20 +198,6 @@ class Gallery extends CActiveRecord
             mkdir($_uploadPath, 0777);
         }
         return $_uploadPath;
-    }
-
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_PUBLIC => Yii::t('gallery', 'опубликовано'),
-            self::STATUS_DRAFT  => Yii::t('gallery', 'скрыто'),
-        );
-    }
-
-    public function getStatus()
-    {
-        $data = $this->getStatusList();
-        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('gallery', 'неизвестно');
     }
 
     public function getSlugById($id)

@@ -64,9 +64,9 @@ $form = $this->beginWidget(
 <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textAreaRow($model, 'description', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'link', array('class' => 'span5', 'maxlength' => 200)); ?>
-<?php echo $form->dropDownListRow($model, 'status', $model->getStatusList(), array('class' => 'span5')); ?>
+<?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 <?php echo $form->checkBoxRow($model, 'comment_status'); ?>
-<?php echo $form->dropDownListRow($model, 'access_type', $model->getAccessTypeList()); ?>
+<?php echo $form->dropDownListRow($model, 'access_type', $model->statusAccess->getList()); ?>
 <div class="form-actions">
     <?php $this->widget(
     'bootstrap.widgets.TbButton',

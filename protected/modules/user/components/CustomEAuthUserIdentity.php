@@ -39,11 +39,11 @@ class CustomEAuthUserIdentity extends EAuthUserIdentity
                         'country'       => $attributes['country'],
                         'city'          => $attributes['city'],
                         'phone'         => $attributes['phone'],
-                        'status'        => User::STATUS_NOT_ACTIVE,
+                        #'status'        => 'not_active',
                         'access_status' => User::ACCESS_LEVEL_USER,
                         'photo'         => $attributes['photo'],
                         'avatar'        => $attributes['avatar'],
-                        'email_confirm' => User::EMAIL_CONFIRM_NO
+                        'email_confirm' => false
                     )
                 );
                 $transaction = Yii::app()->db->beginTransaction();

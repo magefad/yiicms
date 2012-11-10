@@ -48,9 +48,9 @@ $form = $this->beginWidget(
 	<?php endif; ?>
 
 	<div>
-		<?php echo $form->dropDownListRow($model, 'status', $model->getStatusList(), array('class' => 'span4')); ?>
+		<?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList(), array('class' => 'span4')); ?>
 	</div>
-	<?php echo $form->dropDownListRow($model, 'email_confirm', $model->getEmailConfirmStatusList(), array('class' => 'span4')); ?>
+	<?php echo $form->checkBoxRow($model, 'email_confirm'); ?>
 <div class="form-actions">
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 	'buttonType' => 'submit',

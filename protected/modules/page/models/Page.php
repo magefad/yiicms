@@ -13,8 +13,8 @@
  * @property string $content
  * @property string $slug
  * @property integer $rich_editor
- * @property integer $status
- * @property integer $is_protected
+ * @property string $status
+ * @property boolean $is_protected
  * @property integer $sort_order
  * @property string $create_time
  * @property string $update_time
@@ -26,18 +26,15 @@
  * @property Page $parent
  * @property User $author
  * @property User $changeAuthor
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
+ * @property StatusBehavior $statusProtected
  */
 class Page extends CActiveRecord
 {
     public $author_search;
     public $changeAuthor_search;
-
-    const STATUS_DRAFT      = 0;
-    const STATUS_PUBLISHED  = 1;
-    const STATUS_MODERATION = 2;
-
-    const PROTECTED_NO  = 0;
-    const PROTECTED_YES = 1;
 
     const ROOT_YES = 0;
 
@@ -66,13 +63,13 @@ class Page extends CActiveRecord
     {
         return array(
             array('name, title, content, status', 'required'),
-            array('parent_id, rich_editor, status, is_protected, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('parent_id, rich_editor, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
             array('title, keywords, slug', 'length', 'max' => 200),
             array('description', 'length', 'max' => 250),
             array('slug', 'unique'), #sulug is a link of page
-            array('status', 'in', 'range' => array_keys($this->getStatusList())),
-            array('is_protected', 'in', 'range' => array_keys($this->getProtectedStatusList())),
+            array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
+            array('is_protected', 'boolean'),
             array('name, title, keywords, description, content, slug', 'filter', 'filter' => 'trim'),
             array(
                 'title, slug, description, keywords, name',
@@ -106,6 +103,17 @@ class Page extends CActiveRecord
             'treeArray' => array(
                 'class' => 'application.modules.admin.behaviors.AdjacencyListBehavior',
                 'textAttribute' => 'name'
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior'
+            ),
+            'statusProtected' => array(
+                'class'     => 'application.modules.admin.behaviors.StatusBehavior',
+                'attribute' => 'is_protected',
+                'list'      => array(
+                    Yii::t('page', 'Нет'),
+                    Yii::t('page', 'Да')
+                )
             )
         );
     }
@@ -130,16 +138,13 @@ class Page extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 'status = :status',
-                'params'    => array('status' => self::STATUS_PUBLISHED)
+                'condition' => 'status = "published"',
             ),
             'protected' => array(
-                'condition' => 'is_protected = :is_protected',
-                'params'    => array(':is_protected' => self::PROTECTED_YES)
+                'condition' => 'is_protected = 1',
             ),
             'public'    => array(
-                'condition' => 'is_protected = :is_protected',
-                'params'    => array(':is_protected' => self::PROTECTED_NO)
+                'condition' => 'is_protected = 0',
             ),
             'root'      => array(
                 'condition' => 'parent_id = :parent_id',
@@ -241,44 +246,6 @@ class Page extends CActiveRecord
             'criteria' => $criteria,
             'sort'     => $sort
         ));
-    }
-
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_PUBLISHED  => Yii::t('page', 'Опубликовано'),
-            self::STATUS_DRAFT      => Yii::t('page', 'Черновик'),
-            self::STATUS_MODERATION => Yii::t('page', 'На модерации')
-        );
-    }
-
-    /**
-     * Get status of page
-     * @return string
-     */
-    public function getStatus()
-    {
-        $data = $this->getStatusList();
-        return array_key_exists($this->status, $data) ? $data[$this->status] : Yii::t('page', 'неизвестно');
-    }
-
-
-    public function getProtectedStatusList()
-    {
-        return array(
-            self::PROTECTED_NO  => Yii::t('page', 'нет'),
-            self::PROTECTED_YES => Yii::t('page', 'да')
-        );
-    }
-
-    /**
-     * Page enabled oto view on site or no
-     * @return string
-     */
-    public function getProtectedStatus()
-    {
-        $data = $this->getProtectedStatusList();
-        return array_key_exists($this->is_protected, $data) ? $data[$this->is_protected] : Yii::t('page', 'неизвестно');
     }
 
     /**

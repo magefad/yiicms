@@ -28,7 +28,7 @@ class FadTbGridView extends TbGridView
      * the row, and <code>$this</code> is the grid object.
      * @see rowCssClass
      */
-    public $rowCssClassExpression = '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")';
+    public $rowCssClassExpression = '($data->status == "moderation") ? "error" : (($data->status == "published") ? "published" : (($data->status == "moderation") ? "warning" : ""))';
 
     public $activeStatus = 1;
     public $inActiveStatus = 0;
@@ -38,40 +38,47 @@ class FadTbGridView extends TbGridView
     public $sortField = 'sort_order';
 
 
-    public function returnBootstrapStatusHtml($data, $statusAttribute = 'status', $method = 'Status', $active = 1, $icons = array('eye-close', 'ok-sign', 'time'))
+    public function returnBootstrapStatusHtml(
+        $data,
+        $statusAttribute = 'status',
+        $property = 'statusMain',
+        $icons = array(
+            'published'  => 'ok-sign',
+            'draft'      => 'eye-close',
+            'moderation' => 'time',
+            'active'     => 'ok-sign',
+            'blocked'    => 'eye-close',
+            'deleted'    => 'ok-sign'
+        )
+    )
     {
-        $methodStatus     = 'get' . $method;
-        $methodStatusList = 'get' . $method . 'List';
-        $text       = method_exists($data, $methodStatus) ? $data->$methodStatus() : '';
+        if (!isset($data->$property)) {
+            return '<i class="icon icon-question-sign" title="?"></i>';
+        }
+        $text       = $data->$property->getText();
         $iconStatus = isset($icons[$data->$statusAttribute]) ? $icons[$data->$statusAttribute] : 'question-sign';
         $icon       = '<i class="icon icon-' . $iconStatus . '" title="' . $text . '"></i>';
 
-        $status = $data->$statusAttribute == $active ? $this->inActiveStatus : $this->activeStatus;
-
-        $url = Yii::app()->controller->createUrl(
-            'activate',
-            array(
-                'model'       => $this->dataProvider->modelClass,
-                'id'          => $data->id,
-                'status'      => $status,
-                'statusAttribute' => $statusAttribute
+        $statusList = $data->$property->getList();
+        reset($statusList);
+        $status = key($statusList);
+        while (list($key, $value) = each($statusList)) {
+            if ($key == $data->$statusAttribute) {
+                $keyNext = key($statusList);
+                if (in_array($keyNext, array_keys($statusList))) {
+                    $status = $keyNext;
+                    break;
+                }
+            }
+        }
+        $url = Yii::app()->controller->createUrl("activate", array(
+                'model'           => $this->dataProvider->modelClass,
+                'id'              => $data->id,
+                'status'          => $status,
+                'statusAttribute' => $statusAttribute,
             )
         );
-
-        $text = method_exists($data, 'getStatus') ? $data->getStatus() : '';
-        $text .= ". " . Yii::t(
-            'global',
-            ($data->$statusAttribute && $data->$statusAttribute != 2) ? Yii::t('global', 'В черновик?') : Yii::t(
-                'global',
-                'Опубликовать?'
-            )
-        );
-        $options = array(
-            'rel'     => 'tooltip',
-            'title'   => $text,
-            'onclick' => 'ajaxSetStatus(this, "' . $this->id . '"); return false;',
-        );
-        $icon = '<i class="icon icon-' . (isset($icons[$data->$statusAttribute]) ? $icons[$data->$statusAttribute] : 'question-sign') . "\"></i>";
+        $options = array('onclick' => 'ajaxSetStatus(this, "' . $this->id . '"); return false;');
         return CHtml::link($icon, $url, $options);
     }
 

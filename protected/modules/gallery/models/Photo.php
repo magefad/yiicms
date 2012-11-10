@@ -13,7 +13,7 @@
  * @property string $file_name
  * @property string $alt
  * @property integer $type
- * @property integer $status
+ * @property string $status
  * @property integer $sort_order
  * @property string $create_time
  * @property string $update_time
@@ -24,12 +24,13 @@
  * @property User $changeUser
  * @property Gallery $gallery
  * @property User $user
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
+ * @property GalleriaBehavior $galleria
  */
 class Photo extends CActiveRecord
 {
-    const STATUS_PUBLISHED = 1;
-    const STATUS_DRAFT     = 0;
-
     public $author_search;
     public $changeAuthor_search;
     public $gallery_search;
@@ -80,10 +81,11 @@ class Photo extends CActiveRecord
     {
         return array(
             array('gallery_id', 'required'),
-            array('gallery_id, type, status, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('gallery_id, type, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name, title, keywords', 'length', 'max' => 200),
-            array('alt', 'length', 'max' => 100),
             array('file_name', 'length', 'max' => 500),
+            array('alt', 'length', 'max' => 100),
+            array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array(
                 'image',
                 'file',
@@ -109,6 +111,9 @@ class Photo extends CActiveRecord
         return array(
             'SaveBehavior' => array(
                 'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior'
             ),
             'galleria' => array(
                 'class'       => 'application.extensions.galleria.GalleriaBehavior',
@@ -210,16 +215,6 @@ class Photo extends CActiveRecord
         ));
     }
 
-
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_PUBLISHED   => Yii::t('page', 'Опубликовано'),
-            self::STATUS_DRAFT       => Yii::t('page', 'Скрыто'),
-            #self::STATUS_MODERATION => Yii::t('page', 'На модерации')
-        );
-    }
-
     public function save($runValidation = true, $attributes = null)
     {
         parent::save($runValidation, $attributes);
@@ -316,16 +311,6 @@ class Photo extends CActiveRecord
                 $_uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt
             );
         }
-    }
-
-    /**
-     * Get status of page
-     * @return string
-     */
-    public function getStatus()
-    {
-        $data = $this->getStatusList();
-        return array_key_exists($this->status, $data) ? $data[$this->status] : Yii::t('gallery', 'неизвестно');
     }
 
     public function getPreview($version = 'thumb')

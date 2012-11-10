@@ -43,7 +43,7 @@ $this->widget(
             'email',
             array(
                 'name'  => 'status',
-                'value' => $model->getStatus(),
+                'value' => $model->statusMain->getText(),
             ),
             array(
                 'name'  => 'access_level',
@@ -58,7 +58,7 @@ $this->widget(
             'activate_key',
             array(
                 'name'  => 'email_confirm',
-                'value' => $model->getEmailConfirmStatus(),
+                'value' => $model->statusEmailConfirm->getText(),
             ),
             'create_time',
             'update_time',

@@ -80,7 +80,7 @@ class Controller extends RController
      */
     public function actionActivate()
     {
-        $status      = (int)Yii::app()->request->getQuery('status');
+        $status      = Yii::app()->request->getQuery('status');
         $id          = (int)Yii::app()->request->getQuery('id');
         $modelClass  = Yii::app()->request->getQuery('model');
         $statusAttribute = Yii::app()->request->getQuery('statusAttribute');

@@ -32,7 +32,7 @@ $this->widget(
             'href',
             array(
                 'name'  => 'status',
-                'value' => $model->getStatus(),
+                'value' => $model->statusMain->getText(),
             ),
         ),
     )

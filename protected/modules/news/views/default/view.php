@@ -52,7 +52,10 @@ $this->widget('bootstrap.widgets.TbDetailView', array(
 		#'content',
         'slug',
 		'status',
-		'is_protected',
+		array(
+            'name' => 'is_protected',
+            'value' => $model->statusProtected->getText()
+        ),
         'create_user_id',
         'update_user_id',
         'create_time',

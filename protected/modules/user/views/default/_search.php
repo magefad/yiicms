@@ -24,7 +24,7 @@ echo '<p>' . Yii::t('user', 'Используйте символы');?> (<strong
 <?php echo $form->textFieldRow($model, 'username', array('class' => 'span5', 'maxlength' => 150)); ?>
 <?php echo $form->textFieldRow($model, 'email', array('class' => 'span5', 'maxlength' => 150)); ?>
 <?php echo $form->textFieldRow($model, 'salt', array('class' => 'span5', 'maxlength' => 32)); ?>
-<?php echo $form->textFieldRow($model, 'status', array('class' => 'span5')); ?>
+<?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 <?php echo $form->textFieldRow($model, 'access_level', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'last_visit', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'registration_date', array('class' => 'span5')); ?>

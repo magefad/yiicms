@@ -14,7 +14,7 @@
  * @property string $href
  * @property integer $type
  * @property string $access
- * @property integer $status
+ * @property boolean $status
  * @property string $create_time
  * @property string $update_time
  * @property integer $create_user_id
@@ -26,12 +26,13 @@
  * @method parent() Named scope. Gets parent of node.
  * @method isLeaf() Determines if node is leaf.
  * @method isRoot() Determines if node is root.
+ *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
+ * @property NestedSetBehavior $tree
  */
 class Menu extends CActiveRecord
 {
-    const STATUS_ACTIVE   = 1;
-    const STATUS_DISABLED = 0;
-
     public $parentId = 0;
 
     /**
@@ -60,7 +61,8 @@ class Menu extends CActiveRecord
         return array(
             array('root, title, href', 'required', 'on' => 'insert, update'),
             array('code, title', 'required', 'on' => 'insertRoot, updateRoot'),
-            array('root, lft, rgt, level, type, status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('root, lft, rgt, level, type, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('status', 'boolean'),
             array('code', 'length', 'max' => 20),
             array('title', 'length', 'max' => 100),
             array('href, access', 'length', 'max' => 200),
@@ -82,6 +84,13 @@ class Menu extends CActiveRecord
         return array(
             'SaveBehavior' => array(
                 'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'list'  => array(
+                    Yii::t('menu', 'отключено'),
+                    Yii::t('menu', 'включено'),
+                )
             ),
             'tree' => array(
                 'class'        => 'application.modules.admin.behaviors.NestedSetBehavior',
@@ -164,20 +173,6 @@ class Menu extends CActiveRecord
         ));
     }
 
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_DISABLED => Yii::t('menu', 'не активно'),
-            self::STATUS_ACTIVE   => Yii::t('menu', 'активно'),
-        );
-    }
-
-    public function getStatus()
-    {
-        $data = $this->statusList;
-        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('menu', 'неизвестно');
-    }
-
     public function getAccessList()
     {
         Yii::import("application.modules.rights.components.dataproviders.RAuthItemDataProvider");
@@ -185,14 +180,6 @@ class Menu extends CActiveRecord
             'type' => 2,
         ));
         return CHtml::listData($all_roles->fetchData(), 'name', 'description');
-    }
-
-    public function getConditionDenialList()
-    {
-        return array(
-            self::STATUS_DISABLED => Yii::t('menu', 'да'),
-            self::STATUS_ACTIVE   => Yii::t('menu', 'нет'),
-        );
     }
 
     public function getParentsData()

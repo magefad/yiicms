@@ -47,7 +47,7 @@ echo CHtml::link(
         'type'                  => 'condensed',
         'dataProvider'          => $model->search(),
         //'ajaxUpdate' => false,
-        'rowCssClassExpression' => '($data->status == 2) ? "error" : (($data->status) ? "published" : "warning")',
+        'rowCssClassExpression' => '$data->status ? "published" : "error"',
         'columns'               => array(
             array(
                 'name'        => 'id',
@@ -64,8 +64,8 @@ echo CHtml::link(
                 'uncheckedButtonLabel' => Yii::t('global', 'Скрыто. Опубликовтаь?'),
                 'name'                 => 'status',
                 'filter'      => array(
-                    1  => Yii::t('menu', 'Скрыто'),
-                    0  => Yii::t('menu', 'Опубликовано')
+                    0  => Yii::t('menu', 'Скрыто'),
+                    1  => Yii::t('menu', 'Опубликовано')
                 ),
                 'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
             ),

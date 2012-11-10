@@ -12,7 +12,7 @@ class CommentModule extends WebModule
      */
     public $userEmailAttribute = 'email';
 
-    public $defaultCommentStatus = Comment::STATUS_APPROVED;
+    public $defaultCommentStatus = 'approved';
     public $notify = true;
     public $notifyEmail;
 

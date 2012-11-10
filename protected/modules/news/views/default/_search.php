@@ -28,10 +28,10 @@ $form = $this->beginWidget(
 <?php echo $form->dropDownListRow(
     $model,
     'status',
-    $model->getStatusList(),
+    $model->statusMain->getList(),
     array('empty' => Yii::t('news', '- любой -'))
 ); ?>
-<?php echo $form->checkBoxRow($model, 'is_protected', $model->getProtectedStatusList()); ?>
+<?php echo $form->checkBoxRow($model, 'is_protected'); ?>
 <div class="form-actions">
     <?php $this->widget(
     'bootstrap.widgets.TbButton',

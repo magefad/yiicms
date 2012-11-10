@@ -43,7 +43,7 @@ class DefaultController extends Controller
         if (!$page) {
             throw new CHttpException('404', Yii::t('page', 'Страница не найдена или удалена!'));
         }
-        if ($page->is_protected == Page::PROTECTED_YES && Yii::app()->user->isGuest) {
+        if ($page->is_protected && Yii::app()->user->isGuest) {
             Yii::app()->user->setFlash('warning', Yii::t('page', 'Страница доступна только для авторизованных пользователей'));
             $this->redirect(Yii::app()->user->loginUrl);
         }
@@ -79,7 +79,6 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new Page;
-        $model->setAttribute('status', 1);
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
 

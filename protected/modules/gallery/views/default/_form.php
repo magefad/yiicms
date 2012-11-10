@@ -35,7 +35,7 @@ $form = $this->beginWidget(
         'placeholder' => 'Только латинские буквы и знак подчеркивания'
     )
 ); ?>
-<?php echo $form->dropDownListRow($model, 'status', $model->StatusList); ?>
+<?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 <?php echo $form->textFieldRow($model, 'sort_order', array('class' => 'span5', 'maxlength' => 10)); ?>
 
 <div class="form-actions">

@@ -12,9 +12,9 @@
  * @property string $content
  * @property string $slug
  * @property string $link
- * @property integer $status
- * @property integer $comment_status
- * @property integer $access_type
+ * @property string $status
+ * @property boolean $comment_status
+ * @property string $access_type
  * @property integer $create_user_id
  * @property integer $update_user_id
  * @property integer $publish_time
@@ -26,19 +26,16 @@
  * @property User $updateUser
  * @property Blog $blog
  *
+ * The followings are the available model behaviors:
+ * @property StatusBehavior $statusMain
+ * @property StatusBehavior $statusAccess
+ *
  * @method getComments() return Comment[]
  * @method getTags() return array Post Tags
  * @method setTags() Set one or more tags.
  */
 class Post extends CActiveRecord
 {
-    const STATUS_DRAFT     = 0;
-    const STATUS_PUBLISHED = 1;
-    const STATUS_SCHEDULED = 2;
-
-    const ACCESS_PUBLIC  = 1;
-    const ACCESS_PRIVATE = 2;
-
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -64,17 +61,13 @@ class Post extends CActiveRecord
     {
         return array(
             array('blog_id, title, content, publish_time', 'required', 'except' => 'search'),
-            array(
-                'blog_id, status, comment_status, access_type, create_user_id, update_user_id',
-                'numerical',
-                'integerOnly' => true
-            ),
+            array('blog_id, comment_status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('title, keywords, slug, link', 'length', 'max' => 200),
             array('description', 'length', 'max' => 255),
             array('link', 'url'),
-            array('comment_status', 'in', 'range' => array(0, 1)),
-            array('access_type', 'in', 'range' => array_keys($this->getAccessTypeList())),
-            array('status', 'in', 'range' => array_keys($this->getStatusList())),
+            array('comment_status', 'boolean'),
+            array('access_type', 'in', 'range' => array_keys($this->statusAccess->getList())),
+            array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('slug', 'unique'),
             array(
                 'title, keywords, description, slug, link, publish_time',
@@ -98,6 +91,17 @@ class Post extends CActiveRecord
         return array(
             'SaveBehavior' => array(
                 'class' => 'application.modules.admin.behaviors.SaveBehavior',
+            ),
+            'statusMain' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior'
+            ),
+            'statusAccess' => array(
+                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'attribute' => 'access_type',
+                'list' => array(
+                    'public' => Yii::t('BlogModule.blog', 'Public'),
+                    'private' => Yii::t('BlogModule.blog', 'Private')
+                )
             ),
             'tags' => array(
                 'class'                => 'blog.extensions.taggable.ETaggableBehavior',
@@ -129,12 +133,10 @@ class Post extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 'status = :status AND publish_time < ' . new CDbExpression('NOW()'),
-                'params'    => array(':status' => self::STATUS_PUBLISHED),
+                'condition' => 'status = "published" AND publish_time < ' . new CDbExpression('NOW()')
             ),
             'public'    => array(
-                'condition' => 't.access_type = :access_type',
-                'params'    => array(':access_type' => self::ACCESS_PUBLIC),
+                'condition' => 't.access_type = "public"',
             ),
         );
     }
@@ -202,35 +204,6 @@ class Post extends CActiveRecord
             $this->slug = Text::translit($this->title);
         }
         return parent::beforeValidate();
-    }
-
-    public function getStatusList()
-    {
-        return array(
-            self::STATUS_SCHEDULED  => Yii::t('BlogModule.blog', 'Scheduled'),
-            self::STATUS_DRAFT      => Yii::t('BlogModule.blog', 'Draft'),
-            self::STATUS_PUBLISHED  => Yii::t('BlogModule.blog', 'Published'),
-        );
-    }
-
-    public function getStatus()
-    {
-        $data = $this->getStatusList();
-        return isset($data[$this->status]) ? $data[$this->status] : Yii::t('BlogModule.blog', 'unknown');
-    }
-
-    public function getAccessTypeList()
-    {
-        return array(
-            self::ACCESS_PRIVATE => Yii::t('BlogModule.blog', 'Private'),
-            self::ACCESS_PUBLIC  => Yii::t('BlogModule.blog', 'Public')
-        );
-    }
-
-    public function getAccessType()
-    {
-        $data = $this->getAccessTypeList();
-        return isset($data[$this->access_type]) ? $data[$this->access_type] : Yii::t('BlogModule.blog', 'unknown');
     }
 
     public function getCommentStatus()
