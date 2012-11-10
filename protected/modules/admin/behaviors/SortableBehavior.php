@@ -115,6 +115,11 @@ class SortableBehavior extends CActiveRecordBehavior
         return parent::afterFind($event);
     }
 
+    /**
+     * Responds to {@link CActiveRecord::onAfterDelete} event.
+     * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
+     * @param CEvent $event event parameter
+     */
     public function afterDelete($event)
     {
         $this->owner->updateCounters(
