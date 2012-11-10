@@ -51,7 +51,7 @@ $form = $this->beginWidget(
 ); ?>
 <?php echo $form->labelEx($model, 'tags'); ?>
 <?php $this->widget(
-    'AutoComplete',
+    'application.components.widgets.AutoComplete',
     array(
         'name'        => 'tags',
         'value'       => implode(', ', $model->getTags()),
