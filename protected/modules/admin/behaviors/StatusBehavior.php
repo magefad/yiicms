@@ -26,9 +26,9 @@ class StatusBehavior extends CActiveRecordBehavior
     {
         if (empty($this->_list)) {
             $this->_list = array(
-                Yii::t('AdminModule.Behavior', 'Черновик'),
-                Yii::t('AdminModule.Behavior', 'Опубликовано'),
-                Yii::t('AdminModule.Behavior', 'На модерации'),
+                'draft'      => Yii::t('AdminModule.Behavior', 'Черновик'),
+                'published'  => Yii::t('AdminModule.Behavior', 'Опубликовано'),
+                'moderation' => Yii::t('AdminModule.Behavior', 'На модерации'),
             );
         }
         parent::attach($owner);
