@@ -2,6 +2,18 @@
 
 class PageModule extends WebModule
 {
+    /**
+     * @var string DefaultPage
+     */
+    public $defaultPage = 'index';
+
+    public function getSettingLabels()
+    {
+        return array(
+            'defaultPage' => Yii::t('page', 'Главная страница (ссылка)'),
+        );
+    }
+
     public function getName()
     {
         return Yii::t('page', 'Страницы');
@@ -19,10 +31,6 @@ class PageModule extends WebModule
 
     public function init()
     {
-        $this->setImport(
-            array(
-                'page.models.*',
-            )
-        );
+        $this->setImport(array('page.models.*'));
     }
 }

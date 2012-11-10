@@ -27,8 +27,8 @@ class DefaultController extends Controller
     public function actionShow($slug = '')
     {
         if (empty($slug)) {
-            $slug = Yii::app()->params['index'];
-        } else if ( $slug == Yii::app()->params['index']) {
+            $slug = Yii::app()->getModule('page')->defaultPage;
+        } else if ( $slug == Yii::app()->getModule('page')->defaultPage) {
             $this->redirect('/', true, 301);
         }
         /** @var $page Page */

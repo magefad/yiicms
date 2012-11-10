@@ -13,7 +13,7 @@ class LastNews extends Widget
             $count = Yii::app()->getModule('news')->lastNewsCount;
         }
         $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . News::model()->tableName());
-        $news = News::model()->published()->cache(Yii::app()->params['cacheTime'], $dependency, 2)->findAll(
+        $news = News::model()->published()->cache($this->cacheTime, $dependency, 2)->findAll(
             array(
                 'limit' => $count,
                 'order' => 'date DESC'

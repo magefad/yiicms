@@ -114,6 +114,11 @@ return array(
                     'class'  => 'CFileLogRoute',
                     'levels' => 'error, warning, info',
                 ),
+                /*array(
+                    'class'=>'ext.db_profiler.DbProfileLogRoute',
+                    'countLimit' => 1, // How many times the same query should be executed to be considered inefficient
+                    'slowQueryMin' => 0.01, // Minimum time for the query to be slow
+                ),*/
                 // uncomment the following to show log messages on web pages
                 /*array(
                         'class' => 'CWebLogRoute',
@@ -127,8 +132,7 @@ return array(
     ),
     // application-level parameters that can be accessed
     // using Yii::app()->params['paramName']
-    'params' => array(
-        // this is used in contact page
-        'index' => 'index',
-    ),
+    /*'params' => array(
+
+    ),*/
 );

@@ -162,7 +162,7 @@ class DefaultController extends Controller
     {
         $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . Photo::model()->tableName());
 
-        $albums = Gallery::model()->public()->cache(Yii::app()->params['cacheTime'], $dependency)->findAll(
+        $albums = Gallery::model()->public()->cache($this->admin->cachingDuration, $dependency)->findAll(
             array(
                 #'limit' => $this->count,
                 'order' => 'sort_order'
