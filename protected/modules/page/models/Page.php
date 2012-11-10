@@ -100,6 +100,9 @@ class Page extends CActiveRecord
             'SaveBehavior' => array(
                 'class' => 'application.modules.admin.behaviors.SaveBehavior',
             ),
+            'sortable' => array(
+                'class' => 'application.modules.admin.behaviors.SortableBehavior',
+            ),
             'treeArray' => array(
                 'class' => 'application.modules.admin.behaviors.AdjacencyListBehavior',
                 'textAttribute' => 'name'

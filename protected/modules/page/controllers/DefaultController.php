@@ -111,26 +111,7 @@ class DefaultController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
         if (isset($_POST['Page'])) {
-            /*
-            * If change sort order num
-             */
-            $currentSortOrder  = $model->attributes['sort_order'];
             $model->attributes = $_POST['Page'];
-            if ($model->attributes['sort_order'] > $currentSortOrder) {
-                $model->updateCounters(
-                    array('sort_order' => -1),
-                    'sort_order<=:sort_order AND sort_order>=:current_sort_order',
-                    array('sort_order' => $model->attributes['sort_order'], 'current_sort_order' => $currentSortOrder)
-                );
-            }
-            if ($model->attributes['sort_order'] < $currentSortOrder) {
-                $model->updateCounters(
-                    array('sort_order' => +1),
-                    'sort_order>=:sort_order AND sort_order<=:current_sort_order',
-                    array('sort_order' => $model->attributes['sort_order'], 'current_sort_order' => $currentSortOrder)
-                );
-            }
-
             if ($model->save()) {
                 if (isset($_POST['saveAndClose'])) {
                     $this->redirect(array('admin'));
