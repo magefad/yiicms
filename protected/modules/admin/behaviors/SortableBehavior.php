@@ -42,6 +42,25 @@ class SortableBehavior extends CActiveRecordBehavior
      */
     private $_sortCurrentValue;
 
+    public function getHtmlOptions()
+    {
+        $htmlOptions = array(
+            'options' => array(
+                0 => array(
+                    'disabled' => true,
+                    'label'    => Yii::t('AdminModule.behavior', ' - Разместить перед: - ')
+                )
+            )
+        );
+
+        if (!$this->owner->isNewRecord) {
+            $htmlOptions['options'][$this->owner->{$this->sortAttribute}] = array('label' => Yii::t('AdminModule.behavior', ' - Оставить как есть - '));
+        } else {
+            $htmlOptions['empty'] = Yii::t('AdminModule.behavior', 'Разместить в конец');
+        }
+        #print_r($htmlOptions);exit;
+        return $htmlOptions;
+    }
 
     public function dropDownList($form = null, $htmlOptions = array(), $row = false)
     {
@@ -96,6 +115,15 @@ class SortableBehavior extends CActiveRecordBehavior
         return parent::afterFind($event);
     }
 
+    public function afterDelete($event)
+    {
+        $this->owner->updateCounters(
+            array($this->sortAttribute => -1),
+            "{$this->sortAttribute} > {$this->owner->{$this->sortAttribute}}"
+        );
+        return parent::afterDelete($event);
+    }
+
     /**
      * Responds to {@link CModel::onBeforeSave} event.
      * Overrides this method if you want to handle the corresponding event of the {@link CBehavior::owner owner}.
@@ -113,13 +141,13 @@ class SortableBehavior extends CActiveRecordBehavior
             if ($this->owner->attributes[$this->sortAttribute] > $this->_sortCurrentValue) {
                 $this->owner->updateCounters(
                     array($this->sortAttribute => -1),
-                    "{$this->sortAttribute} <= :sortNewValue AND {$this->sortAttribute}>=:_sortCurrentValue",
+                    "{$this->sortAttribute} <= :sortNewValue AND {$this->sortAttribute} >= :_sortCurrentValue",
                     array('sortNewValue' => $this->owner->attributes[$this->sortAttribute], '_sortCurrentValue' => $this->_sortCurrentValue)
                 );
             } else if ($this->owner->attributes[$this->sortAttribute] < $this->_sortCurrentValue) {
                 $this->owner->updateCounters(
                     array($this->sortAttribute => +1),
-                    "{$this->sortAttribute} <= :sortNewValue AND {$this->sortAttribute}>=:_sortCurrentValue",
+                    "{$this->sortAttribute} >= :sortNewValue AND {$this->sortAttribute} <= :_sortCurrentValue",
                     array('sortNewValue' => $this->owner->attributes[$this->sortAttribute], '_sortCurrentValue' => $this->_sortCurrentValue)
                 );
             }
