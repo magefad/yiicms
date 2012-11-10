@@ -65,6 +65,7 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
+        $this->pageTitle = Yii::t('BlogModule.blog', 'Blog');
         $postsDataProvider = new CActiveDataProvider(Post::model()->published()->public(), array(
             'sort' => array(
                 'defaultOrder' => 'publish_time DESC',
