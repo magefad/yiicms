@@ -91,7 +91,7 @@ $('.search-form form').submit(function(){
             array(
                 'name'        => 'status',
                 'type'        => 'raw',
-                'value'       => '$this->grid->returnBootstrapStatusHtml($data)',
+                'value'       => '$this->grid->getStatus($data)',
                 'filter'      => array(
                     '' => Yii::t('menu', 'Все'),
                     1  => Yii::t('menu', 'Опубликовано'),

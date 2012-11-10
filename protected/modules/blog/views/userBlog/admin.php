@@ -73,12 +73,12 @@ $('.search-form form').submit(function(){
             /*array(
                 'name'  => 'role',
                 'type'  => 'raw',
-                'value' => '$this->grid->returnBootstrapStatusHtml($data)',
+                'value' => '$this->grid->getStatus($data)',
             ),*/
             array(
                 'name'        => 'status',
                 'type'        => 'raw',
-                'value'       => '$this->grid->returnBootstrapStatusHtml($data)',
+                'value'       => '$this->grid->getStatus($data)',
                 'htmlOptions' => array('style' => 'width: 20px; text-align: center'),
             ),
             'note',

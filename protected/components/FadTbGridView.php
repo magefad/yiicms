@@ -38,7 +38,7 @@ class FadTbGridView extends TbGridView
     public $sortField = 'sort_order';
 
 
-    public function returnBootstrapStatusHtml(
+    public function getStatus(
         $data,
         $statusAttribute = 'status',
         $property = 'statusMain',

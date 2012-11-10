@@ -97,7 +97,7 @@ $('.search-form form').submit(function(){
             array(
                 'name'        => 'status',
                 'type'        => 'raw',
-                'value'       => '$this->grid->returnBootstrapStatusHtml($data)',
+                'value'       => '$this->grid->getStatus($data)',
                 'filter'      => $model->statusMain->getList(),
                 'htmlOptions' => array('style' => 'width: 40px; text-align: center;'),
             ),
