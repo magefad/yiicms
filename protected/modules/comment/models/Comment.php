@@ -79,10 +79,10 @@ class Comment extends CActiveRecord
     {
         return array(
             'SaveBehavior' => array(
-                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+                'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'class' => 'application.components.behaviors.StatusBehavior',
                 'list' => array(
                     'not_approved' => Yii::t('CommentModule.comment', 'Not approved'),
                     'approved'     => Yii::t('CommentModule.comment', 'Approved'),

@@ -98,20 +98,20 @@ class Page extends CActiveRecord
     {
         return array(
             'SaveBehavior' => array(
-                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+                'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'sortable' => array(
-                'class' => 'application.modules.admin.behaviors.SortableBehavior',
+                'class' => 'application.components.behaviors.SortableBehavior',
             ),
             'treeArray' => array(
-                'class' => 'application.modules.admin.behaviors.AdjacencyListBehavior',
+                'class' => 'application.components.behaviors.AdjacencyListBehavior',
                 'textAttribute' => 'name'
             ),
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior'
+                'class' => 'application.components.behaviors.StatusBehavior'
             ),
             'statusProtected' => array(
-                'class'     => 'application.modules.admin.behaviors.StatusBehavior',
+                'class'     => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'is_protected',
                 'list'      => array(
                     Yii::t('page', 'Нет'),

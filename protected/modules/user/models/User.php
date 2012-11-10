@@ -128,7 +128,7 @@ class User extends CActiveRecord
     {
         return array(
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'class' => 'application.components.behaviors.StatusBehavior',
                 'list' => array(
                     'blocked'    => Yii::t('user', 'Заблокирован'),
                     'active'     => Yii::t('user', 'Активен'),
@@ -136,7 +136,7 @@ class User extends CActiveRecord
                 )
             ),
             'statusEmailConfirm' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'class' => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'email_confirm',
                 'list' => array(
                     1 => Yii::t('user', 'Да'),

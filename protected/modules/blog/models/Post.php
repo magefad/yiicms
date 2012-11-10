@@ -90,13 +90,13 @@ class Post extends CActiveRecord
     {
         return array(
             'SaveBehavior' => array(
-                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+                'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior'
+                'class' => 'application.components.behaviors.StatusBehavior'
             ),
             'statusAccess' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'class' => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'access_type',
                 'list' => array(
                     'public' => Yii::t('BlogModule.blog', 'Public'),

@@ -83,17 +83,17 @@ class Menu extends CActiveRecord
     {
         return array(
             'SaveBehavior' => array(
-                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+                'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(
                     Yii::t('menu', 'отключено'),
                     Yii::t('menu', 'включено'),
                 )
             ),
             'tree' => array(
-                'class'        => 'application.modules.admin.behaviors.NestedSetBehavior',
+                'class'        => 'application.components.behaviors.NestedSetBehavior',
                 'hasManyRoots' => true
             )
         );

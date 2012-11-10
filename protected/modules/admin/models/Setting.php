@@ -71,7 +71,7 @@ class Setting extends CActiveRecord
     {
         return array(
             'SaveBehavior' => array(
-                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+                'class' => 'application.components.behaviors.SaveBehavior',
             )
         );
     }

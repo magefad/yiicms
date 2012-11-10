@@ -17,7 +17,7 @@
  * public function behaviors(){
  *     return array(
  *         'SaveBehavior' => array(
- *             'class' => 'application.modules.admin.behaviors.SaveBehavior',
+ *             'class' => 'application.components.behaviors.SaveBehavior',
  *             'createAttribute' => 'create_time_attribute',
  *             'updateAttribute' => 'update_time_attribute',
  *             'createUserAttribute' => 'create_user_id_attribute',

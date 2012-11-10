@@ -15,7 +15,7 @@
  * public function behaviors(){
  *     return array(
  *         'SortableBehavior' => array(
- *             'class' => 'application.modules.admin.behaviors.SortableBehavior',
+ *             'class' => 'application.components.behaviors.SortableBehavior',
  *             'sortAttribute' => 'sort_order_attribute',
  *             'optionsTitleAttribute' => 'title_attribute'
  *         )

@@ -110,10 +110,10 @@ class Photo extends CActiveRecord
     {
         return array(
             'SaveBehavior' => array(
-                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+                'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior'
+                'class' => 'application.components.behaviors.StatusBehavior'
             ),
             'galleria' => array(
                 'class'       => 'application.extensions.galleria.GalleriaBehavior',

@@ -75,7 +75,7 @@ class UserBlog extends CActiveRecord
                 'class' => 'zii.behaviors.CTimestampBehavior'
             ),
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(
                     Yii::t('BlogModule.blog', 'Blocked'),
                     Yii::t('BlogModule.blog', 'Active')

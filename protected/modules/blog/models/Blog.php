@@ -79,10 +79,10 @@ class Blog extends CActiveRecord
     {
         return array(
             'SaveBehavior' => array(
-                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+                'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(
                     'active'  => Yii::t('BlogModule.blog', 'Active'),
                     'blocked' => Yii::t('BlogModule.blog', 'Blocked'),
@@ -90,7 +90,7 @@ class Blog extends CActiveRecord
                 )
             ),
             'statusType' => array(
-                'class'     => 'application.modules.admin.behaviors.StatusBehavior',
+                'class'     => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'type',
                 'list'      => array(
                     'public'  => Yii::t('BlogModule.blog', 'Public'),

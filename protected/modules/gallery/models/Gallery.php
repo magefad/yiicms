@@ -68,10 +68,10 @@ class Gallery extends CActiveRecord
     {
         return array(
             'SaveBehavior' => array(
-                'class' => 'application.modules.admin.behaviors.SaveBehavior',
+                'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'statusMain' => array(
-                'class' => 'application.modules.admin.behaviors.StatusBehavior',
+                'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(
                     'published' => Yii::t('gallery', 'Опубликовано'),
                     'draft'     => Yii::t('gallery', 'Скрыто'),
