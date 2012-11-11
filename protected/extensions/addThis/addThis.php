@@ -86,7 +86,8 @@ class addThis extends CWidget
         $this->htmlOptions['id'] = $this->id;
         if (!isset($this->htmlOptions['class'])) {
             $this->htmlOptions['class'] = 'addthis_default_style';
-        } else if (!isset($this->htmlOptions['style'])) {
+        }
+        if (!isset($this->htmlOptions['style'])) {
             $this->htmlOptions['style'] = 'padding: 5px 0 5px 5px';
         }
         $this->htmlOptions['class'] = 'addthis_toolbox ' . $this->htmlOptions['class'];
