@@ -65,8 +65,12 @@ class Controller extends RController
      */
     public function afterRender()
     {
-        Yii::app()->clientScript->registerMetaTag($this->keywords, 'keywords');
-        Yii::app()->clientScript->registerMetaTag($this->description, 'description');
+        if (!empty($this->keywords)) {
+            Yii::app()->clientScript->registerMetaTag($this->keywords, 'keywords');
+        }
+        if (!empty($this->description)) {
+            Yii::app()->clientScript->registerMetaTag($this->description, 'description');
+        }
     }
 
     /**
