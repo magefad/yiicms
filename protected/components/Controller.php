@@ -53,10 +53,7 @@ class Controller extends RController
 
     public function init()
     {
-        $this->admin       = Yii::app()->getModule('admin');
-        $this->pageTitle   = $this->admin->siteName;
-        $this->keywords    = $this->admin->siteKeywords;
-        $this->description = $this->admin->siteDescription;
+        $this->admin = Yii::app()->getModule('admin');
         parent::init();
     }
 
