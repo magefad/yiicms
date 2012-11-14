@@ -146,7 +146,7 @@ class DefaultController extends Controller
     {
         $criteria     = Yii::app()->user->isGuest ? Blog::model()->published()->public() : Blog::model()->published();
         $dataProvider = new CActiveDataProvider($criteria);
-        $this->render('index', array('dataProvider' => $dataProvider));
+        $this->render('list', array('dataProvider' => $dataProvider));
     }
 
     /**

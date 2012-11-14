@@ -17,7 +17,7 @@ $this->widget(
     'bootstrap.widgets.TbListView',
     array(
         'dataProvider'       => $dataProvider,
-        'itemView'           => '_view',
+        'itemView'           => '_listView',
         'sortableAttributes' => array(
             'title',
             'update_time',
