@@ -6,6 +6,7 @@
  * and GPL (GPL-LICENSE.txt) licenses.
  *
  * @author 	Roman Snitko snowcore.net@gmail.com
+ * @author Fadeev Ruslan (update) 2012-10-15
  * @link http://snowcore.net/
  * @version 0.0.7
  */
@@ -13,8 +14,7 @@
     $.fn.syncTranslit = function(options) {
         var opts = $.extend({}, $.fn.syncTranslit.defaults, options);
         return this.each(function() {
-            $this = $(this);
-            var o = $.meta ? $.extend({}, opts, $this.data()) : opts;
+            var o = $.meta ? $.extend({}, opts, $(this).data()) : opts;
             var $destination = $('#' + opts.destination);
             o.destinationObject = $destination;
             
@@ -29,8 +29,8 @@
                     return -1;
                 }
             }
-            
-            $this.keyup(function(){
+
+            $(this).keyup(function(){
             	var str = $(this).val();
             	var result = '';
             	for (var i = 0; i < str.length; i++) {
@@ -48,22 +48,23 @@
      * @param {String} character
      * @param {Object} opts
      */
-    $.fn.syncTranslit.transliterate = function(char, opts) {
+    $.fn.syncTranslit.transliterate = function(character, opts) {
     	var charIsLowerCase = true, trChar;
-    	if (char.toLowerCase() != char) {
+    	if (character.toLowerCase() != character) {
     		charIsLowerCase = false;
     	}
     	
-    	char = char.toLowerCase();
+    	character = character.toLowerCase();
     	
-    	var index = opts.dictOriginal.indexOf(char);
+    	var index = opts.dictOriginal.indexOf(character);
     	if (index == -1) {
-    		trChar = char;
+    		trChar = character;
     	} else {
     		trChar = opts.dictTranslate[index];
     	}
     	
     	if (opts.type == 'url') {
+            opts.caseStyle = 'lower';
 	    	var code = trChar.charCodeAt(0);
 	    	if (code >= 33  && code <= 47 && code != 45
 	    		|| code >= 58  && code <= 64
@@ -94,6 +95,7 @@
      * Default options
      */
     $.fn.syncTranslit.defaults = {
+        destination: 'slug',
         /**
          * Dictionaries
          */
@@ -103,21 +105,23 @@
                         'с', 'т', 'у', 'ф', 'х', 'ц',
                         'ч', 'ш', 'щ', 'ъ', 'ы', 'ь',
                         'э', 'ю', 'я',
-                        'і', 'є', 'ї', 'ґ'
+                        '№', 'Ӏ', '’', 'ˮ',
+                        'ґ', 'є', 'ї', 'і'//ukraine
                         ],
         dictTranslate: ['a', 'b', 'v', 'g', 'd', 'e',
-                        'e', 'zh','z', 'i', 'j', 'k',
+                        'yo', 'zh','z', 'i', 'j', 'k',
                         'l', 'm', 'n', 'o', 'p', 'r',
-                        's', 't', 'u', 'f', 'h', 'ts',
-                        'ch','sh','sch', '', 'y', '',
-                        'e', 'ju', 'ja',
-                        'i', 'je', 'ji', 'g'
+                        's', 't', 'u', 'f', 'h', 'cz',
+                        'ch','sh','shh', '', 'y', '',
+                        'e', 'yu', 'ya',
+                        '#', '‡', '`', '¨',
+                        'g', 'ye', 'yi', 'i'//ukraine
                         ],
         
         /*
          * Case transformation: normal, lower, upper
          */
-        caseStyle: 'lower',
+        caseStyle: 'normal',
         
         /*
          * Words separator in url

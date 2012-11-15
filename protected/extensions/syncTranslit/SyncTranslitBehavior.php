@@ -1,68 +1,94 @@
 <?php
 /**
  * @author Fadeev Ruslan <fadeevr@gmail.com>
+ * GOST 779B
+ * @link http://ru.wikipedia.org/wiki/%D0%93%D0%9E%D0%A1%D0%A2_7.79-2000
  * Date: 14.11.12
  * Time: 12:14
  */
 class SyncTranslitBehavior extends CActiveRecordBehavior
 {
+    /**
+     * @var string The name of the attribute stored the text to translit
+     * Defaults to 'title'
+     */
     public $textAttribute = 'title';
 
+    /**
+     * @var string The name of the attribute to put translit
+     * Defaults to 'title'
+     */
+    public $translitAttribute = 'slug';
+
+    /**
+     * @var array Options
+     */
     public $options = array();
 
+    /**
+     * @var bool if true, translitAttribute will be sync with textAttribute always
+     */
     public $forceOverwrite = false;
 
     private static $defaultOptions = array(
-        'dictOriginal' => array(
-            'а', 'б', 'в', 'г', 'д', 'е',
-            'ё', 'ж', 'з', 'и', 'й', 'к',
-            'л', 'м', 'н', 'о', 'п', 'р',
-            'с', 'т', 'у', 'ф', 'х', 'ц',
-            'ч', 'ш', 'щ', 'ъ', 'ы', 'ь',
-            'э', 'ю', 'я',
-            'і', 'є', 'ї', 'ґ',//ukraine
-            'А', 'Б', 'В', 'Г', 'Д', 'Е',
-            'Ё', 'Ж', 'З', 'И', 'Й', 'К',
-            'Л', 'М', 'Н', 'О', 'П', 'Р',
-            'С', 'Т', 'У', 'Ф', 'Х', 'Ц',
-            'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь',
-            'Э', 'Ю', 'Я',
-            'I', 'Є', 'Ї', 'Ґ'//ukraine
+        'table' => array(
+            'А' => 'A', 'а' => 'a',
+            'Б' => 'B', 'б' => 'b',
+            'В' => 'V', 'в' => 'v',
+            'Г' => 'G', 'г' => 'g',
+            'Д' => 'D', 'д' => 'd',
+            'Е' => 'E', 'е' => 'e',
+            'Ё' => 'Yo', 'ё' => 'yo',
+            'Ж' => 'Zh', 'ж' => 'zh',
+            'З' => 'Z', 'з' => 'z',
+            'И' => 'I', 'и' => 'i',
+            'Й' => 'J', 'й' => 'j',
+            'К' => 'K', 'к' => 'k',
+            'Л' => 'L', 'л' => 'l',
+            'М' => 'M', 'м' => 'm',
+            'Н' => "N", 'н' => 'n',
+            'О' => 'O', 'о' => 'o',
+            'П' => 'P', 'п' => 'p',
+            'Р' => 'R', 'р' => 'r',
+            'С' => 'S', 'с' => 's',
+            'Т' => 'T', 'т' => 't',
+            'У' => 'U', 'у' => 'u',
+            'Ф' => 'F', 'ф' => 'f',
+            'Х' => 'H', 'х' => 'h',
+            'Ц' => 'Cz', 'ц' => 'cz',
+            'Ч' => 'Ch', 'ч' => 'ch',
+            'Ш' => 'Sh', 'ш' => 'sh',
+            'Щ' => 'Shh', 'щ' => 'shh',
+            'Ъ' => 'ʺ', 'ъ' => 'ʺ',
+            'Ы' => 'Y`', 'ы' => 'y`',
+            'Ь' => '', 'ь' => '',
+            'Э' => 'E`', 'э' => 'e`',
+            'Ю' => 'Yu', 'ю' => 'yu',
+            'Я' => 'Ya', 'я' => 'ya',
+            '№' => '#', 'Ӏ' => '‡',
+            '’' => '`', 'ˮ' => '¨',
+            'ґ' => 'g', 'Ґ' => 'G',//ukraine
+            'є' => 'ye', 'Є' => 'YE',
+            'ї' => 'yi', 'Ї' => 'YI',
+            'і' => 'i', 'I' => 'I'
         ),
-        'dictTranslate' => array(
-            'a', 'b', 'v', 'g', 'd', 'e',
-            'e', 'zh','z', 'i', 'j', 'k',
-            'l', 'm', 'n', 'o', 'p', 'r',
-            's', 't', 'u', 'f', 'h', 'ts',
-            'ch','sh','sch', '', 'y', '',
-            'e', 'ju', 'ja',
-            'i', 'je', 'ji', 'g',//ukraine
-            'A', 'B', 'V', 'G', 'D', 'E',
-            'E', 'ZH','Z', 'I', 'J', 'K',
-            'L', 'M', 'N', 'O', 'P', 'R',
-            'S', 'T', 'U', 'F', 'H', 'TS',
-            'CH','SH','SCH', '', 'Y', '',
-            'E', 'JU', 'JA',
-            'I', 'JE', 'JI', 'G'//ukraine
-        ),
-        'caseStyle'    => 'lower',
+        'caseStyle'    => 'normal',
         'urlSeparator' => '-',
         'type'         => 'url'
     );
 
-    public function attach($owner)
+    /**
+     * Responds to {@link CModel::onBeforeValidate} event.
+     * Overrides this method if you want to handle the corresponding event of the {@link owner}.
+     * You may set {@link CModelEvent::isValid} to be false to quit the validation process.
+     * @param CModelEvent $event event parameter
+     */
+    public function beforeValidate($event)
     {
-        if (!isset($this->options['destination'])) {
-            $this->options['destination'] = 'slug';
+        if (($this->owner->isNewRecord && empty($this->owner->{$this->translitAttribute})) || $this->forceOverwrite) {
+            $this->owner->{$this->translitAttribute} = $this->translit($this->owner->{$this->textAttribute});
         }
-        $this->options = array_merge(self::$defaultOptions, $this->options);
-    }
-
-    public function beforeValidate()
-    {
-        if (($this->owner->isNewRecord && empty($this->owner->{$this->textAttribute})) || $this->forceOverwrite) {
-            $this->owner->{$this->textAttribute} = $this->translit($this->owner->{$this->options['destination']});
-        }
+        parent::beforeValidate($event);
     }
 
     /**
@@ -71,12 +97,16 @@ class SyncTranslitBehavior extends CActiveRecordBehavior
      */
     public function translit($string)
     {
-        $string = str_replace(self::$defaultOptions['dictOriginal'], self::$defaultOptions['dictTranslate'], $string);
+        $this->options = array_merge(self::$defaultOptions, $this->options);
+        $string = str_replace(array_keys(self::$defaultOptions['table']), array_values(self::$defaultOptions['table']), $string);
         if ($this->options['type'] == 'url') {
             $string = str_replace(array(' ', '_'), $this->options['urlSeparator'], $string);
-            $string = preg_replace('/[' . $this->options['urlSeparator'] . ']{2,}/', $this->options['urlSeparator'], $string);
-            return preg_replace('/[^0-9a-z\-]/', '', strtolower($string));
+            $string = preg_replace('/[^0-9a-z\-]/', '', strtolower($string));
+            return preg_replace('/[' . $this->options['urlSeparator'] . ']{2,}/', $this->options['urlSeparator'], $string);
+        } else if ($this->options['caseStyle'] != 'normal') {
+            return $this->options['caseStyle'] = 'upper' ? strtoupper($string) : strtolower($string);
+        } else {
+            return $string;
         }
-        return $string;
     }
 }

@@ -6,6 +6,9 @@
  */
 class SyncTranslit extends CWidget
 {
+    /**
+     * @var string element ID which stored original text
+     */
     public $textAttribute;
 
     public $options  = array();
