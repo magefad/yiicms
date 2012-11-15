@@ -8,7 +8,13 @@ $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
         'id'                   => 'news-form',
-        'enableAjaxValidation' => false,
+        'type'                   => 'horizontal',
+        'focus'                  => array($model, 'title'),
+        'enableAjaxValidation'   => false,
+        'enableClientValidation' => true,
+        'clientOptions'          => array(
+            'validateOnSubmit' => true
+        ),
         'htmlOptions'          => array('class' => 'well', 'enctype' => 'multipart/form-data'),
     )
 ); ?>
@@ -18,19 +24,23 @@ $form = $this->beginWidget(
     'Поля, отмеченные <span class="required">*</span> обязательны для заполнения.'
 )?></p>
 <?php echo $form->errorSummary($model); ?>
-<?php echo $form->labelEx($model, 'date'); ?>
-<?php $this->widget(
-    'zii.widgets.jui.CJuiDatePicker',
-    array(
-        'model'     => $model,
-        'attribute' => 'date',
-        'language'  => Yii::app()->language,
-        'options'   => array(
-            'dateFormat' => 'dd.mm.yy',
-        ),
-    )
-); ?>
-<?php echo $form->error($model, 'date'); ?>
+<div class="control-group">
+    <?php echo $form->labelEx($model, 'date', array('class' => 'control-label')); ?>
+    <div class="controls">
+        <?php $this->widget(
+            'zii.widgets.jui.CJuiDatePicker',
+            array(
+                'model'     => $model,
+                'attribute' => 'date',
+                'language'  => Yii::app()->language,
+                'options'   => array(
+                    'dateFormat' => 'dd.mm.yy',
+                ),
+            )
+        ); ?>
+    </div>
+    <?php echo $form->error($model, 'date'); ?>
+</div>
 <?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 200)); ?>
 
@@ -71,7 +81,7 @@ $this->widget(
         )
     )
 ); ?>
-
+<div>&nbsp;</div>
 <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 <?php echo $form->checkBoxRow($model, 'is_protected'); ?>
 <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>

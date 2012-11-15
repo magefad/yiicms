@@ -8,6 +8,7 @@ $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
         'id'                     => 'gallery-form',
+        'type'                   => 'horizontal',
         'focus'                  => array($model, 'title'),
         'htmlOptions'            => array('class' => 'well'),
         'enableAjaxValidation'   => false,

@@ -8,9 +8,13 @@ $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
         'id'                     => 'post-form',
+        'type'                   => 'horizontal',
+        'focus'                  => array($model, 'title'),
         'enableAjaxValidation'   => false,
         'enableClientValidation' => true,
-        'type'                   => 'vertical',
+        'clientOptions'          => array(
+            'validateOnSubmit' => true
+        ),
         'htmlOptions'            => array('class' => 'well'),
         'inlineErrors'           => true,
     )
@@ -23,18 +27,22 @@ $form = $this->beginWidget(
     CHtml::listData(Blog::model()->findAll(), 'id', 'title'),
     array('empty' => Yii::t('BlogModule.blog', 'select blog'), 'class' => 'span5')
 ); ?>
-<?php echo $form->labelEx($model, 'publish_time'); ?>
-<?php $this->widget(
-    'ext.jui.EJuiDateTimePicker',
-    array(
-        'model'     => $model,
-        'attribute' => 'publish_time',
-        'options'   => array(
-            'dateFormat' => 'yy-mm-dd',
-        ),
-    )
-); ?>
-<?php echo $form->error($model, 'publish_time'); ?>
+<div class="control-group">
+<?php echo $form->labelEx($model, 'publish_time', array('class' => 'control-label')); ?>
+    <div class="controls">
+        <?php $this->widget(
+            'ext.jui.EJuiDateTimePicker',
+            array(
+                'model'     => $model,
+                'attribute' => 'publish_time',
+                'options'   => array(
+                    'dateFormat' => 'yy-mm-dd',
+                ),
+            )
+        ); ?>
+        <?php echo $form->error($model, 'publish_time'); ?>
+    </div>
+</div>
 <?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php $this->widget(
@@ -49,18 +57,24 @@ $form = $this->beginWidget(
         )
     )
 ); ?>
-<?php echo $form->labelEx($model, 'tags'); ?>
-<?php $this->widget(
-    'application.components.widgets.AutoComplete',
-    array(
-        'name'        => 'tags',
-        'value'       => implode(', ', $model->getTags()),
-        'sourceUrl'   => array('AutoCompleteSearch'),
-        'multiple'    => true,
-        'htmlOptions' => array('class' => 'span5')
-    )
-);
-?>
+<div>&nbsp;</div>
+<div class="control-group">
+<?php echo $form->labelEx($model, 'tags', array('class' => 'control-label')); ?>
+    <div class="controls">
+        <?php $this->widget(
+            'application.components.widgets.AutoComplete',
+            array(
+                'name'        => 'tags',
+                'value'       => implode(', ', $model->getTags()),
+                'sourceUrl'   => array('AutoCompleteSearch'),
+                'multiple'    => true,
+                'htmlOptions' => array('class' => 'span5')
+            )
+        );
+        ?>
+        <?php echo $form->error($model, 'publish_time'); ?>
+    </div>
+</div>
 <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>
 <?php echo $form->textAreaRow($model, 'description', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'link', array('class' => 'span5', 'maxlength' => 200)); ?>

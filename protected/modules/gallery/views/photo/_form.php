@@ -7,8 +7,14 @@
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
-        'id'                   => 'photo-form',
-        'enableAjaxValidation' => false,
+        'id'                     => 'photo-form',
+        'type'                   => 'horizontal',
+        'enableAjaxValidation'   => false,
+        'enableClientValidation' => true,
+        'clientOptions'          => array(
+            'validateOnSubmit' => true
+        ),
+        'htmlOptions'            => array('class' => 'well'),
     )
 );
 ?>

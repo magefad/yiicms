@@ -8,11 +8,14 @@ $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
         'id'                     => 'blog-form',
+        'type'                   => 'horizontal',
+        'focus'                  => array($model, 'title'),
         'enableAjaxValidation'   => false,
         'enableClientValidation' => true,
-        'type'                   => 'vertical',
+        'clientOptions'          => array(
+            'validateOnSubmit' => true
+        ),
         'htmlOptions'            => array('class' => 'well'),
-        'inlineErrors'           => true,
     )
 ); ?>
 

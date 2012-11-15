@@ -5,17 +5,20 @@
  * @var $model Menu|NestedSetBehavior
  * @var $root bool
  */
-$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
-    'id'                     => 'menu-form',
-    'type'                   => 'horizontal',
-	'focus'                  => array($model, 'title'),
-	'htmlOptions'            => array('class' => 'well'),
-	'enableAjaxValidation'   => false,
-	'enableClientValidation' => true,
-	'clientOptions'          => array(
-    'validateOnSubmit' => true,
-),
-)); ?>
+$form = $this->beginWidget(
+    'bootstrap.widgets.TbActiveForm',
+    array(
+        'id'                     => 'menu-form',
+        'type'                   => 'horizontal',
+        'focus'                  => array($model, 'title'),
+        'htmlOptions'            => array('class' => 'well'),
+        'enableAjaxValidation'   => false,
+        'enableClientValidation' => true,
+        'clientOptions'          => array(
+            'validateOnSubmit' => true,
+        ),
+    )
+); ?>
 <p class="alert alert-info"><?php echo Yii::t('menu', 'Поля, отмеченные <span class="required">*</span> обязательны для заполнения.')?></p>
 <?php echo $form->errorSummary($model); ?>
 <?php if (!$root): ?>
