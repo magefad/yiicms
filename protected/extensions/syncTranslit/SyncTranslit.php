@@ -27,8 +27,8 @@ class SyncTranslit extends CWidget
     public function run()
     {
         if (!isset($this->options['destination'])) {
-            $prefix = strstr($this->textAttribute, '_', true);
-            $this->options['destination'] = $prefix ? $prefix . '_slug' : 'slug';
+            list($model, $attribute) = explode('_', $this->textAttribute);
+            $this->options['destination'] = $model ? $model . '_slug' : 'slug';
         }
         $options = CJavaScript::encode($this->options);
         Yii::app()->clientScript->registerScript("{$this->id}_syncTranslit", "$('#{$this->textAttribute}').syncTranslit({$options});", CClientScript::POS_READY);
