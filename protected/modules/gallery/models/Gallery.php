@@ -113,7 +113,7 @@ class Gallery extends CActiveRecord
     {
         return array(
             'public' => array(
-                'condition' => 'status = "public"'
+                'condition' => 'status = "published"'
             ),
             'draft'  => array(
                 'condition' => 'status = "draft"'
