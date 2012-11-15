@@ -38,7 +38,7 @@ $this->menu = array(
 	array('icon' => 'file', 'label' => Yii::t('news', 'Добавить'), 'url' => array('create')),
 );
 $this->widget(
-    'bootstrap.widgets.TbListView',
+    'FadTbListView',
     array(
         'dataProvider'       => $dataProvider,
         'enableHistory'      => true,

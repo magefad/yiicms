@@ -6,6 +6,7 @@
  *
  * @var $albums Photo[]
  */
+$this->pageTitle = Yii::app()->name . ' — ' . Yii::t('gallery', 'Галерея');
 ?>
 <h2>Альбомы</h2>
 <ul class="unstyled">
