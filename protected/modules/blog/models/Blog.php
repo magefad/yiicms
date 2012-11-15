@@ -82,7 +82,7 @@ class Blog extends CActiveRecord
                 'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'syncTranslit' => array(
-                'class' => 'ext.SyncTranslit.SyncTranslitBehavior',
+                'class' => 'ext.syncTranslit.SyncTranslitBehavior',
             ),
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',

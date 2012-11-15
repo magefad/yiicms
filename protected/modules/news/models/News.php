@@ -118,7 +118,7 @@ class News extends CActiveRecord
                 'class' => 'application.components.behaviors.SaveBehavior',
             ),
             'syncTranslit' => array(
-                'class' => 'ext.SyncTranslit.SyncTranslitBehavior',
+                'class' => 'ext.syncTranslit.SyncTranslitBehavior',
             ),
             'comments' => array(
                 'class' => 'application.modules.comment.behaviors.CommentBehavior',
