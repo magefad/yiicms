@@ -111,3 +111,28 @@ span.required { color:#ff0000; }
     box-shadow:0 0 6px #d59392;
 }
 .form-inline .help-block.error, .form-inline .help-inline.error, .form-horizontal .help-block.error, .form-horizontal .help-inline.error, .form-vertical .help-block.error, .form-vertical .help-inline.error { color:#b94a48; }
+/* fad */
+.menu-admin {
+	font-size: 11px;
+	padding: 0 0 10px 0;
+	position: fixed;
+	right: 0;
+	/*top: 95px;*/
+	top: 40px;
+	min-width: 133px;
+	z-index: 2;
+	opacity: .7;
+	-webkit-transition: all 300ms ease-in-out;
+	-moz-transition: all 300ms ease-in-out;
+	-ms-transition: all 300ms ease-in-out;
+	-o-transition: all 300ms ease-in-out;
+	transition: all 300ms ease-in-out;
+}
+.menu-admin:hover {
+	opacity: 1;
+}
+.menu-admin .label {
+	font-size:0.8em;
+	line-height:16px;
+	vertical-align:top;
+}

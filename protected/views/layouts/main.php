@@ -49,7 +49,7 @@ $this->widget(
 );
 ?>
 <?php if (Yii::app()->user->isSuperUser && $this->menu): ?>
-<div class="subnav well">
+<div class="menu-admin well">
     <?php
     $this->beginWidget(
         'bootstrap.widgets.TbMenu',
