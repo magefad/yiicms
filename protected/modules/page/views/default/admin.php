@@ -70,7 +70,7 @@ $('.search-form form').submit(function(){
             array(
                 'name'        => 'create_time',
                 'value'       => 'date_format(date_create($data->create_time), "Y-m-d")',
-                'htmlOptions' => array('style' => 'width:70px; text-align:center;'),
+                'htmlOptions' => array('style' => 'width:80px; text-align:center;'),
             ),
             array(
                 'name'        => 'author_search',
