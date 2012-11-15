@@ -7,6 +7,7 @@
  * @var $blog Blog
  * @var $postsDataProvider CActiveDataProvider
  */
+$this->pageTitle   = Yii::app()->name . ' — ' . Yii::t('BlogModule.blog', 'Blog');
 $tagBreadcrumb     = isset($tag) ? Yii::t('BlogModule.blog', 'Tagged') . ' «' . $tag . '»' : Yii::t('BlogModule.blog', 'All posts');
 $this->breadcrumbs = array(
     Yii::t('BlogModule.blog', 'Blogs') => array('/blog/default/index'),

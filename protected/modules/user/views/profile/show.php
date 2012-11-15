@@ -3,7 +3,7 @@
  * @var $user User
  * @var $this Controller
  */
-$this->pageTitle = Yii::t('user', 'Профиль пользователя') . CHtml::encode($user->username);
+$this->pageTitle = Yii::t('user', 'Профиль пользователя') . ' ' . CHtml::encode($user->username);
 $this->breadcrumbs = array(
     Yii::t('user', 'Пользователи') => array('/user/people/index/'),
     CHtml::encode($user->username),

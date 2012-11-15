@@ -3,6 +3,7 @@
  * @var $this Controller
  * @var $dataProvider CDataProvider
  */
+$this->pageTitle = Yii::app()->name . ' — ' . Yii::t('news', 'Новости');
 $this->breadcrumbs = array(
 	Yii::t('news', 'Новости')
 );
