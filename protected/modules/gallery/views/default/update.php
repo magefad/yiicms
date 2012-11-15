@@ -5,7 +5,7 @@
  */
 $this->breadcrumbs = array(
     Yii::t('gallery', 'Изменение') => array('admin'),
-    $model->name                   => array('view', 'id' => $model->id),
+    $model->title                  => array('view', 'id' => $model->id),
     Yii::t('gallery', 'Изменение'),
 );
 

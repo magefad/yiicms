@@ -32,7 +32,7 @@ class PhotoController extends Controller
     public function actionManager($id)
     {
         $items  = array();
-        $albums = CHtml::listData(Gallery::model()->findAll(), 'id', 'name');
+        $albums = CHtml::listData(Gallery::model()->findAll(), 'id', 'title');
         foreach ($albums as $gid => $name) {
             $items[] = array('label' => $name, 'url' => $gid);
         }

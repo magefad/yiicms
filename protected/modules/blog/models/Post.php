@@ -92,6 +92,9 @@ class Post extends CActiveRecord
             'SaveBehavior' => array(
                 'class' => 'application.components.behaviors.SaveBehavior',
             ),
+            'syncTranslit' => array(
+                'class' => 'ext.SyncTranslit.SyncTranslitBehavior',
+            ),
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior'
             ),
@@ -196,14 +199,6 @@ class Post extends CActiveRecord
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
         ));
-    }
-
-    public function beforeValidate()
-    {
-        if (!$this->slug) {
-            $this->slug = Text::translit($this->title);
-        }
-        return parent::beforeValidate();
     }
 
     public function getCommentStatus()

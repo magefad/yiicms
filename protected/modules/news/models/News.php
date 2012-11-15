@@ -117,6 +117,9 @@ class News extends CActiveRecord
             'SaveBehavior' => array(
                 'class' => 'application.components.behaviors.SaveBehavior',
             ),
+            'syncTranslit' => array(
+                'class' => 'ext.SyncTranslit.SyncTranslitBehavior',
+            ),
             'comments' => array(
                 'class' => 'application.modules.comment.behaviors.CommentBehavior',
             ),
@@ -190,14 +193,6 @@ class News extends CActiveRecord
             'create_time'   => Yii::t('news', 'Создано'),
             'update_time'   => Yii::t('news', 'Изменено'),
         );
-    }
-
-    public function beforeValidate()
-    {
-        if (!$this->slug) {
-            $this->slug = Text::translit($this->title);
-        }
-        return parent::beforeValidate();
     }
 
     public function beforeSave()

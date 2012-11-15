@@ -62,7 +62,7 @@ class Page extends CActiveRecord
     public function rules()
     {
         return array(
-            array('name, title, content, status', 'required'),
+            array('name, title, description, content, status', 'required'),
             array('parent_id, rich_editor, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
             array('title, keywords, slug', 'length', 'max' => 200),
@@ -99,6 +99,9 @@ class Page extends CActiveRecord
         return array(
             'SaveBehavior' => array(
                 'class' => 'application.components.behaviors.SaveBehavior',
+            ),
+            'syncTranslit' => array(
+                'class' => 'ext.SyncTranslit.SyncTranslitBehavior',
             ),
             'sortable' => array(
                 'class' => 'application.components.behaviors.SortableBehavior',
@@ -181,18 +184,6 @@ class Page extends CActiveRecord
             'author_search'       => Yii::t('page', 'Создал'),
             'changeAuthor_search' => Yii::t('page', 'Изменил'),
         );
-    }
-
-    /**
-     * If slug (link) is empty, translit title to slug (link)
-     * @return bool
-     */
-    public function beforeValidate()
-    {
-        if (!$this->slug) {
-            $this->slug = Text::translit($this->title);
-        }
-        return parent::beforeValidate();
     }
 
     /**

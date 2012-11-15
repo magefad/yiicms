@@ -62,9 +62,9 @@ $('.search-form form').submit(function(){
                 'htmlOptions' => array('style' => 'width: 20px; text-align: center'),
             ),
             array(
-                'name'  => 'name',
+                'name'  => 'title',
                 'type'  => 'raw',
-                'value' => 'CHtml::link($data->name,array("update", "id" => $data->id))'
+                'value' => 'CHtml::link($data->title, array("update", "id" => $data->id))'
             ),
             #'description',
             #'keywords',

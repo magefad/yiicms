@@ -86,4 +86,9 @@ $this->widget(
     )
 ); ?>
 </div>
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();
+if ($model->isNewRecord) {
+    $this->widget('ext.SyncTranslit.SyncTranslit', array('textAttribute' => 'Gallery_title'));
+}
+?>

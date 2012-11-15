@@ -53,7 +53,7 @@ $('.search-form form').submit(function(){
             ),
             array(
                 'name'  => 'gallery_search',
-                'value' => '$data->gallery->name',
+                'value' => '$data->gallery->title',
                 #'htmlOptions' => array('style' => 'width: 60px;text-align: center;'),
             ),
             'name',

@@ -33,4 +33,9 @@ $form = $this->beginWidget(
 ); ?>
 </div>
 
-<?php $this->endWidget(); ?>
+<?php
+$this->endWidget();
+if ($model->isNewRecord) {
+    $this->widget('ext.SyncTranslit.SyncTranslit', array('textAttribute' => 'Blog_title'));
+}
+?>

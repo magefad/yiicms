@@ -5,7 +5,7 @@
  */
 $this->breadcrumbs = array(
     'Альбомы' => array('index'),
-    $model->name,
+    $model->title,
 );
 
 $this->menu = array(
@@ -28,7 +28,7 @@ $this->widget(
         'data'       => $model,
         'attributes' => array(
             'id',
-            'name',
+            'title',
             'description',
             'keywords',
             'slug',

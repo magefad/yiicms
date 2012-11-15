@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table '{{gallery}}':
  * @property integer $id
- * @property string $name
+ * @property string $title
  * @property string $description
  * @property string $keywords
  * @property string $slug
@@ -51,12 +51,12 @@ class Gallery extends CActiveRecord
     public function rules()
     {
         return array(
-            array('name', 'required'),
+            array('title', 'required'),
             array('sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
-            array('name, keywords, slug', 'length', 'max' => 200),
+            array('title, keywords, slug', 'length', 'max' => 200),
             array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('description', 'safe'),
-            array('id, name, description, keywords, slug, status, sort_order, create_user_id, update_user_id, create_time, update_time', 'safe', 'on' => 'search'),
+            array('id, title, description, keywords, slug, status, sort_order, create_user_id, update_user_id, create_time, update_time', 'safe', 'on' => 'search'),
         );
     }
 
@@ -69,6 +69,9 @@ class Gallery extends CActiveRecord
         return array(
             'SaveBehavior' => array(
                 'class' => 'application.components.behaviors.SaveBehavior',
+            ),
+            'syncTranslit' => array(
+                'class' => 'ext.SyncTranslit.SyncTranslitBehavior',
             ),
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
@@ -97,7 +100,7 @@ class Gallery extends CActiveRecord
     {
         return array(
             'id'          => 'ID',
-            'name'        => 'Название',
+            'title'       => 'Заголовок',
             'description' => 'Описание',
             'keywords'    => 'Ключевые слова',
             'slug'        => 'Ссылка',
@@ -127,7 +130,7 @@ class Gallery extends CActiveRecord
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id, true);
-        $criteria->compare('name', $this->name, true);
+        $criteria->compare('title', $this->title, true);
         $criteria->compare('description', $this->description, true);
         $criteria->compare('keywords', $this->keywords, true);
         $criteria->compare('slug', $this->slug, true);
@@ -140,18 +143,6 @@ class Gallery extends CActiveRecord
             'criteria' => $criteria,
             'sort'     => $sort
         ));
-    }
-
-    /**
-     * If slug (link) is empty, translit title to slug (link)
-     * @return bool
-     */
-    public function beforeValidate()
-    {
-        if (!$this->slug) {
-            $this->slug = Text::translit($this->name);
-        }
-        return parent::beforeValidate();
     }
 
     /**

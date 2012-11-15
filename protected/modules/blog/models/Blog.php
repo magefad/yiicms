@@ -81,6 +81,9 @@ class Blog extends CActiveRecord
             'SaveBehavior' => array(
                 'class' => 'application.components.behaviors.SaveBehavior',
             ),
+            'syncTranslit' => array(
+                'class' => 'ext.SyncTranslit.SyncTranslitBehavior',
+            ),
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(

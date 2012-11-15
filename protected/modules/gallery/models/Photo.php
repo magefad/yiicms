@@ -190,7 +190,7 @@ class Photo extends CActiveRecord
 
         $criteria->compare('author.username', $this->author_search, true);
         $criteria->compare('changeAuthor.username', $this->changeAuthor_search, true);
-        $criteria->compare('gallery.name', $this->gallery_search, true);
+        $criteria->compare('gallery.title', $this->gallery_search, true);
 
         $sort               = new CSort;
         $sort->defaultOrder = 't.sort_order ASC';
@@ -204,7 +204,7 @@ class Photo extends CActiveRecord
                 'desc' => 'changeAuthor.username DESC',
             ),
             'gallery_search'      => array(
-                'asc' => 'gallery.name',
+                'asc' => 'gallery.title',
                 'desc' => 'gallery.name DESC',
             ),
             '*',
