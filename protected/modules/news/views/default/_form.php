@@ -99,6 +99,6 @@ $this->widget(
 <?php
 $this->endWidget();
 if ($model->isNewRecord) {
-    $this->widget('ext.SyncTranslit.SyncTranslit', array('textAttribute' => 'Gallery_title'));
+    $this->widget('ext.syncTranslit.SyncTranslit', array('textAttribute' => 'Gallery_title'));
 }
 ?>

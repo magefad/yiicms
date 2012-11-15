@@ -18,5 +18,5 @@
 </div>
 <?php
 if ($model->isNewRecord) {
-    $this->widget('ext.SyncTranslit.SyncTranslit', array('textAttribute' => 'Page_title'));
+    $this->widget('ext.syncTranslit.SyncTranslit', array('textAttribute' => 'Page_title'));
 }
