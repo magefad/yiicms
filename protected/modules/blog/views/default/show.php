@@ -14,7 +14,7 @@ $this->breadcrumbs = array(
     $tagBreadcrumb
 );
 $this->widget(
-    'FadTbListView',
+    'bootstrap.widgets.TbListView',
     array(
         'dataProvider'       => $postsDataProvider,
         'enableHistory'      => true,

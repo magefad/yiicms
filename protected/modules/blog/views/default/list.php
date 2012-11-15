@@ -14,7 +14,7 @@ $this->menu = array(
 );
 
 $this->widget(
-    'FadTbListView',
+    'bootstrap.widgets.TbListView',
     array(
         'dataProvider'       => $dataProvider,
         'itemView'           => '_listView',
