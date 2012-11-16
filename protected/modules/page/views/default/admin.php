@@ -79,7 +79,7 @@ $('.search-form form').submit(function(){
             ),
             array(
                 'name'        => 'changeAuthor_search',
-                'value'       => '$data->changeAuthor->username',
+                'value'       => 'isset($data->changeAuthor->username) ? $data->changeAuthor->username : "-"',
                 'htmlOptions' => array('style' => 'width: 60px;text-align: center;'),
             ),
             array(
