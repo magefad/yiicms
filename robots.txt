@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /user/account/login
+Disallow: /user/account/registration
+Disallow: /search
+Disallow: /*sort=
