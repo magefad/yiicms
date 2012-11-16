@@ -32,7 +32,7 @@ class Create extends CAction
             try {
                 if ($model->tree->hasManyRoots == true) {
                     if ($model->root) {
-                        $_root = Menu::model()->findByPk((int)$model->root);
+                        $_root = CActiveRecord::model($this->modelName)->findByPk((int)$model->root);
                         if ($_root && $model->appendTo($_root)) {
                             $this->controller->redirect(array('admin'));
                         }
