@@ -39,7 +39,6 @@ class AdminModule extends WebModule
 
     public function init()
     {
-        parent::init();
         $this->setImport(
             array(
                 'admin.behaviors.*',
@@ -53,6 +52,7 @@ class AdminModule extends WebModule
             '',
             Yii::app()->request->getServerName()
         );
+        parent::init();
     }
 
     public function getModules()
