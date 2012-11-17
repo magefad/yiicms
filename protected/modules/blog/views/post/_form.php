@@ -43,8 +43,8 @@ $form = $this->beginWidget(
         <?php echo $form->error($model, 'publish_time'); ?>
     </div>
 </div>
-<?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 200)); ?>
-<?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 200)); ?>
+<?php echo $form->textFieldRow($model, 'title', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5')); ?>
 <?php $this->widget(
     'ext.tinymce.TinyMce',
     array(
@@ -75,9 +75,9 @@ $form = $this->beginWidget(
         <?php echo $form->error($model, 'publish_time'); ?>
     </div>
 </div>
-<?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>
+<?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5')); ?>
 <?php echo $form->textAreaRow($model, 'description', array('class' => 'span5')); ?>
-<?php echo $form->textFieldRow($model, 'link', array('class' => 'span5', 'maxlength' => 200)); ?>
+<?php echo $form->textFieldRow($model, 'link', array('class' => 'span5')); ?>
 <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 <?php echo $form->checkBoxRow($model, 'comment_status'); ?>
 <?php echo $form->dropDownListRow($model, 'access_type', $model->statusAccess->getList()); ?>

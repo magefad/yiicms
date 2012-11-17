@@ -33,11 +33,11 @@ $form = $this->beginWidget(
     </div>
     <?php endif; ?>
 <?php endif; ?>
-<?php echo $form->textFieldRow($model, 'title', array('maxlength' => 100)); ?>
+<?php echo $form->textFieldRow($model, 'title'); ?>
 <?php if ($root): ?>
-    <?php echo $form->textFieldRow($model, 'code', array('maxlength' => 20)); ?>
+    <?php echo $form->textFieldRow($model, 'code'); ?>
 <?php else: ?>
-    <?php echo $form->textFieldRow($model, 'href', array('maxlength' => 200)); ?>
+    <?php echo $form->textFieldRow($model, 'href'); ?>
 <?php endif; ?>
 <?php echo $form->dropDownListRow($model, 'access', $model->accessList, array('empty' => 'Все')); ?>
 <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>

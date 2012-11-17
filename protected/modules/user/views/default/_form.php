@@ -19,26 +19,26 @@ $form = $this->beginWidget(
 <p class="alert alert-info"><?php echo Yii::t('user', 'Поля, отмеченные <span class="required">*</span> обязательны для заполнения')?></p>
 <?php echo $form->errorSummary($model); ?>
 	<div>
-		<?php echo $form->textField($model, 'firstname', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('firstname'), 'maxlength' => 150)); ?>
+		<?php echo $form->textField($model, 'firstname', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('firstname'))); ?>
 		<?php echo $form->error($model, 'firstname'); ?>
 	</div>
 	<div>
-		<?php echo $form->textField($model, 'lastname', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('lastname'), 'maxlength' => 150)); ?>
+		<?php echo $form->textField($model, 'lastname', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('lastname'))); ?>
 		<?php echo $form->error($model, 'lastname'); ?>
 	</div>
 	<div>
-		<?php echo $form->textField($model, 'username', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('username'), 'maxlength' => 150)); ?>
+		<?php echo $form->textField($model, 'username', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('username'))); ?>
 		<span class="required">*</span>
 		<?php echo $form->error($model, 'username'); ?>
 	</div>
 	<div>
-		<?php echo $form->textField($model, 'email', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('email'), 'maxlength' => 150)); ?>
+		<?php echo $form->textField($model, 'email', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('email'))); ?>
 		<span class="required">*</span>
 		<?php echo $form->error($model, 'email'); ?>
 	</div>
 	<?php if ( $model->isNewRecord ) :?>
 	<div>
-		<?php echo $form->passwordField($model, 'password', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('password'), 'maxlength' => 32)); ?>
+		<?php echo $form->passwordField($model, 'password', array('class' => 'span4', 'placeholder' => $model->getAttributeLabel('password'))); ?>
 		<span class="required">*</span>
 		<?php echo $form->error($model, 'password'); ?>
 	</div>

@@ -21,7 +21,7 @@ $form = $this->beginWidget(
 <?php echo $form->dropDownListRow($model, 'blog_id', CHtml::listData(Blog::model()->findAll(), 'id', 'title')); ?>
 <?php echo $form->dropDownListRow($model, 'role', $model->getRoleList()); ?>
 <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
-<?php echo $form->textFieldRow($model, 'note', array('class' => 'span5', 'maxlength' => 255)); ?>
+<?php echo $form->textFieldRow($model, 'note', array('class' => 'span5')); ?>
 <div class="form-actions">
     <?php $this->widget(
     'bootstrap.widgets.TbButton',

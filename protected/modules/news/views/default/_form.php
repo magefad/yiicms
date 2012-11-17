@@ -41,8 +41,8 @@ $form = $this->beginWidget(
     </div>
     <?php echo $form->error($model, 'date'); ?>
 </div>
-<?php echo $form->textFieldRow($model, 'title', array('class' => 'span5', 'maxlength' => 200)); ?>
-<?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5', 'maxlength' => 200)); ?>
+<?php echo $form->textFieldRow($model, 'title', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'slug', array('class' => 'span5')); ?>
 
 <?php if ($model->image): ?>
 <p><?php echo CHtml::image($model->getThumbnailUrl()); ?></p>
@@ -84,8 +84,8 @@ $this->widget(
 <div>&nbsp;</div>
 <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 <?php echo $form->checkBoxRow($model, 'is_protected'); ?>
-<?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5', 'maxlength' => 200)); ?>
-<?php echo $form->textFieldRow($model, 'description', array('class' => 'span5', 'maxlength' => 250)); ?>
+<?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'description', array('class' => 'span5')); ?>
 <div class="form-actions">
     <?php $this->widget(
     'bootstrap.widgets.TbButton',

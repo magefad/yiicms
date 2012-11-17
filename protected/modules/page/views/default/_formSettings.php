@@ -5,8 +5,8 @@
  */
 ?>
 <div class="row-fluid">
-    <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span12', 'maxlength' => 200, 'placeholder' => Yii::t('page', 'Ключевые слова (словосочетания) рекоммендуется вводить через запятую'))); ?>
-    <?php echo $form->textFieldRow($model, 'description', array('class' => 'span12', 'maxlength' => 250)); ?>
+    <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span12', 'placeholder' => Yii::t('page', 'Ключевые слова (словосочетания) рекоммендуется вводить через запятую'))); ?>
+    <?php echo $form->textFieldRow($model, 'description', array('class' => 'span12')); ?>
 </div>
 <div class="row-fluid">
     <span class="span2">

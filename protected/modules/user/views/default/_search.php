@@ -19,20 +19,20 @@ echo '<p>' . Yii::t('user', 'Используйте символы');?> (<strong
 ?>
 
 <?php echo $form->textFieldRow($model, 'id', array('class' => 'span5', 'maxlength' => 10)); ?>
-<?php echo $form->textFieldRow($model, 'firstname', array('class' => 'span5', 'maxlength' => 150)); ?>
+<?php echo $form->textFieldRow($model, 'firstname', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'lastname', array('class' => 'span5', 'maxlength' => 150)); ?>
-<?php echo $form->textFieldRow($model, 'username', array('class' => 'span5', 'maxlength' => 150)); ?>
-<?php echo $form->textFieldRow($model, 'email', array('class' => 'span5', 'maxlength' => 150)); ?>
-<?php echo $form->textFieldRow($model, 'salt', array('class' => 'span5', 'maxlength' => 32)); ?>
+<?php echo $form->textFieldRow($model, 'username', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'email', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'salt', array('class' => 'span5')); ?>
 <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList()); ?>
 <?php echo $form->textFieldRow($model, 'access_level', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'last_visit', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'registration_date', array('class' => 'span5')); ?>
-<?php echo $form->textFieldRow($model, 'registration_ip', array('class' => 'span5', 'maxlength' => 20)); ?>
-<?php echo $form->textFieldRow($model, 'activation_ip', array('class' => 'span5', 'maxlength' => 20)); ?>
+<?php echo $form->textFieldRow($model, 'registration_ip', array('class' => 'span5')); ?>
+<?php echo $form->textFieldRow($model, 'activation_ip', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'avatar', array('class' => 'span5', 'maxlength' => 100)); ?>
 <?php echo $form->textFieldRow($model, 'use_gravatar', array('class' => 'span5')); ?>
-<?php echo $form->textFieldRow($model, 'activate_key', array('class' => 'span5', 'maxlength' => 32)); ?>
+<?php echo $form->textFieldRow($model, 'activate_key', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'email_confirm', array('class' => 'span5')); ?>
 <?php echo $form->textFieldRow($model, 'create_time', array('class' => 'span5', 'maxlength' => 19)); ?>
 <?php echo $form->textFieldRow($model, 'update_time', array('class' => 'span5', 'maxlength' => 19)); ?>
