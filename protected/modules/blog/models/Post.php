@@ -62,8 +62,9 @@ class Post extends CActiveRecord
         return array(
             array('blog_id, title, content, publish_time', 'required', 'except' => 'search'),
             array('blog_id, comment_status, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
-            array('title, keywords, slug, link', 'length', 'max' => 200),
-            array('description', 'length', 'max' => 255),
+            array('title, slug', 'length', 'max' => 75),
+            array('keywords, description, link', 'length', 'max' => 200),
+            array('slug', 'unique'), #slug is a URL address
             array('link', 'url'),
             array('comment_status', 'boolean'),
             array('access_type', 'in', 'range' => array_keys($this->statusAccess->getList())),

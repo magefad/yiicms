@@ -75,9 +75,10 @@ class News extends CActiveRecord
             array('create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('is_protected', 'boolean'),
-            array('title, keywords, slug', 'length', 'max' => 200),
+            array('title, slug', 'length', 'max' => 75),
+            array('keywords, description', 'length', 'max' => 200),
+            array('slug', 'unique'), #slug is a URL address
             array('content_short', 'length', 'max' => 400),
-            array('description', 'length', 'max' => 250),
             array('image', 'length', 'max' => 300),
             array('slug', 'unique'),
             array(

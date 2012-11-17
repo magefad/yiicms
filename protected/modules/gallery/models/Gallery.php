@@ -53,7 +53,9 @@ class Gallery extends CActiveRecord
         return array(
             array('title', 'required'),
             array('sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
-            array('title, keywords, slug', 'length', 'max' => 200),
+            array('title, slug', 'length', 'max' => 75),
+            array('keywords, description', 'length', 'max' => 200),
+            array('slug', 'unique'), #slug is a URL address
             array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('description', 'safe'),
             array('id, title, description, keywords, slug, status, sort_order, create_user_id, update_user_id, create_time, update_time', 'safe', 'on' => 'search'),

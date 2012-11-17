@@ -65,9 +65,9 @@ class Page extends CActiveRecord
             array('name, title, description, content, status', 'required'),
             array('parent_id, rich_editor, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
-            array('title, keywords, slug', 'length', 'max' => 200),
-            array('description', 'length', 'max' => 250),
-            array('slug', 'unique'), #sulug is a link of page
+            array('title, slug', 'length', 'max' => 75),
+            array('keywords, description', 'length', 'max' => 200),
+            array('slug', 'unique'), #slug is a link of page
             array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
             array('is_protected', 'boolean'),
             array('name, title, keywords, description, content, slug', 'filter', 'filter' => 'trim'),
