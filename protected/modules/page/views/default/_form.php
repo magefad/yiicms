@@ -12,7 +12,8 @@ $form = $this->beginWidget(
         'enableAjaxValidation'   => false,
         'enableClientValidation' => true,
         'clientOptions'          => array(
-            'validateOnSubmit' => true
+            'validateOnSubmit' => true,
+            'hideErrorMessage' => true
         )
     )
 );

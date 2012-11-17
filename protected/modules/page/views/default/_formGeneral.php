@@ -6,14 +6,26 @@
  */
 ?>
 <div class="row-fluid">
-    <span class="span3">
-        <?php echo $form->textFieldRow($model, 'name', array('style' => 'width: 100% !important')); ?>
+    <div class="span2 control-group">
+        <?php echo $form->textFieldRow($model, 'name', array('style' => 'width: 100%')); ?>
+    </div>
+    <div class="span4 control-group">
+        <?php echo $form->textFieldRow($model, 'title', array('style' => 'width: 100%')); ?>
+    </div>
+    <div class="span3 control-group">
+        <?php echo $form->textFieldRow($model, 'slug', array('style' => 'width: 100%')); ?>
+    </div>
+    <div class="span3 control-group">
+        <?php echo $form->textFieldRow($model, 'keywords', array('style' => 'width: 93%', 'placeholder' => Yii::t('page', 'Через запятую'))); ?>
+    </div>
+</div>
+<div class="row-fluid control-group">
+    <span class="span2">
+        <?php echo $form->labelEx($model, 'description', array('style' => 'width: 100%; padding-top: 5px; text-align: right')); ?>
     </span>
-    <span class="span4">
-        <?php echo $form->textFieldRow($model, 'title', array('style' => 'width: 100% !important')); ?>
-    </span>
-    <span class="span5">
-        <?php echo $form->textFieldRow($model, 'slug', array('style' => 'width: 90%')); ?>
+    <span class="span10">
+        <?php echo $form->textField($model, 'description', array('style' => 'width: 98%')); ?>
+        <?php echo $form->error($model, 'description'); ?>
     </span>
 </div>
 <?php

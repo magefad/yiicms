@@ -5,10 +5,6 @@
  */
 ?>
 <div class="row-fluid">
-    <?php echo $form->textFieldRow($model, 'keywords', array('class' => 'span12', 'placeholder' => Yii::t('page', 'Ключевые слова (словосочетания) рекоммендуется вводить через запятую'))); ?>
-    <?php echo $form->textFieldRow($model, 'description', array('class' => 'span12')); ?>
-</div>
-<div class="row-fluid">
     <span class="span2">
         <?php echo $form->dropDownListRow($model, 'parent_id', $model->treeArray->listData, array('style' => 'width: 100% !important;', 'empty' => Yii::t('page', '- нет родительской страницы -'))); ?>
     </span>
