@@ -111,6 +111,11 @@ class WebModule extends CWebModule
         );
     }
 
+    public function routes()
+    {
+        return array();
+    }
+
     /**
      * Read Settings from DB, if null - use default module property's
      */
