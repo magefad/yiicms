@@ -237,8 +237,9 @@ class Page extends CActiveRecord
         );
 
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-            'sort'     => $sort
+            'criteria'   => $criteria,
+            'pagination' => array('pageSize' => Yii::app()->getModule('page')->pageSize),
+            'sort'       => $sort
         ));
     }
 
