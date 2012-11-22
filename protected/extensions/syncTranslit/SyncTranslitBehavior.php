@@ -55,7 +55,7 @@ class SyncTranslitBehavior extends CActiveRecordBehavior
             'У' => 'U', 'у' => 'u',
             'Ф' => 'F', 'ф' => 'f',
             'Х' => 'H', 'х' => 'h',
-            'Ц' => 'Cz', 'ц' => 'cz',
+            'Ц' => 'C', 'ц' => 'c',
             'Ч' => 'Ch', 'ч' => 'ch',
             'Ш' => 'Sh', 'ш' => 'sh',
             'Щ' => 'Shh', 'щ' => 'shh',
