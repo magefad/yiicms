@@ -37,7 +37,12 @@ $this->widget(
     )
 );
 if ( $model->rich_editor) {
-    $this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'content', 'settings' => array('height' => 380, 'content_css' => Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css')));
+    #Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css')
+    $contentCss = array(Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css');
+    if (isset(Yii::app()->theme->baseUrl)) {
+        $contentCss[] = Yii::app()->theme->baseUrl . '/css/style.css';
+    }
+    $this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'content', 'settings' => array('height' => 380, 'content_css' => implode(',', $contentCss))));
 } else {
     echo $form->hiddenField($model, 'content');
     $this->widget('ext.aceEditor.AceEditor', array('model' => $model, 'attribute' => 'content'));
