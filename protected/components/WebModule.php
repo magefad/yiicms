@@ -121,19 +121,15 @@ class WebModule extends CWebModule
      */
     public function init()
     {
-        $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . Setting::model()->tableName(
-        ) . ' WHERE module_id="' . $this->getId() . '"');
-
-        $settings = Setting::model()->cache(3600, $dependency)->findAll(
-            'module_id = :module_id',
-            array('module_id' => $this->getId())
-        );
+        $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM {{settings}} WHERE module_id="' . $this->getId() . '"');
+        $sql = "SELECT `key`, `value` FROM {{settings}} WHERE module_id='{$this->id}'";
+        $settings = Yii::app()->db->cache(3000, $dependency)->createCommand($sql)->queryAll();
 
         if ($settings) {
             $settingKeys = array_keys($this->settingLabels);
-            foreach ($settings as $model) {
-                if (property_exists($this, $model->key) && (in_array($model->key, $settingKeys))) {
-                    $this->{$model->key} = $model->value;
+            foreach ($settings as $setting) {
+                if (property_exists($this, $setting['key']) && (in_array($setting['key'], $settingKeys))) {
+                    $this->{$setting['key']} = $setting['value'];
                 }
             }
         }

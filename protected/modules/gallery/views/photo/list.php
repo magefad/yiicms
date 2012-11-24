@@ -22,7 +22,7 @@ $photos        = new CActiveDataProvider('Photo', array(
 ));
 
 $this->widget(
-    'Galleria',
+    'ext.galleria.Galleria',
     array(
         'dataProvider'         => $photos,
         'imagePrefixSeparator' => '-',

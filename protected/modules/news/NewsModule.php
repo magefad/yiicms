@@ -6,6 +6,10 @@
  */
 class NewsModule extends WebModule
 {
+    public $urlRules = array(
+        'news/show/<slug:[\w\_-]+>' => 'news/default/show',
+    );
+
     /** @var string 'webroot/uploads/' . $uploadDir */
     public $uploadDir = 'news';
     public $uploadAllowExt = 'jpg,jpeg,gif,bmp,png';
