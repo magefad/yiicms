@@ -5,11 +5,11 @@ return CMap::mergeArray(
         'name'       => 'Fad cms',
         'theme'      => 'kotel',
         'components' => array(
-            'db' => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php'),
-            'cache'         => array(
+            'db'    => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php'),
+            'cache' => array(
                 'class' => 'CXCache',
             ),
-            'log'        => array(
+            'log'   => array(
                 'class'  => 'CLogRouter',
                 'routes' => array(
                     array(

@@ -47,8 +47,8 @@ return CMap::mergeArray(
                         #'showInFireBug' => true
                     ),*/
                     array(
-                        'class'         => 'CProfileLogRoute',
-                        'levels'        => 'profile',
+                        'class'  => 'CProfileLogRoute',
+                        'levels' => 'profile',
                     ),
                 ),
             ),
