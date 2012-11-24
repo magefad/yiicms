@@ -101,7 +101,7 @@ class TinyMce extends CInputWidget
         $this->settings['script_url'] = "{$this->assetsDir}/tiny_mce.js";
         if ($this->spellcheckerRoute !== false) {
             $this->settings['plugins'] .= ',spellchecker';
-            $this->settings['spellchecker_rpc_url'] = Yii::app()->createUrl($this->spellcheckerRoute);
+            $this->settings['spellchecker_rpc_url'] = $this->spellcheckerRoute;
         }
 
     }

@@ -26,9 +26,9 @@ class TinyMceController extends CController
                     'disk_cache' => true,
                 )
             ),
-            'spellchecker' => array(
+            /*'spellchecker' => array(
                 'class' => 'TinyMceSpellcheckerAction',
-            ),
+            ),*/
         );
     }
 }
