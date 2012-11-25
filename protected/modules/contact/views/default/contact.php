@@ -8,6 +8,7 @@ $this->breadcrumbs = array(
 );
 $pageSlug          = str_replace('page/', '', Yii::app()->request->getPathInfo()); //@todo BAD STR_REPLACE!!!
 /** @var $page Page */
+Yii::import('application.modules.page.models.*');
 $page         = Page::model()->findBySlug($pageSlug);
 $flashSuccess = (Yii::app()->user->hasFlash('success') == 1) ? true : false;
 ?>
@@ -20,6 +21,7 @@ $flashSuccess = (Yii::app()->user->hasFlash('success') == 1) ? true : false;
 
 <?php
 if ($page) {
+
     $this->pageTitle = $page->title;
     echo $page->content;
 }
