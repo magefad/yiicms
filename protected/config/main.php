@@ -51,7 +51,7 @@ return array(
             'widgets' => array(
                 'TinyMce'        => array(
                     'compressorRoute'    => 'tinyMce/compressor',
-                    'spellcheckerRoute'  => 'http://speller.yandex.net/services/tinyspell',
+                    'spellcheckerUrl'    => 'http://speller.yandex.net/services/tinyspell',
                     'fileManager'        => array(
                         'class'          => 'ext.elFinder.TinyMceElFinder',
                         'connectorRoute' => 'elfinder/connector',

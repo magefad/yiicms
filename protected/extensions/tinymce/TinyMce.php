@@ -2,12 +2,28 @@
 
 require_once(dirname(__FILE__) . '/TinyMceCompressorAction.php');
 
+/**
+ * @property
+ */
 class TinyMce extends CInputWidget
 {
     /** @var bool|string Route to compressor action */
     public $compressorRoute = false;
-    /** @var bool|string Route to spellchecker action */
+
+    /**
+     * @deprecated use spellcheckerUrl instead
+     * @var bool|string Route to spellchecker action
+     */
     public $spellcheckerRoute = false;
+
+    /**
+     * For example here could be url to yandex spellchecker service.
+     * http://speller.yandex.net/services/tinyspell
+     * More info about it here: http://api.yandex.ru/speller/doc/dg/tasks/how-to-spellcheck-tinymce.xml
+     *
+     * @var bool|string|array URL or an action route that can be used to create a URL or false if no url
+     */
+    public $spellcheckerUrl = false;
 
     private $assetsDir;
     /** @var bool|string Must be set to force widget language */
@@ -68,8 +84,7 @@ class TinyMce extends CInputWidget
         //'media_external_list_url' => "lists/media_list.js",
 
         // Replace values for the template plugin
-        'template_replace_values' => array(
-        ),
+        'template_replace_values' => array(),
 
 
     );
@@ -96,12 +111,15 @@ class TinyMce extends CInputWidget
             else
                 $this->settings['language'] = 'en';
         }
-        $this->settings['language']= strtr($this->settings['language'],'_','-');
+        $this->settings['language'] = strtr($this->settings['language'], '_', '-');
 
         $this->settings['script_url'] = "{$this->assetsDir}/tiny_mce.js";
-        if ($this->spellcheckerRoute !== false) {
+        if(false!==$this->spellcheckerRoute && false ===$this->spellcheckerUrl)
+            $this->spellcheckerUrl = Yii::app()->createUrl($this->spellcheckerRoute);
+
+        if ($this->spellcheckerUrl !== false) {
             $this->settings['plugins'] .= ',spellchecker';
-            $this->settings['spellchecker_rpc_url'] = $this->spellcheckerRoute;
+            $this->settings['spellchecker_rpc_url'] = CHtml::normalizeUrl($this->spellcheckerUrl);
         }
 
     }
@@ -117,7 +135,7 @@ class TinyMce extends CInputWidget
             $name = $this->htmlOptions['name'];
 
         if (isset($this->model)) {
-            echo CHtml::textArea($name, CHtml::resolveValue($this->model,$this->attribute), $this->htmlOptions);
+            echo CHtml::textArea($name, CHtml::resolveValue($this->model, $this->attribute), $this->htmlOptions);
         } else {
             echo CHtml::textArea($name, $this->value, $this->htmlOptions);
         }
@@ -137,6 +155,7 @@ class TinyMce extends CInputWidget
                 "themes" => $this->settings['theme'],
                 "languages" => $this->settings['language'],
                 'files' => 'jquery.tinymce',
+                'source' => defined('YII_DEBUG') && YII_DEBUG,
             )));
         }
         if ($this->fileManager !== false) {
