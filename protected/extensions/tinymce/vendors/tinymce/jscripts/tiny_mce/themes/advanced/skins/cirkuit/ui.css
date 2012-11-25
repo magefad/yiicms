@@ -134,7 +134,7 @@
 }
 
 .cirkuitSkin table.mceToolbar {
-	margin-left: 3px
+	/*margin-left: 3px*/
 }
 
 .cirkuitSkin span.mceIcon, .cirkuitSkin img.mceIcon {
@@ -162,10 +162,10 @@
 
 /* Button */
 .cirkuitSkin .mceButton {
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	-khtml-border-radius: 3px;
-	border-radius: 3px;
+	/*-moz-border-radius: 3px;*/
+	/*-webkit-border-radius: 3px;*/
+	/*-khtml-border-radius: 3px;*/
+	/*border-radius: 3px;*/
 	background-image: url("img/butt2.png");
 	background-position: left top;
 	background-repeat: repeat-x;
@@ -373,25 +373,25 @@
 }
 
 .cirkuitSkin .mceListBox a.mceText, .cirkuitSkin .mceSplitButton a.mceAction {
-	-moz-border-radius-bottomleft: 3px;
-	-webkit-border-bottom-left-radius: 3px;
-	-khtml-border-bottom-left-radius: 3px;
-	border-bottom-left-radius: 3px;
-	-moz-border-radius-topleft: 3px;
-	-webkit-border-top-left-radius: 3px;
-	-khtml-border-top-left-radius: 3px;
-	border-top-left-radius: 3px;
+	/*-moz-border-radius-bottomleft: 3px;*/
+	/*-webkit-border-bottom-left-radius: 3px;*/
+	/*-khtml-border-bottom-left-radius: 3px;*/
+	/*border-bottom-left-radius: 3px;*/
+	/*-moz-border-radius-topleft: 3px;*/
+	/*-webkit-border-top-left-radius: 3px;*/
+	/*-khtml-border-top-left-radius: 3px;*/
+	/*border-top-left-radius: 3px;*/
 }
 
 .cirkuitSkin .mceSplitButton a.mceOpen, .cirkuitSkin .mceListBox a.mceOpen {
-	-moz-border-radius-bottomright: 3px;
-	-webkit-border-bottom-right-radius: 3px;
-	-khtml-border-bottom-right-radius: 3px;
-	border-bottom-right-radius: 3px;
-	-moz-border-radius-topright: 3px;
-	-webkit-border-top-right-radius: 3px;
-	-khtml-border-top-right-radius: 3px;
-	border-top-right-radius: 3px;
+	/*-moz-border-radius-bottomright: 3px;*/
+	/*-webkit-border-bottom-right-radius: 3px;*/
+	/*-khtml-border-bottom-right-radius: 3px;*/
+	/*border-bottom-right-radius: 3px;*/
+	/*-moz-border-radius-topright: 3px;*/
+	/*-webkit-border-top-right-radius: 3px;*/
+	/*-khtml-border-top-right-radius: 3px;*/
+	/*border-top-right-radius: 3px;*/
 }
 
 .cirkuitSkin .mceSplitButton a.mceOpen:hover, .cirkuitSkin .mceSplitButtonSelected a.mceOpen, .cirkuitSkin table.mceSplitButtonEnabled:hover a.mceAction, .cirkuitSkin .mceSplitButton a.mceAction:hover {
