@@ -6,6 +6,7 @@
  * The followings are the available columns in table '{{page}}':
  * @property integer $id
  * @property integer $parent_id
+ * @property integer $level
  * @property string $name
  * @property string $title
  * @property string $keywords
@@ -63,7 +64,7 @@ class Page extends CActiveRecord
     {
         return array(
             array('name, title, description, content, status', 'required'),
-            array('parent_id, rich_editor, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
+            array('parent_id, level, rich_editor, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
             array('title, slug', 'length', 'max' => 75),
             array('keywords, description', 'length', 'max' => 200),
@@ -83,7 +84,7 @@ class Page extends CActiveRecord
                 'message' => Yii::t('page', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, parent_id, name, title, keywords, description, slug, content, status, sort_order, create_time, update_time, author_search, changeAuthor_search',
+                'id, parent_id, level, name, title, keywords, description, slug, content, status, sort_order, create_time, update_time, author_search, changeAuthor_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -103,12 +104,12 @@ class Page extends CActiveRecord
             'syncTranslit' => array(
                 'class' => 'ext.syncTranslit.SyncTranslitBehavior',
             ),
-            'sortable' => array(
-                'class' => 'application.components.behaviors.SortableBehavior',
-            ),
             'treeArray' => array(
                 'class' => 'application.components.behaviors.AdjacencyListBehavior',
                 'textAttribute' => 'name'
+            ),
+            'sortable' => array(
+                'class' => 'application.components.behaviors.SortableBehavior',
             ),
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior'
@@ -167,6 +168,7 @@ class Page extends CActiveRecord
         return array(
             'id'                  => Yii::t('page', 'ID'),
             'parent_id'           => Yii::t('page', 'Родитель'),
+            'level'               => Yii::t('page', 'Уровень вложенности'),
             'name'                => Yii::t('page', 'Название в меню'),
             'title'               => Yii::t('page', 'Заголовок (title)'),
             'keywords'            => Yii::t('page', 'META ключевые слова'),
@@ -206,6 +208,7 @@ class Page extends CActiveRecord
 
         $criteria->compare('id', $this->id, true);
         $criteria->compare('parent_id', $this->parent_id);
+        $criteria->compare('level', $this->level);
 
         $criteria->compare('t.name', $this->name, true);
         $criteria->compare('title', $this->title, true);
@@ -241,13 +244,5 @@ class Page extends CActiveRecord
             'pagination' => array('pageSize' => Yii::app()->getModule('page')->pageSize),
             'sort'       => $sort
         ));
-    }
-
-    /**
-     * @return string parent name
-     */
-    public function getParentName()
-    {
-        return is_null($this->parent) ? '---' : $this->parent->name;
     }
 }

@@ -142,7 +142,7 @@ class SortableBehavior extends CActiveRecordBehavior
             if ($max = Yii::app()->db->createCommand("SELECT MAX({$this->sortAttribute}) FROM {$this->owner->tableName()}")->queryScalar()) {
                 $this->owner->setAttribute($this->sortAttribute, $max + 1);
             }
-        } else {
+        } else if (!$this->owner->isNewRecord) {
             if ($this->owner->attributes[$this->sortAttribute] > $this->_sortCurrentValue) {
                 $this->owner->updateCounters(
                     array($this->sortAttribute => -1),
@@ -150,12 +150,20 @@ class SortableBehavior extends CActiveRecordBehavior
                     array('sortNewValue' => $this->owner->attributes[$this->sortAttribute], '_sortCurrentValue' => $this->_sortCurrentValue)
                 );
             } else if ($this->owner->attributes[$this->sortAttribute] < $this->_sortCurrentValue) {
+                $this->owner->setAttribute($this->sortAttribute, $this->owner->attributes[$this->sortAttribute] + 1);//fix to add AFTER ...
                 $this->owner->updateCounters(
                     array($this->sortAttribute => +1),
                     "{$this->sortAttribute} >= :sortNewValue AND {$this->sortAttribute} <= :_sortCurrentValue",
                     array('sortNewValue' => $this->owner->attributes[$this->sortAttribute], '_sortCurrentValue' => $this->_sortCurrentValue)
                 );
             }
+        } else {
+            $this->owner->setAttribute($this->sortAttribute, $this->owner->attributes[$this->sortAttribute] + 1);//fix to add AFTER ...
+            $this->owner->updateCounters(
+                array($this->sortAttribute => +1),
+                "{$this->sortAttribute} >= :sortNewValue",
+                array('sortNewValue' => $this->owner->attributes[$this->sortAttribute])
+            );
         }
         return parent::beforeSave($event);
     }

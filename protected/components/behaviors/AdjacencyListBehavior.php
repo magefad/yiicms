@@ -22,15 +22,48 @@ class AdjacencyListBehavior extends CActiveRecordBehavior
     public $parentAttribute = 'parent_id';
 
     /**
+     * @var string the name of the attribute that stores level
+     */
+    public $levelAttribute = 'level';
+
+    /**
      * @var string The name of the attribute that stores sort order.
      * Defaults to 'sort_order'
      */
     public $sortAttribute = 'sort_order';
 
     /**
+     * @var int
+     */
+    private $_parentIdCurrentValue;
+
+    /**
      * @var array list for CHtml::listData
      */
     private $_listData = array();
+
+    public function afterFind($event)
+    {
+        $this->_parentIdCurrentValue = (int)$this->owner->{$this->parentAttribute};
+        return parent::afterFind($event);
+    }
+
+    public function beforeSave($event)
+    {
+        if (!$this->owner->{$this->parentAttribute}) {
+            $this->owner->setAttribute($this->parentAttribute, null);
+        } else if ($this->_parentIdCurrentValue != $this->owner->attributes[$this->parentAttribute]) {
+            if ($parent = $this->owner->findByPk($this->owner->{$this->parentAttribute})) {
+                $this->owner->setAttribute($this->levelAttribute, $parent->{$this->levelAttribute} + 1);
+                if ($lastChildSortOrder = Yii::app()->db->createCommand("SELECT MAX({$this->sortAttribute}) FROM {$this->owner->tableName()} WHERE parent_id={$parent->primaryKey}")->queryScalar()) {
+                    $this->owner->setAttribute($this->sortAttribute, $lastChildSortOrder);
+                } else {
+                    $this->owner->setAttribute($this->sortAttribute, $parent->{$this->sortAttribute});
+                }
+            }
+        }
+        return parent::beforeSave($event);
+    }
 
     public function getListData($valueField = '', $textField = '')
     {

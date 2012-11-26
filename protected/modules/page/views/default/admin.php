@@ -16,7 +16,12 @@ $this->menu = array(
     array('icon' => 'file', 'label' => Yii::t('page', 'Добавить'), 'url' => array('create')),
     array('icon' => 'wrench', 'label' => Yii::t('page', 'Настройки'), 'url' => array('/admin/setting/update/page')),
 );
-
+Yii::app()->clientScript->registerCss('level', '
+td.level-2:before {content: "→ "}
+td.level-3:before {content: "—→ "}
+td.level-4:before {content: "——→ "}
+td.level-5:before {content: "———→ "}
+');
 Yii::app()->clientScript->registerScript(
     'search',
     "
@@ -48,21 +53,23 @@ $('.search-form form').submit(function(){
         'dataProvider' => $model->search(),
         'filter'       => $model,
         'columns'      => array(
-            array(
+            /*array(
                 'name'        => 'id',
-                'htmlOptions' => array('style' => 'width: 20px; text-align: center'),
-            ), //'update_user_id',
+                'cssClassExpression' => '"level-". $data->level',
+                'htmlOptions' => array('style' => 'width: 30px; text-align: center'),
+            ),*/ //'update_user_id',
             array(
                 'name'  => 'name',
                 'type'  => 'raw',
-                'value' => 'CHtml::link($data->name, array("update", "id" => $data->id))'
+                'value' => 'CHtml::link($data->name, array("update", "id" => $data->id))',
+                'cssClassExpression' => '"level-". $data->level',
             ),
-            array(
+            /*array(
                 'name'        => 'parent_id',
                 'value'       => '$data->parentName',
                 'filter'      => Page::model()->treeArray->listData,
                 'htmlOptions' => array('style' => 'width: 200px')
-            ), #'title',
+            ),*/ #'title',
             array(
                 'name'  => 'slug',
                 'type'  => 'raw',
@@ -70,7 +77,12 @@ $('.search-form form').submit(function(){
             ),
             array(
                 'name'        => 'create_time',
-                'value'       => 'date_format(date_create($data->create_time), "Y-m-d")',
+                'value'       => 'date_format(date_create($data->create_time), "d.m.Y")',
+                'htmlOptions' => array('style' => 'width:80px; text-align:center;'),
+            ),
+            array(
+                'name'        => 'update_time',
+                'value'       => 'date_format(date_create($data->update_time), "d.m.Y")',
                 'htmlOptions' => array('style' => 'width:80px; text-align:center;'),
             ),
             array(
