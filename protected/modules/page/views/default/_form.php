@@ -42,7 +42,7 @@ if ( $model->rich_editor) {
     if (isset(Yii::app()->theme->baseUrl)) {
         $contentCss[] = Yii::app()->theme->baseUrl . '/css/style.css';
     }
-    $this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'content', 'settings' => array('height' => 380, 'content_css' => implode(',', $contentCss))));
+    $this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'content', 'settings' => array('height' => 420, 'content_css' => implode(',', $contentCss))));
 } else {
     echo $form->hiddenField($model, 'content');
     $this->widget('ext.aceEditor.AceEditor', array('model' => $model, 'attribute' => 'content'));
@@ -66,6 +66,7 @@ $this->endWidget();
 Yii::app()->clientScript->registerScript(
     'page',
     '
+$("html, body").animate({scrollTop: $("#page-form").position().top-10}, "slow");
 $("#ajaxPreview").click(function(e) {
 	e.preventDefault();
 	$.ajax({
