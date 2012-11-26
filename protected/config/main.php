@@ -18,7 +18,6 @@ return array(
     // autoloading model and component classes
     'import'            => array(
         'application.components.*',
-        'application.components.behaviors.*',
         'application.modules.user.models.*',
         'application.modules.menu.models.*',
     ),
