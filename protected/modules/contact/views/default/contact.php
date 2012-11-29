@@ -3,36 +3,41 @@
  * @var $this Controller
  */
 $this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('contact', 'Контакты');
-$this->breadcrumbs = array(
-    Yii::t('contact', 'Контакты'),
-);
-$pageSlug          = str_replace('page/', '', Yii::app()->request->getPathInfo()); //@todo BAD STR_REPLACE!!!
-/** @var $page Page */
+$this->breadcrumbs = array(Yii::t('contact', 'Контакты'));
+
 Yii::import('application.modules.page.models.*');
-$page         = Page::model()->findBySlug($pageSlug);
-$flashSuccess = (Yii::app()->user->hasFlash('success') == 1) ? true : false;
-?>
-<?php if ($flashSuccess): ?>
-<div class="alert in alert-block fade alert-success">
-    <a class="close" data-dismiss="alert">×</a>
-    <?php echo Yii::app()->user->getFlash('success')?>
-</div>
-<?php endif; ?>
-
-<?php
-if ($page) {
-
-    $this->pageTitle = $page->title;
+$pageSlug = str_replace('page/', '', Yii::app()->request->getPathInfo());
+if ($page = Page::model()->findBySlug($pageSlug)) {
+    $this->pageTitle   = $page->title;
+    $this->keywords    = $page->keywords;
+    $this->description = $page->description;
     echo $page->content;
 }
 ?>
 
-<?php if (!$flashSuccess): ?>
+<?php if (Yii::app()->user->hasFlash('success')): ?>
+<?php
+    $this->beginWidget('bootstrap.widgets.TbHeroUnit', array('heading' => 'Спасибо!'));
+    echo '<p>' . Yii::app()->user->getFlash('success') . '</p><p>&nbsp;</p>';
+    $this->widget(
+        'bootstrap.widgets.TbButton',
+        array(
+            'type'  => 'primary',
+            'size'  => 'large',
+            'label' => 'Перейти на главную страницу',
+            'url'   => '/',
+        )
+    );
+    $this->endWidget();
+    ?>
+<?php else: ?>
 <p class="alert alert-info">Поля, отмеченные <span class="required">*</span>, обязательны для заполнения</p>
 <div class="form">
 	<?php
-	/** @var $model ContactForm */
-	/** @var $form TbActiveForm */
+	/**
+     * @var $model ContactForm
+     * @var $form TbActiveForm
+     */
 	$form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 	'id'                     => 'contact-form',
 	'type'					 => 'horizontal',
@@ -42,6 +47,7 @@ if ($page) {
 	'clientOptions'          => array(
 		'validateOnSubmit' => true,
 	),
+    'htmlOptions'            => array('class' => 'well'),
 )); ?>
     <fieldset>
         <?php echo $form->errorSummary($model); ?>
@@ -51,12 +57,7 @@ if ($page) {
         <?php echo $form->textFieldRow($model, 'phone', array('style' => 'margin-top:8px')); ?>
         <?php echo $form->textAreaRow($model, 'body'); ?>
         <?php if (CCaptcha::checkRequirements() && Yii::app()->getModule('contact')->captchaRequired): ?>
-        <?php echo $form->captchaRow(
-            $model,
-            'verifyCode',
-            array('class' => 'xlarge'),
-            array('clickableImage' => true, 'showRefreshButton' => 0)
-        ); ?>
+            <?php echo $form->captchaRow($model, 'verifyCode', array('class' => 'xlarge'), array('clickableImage' => true, 'showRefreshButton' => 0)); ?>
         <?php endif; ?>
     </fieldset>
     <div class="form-actions">
