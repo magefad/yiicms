@@ -20,8 +20,6 @@ class AdminModule extends WebModule
     {
         return array(
             'siteName'               => Yii::t('admin', 'Название сайта'),
-            'siteDescription'        => Yii::t('admin', 'Описание сайта'),
-            'siteKeywords'           => Yii::t('admin', 'Ключевые слова'),
             'cachingDuration'        => Yii::t('admin', 'Кэширование (сек.)'),
             'uploadDir'              => Yii::t('admin', 'Каталог для файлов'),
             'email'                  => Yii::t('admin', 'Email сайта'),
