@@ -8,6 +8,8 @@ class AdminModule extends WebModule
     public $cachingDuration = 3600;
     public $uploadDir = 'uploads';
     public $email;
+    /** @var string Google Analytics Accounte */
+    public $googleAnalyticsAccount = '';
 
     public function getName()
     {
@@ -17,12 +19,13 @@ class AdminModule extends WebModule
     public function getSettingLabels()
     {
         return array(
-            'siteName'        => Yii::t('admin', 'Название сайта'),
-            'siteDescription' => Yii::t('admin', 'Описание сайта'),
-            'siteKeywords'    => Yii::t('admin', 'Ключевые слова'),
-            'cachingDuration' => Yii::t('admin', 'Кэширование (сек.)'),
-            'uploadDir'       => Yii::t('admin', 'Каталог для файлов'),
-            'email'           => Yii::t('admin', 'Email сайта'),
+            'siteName'               => Yii::t('admin', 'Название сайта'),
+            'siteDescription'        => Yii::t('admin', 'Описание сайта'),
+            'siteKeywords'           => Yii::t('admin', 'Ключевые слова'),
+            'cachingDuration'        => Yii::t('admin', 'Кэширование (сек.)'),
+            'uploadDir'              => Yii::t('admin', 'Каталог для файлов'),
+            'email'                  => Yii::t('admin', 'Email сайта'),
+            'googleAnalyticsAccount' => Yii::t('admin', 'Аккаунт Google Analytics (UA-XXXXXX-X)')
         );
     }
 
@@ -39,19 +42,9 @@ class AdminModule extends WebModule
 
     public function init()
     {
-        $this->setImport(
-            array(
-                'admin.behaviors.*',
-                'admin.models.*',
-                'admin.components.*',
-            )
-        );
+        $this->setImport(array('admin.models.*'));
         $this->siteName = empty($this->siteName) ? Yii::app()->name : $this->siteName;
-        $this->email    = isset($this->email) ? $this->email : 'mail@' . str_replace(
-            'www.',
-            '',
-            Yii::app()->request->getServerName()
-        );
+        $this->email    = isset($this->email) ? $this->email : 'mail@' . str_replace('www.', '', Yii::app()->request->getServerName());
         parent::init();
     }
 
