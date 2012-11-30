@@ -79,15 +79,14 @@ class DefaultController extends Controller
                 Yii::app()->end();
             } else {
                 if ($model->save()) {
-                    $this->redirect(
-                        isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('view', 'id' => $model->id)
-                    );
+                    $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('view', 'id' => $model->id));
                 } else {
                     // @todo: what if save fails?
                 }
             }
+        } else {
+            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
         }
-        $this->render('create', array('model' => $model));
     }
 
     /**
