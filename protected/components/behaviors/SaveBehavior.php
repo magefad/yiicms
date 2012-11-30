@@ -61,6 +61,7 @@ class SaveBehavior extends CTimestampBehavior
     {
         $userId = Yii::app()->user->id;
         if ($this->owner->isNewRecord) {
+            unset($this->owner->{$this->updateAttribute});//need to work default sql value (ex. CURRENT_TIMESTAMP)
             if ($this->createAttribute !== null) {
                 $this->owner->{$this->createAttribute} = $this->getTimestampByAttribute($this->createAttribute);
             }
