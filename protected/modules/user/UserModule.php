@@ -2,8 +2,19 @@
 
 class UserModule extends WebModule
 {
+    /**
+     * @var int Minimum password length
+     */
     public $minPasswordLength = 3;
+
+    /**
+     * @var bool enable activation by email
+     */
     public $emailAccountVerification = true;
+
+    /**
+     * @var bool show captcha in registration fpr,
+     */
     public $showCaptcha = true;
     public $minCaptchaLength = 3;
     public $maxCaptchaLength = 6;
@@ -25,8 +36,36 @@ class UserModule extends WebModule
         return 'user';
     }
 
+    public function getSettingLabels()
+    {
+        return array(
+            'minPasswordLength'        => Yii::t('admin', 'Минимальная длина пароль'),
+            'emailAccountVerification' => Yii::t('admin', 'Включить активацию Email'),
+            'showCaptcha'              => Yii::t('admin', 'Включить Captcha в форме регистрации'),
+            'minCaptchaLength'         => Yii::t('admin', 'Минимальное число символов в Captcha'),
+            'maxCaptchaLength'         => Yii::t('admin', 'Максимальное число символов в Captcha')
+        );
+    }
+
+    public function getSettingData()
+    {
+        return array(
+            'emailAccountVerification' => array(
+                'data' => $this->getChoice(), //yes no
+                'tag'  => 'radioButtonListInline',
+            ),
+            'showCaptcha'              => array(
+                'data' => $this->getChoice(), //yes no
+                'tag'  => 'radioButtonListInline',
+            )
+        );
+    }
+
     public function init()
     {
+        parent::init();
+        /** @var $contact ContactModule */
+        $contact = Yii::app()->getModule('contact');//get EMAIL settings
         $this->setImport(
             array(
                 'user.models.*',
@@ -69,7 +108,6 @@ class UserModule extends WebModule
                 );
             }
         }
-
         //load EAuth components
         Yii::app()->setComponents(
             array(
@@ -84,7 +122,14 @@ class UserModule extends WebModule
                 ),
                 'mail'  => array(
                     'class'         => 'ext.mail.YiiMail',
-                    'transportType' => 'php',
+                    'transportType'    => $contact->smtpEnabled ? 'smtp' : 'php',
+                    'transportOptions' => array(
+                        'host'       => $contact->smtpHost,
+                        'username'   => $contact->smtpUserName,
+                        'password'   => $contact->smtpPassword,
+                        'port'       => $contact->smtpPort,
+                        'encryption' => $contact->smtpEncryption,
+                    ),
                     'viewPath'      => 'user.views.mail',
                     'logging'       => true,
                     'dryRun'        => false
