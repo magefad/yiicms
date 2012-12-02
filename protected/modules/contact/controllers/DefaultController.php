@@ -16,7 +16,7 @@ class DefaultController extends Controller
             // captcha action renders the CAPTCHA image displayed on the contact page
             'captcha' => array(
                 'class'     => 'CCaptchaAction',
-                'backColor' => 0xFFFFFF,
+                'backColor' => 0xf5f5f5,
             ),
         );
     }
