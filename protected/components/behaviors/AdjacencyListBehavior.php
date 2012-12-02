@@ -37,10 +37,6 @@ class AdjacencyListBehavior extends CActiveRecordBehavior
      */
     private $_parentIdCurrentValue;
 
-    /**
-     * @var array list for CHtml::listData
-     */
-    private $_listData = array();
 
     public function afterFind($event)
     {
@@ -52,6 +48,7 @@ class AdjacencyListBehavior extends CActiveRecordBehavior
     {
         if (!$this->owner->{$this->parentAttribute}) {
             $this->owner->setAttribute($this->parentAttribute, null);
+            $this->owner->setAttribute($this->levelAttribute, 0);
         } else if ($this->_parentIdCurrentValue != $this->owner->attributes[$this->parentAttribute]) {
             if ($parent = $this->owner->findByPk($this->owner->{$this->parentAttribute})) {
                 $this->owner->setAttribute($this->levelAttribute, $parent->{$this->levelAttribute} + 1);
@@ -69,30 +66,9 @@ class AdjacencyListBehavior extends CActiveRecordBehavior
     {
         $this->valueAttribute = empty($valueField) ? $this->owner->tableSchema->primaryKey : $valueField;
         $this->textAttribute  = empty($valueField) ? $this->textAttribute : $textField;
-
-        $this->_listData[] = array(
-            $this->valueAttribute => 0,
-            $this->textAttribute  => Yii::t('AdminModule.behavior', 'Корень')
-        );
-        $this->makeTreeData($this->makeTreeArray($this->getListArray()));
-        return CHtml::listData($this->_listData, $this->valueAttribute, $this->textAttribute);
+        //$this->makeTreeData($this->makeTreeArray($this->getListArray()));
+        return CHtml::listData($this->getListArray(), $this->valueAttribute, $this->textAttribute);
     }
-
-    public function makeTreeData($treeArray, $pass = 0, $space = '→ ')
-    {
-        foreach ($treeArray as $element) {
-            foreach ($element as $key => $value) {
-                if (!is_array($value) && $key == $this->textAttribute) {
-                    $element[$key] = str_repeat($space, $pass) . $value;
-                }
-            }
-            $this->_listData[] = array_diff_key($element, array('children' => 0));
-            if (array_key_exists('children', $element)) {
-                $this->makeTreeData($element['children'], $pass + 1);
-            }
-        }
-    }
-
 
     public function makeTreeArray(array &$listArray, $parentId = 0)
     {
@@ -105,19 +81,21 @@ class AdjacencyListBehavior extends CActiveRecordBehavior
                 }
                 $branch[$element[$this->owner->tableSchema->primaryKey]] = $element;
             }
-
         }
         return $branch;
     }
 
-    public function getListArray()
+    public function getListArray($space = '→ ', $level = true)
     {
-        $sql        = "SELECT {$this->owner->tableSchema->primaryKey}, {$this->valueAttribute}, {$this->textAttribute}, {$this->parentAttribute} FROM {$this->owner->tableName()} ORDER BY {$this->sortAttribute}";
+        $sql        = "SELECT {$this->owner->tableSchema->primaryKey}, {$this->valueAttribute}, {$this->textAttribute}, {$this->parentAttribute}, {$this->levelAttribute} FROM {$this->owner->tableName()} ORDER BY {$this->sortAttribute}";
         $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . $this->owner->tableName());
         $array      = Yii::app()->db->cache(1000, $dependency)->createCommand($sql)->queryAll();
 
         $listArray = array();
         foreach ($array as $data) {
+            if ($level) {
+                $data[$this->textAttribute] = str_repeat($space, $data[$this->levelAttribute]) . $data[$this->textAttribute];
+            }
             $listArray[$data[$this->owner->tableSchema->primaryKey]] = $data;
         }
         return $listArray;
