@@ -2,35 +2,30 @@
 /**
  * @var $model User
  * @var $form TbActiveForm
- * @var $this CController
+ * @var $this Controller
  */
 $this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('user', 'Вход');
-$this->breadcrumbs = array(
-    Yii::t('user', 'Вход'),
-);
-?>
-<?php
+$this->breadcrumbs = array(Yii::t('user', 'Вход'));
+
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
         'id'                     => 'login-form',
         'htmlOptions'            => array('class' => 'span3 offset4 well'),
         'enableClientValidation' => true,
-        #'focus'                  => array($model, 'username'),
-        'clientOptions'          => array(
-            'validateOnSubmit' => true,
-        ),
+        'focus'                  => array($model, 'username'),
+        'clientOptions'          => array('validateOnSubmit' => true)
     )
 ); ?>
-<div class="control-group">
-    <?php echo $form->textField($model, 'username', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('username'))); ?>
+<div class="control-group row-fluid">
+    <?php echo $form->textField($model, 'username', array('class' => 'span12', 'placeholder' => $model->getAttributeLabel('username'))); ?>
     <?php echo $form->error($model, 'username'); ?>
 </div>
-<div class="control-group">
-    <?php echo $form->passwordField($model, 'password', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('password'))); ?>
+<div class="control-group row-fluid">
+    <?php echo $form->passwordField($model, 'password', array('class' => 'span12', 'placeholder' => $model->getAttributeLabel('password'))); ?>
     <?php echo $form->error($model, 'password'); ?>
 </div>
-<div class="control-group">
+<div class="control-group row-fluid">
     <?php echo $form->checkBoxRow($model, 'rememberMe'); ?>
     <?php echo $form->error($model, 'rememberMe'); ?>
 </div>
@@ -40,7 +35,6 @@ $form = $this->beginWidget(
         'buttonType'  => 'submit',
         'type'        => 'info',
         'label'       => Yii::t('user', 'Войти'),
-        'htmlOptions' => array('class' => '')
     )
 ); ?>
 <?php $this->widget(
@@ -51,10 +45,11 @@ $form = $this->beginWidget(
         'label'       => Yii::t('user', 'Регистрация'),
         'htmlOptions' => array('style' => 'float:right')
     )
-); ?>
-<?php $this->endWidget(); ?>
-<style>.auth-service {margin-right: 0.5em;}</style>
+);
+$this->endWidget();
+Yii::app()->clientScript->registerCss('login-form', '.auth-service {margin-right: 0.2em;font-size: 12px}');
+?>
 <div class="span3 offset4 well">
-    <legend>Войти с помощью:</legend>
+    <legend><?php echo Yii::t('user', 'Войти с помощью:'); ?></legend>
     <?php $this->widget('application.modules.user.extensions.eauth.EAuthWidget', array('action' => 'account/login')); ?>
 </div>

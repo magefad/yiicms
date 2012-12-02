@@ -2,15 +2,10 @@
 /**
  * @var $model User
  * @var $form TbActiveForm
- * @var $this CController
+ * @var $this Controller
  */
 $this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('user', 'Регистрация');
-$this->breadcrumbs = array(
-    Yii::t('user', 'Регистрация'),
-);
-?>
-<div class="form">
-<?php
+$this->breadcrumbs = array(Yii::t('user', 'Регистрация'));
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
@@ -19,9 +14,7 @@ $form = $this->beginWidget(
         'focus'                  => array($model, 'username'),
         'enableAjaxValidation'   => true,
         'enableClientValidation' => true,
-        'clientOptions'          => array(
-            'validateOnSubmit' => true,
-        ),
+        'clientOptions'          => array('validateOnSubmit' => true),
         'htmlOptions'            => array('class' => 'span3 offset4 well'),
     )
 ); ?>
@@ -30,16 +23,16 @@ $form = $this->beginWidget(
     Регистрация
 </legend>
 <fieldset>
-<div class="control-group">
-    <?php echo $form->textField($model, 'username', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('username'))); ?>
+<div class="row-fluid control-group">
+    <?php echo $form->textField($model, 'username', array('class' => 'span12', 'placeholder' => $model->getAttributeLabel('username'))); ?>
     <?php echo $form->error($model, 'username'); ?>
 </div>
-<div class="control-group">
-    <?php echo $form->textField($model, 'email', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('email'))); ?>
+<div class="row-fluid control-group">
+    <?php echo $form->textField($model, 'email', array('class' => 'span12', 'placeholder' => $model->getAttributeLabel('email'))); ?>
     <?php echo $form->error($model, 'email'); ?>
 </div>
-<div class="control-group">
-    <?php echo $form->passwordField($model, 'password', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('password'))); ?>
+<div class="row-fluid control-group">
+    <?php echo $form->passwordField($model, 'password', array('class' => 'span12', 'placeholder' => $model->getAttributeLabel('password'))); ?>
     <?php echo $form->error($model, 'password'); ?>
 </div>
     <?php if (CCaptcha::checkRequirements()): ?>
@@ -51,8 +44,8 @@ $form = $this->beginWidget(
             'showRefreshButton'=> false,
     )); ?>
     </div>
-    <div class="control-group">
-        <?php echo $form->textField($model, 'verifyCode', array('class' => 'span3', 'placeholder' => $model->getAttributeLabel('verifyCode'))); ?>
+    <div class="row-fluid control-group">
+        <?php echo $form->textField($model, 'verifyCode', array('class' => 'span12', 'placeholder' => $model->getAttributeLabel('verifyCode'))); ?>
         <?php echo $form->error($model, 'verifyCode'); ?>
     </div>
     <?php endif; ?>
@@ -66,4 +59,3 @@ $form = $this->beginWidget(
     )
 ); ?>
 <?php $this->endWidget(); ?>
-</div>
