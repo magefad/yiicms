@@ -17,18 +17,17 @@ $this->widget(
         'fixed'        => false,
         'brand'        => CHtml::encode(Yii::app()->name),
         'brandUrl'     => '/',
-        'collapse'     => true, // requires bootstrap-responsive.css
         'items'        => array(
             array(
                 'class' => 'bootstrap.widgets.TbMenu',
-                'items' => Menu::model()->getItems('top'),
+                'items' => Menu::getItems('top'),
             ),
             '<form class="navbar-search pull-left" action=""><input type="text" class="search-query span2" placeholder="Что ищем?"></form>',
             array(
                 'class'       => 'bootstrap.widgets.TbMenu',
                 'htmlOptions' => array('class' => 'pull-right'),
                 'items'       => array_merge(
-                    Menu::model()->getItems('admin'),
+                    Menu::getItems('admin'),
                     array(
                         array(
                             'label'  => 'Войти',

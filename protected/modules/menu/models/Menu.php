@@ -197,13 +197,13 @@ class Menu extends CActiveRecord
      * @param string $code menu code
      * @return array items array for CMenu or bootstrap.widgets.TbMenu
      */
-    public function getItems($code)
+    public static function getItems($code)
     {
         $cacheKey = 'menu_'.$code;
         if (!Yii::app()->cache->get($cacheKey)) {
-            Yii::app()->cache->set($cacheKey, $this->getItemsFromDb($code));
+            Yii::app()->cache->set($cacheKey, self::getItemsFromDb($code));
         }
-        return $this->getUserItems(Yii::app()->cache->get($cacheKey));
+        return self::getUserItems(Yii::app()->cache->get($cacheKey));
     }
 
     /**
@@ -211,7 +211,7 @@ class Menu extends CActiveRecord
      * @param array $items
      * @return array $items
      */
-    private function getUserItems($items = array())
+    private static function getUserItems($items = array())
     {
         $requestUri = rtrim(Yii::app()->request->requestUri, '/');
         $count = count($items);
@@ -231,7 +231,7 @@ class Menu extends CActiveRecord
      * @param Menu $menu
      * @return array
      */
-    public function getItemsFromDb($code = null, $menu = null)
+    public static function getItemsFromDb($code = null, $menu = null)
     {
         $return = array();
         /** @var $menu Menu|NestedSetBehavior */
@@ -247,7 +247,7 @@ class Menu extends CActiveRecord
             $return[] = array(
                 'label'       => $item->title,
                 'url'         => $item->href,
-                'items'       => !$item->isLeaf() ? $this->getItemsFromDb(null, $item) : array(),
+                'items'       => !$item->isLeaf() ? self::getItemsFromDb(null, $item) : array(),
                 'access'      => $item->access,
             );
         }
