@@ -82,7 +82,27 @@ return array(
                 ),
             ),
         ),
-        'urlManager'    => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'urlManager.php'),
+        'urlManager'    => array(
+            'urlFormat'      => 'path',
+            'showScriptName' => false,
+            'cacheID'        => 'cache',
+            'rules'          => array_merge(
+                require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'urlRules.php'),
+                array(
+                    'gallery'                                                    => 'gallery/default/list',
+                    'album/<slug:[\w\_-]+>'                                      => 'gallery/photo/album',
+                    'page/<slug:[\w\_-]+>'                                       => 'page/default/show',
+                    'news/show/<slug:[\w\_-]+>'                                  => 'news/default/show',
+                    'blog/post/tag/<tag>'                                        => 'blog/post/tag',
+                    '<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>'        => '<module>/<controller>/<action>',
+                    '<module:\w+>/<controller:\w+>/<action:\w+>/<slug:[\w\_-]+>' => '<module>/<controller>/<action>',
+                    '<module:\w+>/<controller:\w+>/<action:\w+>'                 => '<module>/<controller>/<action>',
+                    '<controller:\w+>/<id:\d+>'                                  => '<controller>/view',
+                    '<controller:\w+>/<action:\w+>/<id:\d+>'                     => '<controller>/<action>',
+                    '<controller:\w+>/<action:\w+>'                              => '<controller>/<action>',
+                )
+            ),
+        ),
         'authManager'   => array(
             'class'           => 'RDbAuthManager',
             #default is Auth#'defaultRoles' => array('Guest'),

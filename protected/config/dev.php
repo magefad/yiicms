@@ -15,7 +15,6 @@ return CMap::mergeArray(
         ),
         // application components
         'components' => array(
-            'urlManager' => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'urlManager.php'),
             'db'         => array(
                 'connectionString'      => 'mysql:host=localhost;dbname=fadcms',
                 'emulatePrepare'        => true,
