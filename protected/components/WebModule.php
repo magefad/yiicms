@@ -6,9 +6,6 @@
  */
 class WebModule extends CWebModule
 {
-    const CHECK_ERROR  = 'error';
-    const CHECK_NOTICE = 'notice';
-
     const CHOICE_YES = 1;
     const CHOICE_NO  = 0;
 
@@ -121,9 +118,14 @@ class WebModule extends CWebModule
      */
     public function init()
     {
-        $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM {{settings}} WHERE module_id="' . $this->getId() . '"');
-        $sql = "SELECT `key`, `value` FROM {{settings}} WHERE module_id='{$this->id}'";
-        $settings = Yii::app()->db->cache(3000, $dependency)->createCommand($sql)->queryAll();
+        $cacheKey = 'settings_' . $this->id;
+        if (!$settings = Yii::app()->cache->get($cacheKey)) {
+            $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM {{settings}} WHERE module_id="' . $this->getId() . '"');
+            $sql = "SELECT `key`, `value` FROM {{settings}} WHERE module_id='{$this->id}'";
+            $settings = Yii::app()->db->cache(3000, $dependency)->createCommand($sql)->queryAll();
+            $settings = empty($settings) ? array('key' => null) : $settings;//yii bug - https://github.com/yiisoft/yii/issues/1406
+            Yii::app()->cache->set($cacheKey, $settings);
+        }
 
         if ($settings) {
             $settingKeys = array_keys($this->settingLabels);
@@ -133,6 +135,5 @@ class WebModule extends CWebModule
                 }
             }
         }
-        parent::init();
     }
 }
