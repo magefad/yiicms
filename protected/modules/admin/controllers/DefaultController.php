@@ -12,6 +12,6 @@ class DefaultController extends Controller
 
     public function actionIndex()
     {
-        $this->render('index', Yii::app()->getModule('admin')->getModules());
+        $this->render('index', $this->module->getModules());
     }
 }

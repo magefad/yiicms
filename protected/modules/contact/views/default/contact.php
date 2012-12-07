@@ -56,7 +56,7 @@ if ($page = Page::model()->findBySlug($pageSlug)) {
         <?php echo $form->textFieldRow($model, 'city'); ?>
         <?php echo $form->textFieldRow($model, 'phone', array('style' => 'margin-top:8px')); ?>
         <?php echo $form->textAreaRow($model, 'body'); ?>
-        <?php if (CCaptcha::checkRequirements() && Yii::app()->getModule('contact')->captchaRequired): ?>
+        <?php if (CCaptcha::checkRequirements() && $this->module->captchaRequired): ?>
             <?php echo $form->captchaRow($model, 'verifyCode', array('class' => 'xlarge'), array('clickableImage' => true, 'showRefreshButton' => 0)); ?>
         <?php endif; ?>
     </fieldset>

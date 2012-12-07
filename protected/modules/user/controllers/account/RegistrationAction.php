@@ -9,13 +9,12 @@ class RegistrationAction extends CAction
             $this->controller->redirect(Yii::app()->user->returnUrl);
         }
 
-        $module = Yii::app()->getModule('user');
         if (Yii::app()->request->isPostRequest && isset($_POST['RegistrationForm'])) {
             $form->setAttributes($_POST['RegistrationForm']);
             #print_r($_POST);
             if ($form->validate()) {
                 // если требуется активация по email
-                if ($module->emailAccountVerification) {
+                if ($this->controller->module->emailAccountVerification) {
                     $user = new User;
                     // скопируем данные формы
                     $data = $form->getAttributes();
@@ -65,7 +64,7 @@ class RegistrationAction extends CAction
             }
         }
 
-        $this->controller->render('registration', array('model' => $form, 'module' => $module));
+        $this->controller->render('registration', array('model' => $form));
     }
 
     /**

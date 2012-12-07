@@ -8,7 +8,7 @@
  * @var $this CController
  * @var $slug string
  */
-$_uploadDirUrl = '/' . $this->admin->uploadDir . '/' . Yii::app()->getModule('gallery')->uploadDir . '/' . $slug . '/';
+$_uploadDirUrl = '/' . $this->admin->uploadDir . '/' . $this->module->uploadDir . '/' . $slug . '/';
 $photos        = new CActiveDataProvider('Photo', array(
     'criteria'      => array(
         #'condition' => 'status=1',

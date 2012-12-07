@@ -4,6 +4,7 @@
  * User: fad
  * Date: 06.09.12
  * Time: 18:39
+ * @property ContactModule $module
  */
 class DefaultController extends Controller
 {
@@ -52,9 +53,10 @@ class DefaultController extends Controller
                 $message->subject = $model->subject;
                 $message->addTo($this->admin->email);
                 $message->setReplyTo($model->email);
-                if (Yii::app()->getModule('contact')->smtpEnabled) {
-                    $message->from = Yii::app()->getModule('contact')->smtpUserName;
-                } else if(Yii::app()->getModule('contact')->setFrom) {
+                
+                if ($this->module->smtpEnabled) {
+                    $message->from = $this->module->smtpUserName;
+                } else if($this->module->setFrom) {
                     $message->from = $this->admin->email;
                 }
                 if (Yii::app()->mail->send($message)) {
@@ -70,10 +72,10 @@ class DefaultController extends Controller
 
     public function actionFull()
     {
-        if (empty(Yii::app()->getModule('contact')->fullFormClass)) {
+        if (empty($this->module->fullFormClass)) {
             throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
         }
-        $modelName = Yii::app()->getModule('contact')->fullFormClass;
+        $modelName = $this->module->fullFormClass;
         $viewName  = strtolower($modelName[0]) . substr($modelName, 1);
         if (!empty($modelName) && class_exists($modelName)) {
             /** @var $model CActiveRecord */
@@ -88,14 +90,14 @@ class DefaultController extends Controller
                     $message->addTo($this->admin->email);
                     $message->setReplyTo($model->email);
 
-                    if (Yii::app()->getModule('contact')->smtpEnabled) {
-                        $message->from = Yii::app()->getModule('contact')->smtpUserName;
-                    } else if(Yii::app()->getModule('contact')->setFrom) {
+                    if ($this->module->smtpEnabled) {
+                        $message->from = $this->module->smtpUserName;
+                    } else if($this->module->setFrom) {
                         $message->from = $this->admin->email;
                     }
 
                     if (Yii::app()->mail->send($message)) {
-                        Yii::app()->user->setFlash('success', Yii::app()->getModule('contact')->fullFormMessage);
+                        Yii::app()->user->setFlash('success', $this->module->fullFormMessage);
                     }
                 }
             }
