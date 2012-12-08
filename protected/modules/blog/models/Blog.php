@@ -129,6 +129,12 @@ class Blog extends CActiveRecord
                 'condition' => 'status = :status',
                 'params'    => array(':status' => UserBlog::STATUS_ACTIVE)
             ),
+            'lastPostTime' => array(
+                self::STAT,
+                'Post',
+                'blog_id',
+                'select' => 'MAX(update_time)'
+            )
         );
     }
 
