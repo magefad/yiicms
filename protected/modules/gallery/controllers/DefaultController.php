@@ -26,7 +26,7 @@ class DefaultController extends Controller
 
     public function allowedActions()
     {
-        return 'list, show';
+        return 'list';
     }
 
     /**

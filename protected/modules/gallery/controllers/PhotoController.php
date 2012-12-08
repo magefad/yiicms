@@ -10,6 +10,14 @@ class PhotoController extends Controller
         return array('rights');
     }
 
+    /**
+     * @return string the actions that are always allowed separated by commas.
+     */
+    public function allowedActions()
+    {
+        return 'album';
+    }
+
     public function actions()
     {
         return array(
