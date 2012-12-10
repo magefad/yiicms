@@ -11,6 +11,7 @@ if ($page = Page::model()->findBySlug($pageSlug)) {
     $this->pageTitle   = $page->title;
     $this->keywords    = $page->keywords;
     $this->description = $page->description;
+    $this->breadcrumbs = null;
     echo $page->content;
 }
 ?>
