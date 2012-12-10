@@ -17,10 +17,10 @@ $this->menu = array(
     array('icon' => 'wrench', 'label' => Yii::t('page', 'Настройки'), 'url' => array('/admin/setting/update/page')),
 );
 Yii::app()->clientScript->registerCss('level', '
-td.level-1:before {content: "→ "}
-td.level-2:before {content: "—→ "}
-td.level-3:before {content: "——→ "}
-td.level-4:before {content: "———→ "}
+td.level-2:before {content: "→ "}
+td.level-3:before {content: "—→ "}
+td.level-4:before {content: "——→ "}
+td.level-5:before {content: "———→ "}
 ');
 Yii::app()->clientScript->registerScript(
     'search',

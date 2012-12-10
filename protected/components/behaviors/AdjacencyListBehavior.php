@@ -48,7 +48,7 @@ class AdjacencyListBehavior extends CActiveRecordBehavior
     {
         if (!$this->owner->{$this->parentAttribute}) {
             $this->owner->setAttribute($this->parentAttribute, null);
-            $this->owner->setAttribute($this->levelAttribute, 0);
+            $this->owner->setAttribute($this->levelAttribute, 1);
         } else if ($this->_parentIdCurrentValue != $this->owner->attributes[$this->parentAttribute]) {
             if ($parent = $this->owner->findByPk($this->owner->{$this->parentAttribute})) {
                 $this->owner->setAttribute($this->levelAttribute, $parent->{$this->levelAttribute} + 1);
