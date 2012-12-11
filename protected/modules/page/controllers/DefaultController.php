@@ -173,16 +173,13 @@ class DefaultController extends Controller
      */
     public function actionMceListUrl()
     {
-        $items      = Page::model()->findAll(array('select' => 'name, slug'));
+        $items      = Page::model()->findAll(array('select' => 'name, slug, level', 'order' => 'sort_order'));
         $output     = 'var tinyMCELinkList = new Array(' . "\n\t";
         $itemsCount = count($items);
         foreach ($items as $item) {
             $itemsCount--;
-            $endLine = ($itemsCount > 0 ? '/"],' : '/"]');
-            $output .= '["' . CHtml::encode($item->name) . '", "' . $this->createUrl(
-                '/page/default/show',
-                array('slug' => $item->slug)
-            ) . $endLine . "\n\t";
+            $endLine = ($itemsCount > 0 ? '"],' : '"]');
+            $output .= '["' . str_repeat('—', $item->level - 1) . CHtml::encode($item->name) . '", "' . $this->createUrl('/page/default/show', array('slug' => $item->slug)) . $endLine . "\n\t";
         }
         $output .= ');';
 
