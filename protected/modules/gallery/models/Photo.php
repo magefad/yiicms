@@ -83,9 +83,8 @@ class Photo extends CActiveRecord
             array('gallery_id', 'required'),
             array('gallery_id, type, sort_order, create_user_id, update_user_id', 'numerical', 'integerOnly' => true),
             array('name', 'length', 'max' => 50),
-            array('title, slug', 'length', 'max' => 75),
+            array('title', 'length', 'max' => 75),
             array('keywords, description', 'length', 'max' => 200),
-            array('slug', 'unique'), #slug is a URL address
             array('file_name', 'length', 'max' => 500),
             array('alt', 'length', 'max' => 100),
             array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
