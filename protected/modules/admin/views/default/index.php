@@ -35,13 +35,7 @@ foreach ($modules as $name => $module) {
     );
 }
 
-$dataProvider = new CArrayDataProvider($moduleRawData /*, array(
-	'sort'      => array(
-		'attributes' => array(
-			'id', 'name', 'description', 'author', 'authorEmail', 'url'
-		),
-	),
-)*/);
+$dataProvider = new CArrayDataProvider($moduleRawData, array('pagination' => false));
 $this->widget(
     'bootstrap.widgets.TbGridView',
     array(
