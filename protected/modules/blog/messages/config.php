@@ -3,14 +3,11 @@
  * Config for Translate Yii::t messages
  *
  * Example use (Windows):
- * Open CMD -> cd PATH_TO_MODULE_FOLDER -> enter "yiic message messages\config.php"
- * User: fad
- * Date: 25.09.12
- * Time: 13:25
+ * Open CMD -> cd PATH_TO_PROTECTED_FOLDER -> enter "yiic message modules/blog/messages/config.php"
  */
 return array(
-    'sourcePath'  => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'modules/blog',
-    'messagePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'modules/blog/messages',
+    'sourcePath'  => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
+    'messagePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'messages',
     'languages'   => array('en', 'ru'),
     'fileTypes'   => array('php'),
     'overwrite'   => true,
