@@ -28,8 +28,3 @@ $this->renderPartial(
     'application.modules.comment.views.default._formAjax',
     array('model' => $model->commentInstance)
 );
-
-Yii::app()->clientScript->registerCss(
-    'comment',
-    "#toggle-comment-form {font-size: 18px; cursor: pointer; border-bottom: 1px dotted;}"
-);

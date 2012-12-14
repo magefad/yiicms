@@ -12,7 +12,11 @@
 <?php } else { ?>
 <div id="comment-form-<?php echo $model->isNewRecord ? 'new' : 'edit-' . $model->id; ?>" class="form">
 <?php if ($model->isNewRecord): ?>
-    <span id="toggle-comment-form" onclick='$("#comment-form").toggle("fast")'><?php echo Yii::t('CommentModule.comment', 'Post Comment');?></span>
+    <p>
+        <button class="btn btn-small" type="button" id="toggle-comment-form" onclick='$("#comment-form").toggle("fast")'>
+            <i class="icon-arrow-down"></i><?php echo Yii::t('CommentModule.comment', 'Post Comment');?>
+        </button>
+    </p>
 <?php endif; ?>
     <?php $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
