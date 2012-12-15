@@ -44,10 +44,16 @@ class SettingController extends Controller
                 }
             }
             if ($valid) {
+                $errors = array();
                 foreach ($settings as $setting) {
-                    if ($setting->save()) {
-                        Yii::app()->user->setFlash('success', Yii::t('setting', 'Настройки сохранены!'));
+                    if (!$setting->save()) {
+                        $errors[] = $setting->getErrors();
                     }
+                }
+                if (count($errors)) {
+                    Yii::app()->user->setFlash('error', Yii::t('setting', 'Произошла ошибка при сохранении!') . implode('<br />', $errors));
+                } else {
+                    Yii::app()->user->setFlash('success', Yii::t('setting', 'Настройки сохранены!'));
                 }
             } else {
                 Yii::app()->user->setFlash('error', Yii::t('setting', 'Произошла ошибка при сохранении!'));

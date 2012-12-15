@@ -44,11 +44,11 @@ return CMap::mergeArray(
                     /*array(
                         'class' => 'CWebLogRoute',
                         #'showInFireBug' => true
-                    ),*/
+                    ),
                     array(
                         'class'  => 'CProfileLogRoute',
                         'levels' => 'profile',
-                    ),
+                    ),*/
                 ),
             ),
             'bootstrap'  => array(

@@ -136,6 +136,7 @@ class Setting extends CActiveRecord
         if (parent::beforeSave()) {
             Yii::app()->cache->delete("settings_{$this->module_id}");
         }
+        return true;
     }
 
     public function getSettings($module_id, $keys)
