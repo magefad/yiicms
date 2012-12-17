@@ -64,6 +64,12 @@ class DefaultController extends Controller
                 } else {
                     Yii::app()->user->setFlash('error', Yii::t('contact', 'Произошла проблема с отправкой письма! Обратитесь к администратоу: ' . $this->admin->email));
                 }
+                if (Yii::app()->request->isAjaxRequest) {
+                    foreach (Yii::app()->user->getFlashes() as $key => $message) {
+                        echo $message . PHP_EOL;
+                    }
+                    Yii::app()->end();
+                }
                 #$this->refresh();
             }
         }
