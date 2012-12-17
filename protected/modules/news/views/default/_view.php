@@ -9,7 +9,7 @@
     <?php echo CHtml::link(CHtml::image($thumbnailUrl, $data->title, array('class' => 'media-object img-rounded')), array('default/show', 'slug' => $data->slug), array('class' => 'pull-left'));?>
 <?php else: ?>
     <div class="well pull-left">
-        <?php echo CHtml::link(Yii::app()->name, array('default/show', 'slug' => $data->slug), array('class' => 'muted media-object')); ?>
+        <?php echo CHtml::link('<i class="icon-question-sign"></i>', array('default/show', 'slug' => $data->slug), array('class' => 'muted media-object')); ?>
     </div>
 <?php endif; ?>
     <div class="media-body">

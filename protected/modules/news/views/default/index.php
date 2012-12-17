@@ -17,7 +17,7 @@ h2.media-heading {
 }
 div.well {
     width: {$this->module->thumbMaxWidth}px;
-    height: 80px;
+    height: 62px;
     padding: 0 0 0 0;
     text-align: center;
     display: table;
