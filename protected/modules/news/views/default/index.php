@@ -2,34 +2,37 @@
 /**
  * @var $this Controller
  * @var $dataProvider CDataProvider
+ * @property $module NewsModule
  */
 $this->pageTitle = Yii::app()->name . ' — ' . Yii::t('news', 'Новости');
-$this->breadcrumbs = array(
-	Yii::t('news', 'Новости')
-);
+$this->breadcrumbs = array(Yii::t('news', 'Новости'));
 $css = <<<CSS
-.news-item {
-    margin-bottom: 30px;
-}
-.news-item img {
-    float: left;
-    padding-right: 10px;
-}
-.news-item h2 {
-    font-size: 1.5em;
+h2.media-heading {
+    font-size: 17.5px;
     line-height: 1;
-    margin: 0.2em;
 }
-.news-item .label {
+.media-body .label {
     font-size: 11px;
+    margin-bottom: 5px;
 }
-.news-item p {
-    margin-top: 5px;
+div.well {
+    width: {$this->module->thumbMaxWidth}px;
+    height: 80px;
+    padding: 0 0 0 0;
+    text-align: center;
+    display: table;
+}
+div.well a {
+    text-decoration: none;
+}
+div.well .media-object {
+    display: table-cell;
+    vertical-align: middle;
 }
 CSS;
 Yii::app()->clientScript->registerCss('news', $css);
 ?>
-<h1 style="margin:0"><?php echo Yii::t('news', 'Новости'); ?></h1>
+<h1 style="margin-top:0"><?php echo Yii::t('news', 'Новости'); ?></h1>
 <?php
 $this->menu = array(
 	array('label' => Yii::t('news', 'Новости')),
