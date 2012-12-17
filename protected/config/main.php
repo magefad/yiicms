@@ -58,7 +58,7 @@ return array(
                     ),
                     'settings'           => array(
                         'doctype'                           => '<!DOCTYPE html>',
-                        'extended_valid_elements'           => 'iframe[id|class|title|style|align|frameborder|height|longdesc|marginheight|marginwidth|name|scrolling|src|width],input[name|id|type|placeholder]',
+                        'extended_valid_elements'           => 'iframe[id|class|title|style|align|frameborder|height|longdesc|marginheight|marginwidth|name|scrolling|src|width],input[name|value|id|type|placeholder|required]',
                         'body_class'                        => 'container-fluid',
                         'width'                             => '100%',
                         'plugins'                           => 'autolink,lists,pagebreak,layer,table,save,advimage,advlink,inlinepopups,insertdatetime,media,searchreplace,contextmenu,paste,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,advlist',
