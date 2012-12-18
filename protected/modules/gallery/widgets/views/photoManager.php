@@ -12,11 +12,7 @@
         <span class="btn btn-success fileinput-button">
             <i class="icon-plus icon-white"></i>
             <?php echo Yii::t('gallery', 'Добавить фото…');?>
-            <?php echo CHtml::activeFileField(
-            $model,
-            'image',
-            array('class' => 'afile', 'accept' => "image/*", 'multiple' => 'true')
-        );?>
+            <?php echo CHtml::activeFileField($model, 'image', array('class' => 'afile', 'accept' => "image/*", 'multiple' => 'true'));?>
         </span>
 
         <span class="btn disabled edit_selected"><?php echo Yii::t('gallery', 'Изменить выбранные');?></span>
@@ -58,7 +54,6 @@
                 </div>
                 <div class="caption">
                     <h5><?php echo $photo->name ?></h5>
-
                     <p><?php echo $photo->description ?></p>
                 </div>
                 <div class="actions">

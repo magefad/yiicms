@@ -251,7 +251,7 @@ class Photo extends CActiveRecord
             foreach ($actions as $method => $args) {
                 # if it width >= version->width image no need to resize
                 if ($image->width >= $args['0']) {
-                    call_user_func_array(array($image, $method), $args);
+                    call_user_func_array(array($image, $method), is_array($args) ? $args : array($args));
                     $image->save($_uploadPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.' . $this->galleryExt);
                 }
             }
@@ -307,7 +307,7 @@ class Photo extends CActiveRecord
                 $_uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt
             );
             foreach ($actions as $method => $args) {
-                call_user_func_array(array($image, $method), $args);
+                call_user_func_array(array($image, $method), is_array($args) ? $args : array($args));
             }
             $image->save(
                 $_uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt

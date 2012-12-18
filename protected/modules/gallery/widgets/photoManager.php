@@ -50,21 +50,24 @@ class photoManager extends Widget
             throw new CException('$controllerRoute must be set.', 500);
         }
 
-        $opts = CJavaScript::encode(
-            array(
-                'hasName:'         => true,
-                'hasDesc:'         => true,
-                'uploadUrl'        => Yii::app()->createUrl(
-                    $this->controllerRoute . '/ajaxUpload',
-                    array('galleryId' => $this->galleryId)
-                ),
-                'deleteUrl'        => Yii::app()->createUrl($this->controllerRoute . '/ajaxDelete'),
-                'updateUrl'        => Yii::app()->createUrl($this->controllerRoute . '/changeData'),
-                'arrangeUrl'       => Yii::app()->createUrl($this->controllerRoute . '/order'),
-                'nameLabel'        => Yii::t('gallery', 'Название'),
-                'descriptionLabel' => Yii::t('gallery', 'Описание'),
-            )
+        $opts = array(
+            'hasName:'         => true,
+            'hasDesc:'         => true,
+            'uploadUrl'        => Yii::app()->createUrl(
+                $this->controllerRoute . '/ajaxUpload',
+                array('galleryId' => $this->galleryId)
+            ),
+            'deleteUrl'        => Yii::app()->createUrl($this->controllerRoute . '/ajaxDelete'),
+            'updateUrl'        => Yii::app()->createUrl($this->controllerRoute . '/changeData'),
+            'arrangeUrl'       => Yii::app()->createUrl($this->controllerRoute . '/order'),
+            'nameLabel'        => Yii::t('gallery', 'Название'),
+            'descriptionLabel' => Yii::t('gallery', 'Описание'),
         );
+        if (Yii::app()->request->enableCsrfValidation) {
+            $opts['csrfTokenName'] = Yii::app()->request->csrfTokenName;
+            $opts['csrfToken']     = Yii::app()->request->csrfToken;
+        }
+        $opts = CJavaScript::encode($opts);
         $src  = "$('#{$this->id}').galleryManager({$opts});";
         $cs->registerScript('galleryManager#' . $this->id, $src);
 
