@@ -8,35 +8,35 @@ Fad Yii Cms (dev)
 
 /protected/modules/
 
-      admin/        главная админки — список и настройки модулей, версия Yii, PHP
-      blog/         блог
-      comment/      поведение комментариев
-      contact/      обратная связь (поддержка отправки через SMTP)
-      gallery/      галерея (galleria frontend)
-      menu/         меню
-      news/         новости
-      page/         страницы
-      rights/       права доступа (yii-rights)
-      sitemap/      карта сайта (древовидный sitemap/, sitemap.xml)
-      social/       социальные сети (vk, facebook)
-      user/         пользователи (включает eauth, eoauth, lightopenid)
+      admin/            главная админки — список и настройки модулей, версия Yii, PHP
+      blog/             блог
+      comment/          поведение комментариев
+      contact/          обратная связь (поддержка отправки через SMTP)
+      gallery/          галерея (galleria frontend)
+      menu/             меню
+      news/             новости
+      page/             страницы
+      rights/           права доступа (yii-rights)
+      sitemap/          карта сайта (древовидный sitemap/, sitemap.xml)
+      social/           социальные сети (vk, facebook)
+      user/             пользователи (включает eauth, eoauth, lightopenid)
 
 РАСШИРЕНИЯ
 ------------
 
 /protected/extensions/
 
-      aceEditor/    редактор кода (виджет)
-      addThis/      социальные кнопки addThis (виджет)
-      bootstrap/    yiiBooster
-      elFinder/     файловый менеджер для tinyMce
-      galleria/     galleria
-      grid/         Nested Set GridView
-      image/        Kohana Image Library
-      jui/          DateTimePicker с выборкой времени
-      mail/         SwiftMailer
-      syncTranslit  поведение и виджет для транслита значений ActiveRecord
-      tinymce       WYSIWYG редактор
+      aceEditor/        редактор кода (виджет)
+      addThis/          социальные кнопки addThis (виджет)
+      bootstrap/        yiiBooster
+      elFinder/         файловый менеджер для tinyMce
+      galleria/         galleria
+      grid/             Nested Set GridView
+      image/            Kohana Image Library
+      jui/              DateTimePicker с выборкой времени
+      mail/             SwiftMailer
+      syncTranslit      поведение и виджет для транслита значений ActiveRecord
+      tinymce           WYSIWYG редактор
 
 /protected/modules/
 
@@ -48,31 +48,31 @@ Fad Yii Cms (dev)
 ПОЛЕЗНЫЕ ССЫЛКИ
 ------------
 
-Расширения fad yii cms
+### Расширения fad yii cms
 
-      aceEditor                 http://ace.ajax.org/
-      addThis                   http://www.addthis.com/
-      grid                      http://ludo.cubicphuse.nl/jquery-plugins/treeTable/doc/
-      jui                       http://trentrichardson.com/examples/timepicker/
-      syncTranslit              http://snowcore.net/synctranslit
+* [aceEditor](http://ace.ajax.org/)
+* [addThis](http://www.addthis.com/)
+* [grid](http://ludo.cubicphuse.nl/jquery-plugins/treeTable/doc/)
+* [jui](http://trentrichardson.com/examples/timepicker/)
+* [syncTranslit](http://snowcore.net/synctranslit)
 
-Сторонние расширения
+### Сторонние расширения
 
-      YiiBooster                http://yii-booster.clevertech.biz/
-      Yii-rights                http://www.yiiframework.com/extension/rights/
-      TinyMce                   http://www.yiiframework.com/extension/newtinymce/
-      elFinder                  http://elfinder.org/
-      Galleria                  http://www.yiiframework.com/extension/galleria/
-      Kohana Image Library      http://www.yiiframework.com/extension/image/
-      Yii EAuth extension       https://github.com/Nodge/yii-eauth)
-      loid extension            http://www.yiiframework.com/extension/loid
-      EOAuth extension          http://www.yiiframework.com/extension/eoauth
+* [YiiBooster](http://yii-booster.clevertech.biz/)
+* [Yii-rights](http://www.yiiframework.com/extension/rights/)
+* [TinyMce](http://www.yiiframework.com/extension/newtinymce/)
+* [elFinder](http://elfinder.org/)
+* [Galleria](http://www.yiiframework.com/extension/galleria/)
+* [Kohana Image Library](http://www.yiiframework.com/extension/image/)
+* [Yii EAuth extension](https://github.com/Nodge/yii-eauth))
+* [loid extension](http://www.yiiframework.com/extension/loid)
+* [EOAuth extension](http://www.yiiframework.com/extension/eoauth)
 
-Ресурсы
+### Ресурсы
 
-      Tiwtter Bootstrap         http://twitter.github.com/bootstrap/
-      RBAC                      http://en.wikipedia.org/wiki/Role-based_access_control
-      PSR-1/PSR-2               https://github.com/php-fig/fig-standards/blob/master/accepted/
+* [Tiwtter Bootstrap](http://twitter.github.com/bootstrap/)
+* [RBAC](http://en.wikipedia.org/wiki/Role-based_access_control)
+* [PSR-1/PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/)
 
 ПЛАНЫ
 ------------
