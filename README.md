@@ -1,78 +1,87 @@
-#Yii Based Mini CMS (Dev)
+Fad Yii Cms (dev)
+===================
 
-**What are using?**
+Easy CMS based on Yii (1.1.12) with the basic modules and extensions to start. Code style is PSR-1/PSR-2.
 
-* Yii 1.1.12
-* Tiwtter Bootstrap (http://www.yiiframework.com/extension/bootstrap/) (http://twitter.github.com/bootstrap/)
-* Rights module (http://www.yiiframework.com/extension/rights/) (http://en.wikipedia.org/wiki/Role-based_access_control)
-* TinyMce, elFinder (http://www.yiiframework.com/extension/newtinymce/) (http://www.tinymce.com/, http://elfinder.org/)
-* Galleria extension (http://www.yiiframework.com/extension/galleria/) (http://galleria.io/)
-* Image (Kohana Image Library) (http://www.yiiframework.com/extension/image/)
-* Yii EAuth extension (https://github.com/Nodge/yii-eauth)
-* loid extension (http://www.yiiframework.com/extension/loid)
-* EOAuth extension (http://www.yiiframework.com/extension/eoauth)
-* CJuiDateTimePicker extension (https://github.com/magefad/CJuiDateTimePicker)
+MODULES
+------------
 
-* PSR-1/PSR-2 Code style
+/protected/modules/
 
-**What is already there? (all as modules)**
+      admin/        admin main — list and settings modules, version of Yii and PHP
+      blog/         blog
+      comment/      comments behavior
+      contact/      feedback (support for sending via SMTP)
+      gallery/      gallery (galleria frontend)
+      menu/         menu
+      news/         news
+      page/         pages
+      rights/       rbac users (yii-rights)
+      sitemap/      sitemap (tree-like sitemap/, sitemap.xml)
+      social/       social networks  (vk, facebook)
+      user/         users (include eauth, eoauth, lightopenid)
 
-* Pages
-* Blogs (dev)
-* News
-* Photo Gallery
-* Users (now support eauth - in box facebook, vkontakte, yandex, google)
-* Users Rights (Yii-rights module)
-* Menu
-* Contact Form
-* Settings each module
+EXTENSIONS
+------------
 
-**Roadmap**
+/protected/extensions/
 
-* Comments
-* Change create forms to more usability
-* Change sourceLanguage=en, translate en to ru (messages)
-* Allow change page text directly on site (like google sites)
-* Block contents (like ModX)
-* Create templates for Rigts module
-* Installer
+      aceEditor/    code editor (widget)
+      addThis/      социальные кнопки addThis (widget)
+      bootstrap/    yiiBooster
+      elFinder/     file manager for tinyMce
+      galleria/     galleria
+      grid/         Nested Set GridView
+      image/        Kohana Image Library
+      jui/          DateTimePicker with timepicker
+      mail/         SwiftMailer
+      syncTranslit  behavior and widget for translit values (ActiveRecord)
+      tinymce       WYSIWYG editor
 
-**Что используется?**
+/protected/modules/
 
-* Yii 1.1.12
-* Tiwtter Bootstrap (http://www.yiiframework.com/extension/bootstrap/) (http://twitter.github.com/bootstrap/)
-* Rights extension (http://www.yiiframework.com/extension/rights/) (http://en.wikipedia.org/wiki/Role-based_access_control)
-* TinyMce, elFinder (http://www.yiiframework.com/extension/newtinymce/) (http://www.tinymce.com/, http://elfinder.org/)
-* Galleria (http://www.yiiframework.com/extension/galleria/) (http://galleria.io/)
-* Image (Kohana Image Library) (http://www.yiiframework.com/extension/image/)
-* Yii EAuth extension (https://github.com/Nodge/yii-eauth)
-* loid extension (http://www.yiiframework.com/extension/loid)
-* EOAuth extension (http://www.yiiframework.com/extension/eoauth)
-* CJuiDateTimePicker extension (https://github.com/magefad/CJuiDateTimePicker)
+      blog/extensions/taggable/     taggable Behavior
+      gallery/widgets/photoManager  photo manager
+      news/widgets/LastNews         latest news
+      user/extensions/eauth/        Yii EAuth extension
 
-**Что есть?**
+LINKS
+------------
 
-* страницы
-* блоги (dev)
-* новости
-* галерея фото (Galleria frontend)
-* пользователи (поддержка авторизации eauth - из коробки facebook, vkontakte, yandex, google)
-* права доступа пользователям (Yii Rights)
-* меню
-* обратная связь
-* настройки модулей, перечисленных выше
-* PSR-1/PSR-2
+Extensions of fad yii cms
 
-**Что планируется?**
+      aceEditor                 http://ace.ajax.org/
+      addThis                   http://www.addthis.com/
+      grid                      http://ludo.cubicphuse.nl/jquery-plugins/treeTable/doc/
+      jui                       http://trentrichardson.com/examples/timepicker/
+      syncTranslit              http://snowcore.net/synctranslit
 
-* блоги
-* комментарии к любой сущности (страницы, новости, записи блога etc.)
-* авторизация через популярные сервисы (вконтакте, facebook, google etc.)
-* большая переработка формы создания/обновления страницы
-* Переход на sourceLanguage=en
-* возможность изменять страницу прямо на сайте (подобно Google Sites)
-* создание нечто блоков контента (подобно ModX)
-* создание шаблонов для управления правами пользователей (Rights ext) под CMS
-* инсталлятор
+Party extensions
 
-Список будет пополняться и обновляться
+      YiiBooster                http://yii-booster.clevertech.biz/
+      Yii-rights                http://www.yiiframework.com/extension/rights/
+      TinyMce                   http://www.yiiframework.com/extension/newtinymce/
+      elFinder                  http://elfinder.org/
+      Galleria                  http://www.yiiframework.com/extension/galleria/
+      Kohana Image Library      http://www.yiiframework.com/extension/image/
+      Yii EAuth extension       https://github.com/Nodge/yii-eauth)
+      loid extension            http://www.yiiframework.com/extension/loid
+      EOAuth extension          http://www.yiiframework.com/extension/eoauth
+
+Resources
+
+      Tiwtter Bootstrap         http://twitter.github.com/bootstrap/
+      RBAC                      http://en.wikipedia.org/wiki/Role-based_access_control
+      PSR-1/PSR-2               https://github.com/php-fig/fig-standards/blob/master/accepted/
+
+WHAT's NEXT
+------------
+
+* **create website and community**
+* switch to sourceLanguage = en (~15%)
+* creating something blocks of content (like ModX)
+* creation of templates to manage user (Rights ext) under CMS
+* installator
+* possibility to edit the page directly on the site (like Google Sites)
+
+I will appreciate any help in improving the project, and, of course, pull request's.
