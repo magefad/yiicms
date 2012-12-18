@@ -210,8 +210,8 @@ class News extends CActiveRecord
                 $this->image = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.jpg';
                 $this->setImage($imageFile->getTempName(), $uploadPath);
             }
-            return true;
         }
+        return true;
     }
 
     public function beforeDelete()
