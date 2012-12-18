@@ -31,83 +31,92 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h1>Yii Based Mini CMS (Dev)</h1>
+        <h1>Fad Yii Cms (dev)</h1>
 
-<p><strong>What are using?</strong></p>
+<p>Easy CMS based on Yii (1.1.12) with the basic modules and extensions to start. Code style is PSR-1/PSR-2.</p>
 
-<ul>
-<li>Yii 1.1.12</li>
-<li>Tiwtter Bootstrap (<a href="http://www.yiiframework.com/extension/bootstrap/">http://www.yiiframework.com/extension/bootstrap/</a>) (<a href="http://twitter.github.com/bootstrap/">http://twitter.github.com/bootstrap/</a>)</li>
-<li>Rights module (<a href="http://www.yiiframework.com/extension/rights/">http://www.yiiframework.com/extension/rights/</a>) (<a href="http://en.wikipedia.org/wiki/Role-based_access_control">http://en.wikipedia.org/wiki/Role-based_access_control</a>)</li>
-<li>TinyMce, elFinder (<a href="http://www.yiiframework.com/extension/newtinymce/">http://www.yiiframework.com/extension/newtinymce/</a>) (<a href="http://www.tinymce.com/">http://www.tinymce.com/</a>, <a href="http://elfinder.org/">http://elfinder.org/</a>)</li>
-<li>Galleria extension (<a href="http://www.yiiframework.com/extension/galleria/">http://www.yiiframework.com/extension/galleria/</a>) (<a href="http://galleria.io/">http://galleria.io/</a>)</li>
-<li>Image (Kohana Image Library) (<a href="http://www.yiiframework.com/extension/image/">http://www.yiiframework.com/extension/image/</a>)</li>
-<li>Yii EAuth extension (<a href="https://github.com/Nodge/yii-eauth">https://github.com/Nodge/yii-eauth</a>)</li>
-<li>loid extension (<a href="http://www.yiiframework.com/extension/loid">http://www.yiiframework.com/extension/loid</a>)</li>
-<li>EOAuth extension (<a href="http://www.yiiframework.com/extension/eoauth">http://www.yiiframework.com/extension/eoauth</a>)</li>
-<li><p>CJuiDateTimePicker extension (<a href="https://github.com/magefad/CJuiDateTimePicker">https://github.com/magefad/CJuiDateTimePicker</a>)</p></li>
-<li><p>PSR-1/PSR-2 Code style</p></li>
-</ul><p><strong>What is already there? (all as modules)</strong></p>
+<h2>MODULES</h2>
 
-<ul>
-<li>Pages</li>
-<li>Blogs (dev)</li>
-<li>News</li>
-<li>Photo Gallery</li>
-<li>Users (now support eauth - in box facebook, vkontakte, yandex, google)</li>
-<li>Users Rights (Yii-rights module)</li>
-<li>Menu</li>
-<li>Contact Form</li>
-<li>Settings each module</li>
-</ul><p><strong>Roadmap</strong></p>
+<p>/protected/modules/</p>
 
-<ul>
-<li>Comments</li>
-<li>Change create forms to more usability</li>
-<li>Change sourceLanguage=en, translate en to ru (messages)</li>
-<li>Allow change page text directly on site (like google sites)</li>
-<li>Block contents (like ModX)</li>
-<li>Create templates for Rigts module</li>
-<li>Installer</li>
-</ul><p><strong>Что используется?</strong></p>
+<pre><code>  admin/            admin main — list and settings modules, version of Yii and PHP
+  blog/             blog
+  comment/          comments behavior
+  contact/          feedback (support for sending via SMTP)
+  gallery/          gallery (galleria frontend)
+  menu/             menu
+  news/             news
+  page/             pages
+  rights/           rbac users (yii-rights)
+  sitemap/          sitemap (tree-like sitemap/, sitemap.xml)
+  social/           social networks  (vk, facebook)
+  user/             users (include eauth, eoauth, lightopenid)
+</code></pre>
 
-<ul>
-<li>Yii 1.1.12</li>
-<li>Tiwtter Bootstrap (<a href="http://www.yiiframework.com/extension/bootstrap/">http://www.yiiframework.com/extension/bootstrap/</a>) (<a href="http://twitter.github.com/bootstrap/">http://twitter.github.com/bootstrap/</a>)</li>
-<li>Rights extension (<a href="http://www.yiiframework.com/extension/rights/">http://www.yiiframework.com/extension/rights/</a>) (<a href="http://en.wikipedia.org/wiki/Role-based_access_control">http://en.wikipedia.org/wiki/Role-based_access_control</a>)</li>
-<li>TinyMce, elFinder (<a href="http://www.yiiframework.com/extension/newtinymce/">http://www.yiiframework.com/extension/newtinymce/</a>) (<a href="http://www.tinymce.com/">http://www.tinymce.com/</a>, <a href="http://elfinder.org/">http://elfinder.org/</a>)</li>
-<li>Galleria (<a href="http://www.yiiframework.com/extension/galleria/">http://www.yiiframework.com/extension/galleria/</a>) (<a href="http://galleria.io/">http://galleria.io/</a>)</li>
-<li>Image (Kohana Image Library) (<a href="http://www.yiiframework.com/extension/image/">http://www.yiiframework.com/extension/image/</a>)</li>
-<li>Yii EAuth extension (<a href="https://github.com/Nodge/yii-eauth">https://github.com/Nodge/yii-eauth</a>)</li>
-<li>loid extension (<a href="http://www.yiiframework.com/extension/loid">http://www.yiiframework.com/extension/loid</a>)</li>
-<li>EOAuth extension (<a href="http://www.yiiframework.com/extension/eoauth">http://www.yiiframework.com/extension/eoauth</a>)</li>
-<li>CJuiDateTimePicker extension (<a href="https://github.com/magefad/CJuiDateTimePicker">https://github.com/magefad/CJuiDateTimePicker</a>)</li>
-</ul><p><strong>Что есть?</strong></p>
+<h2>EXTENSIONS</h2>
+
+<p>/protected/extensions/</p>
+
+<pre><code>  aceEditor/        code editor (widget)
+  addThis/          social buttons from addThis (widget)
+  bootstrap/        yiiBooster
+  elFinder/         file manager for tinyMce
+  galleria/         galleria
+  grid/             Nested Set GridView
+  image/            Kohana Image Library
+  jui/              DateTimePicker with timepicker
+  mail/             SwiftMailer
+  syncTranslit      behavior and widget for translit values (ActiveRecord)
+  tinymce           WYSIWYG editor
+</code></pre>
+
+<p>/protected/modules/</p>
+
+<pre><code>  blog/extensions/taggable/     taggable Behavior
+  gallery/widgets/photoManager  photo manager
+  news/widgets/LastNews         latest news
+  user/extensions/eauth/        Yii EAuth extension
+</code></pre>
+
+<h2>LINKS</h2>
+
+<h3>Extensions of fad yii cms</h3>
 
 <ul>
-<li>страницы</li>
-<li>блоги (dev)</li>
-<li>новости</li>
-<li>галерея фото (Galleria frontend)</li>
-<li>пользователи (поддержка авторизации eauth - из коробки facebook, vkontakte, yandex, google)</li>
-<li>права доступа пользователям (Yii Rights)</li>
-<li>меню</li>
-<li>обратная связь</li>
-<li>настройки модулей, перечисленных выше</li>
-<li>PSR-1/PSR-2</li>
-</ul><p><strong>Что планируется?</strong></p>
+<li><a href="http://ace.ajax.org/">aceEditor</a></li>
+<li><a href="http://www.addthis.com/">addThis</a></li>
+<li><a href="http://ludo.cubicphuse.nl/jquery-plugins/treeTable/doc/">grid</a></li>
+<li><a href="http://trentrichardson.com/examples/timepicker/">jui</a></li>
+<li><a href="http://snowcore.net/synctranslit">syncTranslit</a></li>
+</ul><h3>Party extensions</h3>
 
 <ul>
-<li>блоги</li>
-<li>комментарии к любой сущности (страницы, новости, записи блога etc.)</li>
-<li>авторизация через популярные сервисы (вконтакте, facebook, google etc.)</li>
-<li>большая переработка формы создания/обновления страницы</li>
-<li>Переход на sourceLanguage=en</li>
-<li>возможность изменять страницу прямо на сайте (подобно Google Sites)</li>
-<li>создание нечто блоков контента (подобно ModX)</li>
-<li>создание шаблонов для управления правами пользователей (Rights ext) под CMS</li>
-<li>инсталлятор</li>
-</ul><p>Список будет пополняться и обновляться</p>
+<li><a href="http://yii-booster.clevertech.biz/">YiiBooster</a></li>
+<li><a href="http://www.yiiframework.com/extension/rights/">Yii-rights</a></li>
+<li><a href="http://www.yiiframework.com/extension/newtinymce/">TinyMce</a></li>
+<li><a href="http://elfinder.org/">elFinder</a></li>
+<li><a href="http://www.yiiframework.com/extension/galleria/">Galleria</a></li>
+<li><a href="http://www.yiiframework.com/extension/image/">Kohana Image Library</a></li>
+<li>
+<a href="https://github.com/Nodge/yii-eauth">Yii EAuth extension</a>)</li>
+<li><a href="http://www.yiiframework.com/extension/loid">loid extension</a></li>
+<li><a href="http://www.yiiframework.com/extension/eoauth">EOAuth extension</a></li>
+</ul><h3>Resources</h3>
+
+<ul>
+<li><a href="http://twitter.github.com/bootstrap/">Tiwtter Bootstrap</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Role-based_access_control">RBAC</a></li>
+<li><a href="https://github.com/php-fig/fig-standards/blob/master/accepted/">PSR-1/PSR-2</a></li>
+</ul><h2>WHAT's NEXT</h2>
+
+<ul>
+<li><strong>create website and community</strong></li>
+<li>switch to sourceLanguage = en (~15%)</li>
+<li>creating something blocks of content (like ModX)</li>
+<li>creation of templates to manage user (Rights ext) under CMS</li>
+<li>installator</li>
+<li>possibility to edit the page directly on the site (like Google Sites)</li>
+</ul><p>I will appreciate any help in improving the project, and, of course, pull request's.</p>
       </section>
     </div>
 
