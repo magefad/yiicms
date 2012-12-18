@@ -205,12 +205,11 @@ class DefaultController extends Controller
      * If the data model is not found, an HTTP exception will be raised.
      * @param $id
      * @throws CHttpException
-     * @internal param \the $integer ID of the model to be loaded
      * @return Page
      */
     public function loadModel($id)
     {
-        $model = Page::model()->with('author', 'changeAuthor')->findByPk($id);
+        $model = Page::model()->findByPk($id);
         if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
