@@ -20,7 +20,6 @@ return array(
         'application.components.*',
         'application.modules.user.models.*',
         'application.modules.menu.models.*',
-        'application.modules.rights.RightsModule'//rights bug http://code.google.com/p/yii-rights/issues/detail?id=50
     ),
     'modules'           => array('user', 'menu', 'page', 'news', 'contact', 'gallery', 'blog', 'social', 'comment', 'sitemap', 'admin', 'rights'),
     // application components
