@@ -50,11 +50,28 @@ class DefaultController extends Controller
             $this->redirect(Yii::app()->user->loginUrl);
         }
         $this->setMetaTags($page);
-        if ((int)$page->parent_id) {
+        if ($page->level > 1) {
             $this->breadcrumbs = $this->getPageBreadCrumbs($page->parent);
             array_push($this->breadcrumbs, $page->title);
+            $navigation = Yii::app()->db->createCommand(
+                "SELECT name, title, slug, sort_order FROM {{page}} WHERE (sort_order=" . ($page->sort_order - 1) . " OR sort_order=" . ($page->sort_order + 1) . ") AND level={$page->level}"
+            )->queryAll();
+            if ($navigationCount = count($navigation)) {
+                if ($navigationCount === 1) {
+                    if ($navigation['0']['sort_order'] > $page->sort_order) {
+                        $navigation['next'] = $navigation['0'];
+                    } else {
+                        $navigation['prev'] = $navigation['0'];
+                    }
+                } else {
+                    $navigation['prev'] = $navigation['0'];
+                    $navigation['next'] = $navigation['1'];
+                    unset($navigation['1']);
+                }
+                unset($navigation['0']);
+            }
         }
-        $this->render('show', array('page' => $page));
+        $this->render('show', array('page' => $page, 'navigation' => isset($navigation) ? $navigation : array()));
     }
 
     /**
