@@ -17,7 +17,7 @@ if (isset($bind)) {
         $imageSrc      = $srcPrefix . $imageName;
         $imageSrcThumb = $srcPrefixThumb ? $srcPrefixThumb . $imageName : $imageSrc;
 
-        echo CHtml::link(CHtml::image($imageSrcThumb, $alt, $htmlOptions), $imageSrc);
+        echo CHtml::link(CHtml::image($imageSrcThumb, $alt, $htmlOptions), $imageSrc, $htmlOptions);
     }
 }
 echo "</div>";
