@@ -6,7 +6,7 @@
  * @var $this Controller
  */
 /** @var $page array */
-echo $page['content'];
+echo $this->decodeWidgets($page['content']);
 if (!empty($navigation)):?>
 <ul class="pager">
 <?php if (isset($navigation['prev'])):?>

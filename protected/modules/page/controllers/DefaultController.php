@@ -17,6 +17,18 @@ class DefaultController extends Controller
         return 'show';
     }
 
+    public function behaviors()
+    {
+        return array(
+            'InlineWidgetsBehavior' => array(
+                'class'      => 'application.components.behaviors.InlineWidgetsBehavior',
+                'widgets'    => array('application.modules.news.widgets.LastNews'),
+                'startBlock' => '{{widget:',
+                'endBlock'   => '}}',
+            ),
+        );
+    }
+
     /**
      * Displays a particular model.
      * @param integer $id the ID of the model to be displayed
