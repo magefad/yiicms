@@ -16,14 +16,14 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <a id="forkme_banner" href="https://github.com/magefad/fadcms">View on GitHub</a>
+          <a id="forkme_banner" href="https://github.com/magefad/yiicms">View on GitHub</a>
 
           <h1 id="project_title">Fadcms</h1>
           <h2 id="project_tagline">Yii Based Mini CMS</h2>
 
             <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/magefad/fadcms/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/magefad/fadcms/tarball/master">Download this project as a tar.gz file</a>
+              <a class="zip_download_link" href="https://github.com/magefad/yiicms/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/magefad/yiicms/tarball/master">Download this project as a tar.gz file</a>
             </section>
         </header>
     </div>
@@ -34,6 +34,30 @@
         <h1>Fad Yii Cms (dev)</h1>
 
 <p>Easy CMS based on Yii (1.1.12) with the basic modules and extensions to start. Code style is PSR-1/PSR-2.</p>
+
+<h2>CONFIGURATION</h2>
+
+<p>/protected/config</p>
+
+<pre><code>  console.php       options yiic (консоль)
+  db.php            options for database connection (used in production.php)
+  dev.php           options for development
+  main.php          general options - all options merged width this (mergeArray)
+  production.php    options for production
+  urlRules.php      additional rules for CUrlManager
+</code></pre>
+
+<h2>BEHAVIORS</h2>
+
+<p>/protected/components/behaviors</p>
+
+<pre><code>  AdjacencyListBehavior     parent_id, level, sort_order (SortableBehavior)
+  InlineWidgetsBehavior     embed widgets to the page
+  NestedSetBehavior         nested set behavior for AR models (from yiiext)
+  SaveBehavior              auto create_user_id, update_user_id, create_time, update_time
+  SortableBehavior          sort_order
+  StatusBehavior            statusable behavior
+</code></pre>
 
 <h2>MODULES</h2>
 
@@ -64,7 +88,7 @@
   galleria/         galleria
   grid/             Nested Set GridView
   image/            Kohana Image Library
-  jui/              DateTimePicker with timepicker
+  jui/              DateTimePicker with time picker
   mail/             SwiftMailer
   syncTranslit      behavior and widget for translit values (ActiveRecord)
   tinymce           WYSIWYG editor
@@ -76,6 +100,16 @@
   gallery/widgets/photoManager  photo manager
   news/widgets/LastNews         latest news
   user/extensions/eauth/        Yii EAuth extension
+</code></pre>
+
+<h2>ДОПОЛНИТЕЛЬНО</h2>
+
+<pre><code>  /robots.txt                           General rules for search engines
+  /protected/autocomplete.php           Auto complete for IDE
+  /protected/components/Controller      extended RController
+  /protected/components/FadTbGridView   extended TbGridView
+  /protected/components/WebModule       extended CWebModule
+  /protected/components/Widget          extended CWidget
 </code></pre>
 
 <h2>LINKS</h2>
@@ -116,7 +150,7 @@
 <li>creation of templates to manage user (Rights ext) under CMS</li>
 <li>installator</li>
 <li>possibility to edit the page directly on the site (like Google Sites)</li>
-</ul><p>I will appreciate any help in improving the project, and, of course, pull request's.</p>
+</ul><p>I will appreciate any help in improving the project, and, of course, pull requests.</p>
       </section>
     </div>
 
