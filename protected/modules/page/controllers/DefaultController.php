@@ -55,7 +55,7 @@ class DefaultController extends Controller
         }
 
         if (!$page) {
-            throw new CHttpException('404', Yii::t('page', 'Страница не найдена или удалена!'));
+            throw new CHttpException(404, Yii::t('page', 'Страница не найдена или удалена!'));
         }
         if ($page->is_protected && Yii::app()->user->isGuest) {
             Yii::app()->user->setFlash('warning', Yii::t('page', 'Страница доступна только для авторизованных пользователей'));
