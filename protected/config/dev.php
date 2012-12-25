@@ -3,7 +3,6 @@ return CMap::mergeArray(
     require(dirname(__FILE__) . '/main.php'),
     array(
         'name'       => 'Fad cms',
-        'theme'      => 'kotel',
         'modules'    => array(
             'gii' => array(
                 'class'          => 'system.gii.GiiModule',
