@@ -6,7 +6,6 @@
  */
 class AceEditor extends CInputWidget
 {
-
     public $theme = 'textmate';
     public $mode = 'html';
     public $position = 'relative';
@@ -16,7 +15,7 @@ class AceEditor extends CInputWidget
     public function run()
     {
         $id     = 'ace_' . $this->id;
-        $assets = Yii::app()->assetManager->publish(dirname(__FILE__) . '/assets');
+        $assets = Yii::app()->assetManager->publish(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'src' . (!YII_DEBUG ? '-min' : ''));
         $cs     = Yii::app()->clientScript;
         $cs->registerCss($id, '#' . $id . ' {position:' . $this->position .'; width: ' . $this->width .'; height: ' . $this->height);
         $cs->registerScriptFile($assets . '/ace.js');
