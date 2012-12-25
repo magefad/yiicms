@@ -69,7 +69,7 @@ EXTENSIONS
       news/widgets/LastNews         latest news
       user/extensions/eauth/        Yii EAuth extension
 
-ДОПОЛНИТЕЛЬНО
+ADDITIONALY
 ------------
       /robots.txt                           General rules for search engines
       /protected/autocomplete.php           Auto complete for IDE
