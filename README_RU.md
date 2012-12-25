@@ -97,7 +97,7 @@ Fad Yii Cms (dev)
 * [elFinder](http://elfinder.org/)
 * [Galleria](http://www.yiiframework.com/extension/galleria/)
 * [Kohana Image Library](http://www.yiiframework.com/extension/image/)
-* [Yii EAuth extension](https://github.com/Nodge/yii-eauth))
+* [Yii EAuth extension](https://github.com/Nodge/yii-eauth)
 * [loid extension](http://www.yiiframework.com/extension/loid)
 * [EOAuth extension](http://www.yiiframework.com/extension/eoauth)
 
