@@ -8,7 +8,7 @@ CONFIGURATION
 
 /protected/config
 
-      console.php       options yiic (консоль)
+      console.php       options yiic (console)
       db.php            options for database connection (used in production.php)
       dev.php           options for development
       main.php          general options - all options merged width this (mergeArray)
