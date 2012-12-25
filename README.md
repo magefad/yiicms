@@ -3,6 +3,30 @@ Fad Yii Cms (dev)
 
 Easy CMS based on Yii (1.1.12) with the basic modules and extensions to start. Code style is PSR-1/PSR-2.
 
+CONFIGURATION
+------------
+
+/protected/config
+
+      console.php       options yiic (консоль)
+      db.php            options for database connection (used in production.php)
+      dev.php           options for development
+      main.php          general options - all options merged width this (mergeArray)
+      production.php    options for production
+      urlRules.php      additional rules for CUrlManager
+
+BEHAVIORS
+------------
+
+/protected/components/behaviors
+
+      AdjacencyListBehavior     parent_id, level, sort_order (SortableBehavior)
+      InlineWidgetsBehavior     embed widgets to the page
+      NestedSetBehavior         nested set behavior for AR models (from yiiext)
+      SaveBehavior              auto create_user_id, update_user_id, create_time, update_time
+      SortableBehavior          sort_order
+      StatusBehavior            statusable behavior
+
 MODULES
 ------------
 
@@ -33,7 +57,7 @@ EXTENSIONS
       galleria/         galleria
       grid/             Nested Set GridView
       image/            Kohana Image Library
-      jui/              DateTimePicker with timepicker
+      jui/              DateTimePicker with time picker
       mail/             SwiftMailer
       syncTranslit      behavior and widget for translit values (ActiveRecord)
       tinymce           WYSIWYG editor
@@ -44,6 +68,15 @@ EXTENSIONS
       gallery/widgets/photoManager  photo manager
       news/widgets/LastNews         latest news
       user/extensions/eauth/        Yii EAuth extension
+
+ДОПОЛНИТЕЛЬНО
+------------
+      /robots.txt                           General rules for search engines
+      /protected/autocomplete.php           Auto complete for IDE
+      /protected/components/Controller      extended RController
+      /protected/components/FadTbGridView   extended TbGridView
+      /protected/components/WebModule       extended CWebModule
+      /protected/components/Widget          extended CWidget
 
 LINKS
 ------------
@@ -84,4 +117,4 @@ WHAT's NEXT
 * installator
 * possibility to edit the page directly on the site (like Google Sites)
 
-I will appreciate any help in improving the project, and, of course, pull request's.
+I will appreciate any help in improving the project, and, of course, pull requests.

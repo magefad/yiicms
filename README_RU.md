@@ -3,6 +3,30 @@ Fad Yii Cms (dev)
 
 Легкая CMS на базе Yii (1.1.12) с основными модулями и расширениями для старта. При написании кода используется стиль PSR-1/PSR-2.
 
+КОНФИГУРАЦИЯ
+------------
+
+/protected/config
+
+      console.php       параметры для yiic (консоль)
+      db.php            параметры подключения к базе данных (используется production.php)
+      dev.php           параметры для разработки
+      main.php          основные параметры - все остальные идут поверх него (mergeArray)
+      production.php    конфигурация для продакшн-сервера
+      urlRules.php      дополнительные правила для CUrlManager
+
+ПОВЕДЕНИЯ
+------------
+
+/protected/components/behaviors
+
+      AdjacencyListBehavior     простое дерево - смежные вершины (parent_id, level, sort_order (SortableBehavior))
+      InlineWidgetsBehavior     встраивание виджетов в текст страницы
+      NestedSetBehavior         вложенные множества (из yiiext)
+      SaveBehavior              create_user_id, update_user_id, create_time, update_time
+      SortableBehavior          sort_order
+      StatusBehavior            статус
+
 МОДУЛИ
 ------------
 
@@ -44,6 +68,15 @@ Fad Yii Cms (dev)
       gallery/widgets/photoManager  фотоменеджер
       news/widgets/LastNews         блок последних новостей
       user/extensions/eauth/        Yii EAuth extension
+
+ДОПОЛНИТЕЛЬНО
+------------
+      /robots.txt                           Основные правила для поисковых роботов
+      /protected/autocomplete.php           Автодополнение кода в IDE
+      /protected/components/Controller      Расширенный RController
+      /protected/components/FadTbGridView   Расширенный TbGridView
+      /protected/components/WebModule       Расширенный CWebModule
+      /protected/components/Widget          Расширенный CWidget
 
 ПОЛЕЗНЫЕ ССЫЛКИ
 ------------
