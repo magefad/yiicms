@@ -165,4 +165,20 @@ class Controller extends RController
             throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
         }
     }
+
+    /**
+     * Generate http headers 304 Not Modified and etag
+     * @see CHttpCacheFilter
+     * @param string|integer|bool $lastModified
+     * @param mixed|bool $etagSeed
+     */
+    public function httpCacheFilter($lastModified = false, $etagSeed = false)
+    {
+        $filter = new CHttpCacheFilter();
+        $filter->lastModified = $lastModified;
+        if ($etagSeed) {
+            $filter->etagSeed = $etagSeed;
+        }
+        $filter->preFilter(null);
+    }
 }
