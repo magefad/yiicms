@@ -26,18 +26,20 @@ class PostController extends Controller
     public function actionShow($slug)
     {
         /** @var $model Post */
-        $model = Yii::app()->user->isGuest ? Post::model()->published()->public()->find(
-            'slug = :slug',
-            array(':slug' => $slug)
-        ) : Post::model()->published()->find('slug = :slug', array(':slug' => $slug));
+        if (Yii::app()->user->isGuest) {
+            $model = Post::model()->published()->public()->find('slug = :slug', array(':slug' => $slug));
+        } else {
+            $model = Post::model()->published()->find('slug = :slug', array(':slug' => $slug));
+        }
+
         if (!$model) {
             throw new CHttpException(404, Yii::t('BlogModule.blog', 'Post not found!'));
-        } else {
-            $model->publish_time = Yii::app()->dateFormatter->formatDateTime($model->publish_time, 'short', 'short');
-            $model->content = str_replace('<cut>', '<a name="cut"></a>', $model->content);
-            $this->setMetaTags($model);
-            $this->render('show', array('model' => $model, 'tags' => $model->getTags()));
         }
+        $this->httpCacheFilter($model->update_time);
+        $model->publish_time = Yii::app()->dateFormatter->formatDateTime($model->publish_time, 'short', 'short');
+        $model->content      = str_replace('<cut>', '<a name="cut"></a>', $model->content);
+        $this->setMetaTags($model);
+        $this->render('show', array('model' => $model, 'tags' => $model->getTags()));
     }
 
     public function actionTag($tag)

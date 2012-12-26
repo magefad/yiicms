@@ -45,32 +45,32 @@ class DefaultController extends Controller
         } else if ( $slug == $this->module->defaultPage) {
             $this->redirect('/', true, 301);
         }
-        /** @var $page Page */
-        $page = null;
+        /** @var $model Page */
         // preview
         if ((int)Yii::app()->request->getQuery('preview') === 1 && Yii::app()->user->isSuperUser) {
-            $page = Page::model()->find('slug = :slug', array(':slug' => $slug));
+            $model = Page::model()->find('slug = :slug', array(':slug' => $slug));
         } else {
-            $page = Page::model()->published()->find('slug = :slug', array(':slug' => $slug));
+            $model = Page::model()->published()->find('slug = :slug', array(':slug' => $slug));
         }
 
-        if (!$page) {
+        if (!$model) {
             throw new CHttpException(404, Yii::t('page', 'Страница не найдена или удалена!'));
         }
-        if ($page->is_protected && Yii::app()->user->isGuest) {
+        $this->httpCacheFilter($model->update_time);
+        if ($model->is_protected && Yii::app()->user->isGuest) {
             Yii::app()->user->setFlash('warning', Yii::t('page', 'Страница доступна только для авторизованных пользователей'));
             $this->redirect(Yii::app()->user->loginUrl);
         }
-        $this->setMetaTags($page);
-        if ($page->level > 1) {
-            $this->breadcrumbs = $this->getPageBreadCrumbs($page->parent);
-            array_push($this->breadcrumbs, $page->title);
+        $this->setMetaTags($model);
+        if ($model->level > 1) {
+            $this->breadcrumbs = $this->getPageBreadCrumbs($model->parent);
+            array_push($this->breadcrumbs, $model->title);
             $navigation = Yii::app()->db->createCommand(
-                "SELECT name, title, slug, sort_order FROM {{page}} WHERE (sort_order=" . ($page->sort_order - 1) . " OR sort_order=" . ($page->sort_order + 1) . ") AND level={$page->level}"
+                "SELECT name, title, slug, sort_order FROM {{page}} WHERE (sort_order=" . ($model->sort_order - 1) . " OR sort_order=" . ($model->sort_order + 1) . ") AND level={$model->level}"
             )->queryAll();
             if ($navigationCount = count($navigation)) {
                 if ($navigationCount === 1) {
-                    if ($navigation['0']['sort_order'] > $page->sort_order) {
+                    if ($navigation['0']['sort_order'] > $model->sort_order) {
                         $navigation['next'] = $navigation['0'];
                     } else {
                         $navigation['prev'] = $navigation['0'];
@@ -83,7 +83,7 @@ class DefaultController extends Controller
                 unset($navigation['0']);
             }
         }
-        $this->render('show', array('page' => $page, 'navigation' => isset($navigation) ? $navigation : array()));
+        $this->render('show', array('page' => $model, 'navigation' => isset($navigation) ? $navigation : array()));
     }
 
     /**

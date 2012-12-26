@@ -21,16 +21,18 @@ class DefaultController extends Controller
 
     public function actionShow($slug)
     {
-        $model = Yii::app()->user->isGuest ? News::model()->published()->public()->find(
-            'slug = :slug',
-            array(':slug' => $slug)
-        ) : News::model()->published()->find('slug = :slug', array(':slug' => $slug));
+        /** @var $model News */
+        if (Yii::app()->user->isGuest) {
+            $model = News::model()->published()->public()->find('slug = :slug', array(':slug' => $slug));
+        } else {
+            $model = News::model()->published()->find('slug = :slug', array(':slug' => $slug));
+        }
         if (!$model) {
             throw new CHttpException(404, Yii::t('news', 'Новость не найдена!'));
-        } else {
-            $this->setMetaTags($model);
-            $this->render('show', array('model' => $model));
         }
+        $this->httpCacheFilter($model->update_time);
+        $this->setMetaTags($model);
+        $this->render('show', array('model' => $model));
     }
 
     /**
