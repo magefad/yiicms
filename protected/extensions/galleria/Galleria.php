@@ -36,6 +36,11 @@ class Galleria extends CWidget
     public $options = array();
 
     /**
+     * @var array default options
+     */
+    public static $defaultOptions = array('transition' => 'fade', 'debug' => YII_DEBUG);
+
+    /**
      * Binding between model passed in dataProvider
      * This can be defined with behaviors() or in
      * the initialization of this widget.
@@ -107,13 +112,13 @@ class Galleria extends CWidget
             $cs->registerScriptFile($this->assets . '/plugins/' . $plugin . '/galleria.' . $plugin . $ext);
         }
 
-        $galleriaScript = '$("#galleria_' . $this->id . '").galleria(' . CJSON::encode($this->options) . ');';
+        $galleriaScript = '$("#galleria_' . $this->id . '").galleria(' . CJSON::encode(array_merge(self::$defaultOptions, $this->options)) . ');';
         $cs->registerScript("galleria_script_" . $this->id, $galleriaScript);
 
         $dataProvided = $this->dataCheck();
         if ($dataProvided) {
             $this->render(
-                "galleria",
+                'galleria',
                 array(
                     'bind'                 => $this->binding,
                     'data'                 => $this->dataProvider,
@@ -123,7 +128,7 @@ class Galleria extends CWidget
                 )
             );
         }
-        echo "</div>";
+        echo '</div>';
     }
 
     /**
