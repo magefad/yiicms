@@ -58,8 +58,7 @@ class DefaultController extends Controller
         }
         $this->httpCacheFilter($model->update_time);
         if ($model->is_protected && Yii::app()->user->isGuest) {
-            Yii::app()->user->setFlash('warning', Yii::t('page', 'Страница доступна только для авторизованных пользователей'));
-            $this->redirect(Yii::app()->user->loginUrl);
+            throw new CHttpException(403, Yii::t('page', 'Страница доступна только для авторизованных пользователей'));
         }
         $this->setMetaTags($model);
         if ($model->level > 1) {
