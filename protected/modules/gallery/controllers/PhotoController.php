@@ -282,7 +282,24 @@ class PhotoController extends Controller
      */
     public function actionAlbum($slug)
     {
-        $this->render('list', array('slug' => $slug, 'galleryId' => Gallery::model()->getIdBySlug($slug)));
+        $photos = new CActiveDataProvider('Photo', array(
+            'criteria'   => array(
+                #'condition' => 'status=1',
+                'condition' => 'gallery_id = :gallery_id',
+                'order'     => 't.sort_order',
+                'params'    => array(
+                    ':gallery_id' => Gallery::model()->getIdBySlug($slug),
+                )
+            ),
+            'pagination' => false,
+        ));
+        $this->render(
+            'list',
+            array(
+                'photos'       => $photos,
+                'uploadDirUrl' => '/' . $this->admin->uploadDir . '/' . $this->module->uploadDir . '/' . $slug . '/'
+            )
+        );
     }
 
     /**
