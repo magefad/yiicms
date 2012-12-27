@@ -1,8 +1,3 @@
-*.log
-*.bin
-*.settings
 .project
-protected/config/db.php
-uploads/
-.idea/
+.idea
 Thumbs.db
