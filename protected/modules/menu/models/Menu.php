@@ -192,6 +192,39 @@ class Menu extends CActiveRecord
         return $data;
     }
 
+    public static function getAdminItems()
+    {
+        if ($items = Yii::app()->cache->get('menu_admin')) {
+            return $items;
+        }
+        $items = array();
+        foreach (Yii::app()->modules as $config) {
+            if ($config['class'] == 'system.gii.GiiModule') {
+                continue;
+            }
+            Yii::import($config['class']);
+            $className = array_pop(explode('.', $config['class']));
+            if (is_callable($className . '::getAdminLink')) {
+                $item = call_user_func($className . '::getAdminLink');
+                if (is_callable($className . '::getAdminMenu')) {
+                    $item['items'] = call_user_func($className . '::getAdminMenu');
+                }
+                $items[] = $item;
+            }
+        }
+        $items = array(
+            array(
+                'label' => Yii::t('menu', 'Управление'),
+                'url'   => '/admin',
+                'items' => array_filter($items)
+            )
+        );
+        $dependency = new CDirectoryCacheDependency(Yii::getPathOfAlias('application') . DIRECTORY_SEPARATOR . 'modules');
+        $dependency->recursiveLevel = 1;
+        Yii::app()->cache->set('menu_admin', $items, 0, $dependency);
+        return $items;
+    }
+
     /**
      * Get items for CMenu or bootstrap.widgets.TbMenu
      * @param string $code menu code
@@ -200,10 +233,11 @@ class Menu extends CActiveRecord
     public static function getItems($code)
     {
         $cacheKey = 'menu_'.$code;
-        if (!Yii::app()->cache->get($cacheKey)) {
-            Yii::app()->cache->set($cacheKey, self::getItemsFromDb($code));
+        if (!$menu = Yii::app()->cache->get($cacheKey)) {
+            $menu = self::getItemsFromDb($code);
+            Yii::app()->cache->set($cacheKey, $menu);
         }
-        return self::getUserItems(Yii::app()->cache->get($cacheKey));
+        return self::getUserItems($menu);
     }
 
     /**
