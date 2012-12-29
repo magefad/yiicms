@@ -12,10 +12,20 @@ class PageModule extends WebModule
      */
     public $pageSize = 50;
 
-    public $urlRules = array(
-        'page/about'           => 'contact/default',
-        'page/<slug:[\w\_-]+>' => 'page/default/show',
-    );
+    public static function getAdminLink()
+    {
+        return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/page/default/admin'));
+    }
+
+    public static function getAdminMenu()
+    {
+
+        return array(
+            array('icon' => 'list-alt', 'label' => Yii::t('page', 'Список'), 'url' => array('/page/default/admin')),
+            array('icon' => 'file', 'label' => Yii::t('page', 'Добавить'), 'url' => array('create')),
+            array('icon' => 'wrench', 'label' => Yii::t('page', 'Настройки'), 'url' => array('/admin/setting/update/page')),
+        );
+    }
 
     public function getSettingLabels()
     {
@@ -37,7 +47,7 @@ class PageModule extends WebModule
 
     public function getName()
     {
-        return Yii::t('page', 'Страницы');
+        return Yii::t('PageModule.page', 'Страницы');
     }
 
     public function getDescription()
@@ -54,5 +64,14 @@ class PageModule extends WebModule
     {
         $this->setImport(array('page.models.*'));
         parent::init();
+    }
+
+    public function beforeControllerAction($controller, $action)
+    {
+        if (parent::beforeControllerAction($controller, $action)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
