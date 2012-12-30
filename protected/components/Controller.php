@@ -57,7 +57,6 @@ class Controller extends RController
     public function init()
     {
         $this->admin = Yii::app()->getModule('admin');
-        parent::init();
     }
 
     /**
