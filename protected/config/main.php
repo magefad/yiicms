@@ -37,11 +37,11 @@ return array(
         'clientScript'  => array(
             'packages' => array(
                 'jquery'    => array(
-                    'baseUrl' => '//ajax.googleapis.com/ajax/libs/jquery/1.7/',
+                    'baseUrl' => '//ajax.googleapis.com/ajax/libs/jquery/1.8/',
                     'js'      => array('jquery.min.js'),
                 ),
                 'jquery.ui' => array(
-                    'baseUrl' => '//ajax.googleapis.com/ajax/libs/jqueryui/1.8/',
+                    'baseUrl' => '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/',
                     'js'      => array('jquery-ui.min.js'),
                 ),
             ),
