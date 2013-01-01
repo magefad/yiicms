@@ -82,10 +82,6 @@ class GalleryModule extends WebModule
     public function init()
     {
         parent::init();
-        $this->setImport(
-            array(
-                'gallery.models.*',
-            )
-        );
+        $this->setImport(array('gallery.models.*'));
     }
 }

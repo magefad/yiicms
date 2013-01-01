@@ -19,10 +19,6 @@ class MenuModule extends WebModule
 
     public function init()
     {
-        $this->setImport(
-            array(
-                'menu.models.*',
-            )
-        );
+        $this->setImport(array('menu.models.*'));
     }
 }
