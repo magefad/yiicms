@@ -44,6 +44,7 @@ class AdminModule extends WebModule
         $this->siteName = empty($this->siteName) ? Yii::app()->name : $this->siteName;
         $this->email    = isset($this->email) ? $this->email : 'mail@' . str_replace('www.', '', Yii::app()->request->getServerName());
         parent::init();
+        Yii::setPathOfAlias('uploads', Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . $this->uploadDir);
     }
 
     public function getModules()

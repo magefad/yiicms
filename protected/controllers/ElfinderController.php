@@ -22,9 +22,7 @@ class ElfinderController extends Controller
             'connector' => array(
                 'class'    => 'ext.elFinder.ElFinderConnectorAction',
                 'settings' => array(
-                    'root'       => Yii::getPathOfAlias(
-                        'webroot'
-                    ) . DIRECTORY_SEPARATOR . $this->admin->uploadDir . DIRECTORY_SEPARATOR,
+                    'root'       => Yii::getPathOfAlias('uploads'),
                     'URL'        => Yii::app()->baseUrl . '/' . $this->admin->uploadDir . '/',
                     'rootAlias'  => 'Home',
                     'mimeDetect' => 'none'
