@@ -1,9 +1,9 @@
 <?php
-
 /**
- * User: fad
- * Date: 02.08.12
- * Time: 10:42
+ * Widget to manage gallery.
+ * Requires Twitter Bootstrap styles to work.
+ *
+ * @author Bogdan Savluk <savluk.bogdan@gmail.com>
  */
 class photoManager extends Widget
 {
@@ -49,6 +49,24 @@ class photoManager extends Widget
         if ($this->controllerRoute === null) {
             throw new CException('$controllerRoute must be set.', 500);
         }
+        $model = new Photo();
+        $photos = array();
+        foreach ($model->findAll(
+                     array(
+                         'condition' => 'gallery_id=:gallery_id',
+                         'order'     => 'sort_order',
+                         'params'    => array(':gallery_id' => $this->galleryId)
+                     )
+                 ) as $photo) {
+            /** @var $photo Photo */
+            $photos[] = array(
+                'id'          => $photo->id,
+                'rank'        => $photo->sort_order,
+                'name'        => (string)$photo->name,
+                'description' => (string)$photo->description,
+                'preview'     => $photo->getPreview(),
+            );
+        }
 
         $opts = array(
             'hasName:'         => true,
@@ -62,16 +80,15 @@ class photoManager extends Widget
             'arrangeUrl'       => Yii::app()->createUrl($this->controllerRoute . '/order'),
             'nameLabel'        => Yii::t('gallery', 'Название'),
             'descriptionLabel' => Yii::t('gallery', 'Описание'),
+            'photos'           => $photos
         );
         if (Yii::app()->request->enableCsrfValidation) {
             $opts['csrfTokenName'] = Yii::app()->request->csrfTokenName;
             $opts['csrfToken']     = Yii::app()->request->csrfToken;
         }
         $opts = CJavaScript::encode($opts);
-        $src  = "$('#{$this->id}').galleryManager({$opts});";
-        $cs->registerScript('galleryManager#' . $this->id, $src);
+        $cs->registerScript('galleryManager#' . $this->id, "$('#{$this->id}').galleryManager({$opts});");
 
-        $model = new Photo();
         $this->render(
             'photoManager',
             array(
@@ -79,13 +96,6 @@ class photoManager extends Widget
                 #'galleryId' => $this->galleryId,
                 'slug'   => $this->slug,
                 'albums' => $this->albums,
-                'photos' => $model->findAll(
-                    array(
-                        'condition' => 'gallery_id=:gallery_id',
-                        'order'     => 'sort_order',
-                        'params'    => array(':gallery_id' => $this->galleryId)
-                    )
-                )
             )
         );
     }

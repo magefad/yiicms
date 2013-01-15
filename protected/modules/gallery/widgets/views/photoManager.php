@@ -1,13 +1,12 @@
 <?php
 /**
  * @var $model Photo
- * @var $this CController
+ * @var $this Controller
  * @var $albums array
- *
- * @var $photo Photo
  */
 ?>
 <div class="GalleryEditor" id="<?php echo $this->id?>">
+    <!-- Gallery Toolbar -->
     <div class="gform">
         <span class="btn btn-success fileinput-button">
             <i class="icon-plus icon-white"></i>
@@ -45,31 +44,12 @@
         <?php echo CHtml::hiddenField('returnUrl', Yii::app()->getRequest()->getUrl() . '#' . $this->id);?>
     </div>
     <hr/>
+    <!-- Gallery Photos -->
     <div class="sorter">
-        <div class="images">
-            <?php foreach ($photos as $photo): ?>
-            <div id="<?php echo $this->id . '-' . $photo->id ?>" class="photo">
-                <div class="image-preview">
-                    <?php echo CHtml::image($photo->getPreview()); ?>
-                </div>
-                <div class="caption">
-                    <h5><?php echo $photo->name ?></h5>
-                    <p><?php echo $photo->description ?></p>
-                </div>
-                <div class="actions">
-                    <?php
-                    echo CHtml::hiddenField('order[' . $photo->id . ']', $photo->sort_order);
-                    echo '<span data-photo-id="' . $photo->id . '" class="editPhoto btn btn-primary"><i class="icon-edit icon-white"></i></span>';
-                    echo ' <span data-photo-id="' . $photo->id . '" class="deletePhoto btn btn-danger"><i class="icon-remove icon-white"></i></span>';
-                    ?>
-                </div>
-                <input type="checkbox" class="photo-select"/>
-            </div>
-            <?php endforeach;?>
-        </div>
+        <div class="images"></div>
         <br style="clear: both;"/>
     </div>
-
+    <!-- Modal window to edit photo information -->
     <div class="modal hide editor-modal"> <!-- fade removed because of opera -->
         <div class="modal-header">
             <a class="close" data-dismiss="modal">×</a>

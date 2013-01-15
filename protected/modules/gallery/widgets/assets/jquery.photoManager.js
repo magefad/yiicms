@@ -5,6 +5,7 @@
         this.defaults = {
             csrfToken:null,
             csrfTokenName:null,
+
             nameLabel:'Name',
             descriptionLabel:'Description',
 
@@ -14,12 +15,14 @@
             uploadUrl:'',
             deleteUrl:'',
             updateUrl:'',
-            arrangeUrl:''
+            arrangeUrl:'',
+            photos:[]
         };
-
         //Extending options:
         var opts = $.extend({}, this.defaults, options);
         //code
+        var csrfParams = opts.csrfToken ? '&' + opts.csrfTokenName + '=' + opts.csrfToken : '';
+
         var $gallery = $(el);
         opts.wId = $gallery.attr('id');
 
@@ -28,36 +31,45 @@
         var $editorModal = $('.editor-modal', $gallery);
         var $editorForm = $('.form', $editorModal);
 
+        function htmlEscape(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
 
-        function photoEditorTemplate(id, src, name, description) {
-            return '<div class="photo-editor">' +
-                '<div class="preview"><img src="' + src + '" alt=""/></div>' +
+        function createEditorElement(id, src, name, description) {
+            var html = '<div class="photo-editor">' +
+                '<div class="preview"><img src="' + htmlEscape(src) + '" alt=""/></div>' +
                 '<div>' +
                 (opts.hasName
                     ? '<label for="photo_name_' + id + '">' + opts.nameLabel + ':</label>' +
-                    '<input type="text" name="photo[' + id + '][name]" class="input-xlarge" value="' + name + '" id="photo_name_' + id + '"/>'
+                    '<input type="text" name="photo[' + id + '][name]" class="input-xlarge" value="' + htmlEscape(name) + '" id="photo_name_' + id + '"/>'
                     : '') +
                 (opts.hasDesc
                     ? '<label for="photo_description_' + id + '">' + opts.descriptionLabel + ':</label>' +
-                    '<textarea name="photo[' + id + '][description]" rows="3" cols="40" class="input-xlarge" id="photo_description_' + id + '">' + description + '</textarea>'
+                    '<textarea name="photo[' + id + '][description]" rows="3" cols="40" class="input-xlarge" id="photo_description_' + id + '">' + htmlEscape(description) + '</textarea>'
                     : '') +
                 '</div>' +
                 '</div>';
+            return $(html);
         }
 
-		function photoTemplate(id, src, name, description, sort) {
+        function createPhotoElement(id, src, name, description, rank) {
             var res = '<div id="' + opts.wId + '-' + id + '" class="photo">' +
-                '<div class="image-preview"><img src="' + src + '"/></div><div class="caption">';
-            if (opts.hasName)res += '<h5>' + name + '</h5>';
-            if (opts.hasDesc)res += '<p>' + description + '</p>';
-			res += '</div><input type="hidden" name="order[' + id + ']" value="' + sort + '"/><div class="actions">' +
+                '<div class="image-preview"><img src="' + htmlEscape(src) + '"/></div><div class="caption">';
+            if (opts.hasName)res += '<h5>' + htmlEscape(name) + '</h5>';
+            if (opts.hasDesc)res += '<p>' + htmlEscape(description) + '</p>';
+            res += '</div><input type="hidden" name="order[' + id + ']" value="' + rank + '"/><div class="actions">' +
 
                 ((opts.hasName || opts.hasDesc)
                     ? '<span data-photo-id="' + id + '" class="editPhoto btn btn-primary"><i class="icon-edit icon-white"></i></span> '
                     : '') +
                 '<span data-photo-id="' + id + '" class="deletePhoto btn btn-danger"><i class="icon-remove icon-white"></i></span>' +
                 '</div><input type="checkbox" class="photo-select"/></div>';
-            return res;
+            return $(res);
         }
 
         function deleteClick(e) {
@@ -67,7 +79,7 @@
             $.ajax({
                 type:'POST',
                 url:opts.deleteUrl,
-                data:'id=' + id + (opts.csrfToken ? '&' + opts.csrfTokenName + '=' + opts.csrfToken : ''),
+                data:'id=' + id + csrfParams,
                 success:function (t) {
                     if (t == 'OK') $('#' + opts.wId + '-' + id).remove();
                     else alert(t);
@@ -82,7 +94,8 @@
             var src = $('img', photo[0]).attr('src');
             var name = $('.caption h5', photo[0]).text();
             var description = $('.caption p', photo[0]).text();
-            $editorForm.html(photoEditorTemplate(id, src, name, description));
+            $editorForm.empty();
+            $editorForm.append(createEditorElement(id, src, name, description));
             $editorModal.modal('show');
             return false;
         }
@@ -117,7 +130,7 @@
         });
 
         $('.images', $sorter).sortable().disableSelection().bind("sortstop", function () {
-            $.post(opts.arrangeUrl, $('input', $sorter).serialize() + '&ajax=true' + (opts.csrfToken ? '&' + opts.csrfTokenName + '=' + opts.csrfToken : ''), function () {
+            $.post(opts.arrangeUrl, $('input', $sorter).serialize() + '&ajax=true' + csrfParams, function () {
                 // order saved!
             }, 'json');
         });
@@ -128,7 +141,7 @@
                 e.preventDefault();
                 var filesCount = this.files.length;
                 var uploadedCount = 0;
-                $editorForm.html('');
+                $editorForm.empty();
 
                 for (var i = 0; i < filesCount; i++) {
                     var fd = new FormData();
@@ -142,13 +155,13 @@
                         uploadedCount++;
                         if (this.status == 200) {
                             var resp = JSON.parse(this.response);
-							var newOne = $(photoTemplate(resp['id'], resp['preview'], resp['name'], resp['description'], resp['sort']));
+                            var newOne = createPhotoElement(resp['id'], resp['preview'], resp['name'], resp['description'], resp['rank']);
 
                             bindPhotoEvents(newOne);
 
                             $images.append(newOne);
                             if (opts.hasName || opts.hasDesc)
-                                $editorForm.append($(photoEditorTemplate(resp['id'], resp['preview'], resp['name'], resp['description'])));
+                                $editorForm.append(createEditorElement(resp['id'], resp['preview'], resp['name'], resp['description']));
                         }
                         if (uploadedCount === filesCount && (opts.hasName || opts.hasDesc)) $editorModal.modal('show');
                     };
@@ -159,7 +172,7 @@
             $('.afile', $gallery).on('change', function (e) {
 
                 e.preventDefault();
-                $editorForm.html('');
+                $editorForm.empty();
 
                 $.ajax(
                     opts.uploadUrl,
@@ -169,11 +182,11 @@
                         iframe:true,
                         dataType:"json"
                     }).done(function (resp) {
-						var newOne = $(photoTemplate(resp['id'], resp['preview'], resp['name'], resp['description'], resp['sort']));
+                        var newOne = createPhotoElement(resp['id'], resp['preview'], resp['name'], resp['description'], resp['rank']);
                         bindPhotoEvents(newOne);
                         $images.append(newOne);
                         if (opts.hasName || opts.hasDesc)
-                            $editorForm.append($(photoEditorTemplate(resp['id'], resp['preview'], resp['name'], resp['description'])));
+                            $editorForm.append(createEditorElement(resp['id'], resp['preview'], resp['name'], resp['description']));
 
                         if (opts.hasName || opts.hasDesc) $editorModal.modal('show');
                     });
@@ -184,7 +197,7 @@
 
         $('.save-changes', $editorModal).click(function (e) {
             e.preventDefault();
-            $.post(opts.updateUrl, $('input, textarea', $editorForm).serialize() + '&ajax=true' + (opts.csrfToken ? '&' + opts.csrfTokenName + '=' + opts.csrfToken : ''), function (data) {
+            $.post(opts.updateUrl, $('input, textarea', $editorForm).serialize() + '&ajax=true' + csrfParams, function (data) {
                 var count = data.length;
                 for (var key = 0; key < count; key++) {
                     var p = data[key];
@@ -209,7 +222,7 @@
         $('.edit_selected', $gallery).click(function (e) {
             e.preventDefault();
             var cc = 0;
-            var form = $editorForm.html('');
+            var form = $editorForm.empty();
             $('.photo.selected', $sorter).each(function () {
                 cc++;
                 var photo = $(this),
@@ -217,7 +230,7 @@
                     src = $('img', photo[0]).attr('src'),
                     name = $('.caption h5', photo[0]).text(),
                     description = $('.caption p', photo[0]).text();
-                form.append(photoEditorTemplate(id, src, name, description));
+                form.append(createEditorElement(id, src, name, description));
             });
             if (cc > 0)$editorModal.modal('show');
             return false;
@@ -230,7 +243,7 @@
                 $.ajax({
                     type:'POST',
                     url:opts.deleteUrl,
-                    data:'id=' + id + (opts.csrfToken ? '&' + opts.csrfTokenName + '=' + opts.csrfToken : ''),
+                    data:'id=' + id + csrfParams,
                     success:function (t) {
                         if (t == 'OK') $('#' + opts.wId + '-' + id).remove();
                         else alert(t);
@@ -250,6 +263,14 @@
             }
             updateButtons();
         });
+
+        for (var i in opts.photos) {
+            var resp = opts.photos[i];
+            var newOne = createPhotoElement(resp['id'], resp['preview'], resp['name'], resp['description'], resp['rank']).data('data', resp);
+
+            bindPhotoEvents(newOne);
+            $images.append(newOne);
+        }
     }
 
     // The actual plugin

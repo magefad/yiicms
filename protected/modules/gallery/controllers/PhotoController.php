@@ -221,13 +221,13 @@ class PhotoController extends Controller
 
     /**
      * Saves images order according to request.
-     * Variable $_POST['sort_order'] - new arrange of image ids, to be saved
+     * Variable $_POST['order'] - new arrange of image ids, to be saved
      * @throws CHttpException
      */
     public function actionOrder()
     {
         if (Yii::app()->getRequest()->getIsPostRequest()) {
-            $gp     = $_POST['sort_order'];
+            $gp     = $_POST['order'];
             $orders = array();
             $i      = 0;
             foreach ($gp as $k => $v) {
