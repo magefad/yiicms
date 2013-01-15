@@ -20,6 +20,7 @@ return array(
         'application.components.*',
         'application.modules.user.models.*',
         'application.modules.menu.models.*',
+        'application.modules.rights.RightsModule'
     ),
     'modules'           => array('user', 'menu', 'page', 'news', 'contact', 'gallery', 'blog', 'social', 'comment', 'sitemap', 'admin', 'rights'),
     // application components
@@ -94,6 +95,7 @@ return array(
                     'album/<slug:[\w\_-]+>'                                      => 'gallery/photo/album',
                     'page/<slug:[\w\_-]+>'                                       => 'page/default/show',
                     'news/show/<slug:[\w\_-]+>'                                  => 'news/default/show',
+                    'blog/list'                                                  => 'blog/default/list',
                     'blog/show/<slug:[\w\_-]+>'                                  => 'blog/default/show',
                     'blog/post/tag/<tag>'                                        => 'blog/post/tag',
                     'sitemap.xml'                                                => 'sitemap/default/index/format/xml',
