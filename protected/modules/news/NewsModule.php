@@ -24,6 +24,11 @@ class NewsModule extends WebModule
     //widget
     public $lastNewsCount = 3;
 
+    public static function getAdminLink()
+    {
+        return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/news/default/admin'));
+    }
+
     public function getSettingLabels()
     {
         return array(
@@ -74,5 +79,22 @@ class NewsModule extends WebModule
     {
         parent::init();
         $this->setImport(array('news.models.*'));
+    }
+
+    /**
+     * @param Controller $controller
+     * @param CAction $action
+     * @return bool
+     */
+    public function beforeControllerAction($controller, $action)
+    {
+        if (parent::beforeControllerAction($controller, $action)) {
+            if ($action->id !== 'show' && $action->id != 'index') {
+                $controller->menu = self::getAdminMenu();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }

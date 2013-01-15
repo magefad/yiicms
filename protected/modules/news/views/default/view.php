@@ -7,19 +7,6 @@ $this->breadcrumbs = array(
 	Yii::t('news', 'Новости') => array('admin'),
 	$model->title,
 );
-$this->menu = array(
-	array('label' => Yii::t('news', 'Новости')),
-	array('icon' => 'list-alt', 'label' => Yii::t('news', 'Управление'), 'url' => array('admin')),
-	array('icon' => 'th-list', 'label' => Yii::t('news', 'Показать анонсами'), 'url' => array('index')),
-	array('icon' => 'file', 'label' => Yii::t('news', 'Добавить'), 'url' => array('create')),
-	array('icon' => 'pencil', 'label' => Yii::t('news', 'Изменить'), 'url' => array('update', 'id' => $model->id)),
-	array(
-		'icon'       => 'remove',
-		'label'      => Yii::t('news', 'Удалить'),
-		'url'        => '#',
-		'linkOptions' => array('submit' => array('delete', 'id' => $model->id), 'confirm' => Yii::t('news', 'Уверены?'))
-	),
-);
 $this->widget('bootstrap.widgets.TbTabs', array(
 	'type' => 'tabs', // 'tabs' or 'pills'
 	'tabs' => array(

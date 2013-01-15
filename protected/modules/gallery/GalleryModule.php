@@ -12,6 +12,11 @@ class GalleryModule extends WebModule
     /** @var int Maximum Thumbnail width */
     public $thumbMaxWidth = 130;
 
+    public static function getAdminLink()
+    {
+        return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/gallery/default/admin'));
+    }
+
     public function getSettingLabels()
     {
         return array(
@@ -83,5 +88,22 @@ class GalleryModule extends WebModule
     {
         parent::init();
         $this->setImport(array('gallery.models.*'));
+    }
+
+    /**
+     * @param Controller $controller
+     * @param CAction $action
+     * @return bool
+     */
+    public function beforeControllerAction($controller, $action)
+    {
+        if (parent::beforeControllerAction($controller, $action)) {
+            if ($action->id != 'list') {
+                $controller->menu = $this->getAdminMenu();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }

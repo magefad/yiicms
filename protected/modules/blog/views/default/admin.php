@@ -8,15 +8,6 @@ $this->breadcrumbs = array(
     Yii::t('BlogModule.blog', 'Manage'),
 );
 
-$this->menu = array(
-    array('label' => Yii::t('BlogModule.blog', 'Blogs')),
-    array('icon' => 'list-alt', 'label' => Yii::t('BlogModule.blog', 'Manage'), 'url' => array('/blog/default/admin')),
-    array('icon' => 'file', 'label' => Yii::t('BlogModule.blog', 'Create'), 'url' => array('create')),
-    array('icon' => 'list-alt', 'label' => Yii::t('BlogModule.blog', 'Manage Posts'), 'url' => array('post/admin')),
-    array('icon' => 'file', 'label' => Yii::t('BlogModule.blog', 'Create Post'), 'url' => array('post/create')),
-    array('icon' => 'list-alt', 'label' => Yii::t('BlogModule.blog', 'Manage Users'), 'url' => array('userBlog/admin')),
-);
-
 Yii::app()->clientScript->registerScript(
     'search',
     "

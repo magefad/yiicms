@@ -8,11 +8,4 @@ $this->breadcrumbs = array(
     $model->name                   => array('view', 'id' => $model->id),
     Yii::t('gallery', 'Изменение'),
 );
-
-$this->menu = array(
-    array('label' => Yii::t('gallery', 'Список'), 'url' => array('index')),
-    array('label' => Yii::t('gallery', 'Управление'), 'url' => array('admin')),
-    array('label' => Yii::t('gallery', 'Добавить'), 'url' => array('create')),
-    array('label' => Yii::t('gallery', 'Смотреть'), 'url' => array('view', 'id' => $model->id)),
-);
 echo $this->renderPartial('_form', array('model' => $model));

@@ -56,7 +56,10 @@ class DefaultController extends Controller
         if (!$model) {
             throw new CHttpException(404, Yii::t('page', 'Страница не найдена или удалена!'));
         }
-        $this->httpCacheFilter($model->update_time);
+        $_GET['id'] = $model->id;
+        if ($slug != $this->module->defaultPage) {
+            $this->httpCacheFilter($model->update_time);
+        }
         if ($model->is_protected && Yii::app()->user->isGuest) {
             throw new CHttpException(403, Yii::t('page', 'Страница доступна только для авторизованных пользователей'));
         }

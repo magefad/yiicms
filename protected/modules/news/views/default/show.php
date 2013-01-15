@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var $model News
  * @var $this Controller

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var $this Controller
  * @var $model Post

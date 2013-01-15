@@ -8,12 +8,6 @@ $this->breadcrumbs = array(
     Yii::t('menu', 'Управление'),
 );
 
-$this->menu = array(
-    array('label' => Yii::t('menu', 'Меню')),
-    array('icon' => 'list', 'label' => Yii::t('menu', 'Управление'), 'url' => array('default/admin')),
-    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить меню'), 'url' => array('create', 'root' => 1)),
-    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить пункт'), 'url' => array('create')),
-);
 $this->widget(
     'bootstrap.widgets.TbListView',
     array(

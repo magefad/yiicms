@@ -9,12 +9,6 @@ $this->breadcrumbs = array(
     Yii::t('user', 'Управление'),
 );
 
-$this->menu = array(
-    array('icon' => 'user', 'label' => Yii::t('user', 'Пользователи')),
-    array('icon' => 'list-alt white', 'label' => Yii::t('user', 'Управление'), 'url' => array('/user/default/admin/')),
-    array('icon' => 'file', 'label' => Yii::t('user', 'Добавить'), 'url' => array('create')),
-);
-
 Yii::app()->clientScript->registerScript(
     'search',
     "

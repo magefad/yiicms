@@ -1,10 +1,5 @@
 <?php
 /**
- * User: fad
- * Date: 11.07.12
- * Time: 17:20
- */
-/**
  * @var $model User
  * @var $form TbActiveForm
  * @var $changePasswordForm changePasswordForm
@@ -18,24 +13,6 @@ $this->breadcrumbs = array(
     Yii::t('user', 'Изменение'),
 );
 
-$this->menu = array(
-    array('icon' => 'user', 'label' => Yii::t('user', 'Пользователи')),
-    array('icon' => 'list-alt', 'label' => Yii::t('user', 'Управление'), 'url' => array('/user/default/admin/')),
-    array('icon' => 'file', 'label' => Yii::t('user', 'Добавить'), 'url' => array('create')),
-    array('icon' => 'pencil', 'label' => Yii::t('user', 'Изменить'), 'url' => array('update', 'id' => $model->id)),
-    array(
-        'icon'        => 'filter',
-        'label'       => Yii::t('user', 'Роль доступа'),
-        'url'         => array('/rights/assignment/user/', 'id' => $model->id),
-        'linkOptions' => array('target' => '_blank')
-    ),
-    array(
-        'icon'        => 'remove',
-        'label'       => Yii::t('user', 'Удалить'),
-        'url'         => '#',
-        'linkOptions' => array('submit' => array('delete', 'id' => $model->id), 'confirm' => 'Подтверждаете удаление ?')
-    ),
-);
 ?>
 <div class="form">
     <?php

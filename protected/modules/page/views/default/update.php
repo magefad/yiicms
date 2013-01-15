@@ -10,30 +10,19 @@ $this->breadcrumbs = array(
     $model->title              => array('show', 'slug' => $model->slug), #
     Yii::t('page', 'Изменение страницы'),
 );
+
+$this->menu[] = array(
+    'icon'        => 'eye-open',
+    'label'       => Yii::t('page', 'Предпросмотр'),
+    'url'         => 'javascript:',
+    'linkOptions' => array('id' => 'ajaxPreview')
+);
 if (!$model->isNewRecord) {
-    $viewLink = array(
+    $this->menu[] = array(
         'icon'        => 'eye-open',
         'label'       => Yii::t('page', 'Открыть на сайте'),
         'url'         => array('show', 'slug' => $model->slug),
         'linkOptions' => array('target' => '_blank')
     );
 }
-$this->menu = array(
-    array('label' => Yii::t('page', 'Страницы')),
-    array('icon' => 'list-alt', 'label' => Yii::t('page', 'Управление'), 'url' => array('admin')),
-    array('icon' => 'file', 'label' => Yii::t('page', 'Добавить'), 'url' => array('create')),
-    array(
-        'icon'        => 'pencil white',
-        'encodeLabel' => false,
-        'label'       => Yii::t('page', 'Изменение'),
-        'url'         => array('/page/default/update', 'id' => $model->id)
-    ),
-    array(
-        'icon'        => 'eye-open',
-        'label'       => Yii::t('page', 'Предпросмотр'),
-        'url'         => 'javascript:',
-        'linkOptions' => array('id' => 'ajaxPreview')
-    ),
-    $viewLink
-);
 echo $this->renderPartial('_form', array('model' => $model));

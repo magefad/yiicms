@@ -25,7 +25,7 @@ class WebModule extends CWebModule
      */
     public function getDescription()
     {
-        return Yii::t('admin', 'Нет описания');
+        return Yii::t('zii', 'Not set');
     }
 
     /**
@@ -34,7 +34,7 @@ class WebModule extends CWebModule
      */
     public function getAuthor()
     {
-        return Yii::t('admin', 'fad');
+        return 'Ruslan Fadeyev';
     }
 
     /**
@@ -43,7 +43,7 @@ class WebModule extends CWebModule
      */
     public function getAuthorEmail()
     {
-        return Yii::t('admin', 'fad@itrade-rus.ru');
+        return 'fadeevr@gmail.com';
     }
 
     /**
@@ -52,7 +52,7 @@ class WebModule extends CWebModule
      */
     public function getUrl()
     {
-        return Yii::t('admin', '');
+        return 'http://yiifad.ru';
     }
 
     /**
@@ -61,7 +61,44 @@ class WebModule extends CWebModule
      */
     public function getIcon()
     {
-        return "cog";
+        return 'cog';
+    }
+
+    /**
+     * @return array items for TbNavbar
+     */
+    public function getAdminMenu()
+    {
+        $menu = array(
+            array('icon' => 'list-alt', 'label' => Yii::t('admin', 'Список'), 'url' => array('/' . $this->id . '/' . Yii::app()->controller->id . '/admin')),
+            array('icon' => 'file', 'label' => Yii::t('admin', 'Добавить'), 'url' => array('/' . $this->id . '/' . Yii::app()->controller->id . '/create'))
+        );
+        if (isset(Yii::app()->controller->actionParams['id']) && Yii::app()->controller->id == 'default') {
+            $menu[] = array(
+                'icon'  => 'pencil',
+                'label' => Yii::t('zii', 'Update'),
+                'url'   => array(
+                    '/' . $this->id . '/' . Yii::app()->controller->id . '/update',
+                    'id' => Yii::app()->controller->actionParams['id']
+                )
+            );
+            $menu[] = array(
+                'icon'        => 'remove',
+                'label'       => Yii::t('zii', 'Delete'),
+                'url'         => '#',
+                'linkOptions' => array(
+                    'submit'  => array('/' . $this->id . '/' . Yii::app()->controller->id . '/delete', 'id' => Yii::app()->controller->actionParams['id']),
+                    'confirm' => Yii::t('zii', 'Are you sure you want to delete this item?')
+                )
+            );
+        } else if (!empty($this->settingData)) {
+            $menu[] = array(
+                'icon'  => 'wrench',
+                'label' => Yii::t('admin', 'Настройки'),
+                'url'   => array('/admin/setting/update/' . $this->id . '/')
+            );
+        }
+        return $menu;
     }
 
     /**
@@ -106,11 +143,6 @@ class WebModule extends CWebModule
             self::CHOICE_YES => Yii::t('admin', 'Да'),
             self::CHOICE_NO  => Yii::t('admin', 'Нет'),
         );
-    }
-
-    public function routes()
-    {
-        return array();
     }
 
     /**

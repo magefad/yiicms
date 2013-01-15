@@ -8,7 +8,7 @@
  */
 $this->pageTitle = Yii::app()->name . ' — ' . Yii::t('gallery', 'Галерея');
 ?>
-<h2>Альбомы</h2>
+<h2><?php echo Yii::t('gallery', 'Альбомы'); ?></h2>
 <ul class="unstyled">
     <?php foreach ($albums as $album): ?>
     <li><?php echo CHtml::link($album->title . ' »', array('/album/' . $album->slug));?></li>

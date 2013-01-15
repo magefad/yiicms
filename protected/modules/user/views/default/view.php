@@ -8,27 +8,11 @@ $this->breadcrumbs = array(
     Yii::t('user', 'Просмотр пользователя') . ' ' . $model->username,
 );
 
-$this->menu = array(
-    array('icon' => 'user', 'label' => Yii::t('user', 'Пользователи')),
-    array('icon' => 'list-alt', 'label' => Yii::t('user', 'Управление'), 'url' => array('admin')),
-    array('icon' => 'file', 'label' => Yii::t('user', 'Добавить'), 'url' => array('create')),
-    array('icon' => 'pencil', 'label' => 'Изменить', 'url' => array('update', 'id' => $model->id)),
-    array(
-        'icon'  => 'pencil',
-        'label' => Yii::t('user', 'Пароль'),
-        'url'   => array('changepassword', 'id' => $model->id)
-    ),
-    array('icon'        => 'filter',
-          'label'       => Yii::t('user', 'Роль доступа'),
-          'url'         => array('/rights/assignment/user/', 'id' => $model->id),
-          'linkOptions' => array('target' => '_blank')
-    ),
-    array(
-        'icon'        => 'remove',
-        'label'       => 'Удалить',
-        'url'         => '#',
-        'linkOptions' => array('submit' => array('delete', 'id' => $model->id), 'confirm' => Yii::t('user', 'Уверены?'))
-    ),
+$this->menu[] = array(
+    'icon'        => 'filter',
+    'label'       => Yii::t('user', 'Роль доступа'),
+    'url'         => array('/rights/assignment/user/', 'id' => $model->id),
+    'linkOptions' => array('target' => '_blank')
 );
 
 $this->widget(

@@ -8,14 +8,6 @@ $this->breadcrumbs = array(
     Yii::t('news', 'Управление'),
 );
 
-$this->menu = array(
-    array('label' => Yii::t('news', 'Новости')),
-    array('icon' => 'list-alt white', 'label' => Yii::t('news', 'Управление'), 'url' => array('/news/default/admin')),
-    array('icon' => 'th-list', 'label' => Yii::t('news', 'Показать анонсами'), 'url' => array('index')),
-    array('icon' => 'file', 'label' => Yii::t('news', 'Добавить'), 'url' => array('create')),
-    array('icon' => 'wrench', 'label' => Yii::t('news', 'Настройки'), 'url' => array('/admin/setting/update/news')),
-);
-
 Yii::app()->clientScript->registerScript(
     'search',
     "

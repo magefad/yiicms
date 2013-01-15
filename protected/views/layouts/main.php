@@ -27,7 +27,7 @@ $this->widget(
                 'class'       => 'bootstrap.widgets.TbMenu',
                 'htmlOptions' => array('class' => 'pull-right'),
                 'items'       => array_merge(
-                    Menu::getItems('admin'),
+                    Menu::getAdminItems(),
                     array(
                         array(
                             'label'  => 'Войти',

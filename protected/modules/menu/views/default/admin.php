@@ -8,13 +8,6 @@ $this->breadcrumbs = array(
     Yii::t('menu', 'Управление'),
 );
 
-$this->menu = array(
-    array('label' => Yii::t('menu', 'Меню')),
-    array('icon' => 'list', 'label' => Yii::t('menu', 'Управление'), 'url' => array('/menu/default/admin')),
-    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить меню'), 'url' => array('create', 'root' => 1)),
-    array('icon' => 'file', 'label' => Yii::t('menu', 'Добавить пункт'), 'url' => array('create')),
-);
-
 Yii::app()->clientScript->registerScript(
     'search',
     "

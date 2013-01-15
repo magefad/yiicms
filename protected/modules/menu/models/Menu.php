@@ -195,6 +195,9 @@ class Menu extends CActiveRecord
     public static function getAdminItems()
     {
         if ($items = Yii::app()->cache->get('menu_admin')) {
+            if (isset(Yii::app()->controller->module)) {
+                $items[0]['items'][get_class(Yii::app()->controller->module)]['items'] = Yii::app()->controller->module->adminMenu;
+            }
             return $items;
         }
         $items = array();
@@ -205,11 +208,7 @@ class Menu extends CActiveRecord
             Yii::import($config['class']);
             $className = array_pop(explode('.', $config['class']));
             if (is_callable($className . '::getAdminLink')) {
-                $item = call_user_func($className . '::getAdminLink');
-                if (is_callable($className . '::getAdminMenu')) {
-                    $item['items'] = call_user_func($className . '::getAdminMenu');
-                }
-                $items[] = $item;
+                $items[$className] = call_user_func($className . '::getAdminLink');
             }
         }
         $items = array(

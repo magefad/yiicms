@@ -8,20 +8,6 @@ $this->breadcrumbs = array(
     Yii::t('gallery', 'Управление'),
 );
 
-$this->menu = array(
-    array('label' => Yii::t('gallery', 'Галерея')),
-    array(
-        'icon'  => 'list-alt white',
-        'label' => Yii::t('page', 'Управление'),
-        'url'   => array('/gallery/default/admin')
-    ),
-    array('icon' => 'file', 'label' => Yii::t('page', 'Добавить'), 'url' => array('create')),
-    array('icon' => 'file', 'label' => Yii::t('page', 'Настройки'), 'url' => array('/admin/setting/update/gallery')),
-
-    #array('label' => Yii::t('page', 'Фотографии')),
-    #array('icon' => 'list-alt', 'label' => Yii::t('page', 'Управление'), 'url' => array('/photo/manager')),
-);
-
 Yii::app()->clientScript->registerScript(
     'search',
     "

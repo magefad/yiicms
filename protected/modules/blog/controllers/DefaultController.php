@@ -139,7 +139,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * Lists all models.
+     * Lists all blogs without posts.
      */
     public function actionList()
     {

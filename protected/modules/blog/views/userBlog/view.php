@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @var $this Controller
  * @var $model UserBlog
@@ -9,19 +8,6 @@ $this->breadcrumbs = array(
     $model->id,
 );
 
-$this->menu = array(
-    array('label' => Yii::t('BlogModule.blog', 'Members')),
-    array('icon'  => 'list-alt', 'label' => Yii::t('BlogModule.blog', 'Manage'), 'url' => array('admin')),
-    array('icon'  => 'file', 'label' => Yii::t('BlogModule.blog', 'Create'), 'url' => array('create')),
-    array('icon'  => 'pencil', 'label' => Yii::t('BlogModule.blog', 'Update'), 'url' => array('update', 'id'=> $model->id)),
-    array('icon'        => 'remove',
-          'label'       => Yii::t('BlogModule.blog', 'Delete'),
-          'url'         => '#',
-          'linkOptions' => array('submit'  => array('delete', 'id' => $model->id),
-                                 'confirm' => Yii::t('BlogModule.blog', 'Are you sure you want to delete this item?')
-          )
-    ),
-);
 $this->widget(
     'bootstrap.widgets.TbDetailView',
     array(

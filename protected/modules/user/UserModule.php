@@ -21,6 +21,11 @@ class UserModule extends WebModule
 
     public static $logCategory = 'application.modules.user';
 
+    public static function getAdminLink()
+    {
+        return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/user/default/admin'));
+    }
+
     public function getName()
     {
         return Yii::t('user', 'Пользователи');
@@ -136,6 +141,23 @@ class UserModule extends WebModule
                 )
             )
         );
+    }
+
+    /**
+     * @param Controller $controller
+     * @param CAction $action
+     * @return bool
+     */
+    public function beforeControllerAction($controller, $action)
+    {
+        if (parent::beforeControllerAction($controller, $action)) {
+            if ($controller->id == 'default') {
+                $controller->menu = self::getAdminMenu();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function isAllowedEmail($email)

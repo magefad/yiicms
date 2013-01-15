@@ -1,9 +1,5 @@
 <?php
 /**
- * User: fad
- * Date: 07.08.12
- * Time: 16:39
- *
  * @var $this Controller
  * @var $photos array
  * @var $uploadDirUrl string

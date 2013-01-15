@@ -34,12 +34,6 @@ Yii::app()->clientScript->registerCss('news', $css);
 ?>
 <h1 style="margin-top:0"><?php echo Yii::t('news', 'Новости'); ?></h1>
 <?php
-$this->menu = array(
-	array('label' => Yii::t('news', 'Новости')),
-	array('icon' => 'list-alt', 'label' => Yii::t('news', 'Управление'), 'url' => array('admin')),
-	array('icon' => 'th-list white', 'label' => Yii::t('news', 'Показать анонсами'), 'url' => array('/news/default/index')),
-	array('icon' => 'file', 'label' => Yii::t('news', 'Добавить'), 'url' => array('create')),
-);
 $this->widget(
     'bootstrap.widgets.TbListView',
     array(

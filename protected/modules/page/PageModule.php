@@ -17,16 +17,6 @@ class PageModule extends WebModule
         return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/page/default/admin'));
     }
 
-    public static function getAdminMenu()
-    {
-
-        return array(
-            array('icon' => 'list-alt', 'label' => Yii::t('page', 'Список'), 'url' => array('/page/default/admin')),
-            array('icon' => 'file', 'label' => Yii::t('page', 'Добавить'), 'url' => array('create')),
-            array('icon' => 'wrench', 'label' => Yii::t('page', 'Настройки'), 'url' => array('/admin/setting/update/page')),
-        );
-    }
-
     public function getSettingLabels()
     {
         return array(
@@ -66,9 +56,17 @@ class PageModule extends WebModule
         parent::init();
     }
 
+    /**
+     * @param Controller $controller
+     * @param CAction $action
+     * @return bool
+     */
     public function beforeControllerAction($controller, $action)
     {
         if (parent::beforeControllerAction($controller, $action)) {
+            if ($action->id !== 'show') {
+                $controller->menu = self::getAdminMenu();
+            }
             return true;
         } else {
             return false;
