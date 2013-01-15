@@ -30,6 +30,7 @@ class DefaultController extends Controller
         if (!$model) {
             throw new CHttpException(404, Yii::t('news', 'Новость не найдена!'));
         }
+        $_GET['id'] = $model->id;
         $this->httpCacheFilter($model->update_time);
         $this->setMetaTags($model);
         $this->render('show', array('model' => $model));
