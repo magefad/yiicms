@@ -1,12 +1,11 @@
 <?php
-Yii::import('application.modules.rights.components.*');
 /**
  * Controller is the customized base controller class.
  * All controller classes for this application should extend from this base class.
  *
  * @method string decodeWidgets(string $text) Content parser
  */
-class Controller extends RController
+class Controller extends CController
 {
     /**
      * @var string the default layout for the controller view. Defaults to '//layouts/column1',
@@ -87,13 +86,13 @@ class Controller extends RController
         $statusAttribute = Yii::app()->request->getQuery('statusAttribute');
 
         if (!isset($modelClass, $id, $status, $statusAttribute)) {
-            throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
         /** @var $model CActiveRecord */
         $model = new $modelClass;
         $model = $model->resetScope()->findByPk((int)$id);
         if (!$model) {
-            throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
 
         $model->$statusAttribute = $status;
@@ -114,12 +113,12 @@ class Controller extends RController
         $modelClass = Yii::app()->request->getQuery('model');
         $sortAttribute  = Yii::app()->request->getQuery('sortAttribute');
         if (!isset($direction, $id, $modelClass, $sortAttribute)) {
-            throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
 
         $model = CActiveRecord::model($modelClass)->resetScope()->findByPk((int)$id);
         if (!isset($model)) {
-            throw new CHttpException(404, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
 
         if ($direction === 'up') {
@@ -161,7 +160,7 @@ class Controller extends RController
             }
             Yii::app()->end();
         } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
     }
 

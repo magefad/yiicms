@@ -9,11 +9,13 @@ class SettingController extends Controller
     public $defaultAction = 'update';
 
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
+        return array(
+             array('auth.components.AuthFilter')/** @see AuthFilter */
+        );
     }
 
     /**
@@ -29,7 +31,7 @@ class SettingController extends Controller
         $module_id = $slug;
         unset($slug);
         if (!$module = Yii::app()->getModule($module_id)) {
-            throw new CHttpException(404, Yii::t('yii', 'The system is unable to find the requested action "{action}".', array('{action}' => $module_id)));
+            $this->missingAction($module_id);
         }
 
         $settings = $this->getSettingsToUpdate($module);

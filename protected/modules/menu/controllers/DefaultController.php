@@ -5,11 +5,13 @@ class DefaultController extends Controller
     public $defaultAction = 'admin';
 
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
+        return array(
+             array('auth.components.AuthFilter')/** @see AuthFilter */
+        );
     }
 
     public function actions()

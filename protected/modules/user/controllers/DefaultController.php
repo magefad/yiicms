@@ -3,11 +3,13 @@
 class DefaultController extends Controller
 {
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
+        return array(
+             array('auth.components.AuthFilter')/** @see AuthFilter */
+        );
     }
 
     /**
@@ -41,10 +43,10 @@ class DefaultController extends Controller
             );
             if ($model->save()) {
                 /**
-                 * If user is Admin access (not user), assign (Yii-rights) Admin Role for created user
+                 * If user is Admin access (not user), assign (Yii-auth) Admin Role for created user
                  */
                 if (isset($model->attributes['access_level']) && $model->attributes['access_level']) {
-                    $model->assignAdminRole($model->id);
+                    Yii::app()->authManager->assign('Admin', $model->id);
                 }
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -92,7 +94,7 @@ class DefaultController extends Controller
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
         } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
     }
 

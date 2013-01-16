@@ -167,19 +167,15 @@ class Menu extends CActiveRecord
         $sort->defaultOrder = 't.root, t.lft';
 
         return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
+            'criteria'   => $criteria,
             'pagination' => array('pageSize' => $this->count()),
-            'sort'     => $sort
+            'sort'       => $sort
         ));
     }
 
     public function getAccessList()
     {
-        Yii::import("application.modules.rights.components.dataproviders.RAuthItemDataProvider");
-        $all_roles = new RAuthItemDataProvider('roles', array(
-            'type' => 2,
-        ));
-        return CHtml::listData($all_roles->fetchData(), 'name', 'description');
+        return CHtml::listData(Yii::app()->authManager->getAuthItems(2), 'name', 'description');
     }
 
     public function getParentsData()
@@ -274,7 +270,7 @@ class Menu extends CActiveRecord
         if (!is_null($code) && is_null($menu)) {
             $menu = Menu::model()->findByAttributes(array('code' => $code, 'status' => 1));
         } else if (!is_object($menu)) {
-            return new CHttpException(500, Yii::t('yii', 'Your request is invalid.'));
+            return new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
         }
 
         $items = $menu->children()->findAllByAttributes(array('status' => 1));

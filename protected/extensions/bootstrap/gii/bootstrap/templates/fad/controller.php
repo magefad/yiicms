@@ -10,11 +10,13 @@
 class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseControllerClass."\n"; ?>
 {
 	/**
-	 * @return array action filters
+	 * @return array a list of filter configurations.
 	 */
 	public function filters()
 	{
-		return array('rights');
+		return array(
+             array('auth.components.AuthFilter')/** @see AuthFilter */
+        );
 	}
 
 	/**

@@ -10,8 +10,8 @@ $this->breadcrumbs = array(
 
 $this->menu[] = array(
     'icon'        => 'filter',
-    'label'       => Yii::t('user', 'Роль доступа'),
-    'url'         => array('/rights/assignment/user/', 'id' => $model->id),
+    'label'       => Yii::t('user', 'Права доступа'),
+    'url'         => array('/auth/assignment/view', 'id' => $model->id),
     'linkOptions' => array('target' => '_blank')
 );
 

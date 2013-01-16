@@ -33,6 +33,7 @@ MODULES
 /protected/modules/
 
       admin/            admin main — list and settings modules, version of Yii and PHP
+      auth/             RBAC users (yii-auth)
       blog/             blog
       comment/          comments behavior
       contact/          feedback (support for sending via SMTP)
@@ -40,7 +41,6 @@ MODULES
       menu/             menu
       news/             news
       page/             pages
-      rights/           rbac users (yii-rights)
       sitemap/          sitemap (tree-like sitemap/, sitemap.xml)
       social/           social networks  (vk, facebook)
       user/             users (include eauth, eoauth, lightopenid)
@@ -92,7 +92,7 @@ LINKS
 ### Party extensions
 
 * [YiiBooster](http://yii-booster.clevertech.biz/)
-* [Yii-rights](http://www.yiiframework.com/extension/rights/)
+* [Yii-Auth](http://www.yiiframework.com/extension/auth/)
 * [TinyMce](http://www.yiiframework.com/extension/newtinymce/)
 * [elFinder](http://elfinder.org/)
 * [Galleria](http://www.yiiframework.com/extension/galleria/)
@@ -113,7 +113,6 @@ WHAT's NEXT
 * **create website and community**
 * switch to sourceLanguage = en (~15%)
 * creating something blocks of content (like ModX)
-* creation of templates to manage user (Rights ext) under CMS
 * installator
 * possibility to edit the page directly on the site (like Google Sites)
 

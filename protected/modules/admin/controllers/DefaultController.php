@@ -3,11 +3,13 @@
 class DefaultController extends Controller
 {
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
+        return array(
+             array('auth.components.AuthFilter')/** @see AuthFilter */
+        );
     }
 
     public function actionIndex()

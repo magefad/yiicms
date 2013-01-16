@@ -33,6 +33,7 @@ Fad Yii Cms (dev)
 /protected/modules/
 
       admin/            главная админки — список и настройки модулей, версия Yii, PHP
+      auth/             RBAC права доступа (yii-auth)
       blog/             блог
       comment/          поведение комментариев
       contact/          обратная связь (поддержка отправки через SMTP)
@@ -40,7 +41,6 @@ Fad Yii Cms (dev)
       menu/             меню
       news/             новости
       page/             страницы
-      rights/           права доступа (yii-rights)
       sitemap/          карта сайта (древовидный sitemap/, sitemap.xml)
       social/           социальные сети (vk, facebook)
       user/             пользователи (включает eauth, eoauth, lightopenid)
@@ -92,7 +92,7 @@ Fad Yii Cms (dev)
 ### Сторонние расширения
 
 * [YiiBooster](http://yii-booster.clevertech.biz/)
-* [Yii-rights](http://www.yiiframework.com/extension/rights/)
+* [Yii-Auth](http://www.yiiframework.com/extension/auth/)
 * [TinyMce](http://www.yiiframework.com/extension/newtinymce/)
 * [elFinder](http://elfinder.org/)
 * [Galleria](http://www.yiiframework.com/extension/galleria/)
@@ -113,7 +113,6 @@ Fad Yii Cms (dev)
 * **создание сайта и сообщества**
 * Переход на sourceLanguage = en (~15%)
 * создание нечто блоков контента (подобно ModX)
-* создание шаблонов для управления правами пользователей (Rights ext) под CMS
 * инсталлятор
 * возможность изменять страницу прямо на сайте (подобно Google Sites)
 

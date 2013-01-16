@@ -3,19 +3,13 @@
 class PostController extends Controller
 {
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
-    }
-
-    /**
-     * @return string the actions that are always allowed separated by commas.
-     */
-    public function allowedActions()
-    {
-        return 'show';
+        return array(
+            array('auth.components.AuthFilter - show')
+        );
     }
 
     /**
@@ -131,7 +125,7 @@ class PostController extends Controller
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
         } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
     }
 

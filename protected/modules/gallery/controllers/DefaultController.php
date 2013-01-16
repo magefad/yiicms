@@ -3,11 +3,13 @@
 class DefaultController extends Controller
 {
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
+        return array(
+            array('auth.components.AuthFilter - list')
+        );
     }
 
     public function actions()
@@ -22,11 +24,6 @@ class DefaultController extends Controller
                 'modelName' => 'Gallery',
             )
         );
-    }
-
-    public function allowedActions()
-    {
-        return 'list';
     }
 
     /**
@@ -128,7 +125,7 @@ class DefaultController extends Controller
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
         } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
     }
 

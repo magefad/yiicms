@@ -47,7 +47,7 @@ $this->widget(
     )
 );
 ?>
-<?php if (Yii::app()->user->isSuperUser && $this->menu): ?>
+<?php if (Yii::app()->user->isAdmin && $this->menu): ?>
 <div class="menu-admin well">
     <?php
     $this->beginWidget(

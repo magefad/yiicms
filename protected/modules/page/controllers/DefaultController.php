@@ -5,16 +5,13 @@
 class DefaultController extends Controller
 {
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
-    }
-
-    public function allowedActions()
-    {
-        return 'show';
+        return array(
+            array('auth.components.AuthFilter - show')
+        );
     }
 
     public function behaviors()
@@ -47,7 +44,7 @@ class DefaultController extends Controller
         }
         /** @var $model Page */
         // preview
-        if ((int)Yii::app()->request->getQuery('preview') === 1 && Yii::app()->user->isSuperUser) {
+        if ((int)Yii::app()->request->getQuery('preview') === 1 && Yii::app()->user->isAdmin) {
             $model = Page::model()->find('slug = :slug', array(':slug' => $slug));
         } else {
             $model = Page::model()->published()->find('slug = :slug', array(':slug' => $slug));
@@ -172,7 +169,7 @@ class DefaultController extends Controller
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
         } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
     }
 

@@ -79,7 +79,7 @@ class DefaultController extends Controller
     public function actionFull()
     {
         if (empty($this->module->fullFormClass)) {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
         $modelName = $this->module->fullFormClass;
         $viewName  = strtolower($modelName[0]) . substr($modelName, 1);

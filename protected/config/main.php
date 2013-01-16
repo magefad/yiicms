@@ -18,22 +18,21 @@ return array(
     // autoloading model and component classes
     'import'            => array(
         'application.components.*',
-        'application.modules.user.models.*',
-        'application.modules.menu.models.*',
-        'application.modules.rights.RightsModule'
+        'application.modules.user.models.User',
+        'application.modules.menu.models.Menu',
+        'application.modules.auth.AuthModule'
     ),
-    'modules'           => array('user', 'menu', 'page', 'news', 'contact', 'gallery', 'blog', 'social', 'comment', 'sitemap', 'admin', 'rights'),
+    'modules'           => array('user', 'menu', 'page', 'news', 'contact', 'gallery', 'blog', 'social', 'comment', 'sitemap', 'admin', 'auth' => array('userNameColumn' => 'username')),
     // application components
     'components'        => array(
         'user'          => array(
-            'class'          => 'RWebUser',
+            'class'          => 'auth.components.AuthWebUser',
             'loginUrl'       => '/user/account/login',
             'allowAutoLogin' => true, // enable cookie-based authentication
         ),
         'image'         => array(
-            'class'  => 'ext.image.CImageComponent', #'application.helpers.image.CImageComponent',
-            'driver' => 'GD', // GD or ImageMagick
-            #'params' => array('directory' =>'/opt/local/bin'),// ImageMagick setup path
+            'class'  => 'ext.image.CImageComponent',
+            'driver' => 'GD',
         ),
         'clientScript'  => array(
             'packages' => array(
@@ -109,12 +108,14 @@ return array(
             ),
         ),
         'authManager'   => array(
-            'class'           => 'RDbAuthManager',
-            #default is Auth#'defaultRoles' => array('Guest'),
+            'class'           => 'auth.components.CachedDbAuthManager',
+            'cachingDuration' => 3600,
             'itemTable'       => '{{auth_item}}',
             'itemChildTable'  => '{{auth_item_child}}',
             'assignmentTable' => '{{auth_assignment}}',
-            'rightsTable'     => '{{rights}}',
+            'behaviors'       => array(
+                'auth.components.AuthBehavior'
+            ),
         ),
         'errorHandler'  => array(
             'errorAction' => 'site/error', // use 'site/error' action to display errors

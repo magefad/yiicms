@@ -17,16 +17,13 @@ class DefaultController extends Controller
     }
 
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
-    }
-
-    public function allowedActions()
-    {
-        return 'captcha, create, update, delete';
+        return array(
+            array('auth.components.AuthFilter - captcha, create, update, delete')
+        );
     }
 
     /**
@@ -85,7 +82,7 @@ class DefaultController extends Controller
                 }
             }
         } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
     }
 
@@ -102,7 +99,7 @@ class DefaultController extends Controller
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
-        if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isSuperuser) {
+        if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isAdmin) {
             if (isset($_POST['Comment'])) {
                 $model->attributes = $_POST['Comment'];
                 if ($model->save()) {
@@ -146,7 +143,7 @@ class DefaultController extends Controller
         if (Yii::app()->request->isPostRequest) {
             // we only allow deletion via POST request
             $model = $this->loadModel($id);
-            if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isSuperuser) {
+            if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isAdmin) {
                 $this->loadModel($id)->delete();
             } else {
                 throw new CHttpException(401, Yii::t('global', 'You don"t have permission to access this function'));
@@ -157,7 +154,7 @@ class DefaultController extends Controller
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
         } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
     }
 

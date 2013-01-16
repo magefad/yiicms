@@ -3,19 +3,14 @@
 class PhotoController extends Controller
 {
     /**
-     * @return array action filters
+     * @return array a list of filter configurations.
      */
     public function filters()
     {
-        return array('rights');
-    }
-
-    /**
-     * @return string the actions that are always allowed separated by commas.
-     */
-    public function allowedActions()
-    {
-        return 'album';
+        return array(
+            'postOnly + ajaxUpload, changeData, order, ajaxDelete',
+            array('auth.components.AuthFilter - album')
+        );
     }
 
     public function actions()
@@ -112,7 +107,7 @@ class PhotoController extends Controller
                 $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
             }
         } else {
-            throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
+            $this->invalidActionParams($this->action);
         }
     }
 
@@ -150,32 +145,28 @@ class PhotoController extends Controller
      */
     public function actionAjaxUpload($galleryId = null)
     {
-        if (Yii::app()->getRequest()->getIsPostRequest()) {
-            $model             = new Photo();
-            $model->gallery_id = $galleryId;
-            if (isset($_POST['Photo'])) {
-                $model->attributes = $_POST['Photo'];
-            }
-
-            $imageFile        = CUploadedFile::getInstance($model, 'image');
-            $model->file_name = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.' . $model->galleryExt;
-            $model->save();
-
-            $model->setImage($imageFile->getTempName());
-            header("Content-Type: application/json");
-            echo CJSON::encode(
-                array(
-                    'id'          => $model->id,
-                    'sort_order'  => $model->sort_order,
-                    'name'        => (string)$model->name,
-                    //@todo: something wrong with model - it returns null, but it must return an empty string
-                    'description' => (string)$model->description,
-                    'preview'     => $model->getPreview('small'),
-                )
-            );
-        } else {
-            throw new CHttpException(403);
+        $model             = new Photo();
+        $model->gallery_id = $galleryId;
+        if (isset($_POST['Photo'])) {
+            $model->attributes = $_POST['Photo'];
         }
+
+        $imageFile        = CUploadedFile::getInstance($model, 'image');
+        $model->file_name = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.' . $model->galleryExt;
+        $model->save();
+
+        $model->setImage($imageFile->getTempName());
+        header("Content-Type: application/json");
+        echo CJSON::encode(
+            array(
+                'id'          => $model->id,
+                'sort_order'  => $model->sort_order,
+                'name'        => (string)$model->name,
+                //@todo: something wrong with model - it returns null, but it must return an empty string
+                'description' => (string)$model->description,
+                'preview'     => $model->getPreview('small'),
+            )
+        );
     }
 
     /**
@@ -185,38 +176,34 @@ class PhotoController extends Controller
      */
     public function actionChangeData()
     {
-        if (Yii::app()->getRequest()->getIsPostRequest()) {
-            $data            = $_POST['photo'];
-            $criteria        = new CDbCriteria();
-            $criteria->index = 'id';
-            $criteria->addInCondition('id', array_keys($data));
-            /** @var $models Photo[] */
-            $models = Photo::model()->findAll($criteria);
+        $data            = $_POST['photo'];
+        $criteria        = new CDbCriteria();
+        $criteria->index = 'id';
+        $criteria->addInCondition('id', array_keys($data));
+        /** @var $models Photo[] */
+        $models = Photo::model()->findAll($criteria);
 
-            foreach ($data as $id => $attributes) {
-                if (isset($attributes['name'])) {
-                    $models[$id]->name = $attributes['name'];
-                }
-                if (isset($attributes['description'])) {
-                    $models[$id]->description = $attributes['description'];
-                }
-                $models[$id]->save();
+        foreach ($data as $id => $attributes) {
+            if (isset($attributes['name'])) {
+                $models[$id]->name = $attributes['name'];
             }
-            $resp = array();
-            foreach ($models as $model) {
-                $resp[] = array(
-                    'id'          => $model->id,
-                    'sort_order'  => $model->sort_order,
-                    'name'        => (string)$model->name,
-                    //@todo: something wrong with model - it returns null, but it must return an empty string
-                    'description' => (string)$model->description,
-                    'preview'     => $model->getPreview(),
-                );
+            if (isset($attributes['description'])) {
+                $models[$id]->description = $attributes['description'];
             }
-            echo CJSON::encode($resp);
-        } else {
-            throw new CHttpException(403);
+            $models[$id]->save();
         }
+        $resp = array();
+        foreach ($models as $model) {
+            $resp[] = array(
+                'id'          => $model->id,
+                'sort_order'  => $model->sort_order,
+                'name'        => (string)$model->name,
+                //@todo: something wrong with model - it returns null, but it must return an empty string
+                'description' => (string)$model->description,
+                'preview'     => $model->getPreview(),
+            );
+        }
+        echo CJSON::encode($resp);
     }
 
     /**
@@ -226,33 +213,29 @@ class PhotoController extends Controller
      */
     public function actionOrder()
     {
-        if (Yii::app()->getRequest()->getIsPostRequest()) {
-            $gp     = $_POST['order'];
-            $orders = array();
-            $i      = 0;
-            foreach ($gp as $k => $v) {
-                if (!$v) {
-                    $gp[$k] = $k;
-                }
-                $orders[] = $gp[$k];
-                $i++;
+        $gp     = $_POST['order'];
+        $orders = array();
+        $i      = 0;
+        foreach ($gp as $k => $v) {
+            if (!$v) {
+                $gp[$k] = $k;
             }
-            sort($orders);
-            $i = 0;
-            foreach ($gp as $k => $v) {
-                /** @var $p Photo */
-                $p             = Photo::model()->findByPk($k);
-                $p->sort_order = $orders[$i];
-                $p->save(false);
-                $i++;
-            }
-            if ($_POST['ajax'] == true) {
-                echo CJSON::encode(array('result' => 'ok'));
-            } else {
-                $this->redirect($_POST['returnUrl']);
-            }
+            $orders[] = $gp[$k];
+            $i++;
+        }
+        sort($orders);
+        $i = 0;
+        foreach ($gp as $k => $v) {
+            /** @var $p Photo */
+            $p             = Photo::model()->findByPk($k);
+            $p->sort_order = $orders[$i];
+            $p->save(false);
+            $i++;
+        }
+        if ($_POST['ajax'] == true) {
+            echo CJSON::encode(array('result' => 'ok'));
         } else {
-            throw new CHttpException(403);
+            $this->redirect($_POST['returnUrl']);
         }
     }
 

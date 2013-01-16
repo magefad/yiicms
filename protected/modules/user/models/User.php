@@ -390,21 +390,4 @@ class User extends CActiveRecord
 
         return $this->save();
     }
-
-    public function assignAdminRole($userId)
-    {
-        $assignmentTable = Yii::app()->authManager->assignmentTable;
-        Yii::app()->db->createCommand(
-            "INSERT INTO {$assignmentTable} (`itemname`,`userid`,`bizrule`,`data`)
-                									VALUES ('Admin','{$userId}', NULL, 'N;')"
-        )->execute();
-    }
-
-    public function revokeAdminRole($userId)
-    {
-        $assignmentTable = Yii::app()->authManager->assignmentTable;
-        Yii::app()->db->createCommand(
-            "DELETE FROM {$assignmentTable} WHERE `userid`={$userId} AND `itemname`='Admin'"
-        )->execute();
-    }
 }
