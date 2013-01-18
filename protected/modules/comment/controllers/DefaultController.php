@@ -128,7 +128,7 @@ class DefaultController extends Controller
                 $this->render('update', array('model' => $model));
             }
         } else {
-            throw new CHttpException(401, Yii::t('global', 'You don"t have permission to access this function'));
+            throw new CHttpException(403,  Yii::t('yii', 'You are not authorized to perform this action.'));
         }
     }
 
@@ -145,8 +145,8 @@ class DefaultController extends Controller
         $model = $this->loadModel($id);
         if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isAdmin) {
             $this->loadModel($id)->delete();
-        } else {//@todo yii You are not authorized to perform this action.
-            throw new CHttpException(401, Yii::t('global', 'You don"t have permission to access this function'));
+        } else {
+            throw new CHttpException(403, Yii::t('yii', 'You are not authorized to perform this action.'));
         }
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!Yii::app()->request->isAjaxRequest) {
