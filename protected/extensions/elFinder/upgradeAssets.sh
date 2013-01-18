@@ -1,12 +1,15 @@
 #!/usr/bin/env sh
 
-cd ./vendors/elFinder/vendors/elFinder/src/
+cd ./vendors/elFinder/src/
 make clean
 make all
 
-cp -r ../css ../../../assets/
-cp -r ../js ../../../assets/
-cp -r ../images ../../../assets/
-cp -r ../connectors/php ../../../
+cp ../css/elfinder.css ../../../assets/css/elfinder.css
+cp -r ../js/i18n ../../../assets/js/
+cp ../js/elfinder.full.js ../../../assets/js/
+cp ../js/elfinder.min.js ../../../assets/js/
+
+cp -r ../images/* ../../../assets/images/
+#cp -r ../connectors/php ../../../
 
 cd ../../../

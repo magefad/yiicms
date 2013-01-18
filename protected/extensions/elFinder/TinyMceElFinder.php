@@ -5,7 +5,7 @@ Yii::import('ext.tinymce.*');
 class TinyMceElFinder extends TinyMceFileManager
 {
     public $settings = array();
-    public $connectorRoute =false;
+    public $connectorRoute = false;
     private $assetsDir;
 
     private $_id;
@@ -16,6 +16,13 @@ class TinyMceElFinder extends TinyMceFileManager
         $dir = dirname(__FILE__) . '/assets';
         $this->assetsDir = Yii::app()->assetManager->publish($dir);
         $cs = Yii::app()->getClientScript();
+
+        if(Yii::app()->getRequest()->enableCsrfValidation){
+            $csrfTokenName = Yii::app()->request->csrfTokenName;
+            $csrfToken = Yii::app()->request->csrfToken;
+            Yii::app()->clientScript->registerMetaTag($csrfToken, 'csrf-token');
+            Yii::app()->clientScript->registerMetaTag($csrfTokenName, 'csrf-param');
+        }
 
         // jQuery and jQuery UI
         $cs->registerCssFile($cs->getCoreScriptUrl() . '/jui/css/base/jquery-ui.css');
@@ -29,9 +36,25 @@ class TinyMceElFinder extends TinyMceFileManager
         $cs->registerCssFile($this->assetsDir . '/css/elfinder.css');
 
         // elFinder JS
-        $cs->registerScriptFile($this->assetsDir . '/js/elfinder.min.js');
+        if (YII_DEBUG) {
+            $cs->registerScriptFile($this->assetsDir . '/js/elfinder.full.js');
+        } else {
+            $cs->registerScriptFile($this->assetsDir . '/js/elfinder.min.js');
+        }
         // elFinder translation
-        $cs->registerScriptFile($this->assetsDir . '/js/i18n/elfinder.ru.js');
+        $langs = array('bg', 'jp', 'sk', 'cs', 'ko', 'th', 'de', 'lv', 'tr', 'el', 'nl', 'uk',
+            'es', 'no', 'vi', 'fr', 'pl', 'zh_CN', 'hr', 'pt_BR', 'zh_TW', 'hu', 'ro', 'it', 'ru');
+        $lang = Yii::app()->language;
+        if (!in_array($lang, $langs)) {
+            if (strpos($lang, '_')) {
+                $lang = substr($lang, 0, strpos($lang, '_'));
+                if (!in_array($lang, $langs)) $lang = false;
+            } else {
+                $lang = false;
+            }
+        }
+        if ($lang !== false)
+            $cs->registerScriptFile($this->assetsDir . '/js/i18n/elfinder.' . $lang . '.js');
 
         // set required options
         if (empty($this->connectorRoute))
@@ -72,18 +95,20 @@ class TinyMceElFinder extends TinyMceFileManager
         $settings['closeOnEditorCallback'] = true;
 
         $settings = CJavaScript::encode($settings);
-        $script = <<<EOD
+        $script=<<<JS
         function(field_name, url, type, win) {
             var aFieldName = field_name, aWin = win;
-            if($("#$id").length == 0) {
-                $("body").append($("<div/>").attr("id", "$id"));
-                $("#$id").elfinder($settings);
+            var el = $("#$id");
+            if(el.length == 0) {
+                el = $("<div/>").attr("id", "$id");
+                $("body").append(el);
+                el.elfinder($settings);
             }
             else {
-                $("#$id").elfinder("open","$connectorUrl");
+                el.elfinder("open","$connectorUrl");
             }
         }
-EOD;
+JS;
         return 'js:' . $script;
     }
 }
