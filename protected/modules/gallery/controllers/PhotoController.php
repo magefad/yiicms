@@ -8,8 +8,8 @@ class PhotoController extends Controller
     public function filters()
     {
         return array(
-            'postOnly + ajaxUpload, changeData, order, ajaxDelete',
-            array('auth.components.AuthFilter - album')
+            'postOnly + ajaxUpload, changeData, order, ajaxDelete, delete',/** @see CController::filterPostOnly */
+            array('auth.components.AuthFilter - album')/** @see AuthFilter */
         );
     }
 
@@ -91,23 +91,18 @@ class PhotoController extends Controller
 
     /**
      * Deletes a particular model.
+     * We only allow deletion via POST request @see CController::filterPostOnly
      * If deletion is successful, the browser will be redirected to the 'admin' page.
-     * @param integer $id the ID of the model to be deleted
+     * @param int $id the ID of the model to be deleted
      * @throws CHttpException
      * @return void
      */
     public function actionDelete($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            // we only allow deletion via POST request
-            $this->loadModel($id)->delete();
-
-            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-            if (!isset($_GET['ajax'])) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-            }
-        } else {
-            $this->invalidActionParams($this->action);
+        $this->loadModel($id)->delete();
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!isset($_GET['ajax'])) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
     }
 
@@ -156,7 +151,7 @@ class PhotoController extends Controller
         $model->save();
 
         $model->setImage($imageFile->getTempName());
-        header("Content-Type: application/json");
+        header('Content-Type: application/json');
         echo CJSON::encode(
             array(
                 'id'          => $model->id,
@@ -245,15 +240,11 @@ class PhotoController extends Controller
      */
     public function actionAjaxDelete()
     {
-        if (Yii::app()->getRequest()->getIsPostRequest()) {
-            $id = $_POST['id'];
-            /** @var $photo Photo */
-            $photo = Photo::model()->findByPk($id);
-            if ($photo !== null && $photo->delete()) {
-                echo 'OK';
-            } else {
-                echo 'FAIL';
-            }
+        $id = $_POST['id'];
+        /** @var $photo Photo */
+        $photo = Photo::model()->findByPk($id);
+        if ($photo !== null && $photo->delete()) {
+            echo 'OK';
         } else {
             echo 'FAIL';
         }

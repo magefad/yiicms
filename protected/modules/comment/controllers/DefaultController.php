@@ -22,7 +22,8 @@ class DefaultController extends Controller
     public function filters()
     {
         return array(
-            array('auth.components.AuthFilter - captcha, create, update, delete')
+            'postOnly + delete',/** @see CController::filterPostOnly */
+            array('auth.components.AuthFilter - captcha, create, update, delete')/** @see AuthFilter */
         );
     }
 
@@ -133,6 +134,7 @@ class DefaultController extends Controller
 
     /**
      * Deletes a particular model.
+     * We only allow deletion via POST request @see CController::filterPostOnly
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param integer $id the ID of the model to be deleted
      * @throws CHttpException
@@ -140,21 +142,15 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::app()->request->isPostRequest) {
-            // we only allow deletion via POST request
-            $model = $this->loadModel($id);
-            if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isAdmin) {
-                $this->loadModel($id)->delete();
-            } else {
-                throw new CHttpException(401, Yii::t('global', 'You don"t have permission to access this function'));
-            }
-
-            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-            if (!Yii::app()->request->isAjaxRequest) {
-                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-            }
-        } else {
-            $this->invalidActionParams($this->action);
+        $model = $this->loadModel($id);
+        if ((!Yii::app()->user->isGuest && Yii::app()->user->id == $model->create_user_id) || Yii::app()->user->isAdmin) {
+            $this->loadModel($id)->delete();
+        } else {//@todo yii You are not authorized to perform this action.
+            throw new CHttpException(401, Yii::t('global', 'You don"t have permission to access this function'));
+        }
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if (!Yii::app()->request->isAjaxRequest) {
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
     }
 
