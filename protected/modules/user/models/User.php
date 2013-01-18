@@ -282,7 +282,7 @@ class User extends CActiveRecord
     }
 
     /**
-     * @param $password
+     * @param string $password
      * @return bool
      */
     public function validatePassword($password)
@@ -308,8 +308,8 @@ class User extends CActiveRecord
     }
 
     /**
-     * @param $password
-     * @param $salt
+     * @param string $password
+     * @param string $salt
      * @return string md5 password
      */
     public function hashPassword($password, $salt)
@@ -370,7 +370,7 @@ class User extends CActiveRecord
     }
 
     /**
-     * @param $password
+     * @param string $password
      * @return bool
      */
     public function changePassword($password)

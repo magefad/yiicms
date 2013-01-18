@@ -20,7 +20,7 @@ class SettingController extends Controller
 
     /**
      * @param string $slug
-     * @throws CHttpException
+     * @throws CHttpException 404 if module not found
      */
     public function actionUpdate($slug)
     {
@@ -68,7 +68,7 @@ class SettingController extends Controller
      * @todo move to Model
      * @param CModule $module
      * @return array Setting[]
-     * @throws CHttpException
+     * @throws CHttpException 404 if no settings
      */
     public function getSettingsToUpdate($module)
     {

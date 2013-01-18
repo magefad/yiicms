@@ -78,7 +78,6 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param int $id the ID of the model to be deleted
      * @throws CHttpException
-     * @return void
      */
     public function actionDelete($id)
     {

@@ -44,7 +44,7 @@ class Controller extends CController
 
     /**
      * Set page title, seo meta tags (keywords and description)
-     * @param $seo
+     * @param CActiveRecord $seo
      */
     public function setMetaTags($seo)
     {
@@ -77,7 +77,7 @@ class Controller extends CController
     /**
      * CGridView ajax activate/deactivate
      * Update object status. Ex. active or draft
-     * @throws CHttpException
+     * @throws CHttpException 400 if model not found
      */
     public function actionActivate($id)
     {
@@ -105,7 +105,7 @@ class Controller extends CController
 
     /**
      * CGridView ajax sort
-     * @throws CHttpException
+     * @throws CHttpException 400 if model not found
      */
     public function actionSort($id)
     {

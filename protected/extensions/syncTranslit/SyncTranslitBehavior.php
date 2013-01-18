@@ -92,7 +92,7 @@ class SyncTranslitBehavior extends CActiveRecordBehavior
     }
 
     /**
-     * @param $string
+     * @param string $string
      * @return mixed
      */
     public function translit($string)

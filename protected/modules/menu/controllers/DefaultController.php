@@ -97,9 +97,8 @@ class DefaultController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param $id
-     * @throws CHttpException
-     * @internal param \the $integer ID of the model to be loaded
+     * @param int $id the ID of the model to be loaded
+     * @throws CHttpException 404 if not found
      * @return Menu
      */
     public function loadModel($id)

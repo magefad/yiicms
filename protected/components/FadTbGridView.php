@@ -32,7 +32,7 @@ class FadTbGridView extends TbGridView
 
 
     /**
-     * @param $data CActiveRecord
+     * @param CActiveRecord $data
      * @param string $statusAttribute
      * @param string $property
      * @param array $icons
@@ -91,7 +91,8 @@ class FadTbGridView extends TbGridView
     /**
      * Sort buttons (up-down)
      * @todo Remove down button of the end element
-     * @param $data CActiveRecord
+     * @param CActiveRecord $data
+     * @param string $sortAttribute
      * @return string
      */
     public function getUpDownButtons($data, $sortAttribute = 'sort_order')

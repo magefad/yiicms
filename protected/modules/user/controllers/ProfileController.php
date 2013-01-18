@@ -23,7 +23,7 @@ class ProfileController extends Controller
      * Show User Profile
      * @param string $username
      * @param null $mode
-     * @throws CHttpException
+     * @throws CHttpException 404 if not found
      */
     public function actionShow($username = null, $mode = null)
     {

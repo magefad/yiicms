@@ -189,7 +189,7 @@ class Page extends CActiveRecord
     }
 
     /**
-     * @param $slug
+     * @param string $slug
      * @return CActiveRecord
      */
     public function findBySlug($slug)

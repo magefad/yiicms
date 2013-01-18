@@ -9,8 +9,8 @@ class TbTreeToggleAction extends TbToggleAction
 {
     /**
      * Widgets run function
-     * @param $id
-     * @param $attribute
+     * @param int $id
+     * @param string $attribute
      * @throws CHttpException
      */
     public function run($id, $attribute)

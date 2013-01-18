@@ -94,8 +94,7 @@ class PhotoController extends Controller
      * We only allow deletion via POST request @see CController::filterPostOnly
      * If deletion is successful, the browser will be redirected to the 'admin' page.
      * @param int $id the ID of the model to be deleted
-     * @throws CHttpException
-     * @return void
+     * @throws CHttpException 400 if not not POST request
      */
     public function actionDelete($id)
     {
@@ -133,10 +132,8 @@ class PhotoController extends Controller
     /**
      * Method to handle file upload thought XHR2
      * On success returns JSON object with image info.
-     * @param null $galleryId
-     * @throws CHttpException
-     * @return void
-     * @internal param string $gallery_id Gallery Id to upload images
+     * @param int|null $galleryId Gallery Id to upload images
+     * @throws CHttpException 400 if not not POST request
      */
     public function actionAjaxUpload($galleryId = null)
     {
@@ -167,7 +164,7 @@ class PhotoController extends Controller
     /**
      * Method to update images name/description via AJAX.
      * On success returns JSON array od objects with new image info.
-     * @throws CHttpException
+     * @throws CHttpException 400 if not not POST request
      */
     public function actionChangeData()
     {
@@ -204,7 +201,7 @@ class PhotoController extends Controller
     /**
      * Saves images order according to request.
      * Variable $_POST['order'] - new arrange of image ids, to be saved
-     * @throws CHttpException
+     * @throws CHttpException 400 if not not POST request
      */
     public function actionOrder()
     {
@@ -279,9 +276,8 @@ class PhotoController extends Controller
     /**
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
-     * @param $id
-     * @throws CHttpException
-     * @internal param \the $integer ID of the model to be loaded
+     * @param int $id the ID of the model to be loaded
+     * @throws CHttpException 404 if not found
      * @return Photo
      */
     public function loadModel($id)
