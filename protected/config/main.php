@@ -8,7 +8,7 @@
 
 return array(
     'basePath'          => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name'              => 'Fad cms',
+    'name'              => 'Yii Fad CMS',
     'defaultController' => 'page/default/show',
     #'homeLink'         => '/',
     'sourceLanguage'    => 'en',
