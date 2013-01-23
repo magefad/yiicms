@@ -5,19 +5,19 @@
 /**
  * INSTALL
  * 1. Install required modules (user with RBAC, menu and page):
- *      yiic migrate up --module=user,menu,page,news
+ *      yiic migrate up --module=user,admin,menu,page,news
  * 2. Other modules if needed
  *      yiic migrate up --module=MODULE1,MODULE2,...
  * All additional modules:
- *      yiic migrate up --module=gallery,blog,comment,social,admin
+ *      yiic migrate up --module=gallery,blog,comment,social
  */
 
 /**
  * REMOVE
  * 1. Remove all additional modules:
- *      yiic migrate to m000000_000000 --module=news,gallery,blog,comment,social,admin
+ *      yiic migrate to m000000_000000 --module=news,gallery,blog,comment,social
  * 2. Remove required modules
- *      yiic migrate to m000000_000000 --module=page,menu
+ *      yiic migrate to m000000_000000 --module=admin,page,menu
  *      yiic migrate to m000000_000000 --module=user
  */
 return array(

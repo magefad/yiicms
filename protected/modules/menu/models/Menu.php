@@ -269,8 +269,6 @@ class Menu extends CActiveRecord
         /** @var $menu Menu|NestedSetBehavior */
         if (!is_null($code) && is_null($menu)) {
             $menu = Menu::model()->findByAttributes(array('code' => $code, 'status' => 1));
-        } else if (!is_object($menu)) {
-            return new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
         }
 
         $items = $menu->children()->findAllByAttributes(array('status' => 1));

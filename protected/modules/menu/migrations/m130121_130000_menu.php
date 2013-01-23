@@ -32,6 +32,30 @@ class m130121_130000_menu extends EDbMigration
             $this->addForeignKey('fk_{{menu}}_{{user}}_create_user_id', '{{menu}}', 'create_user_id', '{{user}}', 'id', 'CASCADE', 'NO ACTION');
             $this->addForeignKey('fk_{{menu}}_{{user}}_update_user_id', '{{menu}}', 'update_user_id', '{{user}}', 'id', 'CASCADE', 'NO ACTION');
         }
+        //menu category
+        $this->insert('{{menu}}', array(
+                'root'           => 1,
+                'lft'            => 1,
+                'rgt'            => 4,
+                'level'          => 1,
+                'code'           => 'top',
+                'title'          => Yii::t('menu', 'Верхнее меню'),
+                'type'           => 1,
+                'create_user_id' => 1,
+                'create_time'    => new CDbExpression('NOW()'),
+        ));
+        //menu link to index page item
+        $this->insert('{{menu}}', array(
+                'root'           => 1,
+                'lft'            => 2,
+                'rgt'            => 3,
+                'level'          => 2,
+                'title'          => Yii::t('zii', 'Home'),
+                'href'           => '/page/index/',
+                'type'           => 1,
+                'create_user_id' => 1,
+                'create_time'    => new CDbExpression('NOW()'),
+            ));
     }
 
     public function safeDown()

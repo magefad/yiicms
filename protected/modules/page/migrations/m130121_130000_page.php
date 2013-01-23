@@ -43,7 +43,7 @@ class m130121_130000_page extends EDbMigration
                 'name'           => 'Главная страница (Main page)',
                 'title'          => 'Заголовок страница (Page title)',
                 'description'    => 'Yii Fad Cms',
-                'content'        => '<h1>Главная страница</h1><p>Начальная страница. Зайдите в управление страницами, чтобы изменить текст.</p>',
+                'content'        => '<h1>Главная страница</h1><p>Начальная страница. Зайдите в управление страницами, чтобы изменить текст.</p><p>' . Yii::t('yii', 'Создано на {yii}.', array('{yii}' => '<a href="http://yiifad.ru/" rel="external">Yii Fad CMS</a>')) . '</p>',
                 'slug'           => 'index',
                 'sort_order'     => 1,
                 'create_user_id' => 1,
