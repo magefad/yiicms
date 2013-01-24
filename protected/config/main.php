@@ -114,7 +114,9 @@ return array(
             'itemChildTable'  => '{{auth_item_child}}',
             'assignmentTable' => '{{auth_assignment}}',
             'behaviors'       => array(
-                'auth.components.AuthBehavior'
+                'auth' => array(
+                    'class' => 'auth.components.AuthBehavior',
+                ),
             ),
         ),
         'errorHandler'  => array(

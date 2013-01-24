@@ -5,7 +5,7 @@
  * Time: 17:30
  */
 /**
- * @property IAuthManager $authManager The authorization manager component.
+ * @property IAuthManager|AuthBehavior $authManager The authorization manager component.
  * @property CAssetManager $assetManager The asset manager component.
  * @property CHttpSession $session The session component.
  * @property AuthWebUser $user The user session information.
