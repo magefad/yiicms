@@ -9,7 +9,7 @@ class DefaultController extends Controller
     {
         return array(
             'postOnly + delete',/** @see CController::filterPostOnly */
-            array('auth.components.AuthFilter - index, show')/** @see AuthFilter */
+            array('auth.filters.AuthFilter - index, show')/** @see AuthFilter */
         );
     }
 

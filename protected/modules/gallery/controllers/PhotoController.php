@@ -9,7 +9,7 @@ class PhotoController extends Controller
     {
         return array(
             'postOnly + ajaxUpload, changeData, order, ajaxDelete, delete',/** @see CController::filterPostOnly */
-            array('auth.components.AuthFilter - album')/** @see AuthFilter */
+            array('auth.filters.AuthFilter - album')/** @see AuthFilter */
         );
     }
 

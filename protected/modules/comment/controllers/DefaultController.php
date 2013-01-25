@@ -23,7 +23,7 @@ class DefaultController extends Controller
     {
         return array(
             'postOnly + delete',/** @see CController::filterPostOnly */
-            array('auth.components.AuthFilter - captcha, create, update, delete')/** @see AuthFilter */
+            array('auth.filters.AuthFilter - captcha, create, update, delete')/** @see AuthFilter */
         );
     }
 

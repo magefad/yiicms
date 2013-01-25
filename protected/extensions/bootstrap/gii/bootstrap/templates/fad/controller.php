@@ -16,7 +16,7 @@ class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseContro
     {
         return array(
              'postOnly + delete',/** @see CController::filterPostOnly */
-             array('auth.components.AuthFilter')/** @see AuthFilter */
+             array('auth.filters.AuthFilter')/** @see AuthFilter */
         );
     }
 

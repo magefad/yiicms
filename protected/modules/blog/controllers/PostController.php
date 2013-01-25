@@ -9,7 +9,7 @@ class PostController extends Controller
     {
         return array(
             'postOnly + delete',/** @see CController::filterPostOnly */
-            array('auth.components.AuthFilter - show')/** @see AuthFilter */
+            array('auth.filters.AuthFilter - show')/** @see AuthFilter */
         );
     }
 

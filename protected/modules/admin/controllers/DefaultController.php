@@ -8,7 +8,7 @@ class DefaultController extends Controller
     public function filters()
     {
         return array(
-             array('auth.components.AuthFilter')/** @see AuthFilter */
+             array('auth.filters.AuthFilter')/** @see AuthFilter */
         );
     }
 
