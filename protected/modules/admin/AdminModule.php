@@ -8,12 +8,12 @@ class AdminModule extends WebModule
     public $cachingDuration = 3600;
     public $uploadDir = 'uploads';
     public $email;
-    /** @var string Google Analytics Accounte */
+    /** @var string Google Analytics Account */
     public $googleAnalyticsAccount = '';
 
     public function getName()
     {
-        return Yii::app()->name;
+        return Yii::t('admin', 'Панель управления');
     }
 
     public function getSettingLabels()

@@ -1,6 +1,6 @@
 <?php
 
-class m130121_130000_page extends EDbMigration
+class m130121_130003_page extends EDbMigration
 {
     public function safeUp()
     {

@@ -1,6 +1,6 @@
 <?php
 
-class m130121_130000_gallery extends EDbMigration
+class m130121_130005_gallery extends EDbMigration
 {
     public function safeUp()
     {

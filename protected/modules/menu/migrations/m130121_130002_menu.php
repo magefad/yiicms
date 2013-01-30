@@ -1,6 +1,6 @@
 <?php
 
-class m130121_130000_menu extends EDbMigration
+class m130121_130002_menu extends EDbMigration
 {
     public function safeUp()
     {
