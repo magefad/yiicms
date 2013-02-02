@@ -60,8 +60,10 @@ class Controller extends CController
 
     /**
      * Register Meta tags to page
+     * @param string $view the view that has been rendered
+     * @param string $output the rendering result of the view. Note that this parameter is passed
      */
-    public function afterRender()
+    public function afterRender($view, &$output)
     {
         if (!empty($this->keywords)) {
             Yii::app()->clientScript->registerMetaTag($this->keywords, 'keywords');
