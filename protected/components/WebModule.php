@@ -6,6 +6,13 @@
  */
 class WebModule extends CWebModule
 {
+    /**
+     * @var mixed the layout that is shared by the controllers inside this module.
+     * If a controller has explicitly declared its own {@link CController::layout layout},
+     * this property will be ignored.
+     */
+    public $layout = '//layouts/main';
+
     const CHOICE_YES = 1;
     const CHOICE_NO  = 0;
 
@@ -25,7 +32,7 @@ class WebModule extends CWebModule
      */
     public function getDescription()
     {
-        return Yii::t('zii', 'Not set');
+        return '';
     }
 
     /**
@@ -34,7 +41,7 @@ class WebModule extends CWebModule
      */
     public function getAuthor()
     {
-        return 'Ruslan Fadeyev';
+        return 'Ruslan Fadeev';
     }
 
     /**
