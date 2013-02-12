@@ -13,7 +13,7 @@ Fad Yii Cms (dev)
 2. [Загрузите](http://yii.googlecode.com/files/yii-1.1.13.e9e4a0.tar.gz) последнюю версию Yii Framework и распакуйте.
 3. Откройте для изменения index.php из CMS и укажите пути до Yii Framework ($yii переменная)
    * Так как CMS использует конфигурации разработчика (dev.php) и боевого (естественно поверх конфигурации main.php) режима,
-   можно указать различные пути $yii (например на denwer) и production (рабочий сайт).
+   можно указать различные пути $yii development (например на denwer) и production (рабочий сайт).
 4. Откройте Yii CMS по вашему адресу. Например http://localhost/cms/ и следуйте инструкциям установщика!
 
 
