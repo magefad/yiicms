@@ -2,11 +2,21 @@
 return CMap::mergeArray(
     require(dirname(__FILE__) . '/main.php'),
     array(
-        'name'       => 'Fad cms',
-        'theme'      => 'kotel',
+        'name'       => 'Yii Fad CMS (production)',
+        //'theme'      => '',
         'components' => array(
-            'db'    => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php'),
-            'cache' => array(
+            'db'          => array_merge(
+                require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php'),
+                array('schemaCachingDuration' => 108000)
+            ),
+            'authManager' => array(
+                'behaviors' => array(
+                    'auth' => array(
+                        'admins' => array(), // !user names with full access!
+                    )
+                )
+            ),
+            /*'cache' => array(
                 'class' => 'CXCache',
             ),
             'log'   => array(
@@ -21,7 +31,7 @@ return CMap::mergeArray(
                         ),
                     ),
                 ),
-            )
-        ),
+            )*/
+        )
     )
 );

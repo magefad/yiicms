@@ -39,20 +39,6 @@ class m130121_130000_user extends EDbMigration
         $this->createIndex('ux_{{user}}_email', '{{user}}', 'email', true);
         $this->createIndex('ix_{{user}}_status', '{{user}}', 'status', false);
         $this->createIndex('ix_{{user}}_email_confirm', '{{user}}', 'email_confirm', false);
-        //create admin user with login/password admin/admin
-        $this->insert('{{user}}', array(
-                'firstname'         => 'admin',
-                'username'          => 'admin',
-                'country'           => 'Russia',
-                'email'             => 'mail@localhost',
-                'password'          => '0528a1bea367e7c93f25324d28c0fce1',
-                'salt'              => 'f9aa36cf6e0e72709c1fe5231058a64e',
-                'status'            => 'active',
-                'access_level'      => 1,
-                'registration_date' => new CDbExpression('NOW()'),
-                'registration_ip'   => Yii::app()->request->userHostAddress,
-                'email_confirm'     => 1,
-        ));
 
         $this->createTable('{{auth_item}}', array(
                 'name'        => 'varchar(64) NOT NULL PRIMARY KEY',

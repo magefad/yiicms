@@ -2,7 +2,7 @@
 return CMap::mergeArray(
     require(dirname(__FILE__) . '/main.php'),
     array(
-        'name'       => 'Fad cms',
+        'name'       => 'Yii Fad CMS (debug)',
         'modules'    => array(
             'gii' => array(
                 'class'          => 'system.gii.GiiModule',
@@ -14,18 +14,21 @@ return CMap::mergeArray(
         ),
         // application components
         'components' => array(
-            'db'         => array(
-                'connectionString'      => 'mysql:host=localhost;dbname=fadcms',
-                'emulatePrepare'        => true,
-                'username'              => 'root',
-                'password'              => '',
-                'charset'               => 'utf8',
-                'tablePrefix'           => 'fad_',
-                'schemaCachingDuration' => 108000,
-                'enableProfiling'       => true,
-                'enableParamLogging'    => true,
+            'db'  => array_merge(
+                require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php'),
+                array(
+                    'enableProfiling'    => true,
+                    'enableParamLogging' => true,
+                )
             ),
-            'log'        => array(
+            'authManager' => array(
+                'behaviors' => array(
+                    'auth' => array(
+                        'admins' => array(), // !user names with full access!
+                    )
+                )
+            ),
+            'log' => array(
                 'class'  => 'CLogRouter',
                 'routes' => array(
                     array(

@@ -8,21 +8,15 @@
 
 return array(
     'basePath'          => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
-    'name'              => 'Yii Fad CMS',
     'defaultController' => 'page/default/show',
-    #'homeLink'         => '/',
-    'sourceLanguage'    => 'en',
     'language'          => 'ru',
-    // preloading 'log' component
     'preload'           => array('log', 'bootstrap'),
-    // autoloading model and component classes
     'import'            => array(
         'application.components.*',
         'application.modules.user.models.User',
         'application.modules.menu.models.Menu',
-        'application.modules.auth.AuthModule'
     ),
-    'modules'           => array('user', 'menu', 'page', 'news', 'contact', 'gallery', 'blog', 'social', 'comment', 'sitemap', 'admin', 'auth' => array('userNameColumn' => 'username')),
+    'modules'           => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'modules.php'),
     // application components
     'components'        => array(
         'user'          => array(
@@ -49,13 +43,13 @@ return array(
         'widgetFactory' => array(
             'widgets' => array(
                 'TinyMce'        => array(
-                    'compressorRoute'    => 'tinyMce/compressor',
-                    'spellcheckerUrl'    => 'http://speller.yandex.net/services/tinyspell?options=15',
-                    'fileManager'        => array(
+                    'compressorRoute' => 'tinyMce/compressor',
+                    'spellcheckerUrl' => 'http://speller.yandex.net/services/tinyspell?options=15',
+                    'fileManager'     => array(
                         'class'          => 'ext.elFinder.TinyMceElFinder',
                         'connectorRoute' => 'elfinder/connector',
                     ),
-                    'settings'           => array(
+                    'settings'        => array(
                         'doctype'                           => '<!DOCTYPE html>',
                         'extended_valid_elements'           => 'iframe[id|class|title|style|align|frameborder|height|longdesc|marginheight|marginwidth|name|scrolling|src|width],input[name|value|id|type|placeholder|required]',
                         'body_class'                        => 'container-fluid',
@@ -125,7 +119,7 @@ return array(
         'cache'         => array(
             'class' => 'CFileCache',
         ),
-        'log'        => array(
+        'log'           => array(
             'class'  => 'CLogRouter',
             'routes' => array(
                 array(

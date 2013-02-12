@@ -3,7 +3,7 @@
 // This is the configuration for yiic console application.
 // Any writable CConsoleApplication properties can be configured here.
 /**
- * INSTALL
+ * INSTALL FROM CONSOLE
  * 1. Install required modules (user with RBAC, menu and page):
  *      yiic migrate up --module=user,admin,menu,page,news
  * 2. Other modules if needed
@@ -20,12 +20,23 @@
  *      yiic migrate to m000000_000000 --module=admin,page,menu
  *      yiic migrate to m000000_000000 --module=user
  */
+
+$modules_dirs = scandir(dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'modules');
+foreach ($modules_dirs as $module) {
+    if ($module[0] == '.') {
+        continue;
+    }
+    $modules[] = $module;
+}
+$components = array();
+if (file_exists(dirname(__FILE__) . '/protected/config/db.php')) {
+    $components['db'] = require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php');
+}
 return array(
     'basePath'   => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name'       => 'Yii Fad CMS console',
-    'components' => array(
-        'db' => require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php')
-    ),
+    'modules'    => $modules,
+    'components' => $components,
     'commandMap' => array(
         'migrate' => array(
             'class'          => 'ext.migrate-command.EMigrateCommand',
@@ -41,9 +52,6 @@ return array(
                 'social'  => 'application.modules.social.migrations',
                 'admin'   => 'application.modules.admin.migrations',
             ),
-        ),
-        'database' => array(
-            'class' => 'ext.database-command.EDatabaseCommand',
         ),
     )
 );
