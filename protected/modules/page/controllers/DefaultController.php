@@ -41,7 +41,7 @@ class DefaultController extends Controller
         if (empty($slug)) {
             $slug = $this->module->defaultPage;
         } else if ( $slug == $this->module->defaultPage) {
-            $this->redirect('/', true, 301);
+            $this->redirect(Yii::app()->getHomeUrl(), true, 301);
         }
         /** @var $model Page */
         // preview
