@@ -52,7 +52,7 @@ class DefaultController extends CController
                     Yii::app()->user->setState('configs', array('db' => $model->getDbConfig()));
                     $this->redirect(array('modules'));
                 } else if (is_string($dbCreateStatus)) {
-                    Yii::app()->user->setFlash('error', $dbCreateStatus);
+                    Yii::app()->user->setFlash('error', nl2br($dbCreateStatus));
                 }
             }
         }
@@ -214,12 +214,19 @@ class DefaultController extends CController
                 unset($configs['modules'][$id]);
             }
         }
-        foreach ($configs as $file => $data) {
-            InstallHelper::parseConfig($file, $data);
+        $fileWriteErrors = array();
+        foreach ($configs as $fileName => $data) {
+            if (InstallHelper::parseConfig($fileName, $data) === false) {
+                $fileWriteErrors[$fileName] = InstallHelper::varExport($data);
+            }
         }
-        Yii::app()->user->setStateKeyPrefix('');
-        Yii::app()->user->setFlash('success', 'Yes It Is!');
-        $this->redirect('/');
+        if (empty($fileWriteErrors)) {
+            Yii::app()->user->setStateKeyPrefix('');
+            Yii::app()->user->setFlash('success', 'Yes It Is!');
+            $this->redirect(Yii::app()->getHomeUrl());
+        } else {
+            $this->render('config', array('fileWriteErrors' => $fileWriteErrors));
+        }
     }
 
     public function actionError()

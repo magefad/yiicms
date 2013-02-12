@@ -241,6 +241,14 @@ class InstallHelper
         return $lang;
     }
 
+    public static function varExport($data)
+    {
+        $export = preg_replace('/[ ]{2}/', "    ", str_replace("\r", '', var_export($data, true)));
+        $export = preg_replace("/\=\>[ \n]+array[ ]+\(/", '=> array(', $export);
+        $export = preg_replace("/array\([\n][ ]{4}\)/", 'array()', $export);
+        return str_replace('array (', 'array(', $export);
+    }
+
     /**
      * @param string $fileName
      * @param array $data
@@ -248,13 +256,9 @@ class InstallHelper
      */
     public static function parseConfig($fileName, $data)
     {
-        $export = preg_replace('/[ ]{2}/', "    ", str_replace("\r", '', var_export($data, true)));
-        $export = preg_replace("/\=\>[ \n]+array[ ]+\(/", '=> array(', $export);
-        $export = preg_replace("/array\([\n][ ]{4}\)/", 'array()', $export);
-        $export = str_replace('array (', 'array(', $export);
         return file_put_contents(
             Yii::getPathOfAlias('application.config') . DIRECTORY_SEPARATOR . $fileName . '.php',
-            '<?php' . PHP_EOL . 'return ' . $export . ';' . PHP_EOL
+            '<?php' . PHP_EOL . 'return ' . self::varExport($data) . ';' . PHP_EOL
         );
     }
 }

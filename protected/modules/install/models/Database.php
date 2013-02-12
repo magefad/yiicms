@@ -116,8 +116,8 @@ class Database extends CFormModel
             $db->createCommand("CREATE DATABASE IF NOT EXISTS `{$this->dbName}` CHARACTER SET utf8 COLLATE utf8_general_ci")->execute();
             $this->_dbExists = true;
             return true;
-        } catch ( Exception $e ) {
-            return $e->getMessage() . (YII_DEBUG ? $e->getTraceAsString() : '');
+        } catch ( CDbException $e ) {
+            return $e->errorInfo['2'] . PHP_EOL . $e->getMessage() . (YII_DEBUG ? PHP_EOL . $e->getTraceAsString() : '');
         }
     }
 

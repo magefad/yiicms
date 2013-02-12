@@ -60,22 +60,26 @@ class Modules extends CFormModel
     {
         $className = ucfirst($id) . 'Module';
         Yii::import('application.modules.' . $id . '.' . $className);
-        /** @var $className AdminModule|BlogModule|CommentModule|ContactModule|GalleryModule|MenuModule|NewsModule|PageModule|SitemapModule|SocialModule|UserModule */
-        return '<i class="icon-' . $className::getIcon() . '"></i> ' . $className::getName();
+        // PHP 5.2 support :(
+        return '<i class="icon-' . call_user_func($className . '::getIcon') . '"></i> ' . call_user_func($className . '::getName');
+    }
+
+    public static function getModuleNameDescription($id)
+    {
+        $className = ucfirst($id) . 'Module';
+        $name = self::getModuleName($id);
+        $description = call_user_func($className . '::getDescription');
+        return empty($description) ? $name : $name . ' — ' . $description;
     }
 
     /**
      * @return array key value modules
      */
-    public function getRequiredModules()
+    public static function getRequiredModules()
     {
-        $names           = array();
-        $requiredModules = array('user', 'admin', 'menu', 'page', 'news');
-        foreach ($requiredModules as $id) {
-            $className = ucfirst($id) . 'Module';
-            Yii::import('application.modules.' . $id . '.' . $className);
-            /** @var $className UserModule|AdminModule|MenuModule|PageModule|NewsModule */
-            $names[$id] = '<i class="icon-' . $className::getIcon() . '"></i> ' . $className::getName();
+        $names = array();
+        foreach (array('user', 'admin', 'menu', 'page', 'news') as $id) {
+            $names[$id] = self::getModuleName($id);
         }
         return $names;
     }
@@ -95,7 +99,7 @@ class Modules extends CFormModel
             Yii::import('application.modules.' . $id . '.' . $className);
             /** @var $className AdminModule|BlogModule|CommentModule|ContactModule|GalleryModule|MenuModule|NewsModule|PageModule|SitemapModule|SocialModule|UserModule */
             if (method_exists($className, 'getIcon')) {//@todo change check
-                $modules[$id] = '<i class="icon-' . $className::getIcon() . '"></i> ' . $className::getName() . (strlen($className::getDescription()) ? ' — ' . $className::getDescription() : '');
+                $modules[$id] = self::getModuleNameDescription($id);
             }
         }
         return $modules;
