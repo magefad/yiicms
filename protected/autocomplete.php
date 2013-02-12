@@ -21,5 +21,6 @@
  * @property string $layoutPath The root directory of layout files. Defaults to 'protected/views/layouts'.
  * @property EAuth $eauth
  * @property YiiMailMessage $mail
+ * @property CommandExecutor $executor
  */
 class CApplication {}
