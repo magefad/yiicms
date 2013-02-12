@@ -2,7 +2,8 @@ Fad Yii Cms (dev)
 ===================
 
 Легкая CMS на базе Yii (1.1.12) с основными модулями и расширениями для старта. При написании кода используется стиль PSR-1/PSR-2.
-Вместо дампа базы данных используются [http://www.yiiframework.com/doc/guide/1.1/ru/database.migration](миграции)
+Вместо дампа базы данных используются [миграции](http://www.yiiframework.com/doc/guide/1.1/ru/database.migration),
+расширенные [дополнением](https://github.com/yiiext/migrate-command) с поддержкой модулей.
 
 УСТАНОВКА
 ------------
@@ -73,8 +74,9 @@ Fad Yii Cms (dev)
       image/            Kohana Image Library
       jui/              DateTimePicker с выборкой времени
       mail/             SwiftMailer
-      syncTranslit      поведение и виджет для транслита значений ActiveRecord
-      tinymce           WYSIWYG редактор
+      migrate-command/  Расширенные миграции с поддержкой модулей
+      syncTranslit/     поведение и виджет для транслита значений ActiveRecord
+      tinymce/          WYSIWYG редактор
 
 /protected/modules/
 
