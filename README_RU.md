@@ -2,6 +2,7 @@ Fad Yii Cms (dev)
 ===================
 
 Легкая CMS на базе Yii (1.1.12) с основными модулями и расширениями для старта. При написании кода используется стиль PSR-1/PSR-2.
+
 Вместо дампа базы данных используются [миграции](http://www.yiiframework.com/doc/guide/1.1/ru/database.migration),
 расширенные [дополнением](https://github.com/yiiext/migrate-command) с поддержкой модулей.
 

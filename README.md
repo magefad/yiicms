@@ -2,6 +2,7 @@ Fad Yii Cms (dev)
 ===================
 
 Easy CMS based on Yii (1.1.12) with the basic modules and extensions to start. Code style is PSR-1/PSR-2.
+
 Instead SQL dump used [migrations](http://www.yiiframework.com/doc/guide/1.1/ru/database.migration),
 extended [extension](https://github.com/yiiext/migrate-command) with modules support.
 
