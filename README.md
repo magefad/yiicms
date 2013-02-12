@@ -2,6 +2,17 @@ Fad Yii Cms (dev)
 ===================
 
 Easy CMS based on Yii (1.1.12) with the basic modules and extensions to start. Code style is PSR-1/PSR-2.
+Instead SQL dump used [http://www.yiiframework.com/doc/guide/1.1/ru/database.migration](migrations)
+
+INSTALLATION
+------------
+
+1. [Download](https://github.com/magefad/yiicms/archive/master.zip) latest version Yii Fad CMS and unzip to web server.
+2. [Download](http://yii.googlecode.com/files/yii-1.1.13.e9e4a0.tar.gz) latest version Yii Framework and unzip.
+3. Open to edit index.php from CMS and specify the path to the Yii Framework ($yii var)
+   * Since the CMS use configs for development (dev.php) and production (sure merged with main.php config),
+   you can specify different paths $yii in development (example for localhost) and production (for working site) mode.
+4. Open URL where Yii CMS. Example http://localhost/cms/ and follow the instructions of installer!
 
 CONFIGURATION
 ------------
@@ -9,9 +20,10 @@ CONFIGURATION
 /protected/config
 
       console.php       options yiic (console)
-      db.php            options for database connection (used in production.php)
+      db.php            return options for database connection (will be created after install)
       dev.php           options for development
       main.php          general options - all options merged width this (mergeArray)
+      modules.php       return array of modules (before install only one install module, after installation selected modules will return)
       production.php    options for production
       urlRules.php      additional rules for CUrlManager
 
@@ -38,6 +50,7 @@ MODULES
       comment/          comments behavior
       contact/          feedback (support for sending via SMTP)
       gallery/          gallery (galleria frontend)
+      install/          installer
       menu/             menu
       news/             news
       page/             pages
@@ -73,6 +86,7 @@ ADDITIONALY
 ------------
       /robots.txt                           General rules for search engines
       /protected/autocomplete.php           Auto complete for IDE
+      /protected/components/CommandExecutor Component for use console commands (example migrate)
       /protected/components/Controller      extended RController
       /protected/components/FadTbGridView   extended TbGridView
       /protected/components/WebModule       extended CWebModule

@@ -2,6 +2,18 @@ Fad Yii Cms (dev)
 ===================
 
 Легкая CMS на базе Yii (1.1.12) с основными модулями и расширениями для старта. При написании кода используется стиль PSR-1/PSR-2.
+Вместо дампа базы данных используются [http://www.yiiframework.com/doc/guide/1.1/ru/database.migration](миграции)
+
+УСТАНОВКА
+------------
+
+1. [Загрузите](https://github.com/magefad/yiicms/archive/master.zip) последнюю версию Yii Fad CMS и распакуйте на сервер.
+2. [Загрузите](http://yii.googlecode.com/files/yii-1.1.13.e9e4a0.tar.gz) последнюю версию Yii Framework и распакуйте.
+3. Откройте для изменения index.php из CMS и укажите пути до Yii Framework ($yii переменная)
+   * Так как CMS использует конфигурации разработчика (dev.php) и боевого (естественно поверх конфигурации main.php) режима,
+   можно указать различные пути $yii (например на denwer) и production (рабочий сайт).
+4. Откройте Yii CMS по вашему адресу. Например http://localhost/cms/ и следуйте инструкциям установщика!
+
 
 КОНФИГУРАЦИЯ
 ------------
@@ -9,9 +21,10 @@ Fad Yii Cms (dev)
 /protected/config
 
       console.php       параметры для yiic (консоль)
-      db.php            параметры подключения к базе данных (используется production.php)
+      db.php            возвращает параметры подключения к базе данных (создается после установки)
       dev.php           параметры для разработки
       main.php          основные параметры - все остальные идут поверх него (mergeArray)
+      modules.php       возвращает список модулей (перед установкой указан единственный модуль install, после установки будут вставлены выбранные)
       production.php    конфигурация для продакшн-сервера
       urlRules.php      дополнительные правила для CUrlManager
 
@@ -38,6 +51,7 @@ Fad Yii Cms (dev)
       comment/          поведение комментариев
       contact/          обратная связь (поддержка отправки через SMTP)
       gallery/          галерея (galleria frontend)
+      install/          установщик
       menu/             меню
       news/             новости
       page/             страницы
@@ -73,6 +87,7 @@ Fad Yii Cms (dev)
 ------------
       /robots.txt                           Основные правила для поисковых роботов
       /protected/autocomplete.php           Автодополнение кода в IDE
+      /protected/components/CommandExecutor Компонент для вызова консольных команд (например migrate)
       /protected/components/Controller      Расширенный RController
       /protected/components/FadTbGridView   Расширенный TbGridView
       /protected/components/WebModule       Расширенный CWebModule
