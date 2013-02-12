@@ -17,6 +17,21 @@ class GalleryModule extends WebModule
         return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/gallery/default/admin'));
     }
 
+    public static function getName()
+    {
+        return Yii::t('gallery', 'Галерея');
+    }
+
+    public static function getDescription()
+    {
+        return Yii::t('gallery', 'Создание и управление альбомами с фотографиями');
+    }
+
+    public static function getIcon()
+    {
+        return 'picture';
+    }
+
     public function getSettingLabels()
     {
         return array(
@@ -62,21 +77,6 @@ class GalleryModule extends WebModule
                 )
             )
         );
-    }
-
-    public function getName()
-    {
-        return Yii::t('gallery', 'Галерея');
-    }
-
-    public function getDescription()
-    {
-        return Yii::t('gallery', 'Создание и управление альбомами с фотографиями');
-    }
-
-    public function getIcon()
-    {
-        return 'picture';
     }
 
     public function getUploadPath()

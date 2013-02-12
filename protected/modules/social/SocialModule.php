@@ -11,12 +11,12 @@ class SocialModule extends WebModule
     public $facebookClientId;
     public $facebookClientSecret;
 
-    public function getName()
+    public static function getName()
     {
         return Yii::t('SocialModule.social', 'Социальные сети');
     }
 
-    public function getDescription()
+    public static function getDescription()
     {
         return Yii::t('SocialModule.social', 'Настройки интеграции с сервисами социальных сетей');
     }

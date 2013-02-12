@@ -29,6 +29,22 @@ class NewsModule extends WebModule
         return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/news/default/admin'));
     }
 
+    public static function getName()
+    {
+        return Yii::t('news', 'Новости');
+    }
+
+    public static function getDescription()
+    {
+        return Yii::t('news', 'Управление новостями сайта');
+    }
+
+    public static function getIcon()
+    {
+        return 'info-sign';
+    }
+
+
     public function getSettingLabels()
     {
         return array(
@@ -53,21 +69,6 @@ class NewsModule extends WebModule
                 'tag'  => 'dropDownList',
             )
         );
-    }
-
-    public function getName()
-    {
-        return Yii::t('news', 'Новости');
-    }
-
-    public function getDescription()
-    {
-        return Yii::t('news', 'Управление новостями сайта');
-    }
-
-    public function getIcon()
-    {
-        return 'info-sign';
     }
 
     public function getUploadPath()

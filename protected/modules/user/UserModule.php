@@ -26,17 +26,17 @@ class UserModule extends WebModule
         return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/user/default/admin'));
     }
 
-    public function getName()
+    public static function getName()
     {
         return Yii::t('user', 'Пользователи');
     }
 
-    public function getDescription()
+    public static function getDescription()
     {
         return Yii::t('user', 'Управление пользователями сайта');
     }
 
-    public function getIcon()
+    public static  function getIcon()
     {
         return 'user';
     }

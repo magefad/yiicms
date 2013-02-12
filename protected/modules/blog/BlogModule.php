@@ -11,17 +11,17 @@ class BlogModule extends WebModule
         return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/blog/default/admin'));
     }
 
-    public function getName()
+    public static function getName()
     {
         return Yii::t('BlogModule.blog', 'Blogs');
     }
 
-    public function getDescription()
+    public static function getDescription()
     {
         return Yii::t('BlogModule.blog', 'Manage blogs, posts and members');
     }
 
-    public function getIcon()
+    public static function getIcon()
     {
         return 'pencil';
     }

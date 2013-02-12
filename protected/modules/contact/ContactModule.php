@@ -23,9 +23,19 @@ class ContactModule extends WebModule
     public $smtpPassword = '';
     public $smtpEncryption = 'ssl';
 
-    public function getName()
+    public static function getName()
     {
         return Yii::t('contact', 'Форма обратной связи');
+    }
+
+    public static function getDescription()
+    {
+        return Yii::t('contact', 'Модуль для отправки сообщений с сайта');
+    }
+
+    public static function getIcon()
+    {
+        return 'envelope';
     }
 
     public function getSettingLabels()
@@ -72,16 +82,6 @@ class ContactModule extends WebModule
                 )
             )
         );
-    }
-
-    public function getDescription()
-    {
-        return Yii::t('contact', 'Модуль для отправки сообщений с сайта');
-    }
-
-    public function getIcon()
-    {
-        return 'envelope';
     }
 
     public function init()

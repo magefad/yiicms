@@ -17,6 +17,21 @@ class PageModule extends WebModule
         return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/page/default/admin'));
     }
 
+    public static function getName()
+    {
+        return Yii::t('PageModule.page', 'Страницы');
+    }
+
+    public static function getDescription()
+    {
+        return Yii::t('page', 'Управление страницами сайта');
+    }
+
+    public static function getIcon()
+    {
+        return 'font';
+    }
+
     public function getSettingLabels()
     {
         return array(
@@ -33,21 +48,6 @@ class PageModule extends WebModule
                 'tag'  => 'dropDownList',
             ),
         );
-    }
-
-    public function getName()
-    {
-        return Yii::t('PageModule.page', 'Страницы');
-    }
-
-    public function getDescription()
-    {
-        return Yii::t('page', 'Управление страницами сайта');
-    }
-
-    public function getIcon()
-    {
-        return 'font';
     }
 
     public function init()

@@ -11,7 +11,7 @@ class AdminModule extends WebModule
     /** @var string Google Analytics Account */
     public $googleAnalyticsAccount = '';
 
-    public function getName()
+    public static function getName()
     {
         return Yii::t('admin', 'Панель управления');
     }

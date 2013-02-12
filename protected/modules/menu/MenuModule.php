@@ -7,17 +7,17 @@ class MenuModule extends WebModule
         return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/menu/default/admin'));
     }
 
-    public function getName()
+    public static function getName()
     {
         return Yii::t('menu', 'Меню');
     }
 
-    public function getDescription()
+    public static function getDescription()
     {
         return Yii::t('menu', 'Создание и управление ссылками меню навигации');
     }
 
-    public function getIcon()
+    public static function getIcon()
     {
         return 'list';
     }

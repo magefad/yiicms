@@ -124,12 +124,12 @@ class SitemapModule extends WebModule
         )
     );
 
-    public function getName()
+    public static function getName()
     {
         return Yii::t('SitemapModule.sitemap', 'Sitemap and sitemap.xml generator');
     }
 
-    public function getIcon()
+    public static function getIcon()
     {
         return 'th';
     }

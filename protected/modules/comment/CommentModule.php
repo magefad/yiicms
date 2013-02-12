@@ -26,12 +26,12 @@ class CommentModule extends WebModule
         return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/comment/default/admin'));
     }
 
-    public function getName()
+    public static function getName()
     {
         return Yii::t('CommentModule.comment', 'Comments');
     }
 
-    public function getIcon()
+    public static function getIcon()
     {
         return 'comment';
     }
