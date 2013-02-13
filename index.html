@@ -35,14 +35,33 @@
 
 <p>Easy CMS based on Yii (1.1.12) with the basic modules and extensions to start. Code style is PSR-1/PSR-2.</p>
 
-<h2>CONFIGURATION</h2>
+<p>Instead SQL dump used <a href="http://www.yiiframework.com/doc/guide/1.1/ru/database.migration">migrations</a>,
+extended <a href="https://github.com/yiiext/migrate-command">extension</a> with modules support.</p>
+
+<h2>INSTALLATION</h2>
+
+<ol>
+<li>
+<a href="https://github.com/magefad/yiicms/archive/master.zip">Download</a> latest version Yii Fad CMS and unzip to web server.</li>
+<li>
+<a href="http://yii.googlecode.com/files/yii-1.1.13.e9e4a0.tar.gz">Download</a> latest version Yii Framework and unzip.</li>
+<li>Open to edit index.php from CMS and specify the path to the Yii Framework ($yii var)
+
+<ul>
+<li>Since the CMS use configs for development (dev.php) and production (sure merged with main.php config),
+you can specify different paths $yii in development (example for localhost) and production (for working site) mode.</li>
+</ul>
+</li>
+<li>Open URL where Yii CMS. Example http://localhost/cms/ and follow the instructions of installer!</li>
+</ol><h2>CONFIGURATION</h2>
 
 <p>/protected/config</p>
 
 <pre><code>  console.php       options yiic (console)
-  db.php            options for database connection (used in production.php)
+  db.php            return options for database connection (will be created after install)
   dev.php           options for development
   main.php          general options - all options merged width this (mergeArray)
+  modules.php       return array of modules (before install only one install module, after installation selected modules will return)
   production.php    options for production
   urlRules.php      additional rules for CUrlManager
 </code></pre>
@@ -64,14 +83,15 @@
 <p>/protected/modules/</p>
 
 <pre><code>  admin/            admin main — list and settings modules, version of Yii and PHP
+  auth/             RBAC users (yii-auth)
   blog/             blog
   comment/          comments behavior
   contact/          feedback (support for sending via SMTP)
   gallery/          gallery (galleria frontend)
+  install/          installer
   menu/             menu
   news/             news
   page/             pages
-  rights/           rbac users (yii-rights)
   sitemap/          sitemap (tree-like sitemap/, sitemap.xml)
   social/           social networks  (vk, facebook)
   user/             users (include eauth, eoauth, lightopenid)
@@ -90,8 +110,9 @@
   image/            Kohana Image Library
   jui/              DateTimePicker with time picker
   mail/             SwiftMailer
-  syncTranslit      behavior and widget for translit values (ActiveRecord)
-  tinymce           WYSIWYG editor
+  migrate-command/  Extended migrations with modules support
+  syncTranslit/     behavior and widget for translit values (ActiveRecord)
+  tinymce/          WYSIWYG editor
 </code></pre>
 
 <p>/protected/modules/</p>
@@ -106,6 +127,7 @@
 
 <pre><code>  /robots.txt                           General rules for search engines
   /protected/autocomplete.php           Auto complete for IDE
+  /protected/components/CommandExecutor Component for use console commands (example migrate)
   /protected/components/Controller      extended RController
   /protected/components/FadTbGridView   extended TbGridView
   /protected/components/WebModule       extended CWebModule
@@ -126,7 +148,7 @@
 
 <ul>
 <li><a href="http://yii-booster.clevertech.biz/">YiiBooster</a></li>
-<li><a href="http://www.yiiframework.com/extension/rights/">Yii-rights</a></li>
+<li><a href="http://www.yiiframework.com/extension/auth/">Yii-Auth</a></li>
 <li><a href="http://www.yiiframework.com/extension/newtinymce/">TinyMce</a></li>
 <li><a href="http://elfinder.org/">elFinder</a></li>
 <li><a href="http://www.yiiframework.com/extension/galleria/">Galleria</a></li>
@@ -146,7 +168,6 @@
 <li><strong>create website and community</strong></li>
 <li>switch to sourceLanguage = en (~15%)</li>
 <li>creating something blocks of content (like ModX)</li>
-<li>creation of templates to manage user (Rights ext) under CMS</li>
 <li>installator</li>
 <li>possibility to edit the page directly on the site (like Google Sites)</li>
 </ul><p>I will appreciate any help in improving the project, and, of course, pull requests.</p>
