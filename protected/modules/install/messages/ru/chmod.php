@@ -17,9 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Application installer module' => 'Установщик модулей',
-  'Begin installing' => 'Начать установку',
-  'Error writing to /protected/config/{fileName}.php' => 'Ошибка записи в /protected/config/{fileName}.php',
-  'Installer' => 'Установщик',
-  'Next step' => 'Дальше',
+  'Checking CHMOD (permissions) on directory' => 'Проверка прав доступа (CHMOD) на директории',
+  'Directory' => 'Директория',
+  'Writable' => 'Доступ',
 );

@@ -28,7 +28,7 @@
 $this->widget(
     'bootstrap.widgets.TbButton',
     array(
-        'label' => Yii::t('InstallModule.main', 'Next Step'),
+        'label' => Yii::t('InstallModule.main', 'Next step'),
         'type'  => 'primary',
         'size'  => 'large',
         'url'   => array('database'),

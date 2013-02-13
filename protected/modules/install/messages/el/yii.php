@@ -44,7 +44,6 @@ return array (
   'Reflection extension' => 'Επέκταση Reflection',
   'SOAP extension' => 'Επέκταση SOAP',
   'SPL extension' => 'Επέκταση SPL',
-  'The system is unable to find the requested action "{action}".' => '',
   'This is required by encrypt and decrypt methods.' => 'Απαιτείται από τις μεθόδους κρυπτογράφησης και αποκρυπτογράφησης.',
   'This is required if you are using MSSQL database from GNU/Linux or other UNIX.' => 'Απαιτείται αν χρησιμοποιείτε βάση δεδομένων MSSQL από GNU/Linux ή άλλο UNIX.',
   'This is required if you are using MSSQL database from MS Windows' => 'Απαιτείται αν χρησιμοποιείτε βάση δεδομένων MSSQL από MS Windows.',

@@ -44,7 +44,6 @@ return array (
   'Reflection extension' => 'Розширення Reflection',
   'SOAP extension' => 'Розширення SOAP',
   'SPL extension' => 'Розширення SPL',
-  'The system is unable to find the requested action "{action}".' => '',
   'This is required by encrypt and decrypt methods.' => 'Це потрібно для роботи методів шифрування і дешифрування.',
   'This is required if you are using MSSQL database from GNU/Linux or other UNIX.' => '',
   'This is required if you are using MSSQL database from MS Windows' => '',

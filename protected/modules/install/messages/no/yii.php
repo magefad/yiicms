@@ -44,7 +44,6 @@ return array (
   'Reflection extension' => 'Reflection-extension',
   'SOAP extension' => 'SOAP-extension',
   'SPL extension' => 'SPL-extension',
-  'The system is unable to find the requested action "{action}".' => '',
   'This is required by encrypt and decrypt methods.' => 'Dette kreves av kryptering- og dekrypteringsmetodene.',
   'This is required if you are using MSSQL database from GNU/Linux or other UNIX.' => '',
   'This is required if you are using MSSQL database from MS Windows' => '',
