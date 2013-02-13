@@ -82,9 +82,9 @@ class photoManager extends Widget
             'descriptionLabel' => Yii::t('gallery', 'Описание'),
             'photos'           => $photos
         );
-        if (Yii::app()->request->enableCsrfValidation) {
-            $opts['csrfTokenName'] = Yii::app()->request->csrfTokenName;
-            $opts['csrfToken']     = Yii::app()->request->csrfToken;
+        if (Yii::app()->getRequest()->enableCsrfValidation) {
+            $opts['csrfTokenName'] = Yii::app()->getRequest()->csrfTokenName;
+            $opts['csrfToken']     = Yii::app()->getRequest()->csrfToken;
         }
         $opts = CJavaScript::encode($opts);
         $cs->registerScript('galleryManager#' . $this->id, "$('#{$this->id}').galleryManager({$opts});");

@@ -127,12 +127,12 @@ class Menu extends CActiveRecord
             if ($this->parentId && $this->parent()->find()->id != $this->parentId) {
                 /** @var $oldParent Menu|NestedSetBehavior //see updateAction where setted parentId after load model */
                 if ($oldParent = $this->findByPk($this->parentId)) {
-                    Yii::app()->cache->delete(
+                    Yii::app()->getCache()->delete(
                         'menu_' . ($oldParent->isRoot() ? $oldParent->code : $oldParent->ancestors()->find()->code)
                     );
                 }
             }
-            Yii::app()->cache->delete('menu_' . $this->ancestors()->find()->code);
+            Yii::app()->getCache()->delete('menu_' . $this->ancestors()->find()->code);
             return true;
         } else {
             return false;
@@ -193,14 +193,14 @@ class Menu extends CActiveRecord
         if (Yii::app()->user->isGuest || !Yii::app()->user->checkAccess('Editor')) {
             return array();
         }
-        if ($items = Yii::app()->cache->get('menu_admin')) {
+        if ($items = Yii::app()->getCache()->get('menu_admin')) {
             if (isset(Yii::app()->controller->module) && isset(Yii::app()->controller->module->adminMenu)) {
                 $items[0]['items'][get_class(Yii::app()->controller->module)]['items'] = Yii::app()->controller->module->adminMenu;
             }
             return $items;
         }
         $items = array();
-        foreach (Yii::app()->modules as $config) {
+        foreach (Yii::app()->getModules() as $config) {
             if ($config['class'] == 'system.gii.GiiModule') {
                 continue;
             }
@@ -219,7 +219,7 @@ class Menu extends CActiveRecord
         );
         $dependency = new CDirectoryCacheDependency(Yii::getPathOfAlias('application') . DIRECTORY_SEPARATOR . 'modules');
         $dependency->recursiveLevel = 1;
-        Yii::app()->cache->set('menu_admin', $items, 0, $dependency);
+        Yii::app()->getCache()->set('menu_admin', $items, 0, $dependency);
         return $items;
     }
 
@@ -231,9 +231,9 @@ class Menu extends CActiveRecord
     public static function getItems($code)
     {
         $cacheKey = 'menu_'.$code;
-        if (!$menu = Yii::app()->cache->get($cacheKey)) {
+        if (!$menu = Yii::app()->getCache()->get($cacheKey)) {
             $menu = self::getItemsFromDb($code);
-            Yii::app()->cache->set($cacheKey, $menu);
+            Yii::app()->getCache()->set($cacheKey, $menu);
         }
         return self::getUserItems($menu);
     }
@@ -245,7 +245,7 @@ class Menu extends CActiveRecord
      */
     private static function getUserItems($items = array())
     {
-        $requestUri = rtrim(Yii::app()->request->requestUri, '/');
+        $requestUri = rtrim(Yii::app()->getRequest()->requestUri, '/');
         $count = count($items);
         for ($i=0; $i<$count; $i++) {
             $items[$i]['visible'] = !empty($items[$i]['access']) ? (Yii::app()->user->isGuest ? 0 : Yii::app()->user->checkAccess($items[$i]['access'])) : 1;

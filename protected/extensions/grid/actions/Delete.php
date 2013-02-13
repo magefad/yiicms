@@ -14,7 +14,7 @@ class Delete extends CAction
 
     public function run($id)
     {
-        if (Yii::app()->request->isPostRequest) {
+        if (Yii::app()->getRequest()->isPostRequest) {
             /** @var $model CActiveRecord|NestedSetBehavior */
             $model = CActiveRecord::model($this->modelName)->findByPk((int)$id);
             if ($model === null) {
@@ -27,7 +27,7 @@ class Delete extends CAction
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if (!isset($_GET['ajax'])) {
-                $this->controller->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : Yii::app()->request->urlReferrer);
+                $this->controller->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : Yii::app()->getRequest()->urlReferrer);
             }
         } else {
             throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));

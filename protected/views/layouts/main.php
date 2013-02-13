@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo Yii::app()->language; ?>">
+<html lang="<?php echo Yii::app()->getLanguage(); ?>">
 <head>
     <meta charset="utf-8">
     <title><?php echo CHtml::encode($this->pageTitle); ?></title>
@@ -68,7 +68,7 @@ $this->widget(
         array(
             'links'     => $this->breadcrumbs,
             'separator' => ' / ',
-            'homeLink'  => CHtml::link('Главная', Yii::app()->homeUrl),
+            'homeLink'  => CHtml::link('Главная', Yii::app()->getHomeUrl()),
         )
     ); ?><!-- breadcrumbs -->
     <?php endif?>

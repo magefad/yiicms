@@ -77,9 +77,9 @@ class Controller extends CController
      */
     public function actionActivate($id)
     {
-        $status      = Yii::app()->request->getQuery('status');
-        $modelClass  = Yii::app()->request->getQuery('model');
-        $statusAttribute = Yii::app()->request->getQuery('statusAttribute');
+        $status      = Yii::app()->getRequest()->getQuery('status');
+        $modelClass  = Yii::app()->getRequest()->getQuery('model');
+        $statusAttribute = Yii::app()->getRequest()->getQuery('statusAttribute');
 
         if (!isset($modelClass, $id, $status, $statusAttribute)) {
             $this->invalidActionParams($this->action);
@@ -94,7 +94,7 @@ class Controller extends CController
         $model->$statusAttribute = $status;
         $model->update(array($statusAttribute));
 
-        if (!Yii::app()->request->isAjaxRequest) {
+        if (!Yii::app()->getRequest()->isAjaxRequest) {
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
     }
@@ -105,9 +105,9 @@ class Controller extends CController
      */
     public function actionSort($id)
     {
-        $direction  = Yii::app()->request->getQuery('direction');
-        $modelClass = Yii::app()->request->getQuery('model');
-        $sortAttribute  = Yii::app()->request->getQuery('sortAttribute');
+        $direction  = Yii::app()->getRequest()->getQuery('direction');
+        $modelClass = Yii::app()->getRequest()->getQuery('model');
+        $sortAttribute  = Yii::app()->getRequest()->getQuery('sortAttribute');
         if (!isset($direction, $id, $modelClass, $sortAttribute)) {
             $this->invalidActionParams($this->action);
         }
@@ -131,20 +131,20 @@ class Controller extends CController
             $model->saveCounters(array($sortAttribute => +1));
         }
 
-        if (!Yii::app()->request->isAjaxRequest) {
+        if (!Yii::app()->getRequest()->isAjaxRequest) {
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
     }
 
     public function actionAutoCompleteSearch()
     {
-        $table     = Yii::app()->request->getQuery('table') ? '{{'.Yii::app()->request->getQuery('table').'}}' : '{{tag}}';
-        $nameField = Yii::app()->request->getQuery('nameField') ? Yii::app()->request->getQuery('nameField') : 'name';
-        $term      = Yii::app()->request->getQuery('term');
+        $table     = Yii::app()->getRequest()->getQuery('table') ? '{{'.Yii::app()->getRequest()->getQuery('table').'}}' : '{{tag}}';
+        $nameField = Yii::app()->getRequest()->getQuery('nameField') ? Yii::app()->getRequest()->getQuery('nameField') : 'name';
+        $term      = Yii::app()->getRequest()->getQuery('term');
 
         $variants = array();
 
-        if (Yii::app()->request->isAjaxRequest && !empty($term)) {
+        if (Yii::app()->getRequest()->isAjaxRequest && !empty($term)) {
             $tags = Yii::app()->db->createCommand()->select($nameField)->from($table)->where(
                 array('like', $nameField, $term . '%')
             )->queryAll();

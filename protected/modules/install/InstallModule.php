@@ -49,7 +49,7 @@ class InstallModule extends CWebModule
                 )
             ), false
         );
-        Yii::app()->language = InstallHelper::getPreferredLanguage();
+        Yii::app()->setLanguage(InstallHelper::getPreferredLanguage());
     }
 
     /**

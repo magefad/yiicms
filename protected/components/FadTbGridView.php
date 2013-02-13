@@ -130,9 +130,9 @@ class FadTbGridView extends TbGridView
     protected function registerCustomClientScript($class = '')
     {
         $csrf = '';
-        if (Yii::app()->request->enableCsrfValidation) {
-            $csrfTokenName = Yii::app()->request->csrfTokenName;
-            $csrfToken     = Yii::app()->request->csrfToken;
+        if (Yii::app()->getRequest()->enableCsrfValidation) {
+            $csrfTokenName = Yii::app()->getRequest()->csrfTokenName;
+            $csrfToken     = Yii::app()->getRequest()->csrfToken;
             $csrf          = "\n\t\tdata:{ '$csrfTokenName':'$csrfToken' },";
         }
         $function = "

@@ -37,8 +37,8 @@ class DefaultController extends Controller
                 array(
                     'salt'              => $model->generateSalt(),
                     'password'          => $model->hashPassword($model->password, $model->salt),
-                    'registration_ip'   => Yii::app()->request->userHostAddress,
-                    'activation_ip'     => Yii::app()->request->userHostAddress,
+                    'registration_ip'   => Yii::app()->getRequest()->userHostAddress,
+                    'activation_ip'     => Yii::app()->getRequest()->userHostAddress,
                     'registration_date' => new CDbExpression("NOW()"),
                 )
             );
@@ -124,7 +124,7 @@ class DefaultController extends Controller
         $model = $this->loadModel($id);
         $form  = new ChangePasswordForm;
 
-        if (Yii::app()->request->isPostRequest && !empty($_POST['ChangePasswordForm'])) {
+        if (Yii::app()->getRequest()->isPostRequest && !empty($_POST['ChangePasswordForm'])) {
             $form->setAttributes($_POST['ChangePasswordForm']);
             if ($form->validate() && $model->changePassword($form->password)) {
                 $model->changePassword($form->password);

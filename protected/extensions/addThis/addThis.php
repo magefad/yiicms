@@ -74,7 +74,7 @@ class addThis extends CWidget
             Yii::app()->clientScript->registerScript(__CLASS__ . '#vk', 'VK.Widgets.Like("vk_like", '.CJavaScript::encode($this->vkButtonOptions).');', CClientScript::POS_END);
         }
 
-        $this->config['ui_language'] = isset($this->config['ui_language']) ? $this->config['ui_language'] : Yii::app()->language;
+        $this->config['ui_language'] = isset($this->config['ui_language']) ? $this->config['ui_language'] : Yii::app()->getLanguage();
         if (!empty($this->config)) {
             $js[] = 'var addthis_config=' . CJavaScript::encode($this->config);
         }

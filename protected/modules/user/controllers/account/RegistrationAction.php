@@ -9,7 +9,7 @@ class RegistrationAction extends CAction
             $this->controller->redirect(Yii::app()->user->returnUrl);
         }
 
-        if (Yii::app()->request->isPostRequest && isset($_POST['RegistrationForm'])) {
+        if (Yii::app()->getRequest()->isPostRequest && isset($_POST['RegistrationForm'])) {
             $form->setAttributes($_POST['RegistrationForm']);
             #print_r($_POST);
             if ($form->validate()) {

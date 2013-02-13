@@ -14,9 +14,9 @@ class MoveNode extends CAction
 
     public function run()
     {
-        $type = Yii::app()->request->getParam('type');
-        $to   = Yii::app()->request->getParam('to');
-        $id   = Yii::app()->request->getParam('moved');
+        $type = Yii::app()->getRequest()->getParam('type');
+        $to   = Yii::app()->getRequest()->getParam('to');
+        $id   = Yii::app()->getRequest()->getParam('moved');
         /**
          * @var $to CActiveRecord|NestedSetBehavior
          * @var $moved CActiveRecord|NestedSetBehavior
@@ -45,8 +45,8 @@ class MoveNode extends CAction
                         }
                         break;
                 }
-                if (!Yii::app()->request->isAjaxRequest) {
-                    $this->controller->redirect(Yii::app()->request->urlReferrer);
+                if (!Yii::app()->getRequest()->isAjaxRequest) {
+                    $this->controller->redirect(Yii::app()->getRequest()->urlReferrer);
                 }
             } catch ( Exception $e ) {
                 throw new CHttpException(500, $e->getMessage());

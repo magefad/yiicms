@@ -136,7 +136,7 @@ class SitemapModule extends WebModule
 
     public function getUrls()
     {
-        if ($urls = Yii::app()->cache->get(get_class($this))) {
+        if ($urls = Yii::app()->getCache()->get(get_class($this))) {
             return $urls;
         }
         $urls = array();
@@ -200,7 +200,7 @@ class SitemapModule extends WebModule
                 $urls[Yii::app()->createAbsoluteUrl($route, isset($action['params']) ? $action['params'] : array())] = $data;
             }
         }
-        Yii::app()->cache->set(get_class($this), $urls, $this->cachingDuration);
+        Yii::app()->getCache()->set(get_class($this), $urls, $this->cachingDuration);
         return $urls;
     }
 

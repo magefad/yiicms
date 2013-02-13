@@ -76,7 +76,7 @@ class PostController extends Controller
 
         if (isset($_POST['Post'])) {
             $model->attributes = $_POST['Post'];
-            $model->setTags(Yii::app()->request->getPost('tags'));
+            $model->setTags(Yii::app()->getRequest()->getPost('tags'));
             if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -99,7 +99,7 @@ class PostController extends Controller
 
         if (isset($_POST['Post'])) {
             $model->attributes = $_POST['Post'];
-            $model->setTags(Yii::app()->request->getPost('tags'));
+            $model->setTags(Yii::app()->getRequest()->getPost('tags'));
             if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }

@@ -45,7 +45,7 @@ class DefaultController extends Controller
         }
         /** @var $model Page */
         // preview
-        if ((int)Yii::app()->request->getQuery('preview') === 1 && Yii::app()->user->isAdmin) {
+        if ((int)Yii::app()->getRequest()->getQuery('preview') === 1 && Yii::app()->user->isAdmin) {
             $model = Page::model()->find('slug = :slug', array(':slug' => $slug));
         } else {
             $model = Page::model()->published()->find('slug = :slug', array(':slug' => $slug));

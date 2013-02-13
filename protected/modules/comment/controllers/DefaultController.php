@@ -57,7 +57,7 @@ class DefaultController extends Controller
             // determine current users id
             $model->create_user_id = Yii::app()->user->isGuest ? null : Yii::app()->user->id;
 
-            if (Yii::app()->request->isAjaxRequest) {
+            if (Yii::app()->getRequest()->isAjaxRequest) {
                 $output = '';
                 if ($model->save()) {
                     // refresh model to replace CDbExpression for timestamp attribute
@@ -103,7 +103,7 @@ class DefaultController extends Controller
             if (isset($_POST['Comment'])) {
                 $model->attributes = $_POST['Comment'];
                 if ($model->save()) {
-                    if (Yii::app()->request->isAjaxRequest) {
+                    if (Yii::app()->getRequest()->isAjaxRequest) {
                         // refresh model to replace CDbExpression for timestamp attribute
                         $model->refresh();
                         // render updated comment
@@ -117,7 +117,7 @@ class DefaultController extends Controller
                 }
             }
 
-            if (Yii::app()->request->isAjaxRequest) {
+            if (Yii::app()->getRequest()->isAjaxRequest) {
                 $output = $this->renderPartial('_formAjax', array('model'=> $model, 'ajaxId' => time()), true);
                 // render javascript functions
                 Yii::app()->clientScript->renderBodyEnd($output);
@@ -147,7 +147,7 @@ class DefaultController extends Controller
             throw new CHttpException(403, Yii::t('yii', 'You are not authorized to perform this action.'));
         }
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-        if (!Yii::app()->request->isAjaxRequest) {
+        if (!Yii::app()->getRequest()->isAjaxRequest) {
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
         }
     }

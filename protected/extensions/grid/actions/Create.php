@@ -45,7 +45,7 @@ class Create extends CAction
                     $root = CActiveRecord::model($this->modelName)->roots()->find();
 
                     if ($root && $model->appendTo($root)) {
-                        $this->controller->redirect(Yii::app()->request->urlReferrer);
+                        $this->controller->redirect(Yii::app()->getRequest()->urlReferrer);
                     }
                 }
             } catch ( Exception $e ) {

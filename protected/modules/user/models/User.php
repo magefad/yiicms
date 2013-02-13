@@ -276,7 +276,7 @@ class User extends CActiveRecord
         if ($this->isNewRecord) {
             $this->registration_date = $this->create_time = new CDbExpression('NOW()');
             $this->activate_key      = $this->generateActivationKey();
-            $this->registration_ip   = $this->activation_ip = Yii::app()->request->userHostAddress;
+            $this->registration_ip   = $this->activation_ip = Yii::app()->getRequest()->userHostAddress;
         }
         return parent::beforeSave();
     }
@@ -384,7 +384,7 @@ class User extends CActiveRecord
      */
     public function activate()
     {
-        $this->activation_ip = Yii::app()->request->userHostAddress;
+        $this->activation_ip = Yii::app()->getRequest()->userHostAddress;
         $this->status        = 'active';
         $this->email_confirm = true;
 

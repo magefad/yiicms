@@ -328,7 +328,7 @@ class WebModule extends CModule
     public function init()
     {
         $cacheKey = 'settings_' . $this->id;
-        $settings = Yii::app()->cache->get($cacheKey);
+        $settings = Yii::app()->getCache()->get($cacheKey);
         if (!is_array($settings)) {
             $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM {{settings}} WHERE module_id="' . $this->getId() . '"');
             $sql = "SELECT `key`, `value` FROM {{settings}} WHERE module_id='{$this->id}'";

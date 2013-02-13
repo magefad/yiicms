@@ -32,7 +32,7 @@ $form = $this->beginWidget(
             array(
                 'model'     => $model,
                 'attribute' => 'date',
-                'language'  => Yii::app()->language,
+                'language'  => Yii::app()->getLanguage(),
                 'options'   => array(
                     'dateFormat' => 'dd.mm.yy',
                 ),

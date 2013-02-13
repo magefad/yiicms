@@ -6,7 +6,7 @@ $this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('contact', 'Контак�
 $this->breadcrumbs = array(Yii::t('contact', 'Контакты'));
 
 Yii::import('application.modules.page.models.*');
-$pageSlug = str_replace('page/', '', Yii::app()->request->getPathInfo());
+$pageSlug = str_replace('page/', '', Yii::app()->getRequest()->getPathInfo());
 if ($page = Page::model()->findBySlug($pageSlug)) {
     $this->pageTitle   = $page->title;
     $this->keywords    = $page->keywords;

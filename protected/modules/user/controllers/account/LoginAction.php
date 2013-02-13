@@ -16,7 +16,7 @@ class LoginAction extends CAction
             Yii::app()->user->setFlash('info', Yii::t('user', 'Вы уже вошли на сайт'));
             $this->controller->redirect('/user/profile');
         }
-        $service = Yii::app()->request->getQuery('service');
+        $service = Yii::app()->getRequest()->getQuery('service');
         /** if login from EAuth (facebook, google, vk etc. */
         if (isset($service)) {
             /** @var $authIdentity EAuthServiceBase */

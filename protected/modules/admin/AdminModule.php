@@ -42,7 +42,7 @@ class AdminModule extends WebModule
     {
         $this->setImport(array('admin.models.*'));
         $this->siteName = empty($this->siteName) ? Yii::app()->name : $this->siteName;
-        $this->email    = isset($this->email) ? $this->email : 'mail@' . str_replace('www.', '', Yii::app()->request->getServerName());
+        $this->email    = isset($this->email) ? $this->email : 'mail@' . str_replace('www.', '', Yii::app()->getRequest()->getServerName());
         parent::init();
         Yii::setPathOfAlias('uploads', Yii::getPathOfAlias('webroot') . DIRECTORY_SEPARATOR . $this->uploadDir);
     }
@@ -51,8 +51,8 @@ class AdminModule extends WebModule
     {
         $modules = $yiiModules = array();
 
-        if (count(Yii::app()->modules)) {
-            foreach (Yii::app()->modules as $key => $value) {
+        if (count(Yii::app()->getModules())) {
+            foreach (Yii::app()->getModules() as $key => $value) {
                 $key = strtolower($key);
                 if (!is_null($module = Yii::app()->getModule($key))) {
                     if (is_a($module, 'WebModule')) {

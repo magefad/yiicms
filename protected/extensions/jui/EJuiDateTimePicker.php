@@ -33,7 +33,7 @@ class EJuiDateTimePicker extends CJuiDatePicker
             throw new CException('CJuiDatePicker unknown mode "' . $this->mode . '". Use time, datetime or date!');
         }
         if (empty($this->language)) {
-            $this->language = Yii::app()->language;
+            $this->language = Yii::app()->getLanguage();
         }
         parent::init();
     }

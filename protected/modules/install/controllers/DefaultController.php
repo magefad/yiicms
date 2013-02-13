@@ -152,7 +152,7 @@ class DefaultController extends CController
                                 'status'            => 'active',
                                 'access_level'      => 1,
                                 'registration_date' => new CDbExpression('NOW()'),
-                                'registration_ip'   => Yii::app()->request->userHostAddress,
+                                'registration_ip'   => Yii::app()->getRequest()->userHostAddress,
                                 'email_confirm'     => 1,
                             )
                         );
@@ -232,7 +232,7 @@ class DefaultController extends CController
     public function actionError()
     {
         if ($error = Yii::app()->errorHandler->error) {
-            if (Yii::app()->request->isAjaxRequest) {
+            if (Yii::app()->getRequest()->isAjaxRequest) {
                 echo $error['message'];
             } else {
                 $this->render('error', $error);

@@ -56,7 +56,7 @@ class DefaultController extends Controller
             $menus = Menu::model()->roots()->findAll();
             foreach ( $menus as $menu ) {
                 /** @var $menu Menu */
-                Yii::app()->cache->delete('menu_' . $menu->code);
+                Yii::app()->getCache()->delete('menu_' . $menu->code);
             }
         }
     }

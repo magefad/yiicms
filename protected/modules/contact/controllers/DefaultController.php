@@ -42,8 +42,8 @@ class DefaultController extends Controller
                         $body .= $model->getAttributeLabel($attribute) . ": " . $value . "\r\n\r\n";
                     }
                 }
-                $body .= "\r\nReferer: " . Yii::app()->request->getUrlReferrer();
-                $body .= "\r\nIP: " . Yii::app()->request->userHostAddress;
+                $body .= "\r\nReferer: " . Yii::app()->getRequest()->getUrlReferrer();
+                $body .= "\r\nIP: " . Yii::app()->getRequest()->userHostAddress;
 
                 if (!$model->subject) {
                     $model->subject = Yii::t('contact', 'Письмо с сайта ' . Yii::app()->name);
@@ -64,7 +64,7 @@ class DefaultController extends Controller
                 } else {
                     Yii::app()->user->setFlash('error', Yii::t('contact', 'Произошла проблема с отправкой письма! Обратитесь к администратоу: ' . $this->admin->email));
                 }
-                if (Yii::app()->request->isAjaxRequest) {
+                if (Yii::app()->getRequest()->isAjaxRequest) {
                     foreach (Yii::app()->user->getFlashes() as $key => $message) {
                         echo $message . PHP_EOL;
                     }
@@ -114,8 +114,8 @@ class DefaultController extends Controller
     public function getSenderInfo()
     {
         return array(
-            'referer' => Yii::app()->request->getUrlReferrer(),
-            'ip'      => Yii::app()->request->userHostAddress
+            'referer' => Yii::app()->getRequest()->getUrlReferrer(),
+            'ip'      => Yii::app()->getRequest()->userHostAddress
         );
     }
 }

@@ -26,10 +26,10 @@ class MakeRoot extends CAction
         } else {
             throw new CHttpException(400, Yii::t('yii', 'Your request is invalid.'));
         }
-        if (Yii::app()->request->isAjaxRequest) {
+        if (Yii::app()->getRequest()->isAjaxRequest) {
             Yii::app()->end(1);
         } else {
-            $this->controller->redirect(Yii::app()->request->urlReferrer);
+            $this->controller->redirect(Yii::app()->getRequest()->urlReferrer);
         }
     }
 }

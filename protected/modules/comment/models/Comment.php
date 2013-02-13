@@ -173,7 +173,7 @@ class Comment extends CActiveRecord
     public function beforeSave()
     {
         if (parent::beforeSave() && $this->isNewRecord) {
-            $this->ip = Yii::app()->request->userHostAddress;
+            $this->ip = Yii::app()->getRequest()->userHostAddress;
             return true;
         }
         return true;

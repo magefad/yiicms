@@ -317,7 +317,7 @@ class Photo extends CActiveRecord
 
     public function getPreview($version = 'thumb')
     {
-        return Yii::app()->request->baseUrl . '/' . Yii::app()->getModule('admin')->uploadDir . '/' . Yii::app(
+        return Yii::app()->getRequest()->baseUrl . '/' . Yii::app()->getModule('admin')->uploadDir . '/' . Yii::app(
         )->getModule('gallery')->uploadDir . '/' . $this->gallery->slug . '/' . $version . '/' . $this->getFileName(
         ) . '.' . $this->galleryExt;
     }
@@ -343,7 +343,7 @@ class Photo extends CActiveRecord
 
     public function getUrl()
     {
-        return Yii::app()->request->baseUrl . '/' . Yii::app()->getModule('admin')->uploadDir . '/' . Yii::app(
+        return Yii::app()->getRequest()->baseUrl . '/' . Yii::app()->getModule('admin')->uploadDir . '/' . Yii::app(
         )->getModule('gallery')->uploadDir . '/' . $this->getFileName() . '.' . $this->galleryExt;
     }
 }
