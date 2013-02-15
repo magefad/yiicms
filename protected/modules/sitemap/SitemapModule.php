@@ -152,6 +152,12 @@ class SitemapModule extends WebModule
             if (isset($action['model'])) {
                 //model used to generate params
                 if (isset($action['model']['class'])) {
+                    if (substr($action['model']['class'], 12, 7) == 'modules') {//application.modules
+                        $temp = substr($action['model']['class'], 20);
+                        if (!Yii::app()->hasModule(substr($temp, 0, strpos($temp, '.')))) {
+                            continue;
+                        }
+                    }
                     Yii::import($action['model']['class']);
                     if (isset($action['model']['import'])) {
                         $this->import($action['model']['import']);
