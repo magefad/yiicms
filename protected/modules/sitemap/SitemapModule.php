@@ -154,20 +154,25 @@ class SitemapModule extends WebModule
                 if (isset($action['model']['class'])) {
                     if (substr($action['model']['class'], 12, 7) == 'modules') {//application.modules
                         $temp = substr($action['model']['class'], 20);
-                        if (!Yii::app()->hasModule(substr($temp, 0, strpos($temp, '.')))) {
+                        $moduleId = substr($temp, 0, strpos($temp, '.'));
+                        if (!Yii::app()->hasModule($moduleId)) {
                             continue;
                         }
+                        unset($temp);
                     }
                     Yii::import($action['model']['class']);
                     if (isset($action['model']['import'])) {
                         $this->import($action['model']['import']);
                     }
-                    $modelName = (string)substr($action['model']['class'], strrpos($action['model']['class'], '.') + 1);
+                    $modelName = substr(strrchr($action['model']['class'], '.'), 1);
                     if (substr($modelName, -6) == 'Module') {
                         if (empty($data['title'])) {
-                            /** @var $module CWebModule */
-                            $module = new $modelName($modelName, null); //without CWebModule->init()...
-                            $data['title'] = $module->getName();
+                            /** @var $module WebModule|CWebModule */
+                            if (method_exists($modelName, 'getIcon')) {//call static method @todo change check
+                                $data['title'] = call_user_func($modelName . '::getName');//call_user_func for support php 5.1...
+                            } else {//CWebModule getName non static..
+                                $data['title'] = Yii::app()->getModule($moduleId)->name;
+                            }
                         }
                         $urls[Yii::app()->createAbsoluteUrl($route)] = $data;
                     } else {
