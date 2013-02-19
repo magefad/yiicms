@@ -66,6 +66,7 @@
  *
  * @author ElisDN <mail@elisdn.ru>
  * @link http://www.elisdn.ru
+ * @version 1.0
  */
 
 class InlineWidgetsBehavior extends CBehavior
@@ -78,6 +79,14 @@ class InlineWidgetsBehavior extends CBehavior
      * @var string marker of block end
      */
     public $endBlock = '*]';
+    /**
+     * @var string alias if needle using default location 'path.to.widgets'
+     */
+    public $location = '';
+    /**
+     * @var string global classname suffix like 'Widget'
+     */
+    public $classSuffix = '';
     /**
      * @var array of allowed widgets
      */
@@ -110,15 +119,14 @@ class InlineWidgetsBehavior extends CBehavior
      */
     protected function _processWidgets($text)
     {
-        if (preg_match('|\{' . $this->_widgetToken . ':.+?\}|is', $text)) {
-            foreach ($this->widgets as $alias) {
+        if (preg_match('|\{' . $this->_widgetToken . ':.+?' . $this->_widgetToken . '\}|is', $text))
+        {
+            foreach ($this->widgets as $alias)
+            {
                 $widget = $this->_getClassByAlias($alias);
 
-                while (preg_match(
-                    '|\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?' . $this->_widgetToken . '\}|is',
-                    $text,
-                    $p
-                )) {
+                while (preg_match('#\{' . $this->_widgetToken . ':' . $widget . '(\|([^}]*)?)?' . $this->_widgetToken . '\}#is', $text, $p))
+                {
                     $text = str_replace($p[0], $this->_loadWidget($alias, isset($p[2]) ? $p[2] : ''), $text);
                 }
             }
@@ -159,16 +167,19 @@ class InlineWidgetsBehavior extends CBehavior
      * @param string $attributes
      * @return mixed|string
      */
-    protected function _loadWidget($name, $attributes = '')
+    protected function _loadWidget($name, $attributes='')
     {
         $attributes = $this->_parseAttributes($attributes);
         $cache      = $this->_extractCacheExpireTime($attributes);
 
         $index = 'widget_' . $name . '_' . serialize($attributes);
 
-        if ($cache && $cachedHtml = Yii::app()->cache->get($index)) {
+        if ($cache && $cachedHtml = Yii::app()->cache->get($index))
+        {
             $html = $cachedHtml;
-        } else {
+        }
+        else
+        {
             ob_start();
             $widget = Yii::app()->widgetFactory->createWidget($this->owner, $name, $attributes);
             $widget->run();
@@ -188,13 +199,15 @@ class InlineWidgetsBehavior extends CBehavior
         $params = explode(';', $attributesString);
         $attributes  = array();
 
-        foreach ($params as $param) {
-            if ($param) {
+        foreach ($params as $param)
+        {
+            if ($param)
+            {
                 list($attribute, $value) = explode('=', $param);
                 if ($value) {
                     $attributes[$attribute] = trim($value);
-                }
             }
+        }
         }
 
         ksort($attributes);
@@ -209,6 +222,14 @@ class InlineWidgetsBehavior extends CBehavior
             unset($attributes['cache']);
         }
         return $cache;
+    }
+
+    protected function _getFullClassName($name)
+    {
+        $widgetClass = $name . $this->classSuffix;
+        if ($this->_getClassByAlias($widgetClass) == $widgetClass && $this->location)
+            $widgetClass = $this->location . '.' . $widgetClass;
+        return $widgetClass;
     }
 
     protected function _getClassByAlias($alias)
