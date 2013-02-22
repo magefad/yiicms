@@ -136,8 +136,8 @@ WHAT's NEXT
 * **create website and community**
 * switch to sourceLanguage = en (~15%)
 * creating something blocks of content (like ModX)
-* ~creation of templates to manage user (Rights ext) under CMS~ now yii-auth with bootstrap
-* ~installer~
+* ~~creation of templates to manage user (Rights ext) under CMS~~ now yii-auth with bootstrap
+* ~~installer~~
 * possibility to edit the page directly on the site (like Google Sites)
 * ~support SQLite~
 * support MSSQL
