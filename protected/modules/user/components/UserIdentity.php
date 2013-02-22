@@ -30,7 +30,7 @@ class UserIdentity extends CUserIdentity
 
             $user->last_visit = (strncasecmp(
                 'sqlite',
-                $this->dbConnection->driverName,
+                Yii::app()->db->driverName,
                 6
             ) === 0) ? new CDbExpression("date('now')") : new CDbExpression('NOW()');
             $user->update(array('last_visit'));
