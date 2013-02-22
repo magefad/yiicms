@@ -24,6 +24,10 @@
  */
 class Comment extends CActiveRecord
 {
+    const STATUS_NOT_APPROVED = 0;
+    const STATUS_APPROVED     = 1;
+    const STATUS_SPAM         = 2;
+    const STATUS_DELETED      = 3;
     public $verifyCode;
 
     /**
@@ -84,10 +88,10 @@ class Comment extends CActiveRecord
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'list' => array(
-                    'not_approved' => Yii::t('CommentModule.comment', 'Not approved'),
-                    'approved'     => Yii::t('CommentModule.comment', 'Approved'),
-                    'spam'         => Yii::t('CommentModule.comment', 'Spam'),
-                    'deleted'      => Yii::t('CommentModule.comment', 'Deleted')
+                    self::STATUS_NOT_APPROVED => Yii::t('CommentModule.comment', 'Not approved'),
+                    self::STATUS_APPROVED     => Yii::t('CommentModule.comment', 'Approved'),
+                    self::STATUS_SPAM         => Yii::t('CommentModule.comment', 'Spam'),
+                    self::STATUS_DELETED      => Yii::t('CommentModule.comment', 'Deleted')
                 )
             )
         );
@@ -114,11 +118,13 @@ class Comment extends CActiveRecord
     {
         return array(
             'new'      => array(
-                'condition' => 'status = "not_approved"'
+                'condition' => 'status = :status ',
+                'params'    => array(':status' => self::STATUS_NOT_APPROVED)
             ),
             'approved' => array(
-                'condition' => 'status = "approved"',
-                'order'     => 'create_time DESC'
+                'condition' => 'status = :status',
+                'order'     => 'create_time DESC',
+                'params'    => array(':status' => self::STATUS_APPROVED)
             ),
             'authored' => array(
                 'condition' => 'create_user_id is not null'

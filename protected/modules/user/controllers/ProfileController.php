@@ -11,7 +11,8 @@ class ProfileController extends Controller
         echo $this->action->id;
         $dataProvider = new CActiveDataProvider('User', array(
             'criteria' => array(
-                'condition' => 'status = "active"',
+                /** @see User::STATUS_ACTIVE */
+                'condition' => 'status = 1',
                 'order'     => 'last_visit DESC',
             )
         ));

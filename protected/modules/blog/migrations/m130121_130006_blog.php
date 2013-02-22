@@ -4,7 +4,8 @@ class m130121_130006_blog extends EDbMigration
 {
     public function safeUp()
     {
-        $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $options           = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
 
         $this->createTable('{{blog}}', array(
                 'id'             => 'pk',
@@ -12,12 +13,12 @@ class m130121_130006_blog extends EDbMigration
                 'keywords'       => 'varchar(200) NOT NULL',
                 'description'    => 'varchar(200) NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
-                'type'           => 'enum("public","private") NOT NULL DEFAULT "public"',
-                'status'         => 'enum("active","blocked","deleted") NOT NULL DEFAULT "active"',
+                'type'           => 'boolean NOT NULL DEFAULT "1"',
+                'status'         => 'tinyint(1) NOT NULL DEFAULT "1"',
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
-                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp
             ),
             $options
         );
@@ -40,14 +41,14 @@ class m130121_130006_blog extends EDbMigration
                 'content'        => 'text NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
                 'link'           => 'varchar(200) NOT NULL DEFAULT ""',
-                'status'         => 'enum("draft","published","moderation") NOT NULL DEFAULT "published"',
+                'status'         => 'tinyint(1) NOT NULL DEFAULT "1"',
                 'comment_status' => 'boolean NOT NULL DEFAULT "1"',
-                'access_type'    => 'enum("public","private") NOT NULL DEFAULT "public"',
+                'access_type'    => 'boolean NOT NULL DEFAULT "1"',
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
                 'publish_time'   => 'timestamp NOT NULL DEFAULT "0000-00-00 00:00:00"',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
-                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp
             ),
             $options
         );
@@ -68,11 +69,11 @@ class m130121_130006_blog extends EDbMigration
                 'id'             => 'pk',
                 'user_id'        => 'integer NOT NULL',
                 'blog_id'        => 'integer NOT NULL',
-                'role'           => 'tinyint(3) unsigned NOT NULL DEFAULT "1"',
+                'role'           => 'tinyint(3) NOT NULL DEFAULT "1"',
                 'status'         => 'boolean NOT NULL DEFAULT "1"',
                 'note'           => 'string NOT NULL DEFAULT ""',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
-                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp
             ),
             $options
         );

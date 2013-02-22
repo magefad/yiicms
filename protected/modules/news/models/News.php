@@ -156,7 +156,7 @@ class News extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 'status = "published"'
+                'condition' => 'status = 1'/** @see StatusBehavior::STATUS_PUBLISHED */
             ),
             'protected' => array(
                 'condition' => 'is_protected = 1'

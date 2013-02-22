@@ -26,8 +26,8 @@ class UserBlog extends CActiveRecord
     const ROLE_MODERATOR = 2;
     const ROLE_ADMIN     = 3;
 
-    const STATUS_ACTIVE = 1;
-    const STATUS_BLOCK  = 0;
+    const STATUS_ACTIVE  = 1;
+    const STATUS_BLOCKED = 0;
 
     /**
      * Returns the static model of the specified AR class.
@@ -76,9 +76,9 @@ class UserBlog extends CActiveRecord
             ),
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
-                'list'  => array(
-                    Yii::t('BlogModule.blog', 'Blocked'),
-                    Yii::t('BlogModule.blog', 'Active')
+                'list' => array(
+                    self::STATUS_BLOCKED => Yii::t('BlogModule.blog', 'Blocked'),
+                    self::STATUS_ACTIVE  => Yii::t('BlogModule.blog', 'Active')
                 )
             ),
         );

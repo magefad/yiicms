@@ -35,7 +35,7 @@ class CustomVKontakteService extends VKontakteOAuthService
         $this->attributes['firstname']  = $info->first_name;
         $this->attributes['lastname']   = $info->last_name;
         $this->attributes['username']   = !empty($info->nickname) ? $info->nickname : $info->first_name;
-        $this->attributes['sex']        = $info->sex == 1 ? 'f' : 'm';
+        $this->attributes['sex']        = $info->sex == 1 ? 2 : 1;
         $this->attributes['birth_date'] = $info->bdate;
         $this->attributes['country']    = $info->country;
         $this->attributes['city']       = $info->city;

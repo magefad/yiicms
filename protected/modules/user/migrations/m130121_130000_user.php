@@ -5,33 +5,34 @@ class m130121_130000_user extends EDbMigration
     public function safeUp()
     {
         $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
 
         $this->createTable('{{user}}', array(
                 'id'                => 'pk',
                 'firstname'         => 'varchar(150) DEFAULT NULL',
                 'lastname'          => 'varchar(150) DEFAULT NULL',
                 'username'          => 'varchar(150) NOT NULL',
-                'sex'               => 'enum("m","f","n") NOT NULL DEFAULT "n"',
-                'birth_date'        => 'date NOT NULL',
-                'country'           => 'varchar(50) NOT NULL',
-                'city'              => 'varchar(50) NOT NULL',
-                'phone'             => 'varchar(32) NOT NULL',
-                'email'             => 'varchar(150) DEFAULT NULL',
+                'sex'               => 'tinyint(1) NOT NULL DEFAULT "0"',
+                'birth_date'        => 'date DEFAULT NULL',
+                'country'           => 'varchar(50) NOT NULL DEFAULT ""',
+                'city'              => 'varchar(50) NOT NULL DEFAULT ""',
+                'phone'             => 'varchar(32) NOT NULL DEFAULT ""',
+                'email'             => 'varchar(150) NOT NULL',
                 'password'          => 'varchar(32) NOT NULL',
                 'salt'              => 'varchar(32) NOT NULL',
-                'status'            => 'enum("blocked","active","not_active") NOT NULL DEFAULT "not_active"',
+                'status'            => 'tinyint(1) NOT NULL DEFAULT "0"',
                 'access_level'      => 'boolean NOT NULL DEFAULT "0"',
                 'last_visit'        => 'datetime DEFAULT NULL',
                 'registration_date' => 'datetime NOT NULL',
                 'registration_ip'   => 'varchar(20) NOT NULL',
                 'activation_ip'     => 'varchar(20) NOT NULL',
-                'photo'             => 'varchar(100) NOT NULL',
+                'photo'             => 'varchar(100) DEFAULT NULL',
                 'avatar'            => 'varchar(100) DEFAULT NULL',
                 'use_gravatar'      => 'boolean NOT NULL DEFAULT "0"',
                 'activate_key'      => 'varchar(32) NOT NULL',
                 'email_confirm'     => 'boolean NOT NULL DEFAULT "0"',
                 'create_time'       => 'timestamp NULL DEFAULT NULL',
-                'update_time'       => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+                'update_time'       => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp,
             ),
             $options
         );

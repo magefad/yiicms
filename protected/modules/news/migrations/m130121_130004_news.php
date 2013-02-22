@@ -4,7 +4,8 @@ class m130121_130004_news extends EDbMigration
 {
     public function safeUp()
     {
-        $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $options           = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
 
         $this->createTable('{{news}}', array(
                 'id'             => 'pk',
@@ -16,12 +17,12 @@ class m130121_130004_news extends EDbMigration
                 'content'        => 'text NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
                 'image'          => 'varchar(300) NOT NULL',
-                'status'         => 'enum("draft","published","moderation") NOT NULL DEFAULT "published"',
+                'status'         => 'tinyint(1) NOT NULL DEFAULT "1"',
                 'is_protected'   => 'boolean NOT NULL DEFAULT "0"',
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
-                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp,
             ),
             $options
         );

@@ -6,6 +6,10 @@
  */
 class StatusBehavior extends CActiveRecordBehavior
 {
+    const STATUS_DRAFT      = 0;
+    const STATUS_PUBLISHED  = 1;
+    const STATUS_MODERATION = 2;
+
     /**
      * @var string the name of the table field where data is stored.
      * Required to set on init behavior. Default is status.
@@ -26,9 +30,9 @@ class StatusBehavior extends CActiveRecordBehavior
     {
         if (empty($this->_list)) {
             $this->_list = array(
-                'draft'      => Yii::t('AdminModule.Behavior', 'Черновик'),
-                'published'  => Yii::t('AdminModule.Behavior', 'Опубликовано'),
-                'moderation' => Yii::t('AdminModule.Behavior', 'На модерации'),
+                self::STATUS_DRAFT      => Yii::t('AdminModule.Behavior', 'Черновик'),
+                self::STATUS_PUBLISHED  => Yii::t('AdminModule.Behavior', 'Опубликовано'),
+                self::STATUS_MODERATION => Yii::t('AdminModule.Behavior', 'На модерации'),
             );
         }
         parent::attach($owner);

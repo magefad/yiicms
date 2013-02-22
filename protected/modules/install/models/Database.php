@@ -46,7 +46,8 @@ class Database extends CFormModel
     public function rules()
     {
         return array(
-            array('dbType, host, dbName, username', 'required'),
+            array('dbType, dbName', 'required'),
+            array('host, username', 'required', 'except' => 'sqlite'),
             array('tablePrefix, password', 'safe'),
         );
     }
@@ -67,12 +68,12 @@ class Database extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'dbType'           => Yii::t('InstallModule.database', 'Database type'),
-            'host'             => Yii::t('InstallModule.database', 'Database host'),
-            'dbName'           => Yii::t('InstallModule.database', 'Database name'),
-            'username'         => Yii::t('InstallModule.database', 'Database username'),
-            'password'         => Yii::t('InstallModule.database', 'Database password'),
-            'tablePrefix'      => Yii::t('InstallModule.database', 'Table tablePrefix')
+            'dbType'      => Yii::t('InstallModule.database', 'Database type'),
+            'host'        => Yii::t('InstallModule.database', 'Database host'),
+            'dbName'      => Yii::t('InstallModule.database', 'Database name'),
+            'username'    => Yii::t('InstallModule.database', 'Database username'),
+            'password'    => Yii::t('InstallModule.database', 'Database password'),
+            'tablePrefix' => Yii::t('InstallModule.database', 'Table tablePrefix')
         );
     }
 
@@ -97,10 +98,14 @@ class Database extends CFormModel
      */
     public function createDbConnection($dbExists = true)
     {
-        $this->_dbExists = $dbExists;
-        $connection              = new CDbConnection($this->getConnectionString(), $this->username, $this->password);
+        $this->_dbExists         = $dbExists;
+        if ($this->dbType == 'sqlite') {
+            $connection = new CDbConnection($this->getConnectionString());
+        } else {
+            $connection = new CDbConnection($this->getConnectionString(), $this->username, $this->password);
+            $connection->initSQLs    = array("SET NAMES 'utf8' COLLATE 'utf8_general_ci';");
+        }
         $connection->tablePrefix = $this->tablePrefix;
-        $connection->initSQLs    = array("SET NAMES 'utf8' COLLATE 'utf8_general_ci';");
         $connection->init();
         return $connection;
     }
@@ -112,9 +117,14 @@ class Database extends CFormModel
     public function createDb()
     {
         try {
-            $db = $this->createDbConnection(false);
-            $db->createCommand("CREATE DATABASE IF NOT EXISTS `{$this->dbName}` CHARACTER SET utf8 COLLATE utf8_general_ci")->execute();
-            $this->_dbExists = true;
+            if ($this->dbType == 'sqlite') {
+                touch(Yii::getPathOfAlias('application.data') . DIRECTORY_SEPARATOR . $this->dbName . '.db');
+                $this->_dbExists = true;
+            } else {
+                $db = $this->createDbConnection(false);
+                $db->createCommand("CREATE DATABASE IF NOT EXISTS `{$this->dbName}` CHARACTER SET utf8 COLLATE utf8_general_ci")->execute();
+                $this->_dbExists = true;
+            }
             return true;
         } catch ( CDbException $e ) {
             return $e->errorInfo['2'] . PHP_EOL . $e->getMessage() . (YII_DEBUG ? PHP_EOL . $e->getTraceAsString() : '');
@@ -127,7 +137,7 @@ class Database extends CFormModel
     private function getConnectionString()
     {
         $dsn = array(
-            'sqlite' => 'sqlite:' . $this->dbName,
+            'sqlite' => 'sqlite:' . Yii::getPathOfAlias('application.data') . DIRECTORY_SEPARATOR . $this->dbName . '.db',
             'mysql'  => 'mysql:host=' . $this->host . ';' . ($this->_dbExists ? 'dbname=' . $this->dbName : ''),
             'pgsql'  => 'pgsql:host=' . $this->host . ';port=5432;' . ($this->_dbExists ? 'dbname=' . $this->dbName : ''),
             'mssql'  => 'mssql:host=' . $this->host . ';' . ($this->_dbExists ? 'dbname=' . $this->dbName : ''),

@@ -42,10 +42,13 @@ class DefaultController extends CController
     public function actionDatabase()
     {
         $model = new Database();
-        $this->performAjaxValidation($model);
+        //$this->performAjaxValidation($model);
 
         if (isset($_POST['Database'])) {
             $model->attributes = $_POST['Database'];
+            if ($model->dbType == 'sqlite') {
+                $model->setScenario('sqlite');
+            }
             if ($model->validate()) {
                 $dbCreateStatus = $model->createDb();
                 if ($dbCreateStatus === true) {
@@ -72,7 +75,7 @@ class DefaultController extends CController
             if ($model->validate()) {
                 Yii::app()->user->setState(
                     'modulesInstall',
-                    array_merge(array_keys($model->getRequiredModules()), $model->modules)
+                    array_merge(array_keys($model->getRequiredModules()), empty($model->modules) ? array() : $model->modules)
                 );
                 $this->redirect(array('modulesInstall'));
             }
@@ -151,8 +154,6 @@ class DefaultController extends CController
                                 'salt'              => $salt,
                                 'status'            => 'active',
                                 'access_level'      => 1,
-                                'registration_date' => new CDbExpression('NOW()'),
-                                'registration_ip'   => Yii::app()->getRequest()->userHostAddress,
                                 'email_confirm'     => 1,
                             )
                         );

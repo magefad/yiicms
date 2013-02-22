@@ -26,6 +26,13 @@
  */
 class Blog extends CActiveRecord
 {
+    const STATUS_BLOCKED = 0;
+    const STATUS_ACTIVE  = 1;
+    const STATUS_DELETED = 2;
+
+    const TYPE_PUBLIC  = 1;
+    const TYPE_PRIVATE = 0;
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -89,17 +96,17 @@ class Blog extends CActiveRecord
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(
-                    'active'  => Yii::t('BlogModule.blog', 'Active'),
-                    'blocked' => Yii::t('BlogModule.blog', 'Blocked'),
-                    'deleted' => Yii::t('BlogModule.blog', 'Deleted'),
+                    self::STATUS_ACTIVE  => Yii::t('BlogModule.blog', 'Active'),
+                    self::STATUS_BLOCKED => Yii::t('BlogModule.blog', 'Blocked'),
+                    self::STATUS_DELETED => Yii::t('BlogModule.blog', 'Deleted'),
                 )
             ),
             'statusType' => array(
                 'class'     => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'type',
                 'list'      => array(
-                    'public'  => Yii::t('BlogModule.blog', 'Public'),
-                    'private' => Yii::t('BlogModule.blog', 'Private')
+                    self::TYPE_PUBLIC  => Yii::t('BlogModule.blog', 'Public'),
+                    self::TYPE_PRIVATE => Yii::t('BlogModule.blog', 'Private')
                 )
             )
         );
@@ -120,7 +127,8 @@ class Blog extends CActiveRecord
                 self::STAT,
                 'Post',
                 'blog_id',
-                'condition' => 'status = "published"'
+                'condition' => 'status = 1'
+                /** @see StatusBehavior::STATUS_PUBLISHED */
             ),
             'membersCount' => array(
                 self::STAT,
@@ -142,10 +150,12 @@ class Blog extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 'status = "active"'
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_ACTIVE)
             ),
             'public'    => array(
-                'condition' => 'type = "public"'
+                'condition' => 'type = :type',
+                'params'    => array(':type' => self::TYPE_PUBLIC)
             )
         );
     }

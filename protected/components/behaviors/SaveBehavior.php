@@ -41,6 +41,22 @@ Yii::import('zii.behaviors.CTimestampBehavior');
 class SaveBehavior extends CTimestampBehavior
 {
     /**
+     * @var array Maps column types to database method
+     */
+    protected static $map = array(
+        'default' => array(
+            'datetime'  => 'NOW()',
+            'timestamp' => 'NOW()',
+            'date'      => 'NOW()',
+        ),
+        'sqlite'  => array(
+            'datetime'  => 'datetime(\'now\')',
+            'timestamp' => 'datetime(\'now\')',
+            'date'      => 'date(\'now\')',
+        )
+    );
+
+    /**
      * @var mixed The name of the attribute to store the create user.  Set to null to not
      * Defaults to 'create_user_id'
      */
@@ -77,5 +93,17 @@ class SaveBehavior extends CTimestampBehavior
                 $this->owner->{$this->updateUserAttribute} = $userId;
             }
         }
+    }
+
+    /**
+     * Returns the appropriate timestamp depending on $columnType
+     * rewritten for SQLite support
+     * @param string $columnType $columnType
+     * @return mixed timestamp (eg unix timestamp or a mysql function)
+     */
+    protected function getTimestampByColumnType($columnType)
+    {
+        $dbKey = isset(self::$map[Yii::app()->db->driverName]) ? Yii::app()->db->driverName : 'default';
+        return isset(self::$map[$dbKey][$columnType]) ? new CDbExpression(self::$map[$dbKey][$columnType]) : time();
     }
 }

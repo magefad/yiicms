@@ -24,6 +24,8 @@
  */
 class Gallery extends CActiveRecord
 {
+    const STATUS_PUBLISHED = 1;
+    const STATUS_DRAFT     = 0;
     /** @var array versions for resize images */
     public $versions = array();
 
@@ -78,8 +80,8 @@ class Gallery extends CActiveRecord
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(
-                    'published' => Yii::t('gallery', 'Опубликовано'),
-                    'draft'     => Yii::t('gallery', 'Скрыто'),
+                    self::STATUS_PUBLISHED => Yii::t('gallery', 'Опубликовано'),
+                    self::STATUS_DRAFT     => Yii::t('gallery', 'Скрыто'),
                 )
             ),
         );
@@ -115,10 +117,12 @@ class Gallery extends CActiveRecord
     {
         return array(
             'public' => array(
-                'condition' => 'status = "published"'
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_PUBLISHED)
             ),
             'draft'  => array(
-                'condition' => 'status = "draft"'
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_DRAFT)
             )
         );
     }

@@ -196,17 +196,17 @@ class Photo extends CActiveRecord
 
         $sort               = new CSort;
         $sort->defaultOrder = 't.sort_order ASC';
-        $sort->attributes   = array(
+        $sort->attributes = array(
             'author_search'       => array(
-                'asc' => 'author.username',
+                'asc'  => 'author.username',
                 'desc' => 'author.username DESC',
             ),
             'changeAuthor_search' => array(
-                'asc' => 'changeAuthor.username',
+                'asc'  => 'changeAuthor.username',
                 'desc' => 'changeAuthor.username DESC',
             ),
             'gallery_search'      => array(
-                'asc' => 'gallery.title',
+                'asc'  => 'gallery.title',
                 'desc' => 'gallery.name DESC',
             ),
             '*',

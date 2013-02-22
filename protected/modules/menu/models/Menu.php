@@ -33,6 +33,8 @@
  */
 class Menu extends CActiveRecord
 {
+    const STATUS_ON  = 1;
+    const STATUS_OFF = 0;
     public $parentId = 0;
 
     /**
@@ -88,8 +90,8 @@ class Menu extends CActiveRecord
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(
-                    Yii::t('menu', 'отключено'),
-                    Yii::t('menu', 'включено'),
+                    self::STATUS_ON  => Yii::t('menu', 'включено'),
+                    self::STATUS_OFF => Yii::t('menu', 'отключено'),
                 )
             ),
             'tree' => array(

@@ -4,7 +4,8 @@ class m130121_130001_admin extends EDbMigration
 {
     public function safeUp()
     {
-        $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $options           = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
 
         $this->createTable('{{settings}}', array(
                 'id'             => 'pk',
@@ -14,7 +15,7 @@ class m130121_130001_admin extends EDbMigration
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
-                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp
             ),
             $options
         );

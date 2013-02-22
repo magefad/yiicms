@@ -145,7 +145,7 @@ class Page extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 'status = "published"',
+                'condition' => 'status = 1',
             ),
             'protected' => array(
                 'condition' => 'is_protected = 1',

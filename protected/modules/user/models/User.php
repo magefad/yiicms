@@ -48,6 +48,13 @@
  */
 class User extends CActiveRecord
 {
+    const SEX_NO     = 0;
+    const SEX_MALE   = 1;
+    const SEX_FEMALE = 2;
+
+    const STATUS_BLOCKED    = 0;
+    const STATUS_ACTIVE     = 1;
+    const STATUS_NOT_ACTIVE = 2;
 
     const ACCESS_LEVEL_USER  = 0;
     const ACCESS_LEVEL_ADMIN = 1;
@@ -130,9 +137,9 @@ class User extends CActiveRecord
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'list' => array(
-                    'blocked'    => Yii::t('user', 'Заблокирован'),
-                    'active'     => Yii::t('user', 'Активен'),
-                    'not_active' => Yii::t('user', 'Не активирован')
+                    self::STATUS_BLOCKED    => Yii::t('user', 'Заблокирован'),
+                    self::STATUS_ACTIVE     => Yii::t('user', 'Активен'),
+                    self::STATUS_NOT_ACTIVE => Yii::t('user', 'Не активирован')
                 )
             ),
             'statusEmailConfirm' => array(
@@ -175,13 +182,16 @@ class User extends CActiveRecord
     {
         return array(
             'active'       => array(
-                'condition' => 'status = "active"',
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_ACTIVE)
             ),
             'blocked'      => array(
-                'condition' => 'status = "blocked"',
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_BLOCKED)
             ),
             'notActivated' => array(
-                'condition' => 'status = "not_active"',
+                'condition' => 'status = :status',
+                'params'    => array(':status' => self::STATUS_NOT_ACTIVE)
             ),
             'admin'        => array(
                 'condition' => 'access_level = :access_level',
@@ -272,9 +282,14 @@ class User extends CActiveRecord
      */
     public function beforeSave()
     {
-        unset($this->update_time);//on update CURRENT_TIMESTAMP
+        unset($this->update_time);//mySQL on update CURRENT_TIMESTAMP
         if ($this->isNewRecord) {
-            $this->registration_date = $this->create_time = new CDbExpression('NOW()');
+            if (strncasecmp('sqlite', $this->dbConnection->driverName, 6) === 0) {
+                $now = new CDbExpression("date('now')");
+            } else {
+                $now = new CDbExpression('NOW()');
+            }
+            $this->registration_date = $this->create_time = $now;
             $this->activate_key      = $this->generateActivationKey();
             $this->registration_ip   = $this->activation_ip = Yii::app()->getRequest()->userHostAddress;
         }

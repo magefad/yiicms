@@ -36,6 +36,9 @@
  */
 class Post extends CActiveRecord
 {
+    const ACCESS_PUBLIC  = 1;
+    const ACCESS_PRIVATE = 0;
+
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
@@ -103,8 +106,8 @@ class Post extends CActiveRecord
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'access_type',
                 'list' => array(
-                    'public' => Yii::t('BlogModule.blog', 'Public'),
-                    'private' => Yii::t('BlogModule.blog', 'Private')
+                    self::ACCESS_PUBLIC  => Yii::t('BlogModule.blog', 'Public'),
+                    self::ACCESS_PRIVATE => Yii::t('BlogModule.blog', 'Private')
                 )
             ),
             'tags' => array(
@@ -137,10 +140,16 @@ class Post extends CActiveRecord
     {
         return array(
             'published' => array(
-                'condition' => 'status = "published" AND publish_time < ' . new CDbExpression('NOW()')
+                /** @see StatusBehavior::STATUS_PUBLISHED */
+                'condition' => 'status = 1 AND publish_time < ' . (strncasecmp(
+                    'sqlite',
+                    $this->dbConnection->driverName,
+                    6
+                ) === 0) ? new CDbExpression("date('now')") : new CDbExpression('NOW()')
             ),
             'public'    => array(
-                'condition' => 't.access_type = "public"',
+                'condition' => 't.access_type = :access_type',
+                'params'    => array(':access_type' => self::ACCESS_PUBLIC)
             ),
         );
     }

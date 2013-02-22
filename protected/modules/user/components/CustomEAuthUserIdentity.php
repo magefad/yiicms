@@ -91,7 +91,11 @@ class CustomEAuthUserIdentity extends EAuthUserIdentity
             } else { //UserSocial founded in DB, found user and log-in
                 $this->name = $userSocial->user->username;
                 Yii::app()->user->setState('id', $userSocial->user->id);//@todo Yii::app()->user->id
-                $userSocial->user->last_visit = new CDbExpression('NOW()');
+                $userSocial->user->last_visit = (strncasecmp(
+                    'sqlite',
+                    $this->dbConnection->driverName,
+                    6
+                ) === 0) ? new CDbExpression("date('now')") : new CDbExpression('NOW()');
                 $userSocial->user->update(array('last_visit'));
                 $this->errorCode = self::ERROR_NONE;
             }

@@ -4,26 +4,27 @@ class m130121_130003_page extends EDbMigration
 {
     public function safeUp()
     {
-        $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $options           = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
 
         $this->createTable('{{page}}', array(
                 'id'             => 'pk',
                 'parent_id'      => 'integer DEFAULT NULL',
-                'level'          => 'tinyint(3) unsigned NOT NULL DEFAULT "1"',
+                'level'          => 'tinyint(3) NOT NULL DEFAULT "1"',
                 'name'           => 'varchar(50) NOT NULL',
                 'title'          => 'varchar(75) NOT NULL',
-                'keywords'       => 'varchar(200) NOT NULL',
+                'keywords'       => 'varchar(200) NOT NULL DEFAULT ""',
                 'description'    => 'varchar(200) NOT NULL',
                 'content'        => 'text NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
                 'rich_editor'    => 'boolean NOT NULL DEFAULT "1"',
-                'status'         => 'enum("draft","published","moderation") NOT NULL DEFAULT "published"',
+                'status'         => 'tinyint(1) NOT NULL DEFAULT "1"',
                 'is_protected'   => 'boolean NOT NULL DEFAULT "0"',
                 'sort_order'     => 'integer',
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
-                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp,
             ),
             $options
         );
@@ -39,6 +40,7 @@ class m130121_130003_page extends EDbMigration
             $this->addForeignKey('fk_{{page}}_{{user}}_create_user_id', '{{page}}', 'create_user_id', '{{user}}', 'id', 'NO ACTION', 'NO ACTION');
             $this->addForeignKey('fk_{{page}}_{{user}}_update_user_id', '{{page}}', 'update_user_id', '{{user}}', 'id', 'NO ACTION', 'NO ACTION');
         }
+        echo 'Create "' . Yii::t('zii', 'Home') . '" page' . PHP_EOL;
         $this->insert('{{page}}', array(
                 'name'           => 'Главная страница (Main page)',
                 'title'          => 'Заголовок страница (Page title)',
@@ -47,7 +49,11 @@ class m130121_130003_page extends EDbMigration
                 'slug'           => 'index',
                 'sort_order'     => 1,
                 'create_user_id' => 1,
-                'create_time'    => new CDbExpression('NOW()')
+                'create_time' => (strncasecmp(
+                    'sqlite',
+                    $this->dbConnection->driverName,
+                    6
+                ) === 0) ? new CDbExpression("date('now')") : new CDbExpression('NOW()')
         ));
     }
 

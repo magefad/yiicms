@@ -19,7 +19,7 @@ class CustomFacebookService extends FacebookOAuthService
         $this->attributes['firstname']  = $info->first_name;
         $this->attributes['lastname']   = $info->last_name;
         $this->attributes['username']   = !empty($info->username) ? $info->username : $info->first_name;
-        $this->attributes['sex']        = $info->gender == 'male' ? 'm' : 'f';
+        $this->attributes['sex']        = $info->gender == 'male' ? 1 : 2;
         $this->attributes['birth_date'] = $info->birthday;
         $this->attributes['country']    = $info->country;
         $this->attributes['city']       = $info->hometown;

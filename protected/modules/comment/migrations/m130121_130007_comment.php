@@ -4,7 +4,8 @@ class m130121_130007_comment extends EDbMigration
 {
     public function safeUp()
     {
-        $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $options           = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
 
         $this->createTable('{{comment}}', array(
                 'id'             => 'pk',
@@ -12,12 +13,12 @@ class m130121_130007_comment extends EDbMigration
                 'model_id'       => 'integer NOT NULL',
                 'content'        => 'text NOT NULL',
                 'ip'             => 'varchar(20) DEFAULT NULL',
-                'status'         => 'enum("not_approved","approved","spam","deleted") NOT NULL DEFAULT "approved"',
+                'status'         => 'tinyint(1) NOT NULL DEFAULT "1"',
                 'username'       => 'varchar(20) DEFAULT NULL',
                 'create_user_id' => 'integer DEFAULT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
-                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+                'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp
             ),
             $options
         );

@@ -28,7 +28,11 @@ class UserIdentity extends CUserIdentity
             $this->_id      = $user->id;
             $this->username = $user->username;
 
-            $user->last_visit = new CDbExpression('NOW()');
+            $user->last_visit = (strncasecmp(
+                'sqlite',
+                $this->dbConnection->driverName,
+                6
+            ) === 0) ? new CDbExpression("date('now')") : new CDbExpression('NOW()');
             $user->update(array('last_visit'));
 
             $this->errorCode = self::ERROR_NONE;

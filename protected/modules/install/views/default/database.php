@@ -25,6 +25,7 @@ function formFields(dbType) {
         jQuery("#Database_host, #Database_username, #Database_password").parent().parent().show();
     }
 }
+formFields("'.$model->dbType.'");
 ', CClientScript::POS_END);
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
@@ -33,10 +34,10 @@ $form = $this->beginWidget(
         'htmlOptions'            => array('class' => 'well'),
         'type'                   => 'horizontal',
         'enableAjaxValidation'   => true,
-        'enableClientValidation' => true,
+        /*'enableClientValidation' => true,
         'clientOptions'          => array(
             'validateOnSubmit' => true
-        )
+        )*/
     )
 );
 echo $form->errorSummary($model);
