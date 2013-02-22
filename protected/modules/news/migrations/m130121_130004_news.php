@@ -7,7 +7,7 @@ class m130121_130004_news extends EDbMigration
         $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
 
         $this->createTable('{{news}}', array(
-                'id'             => 'int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT',
+                'id'             => 'pk',
                 'date'           => 'date NOT NULL',
                 'title'          => 'varchar(75) NOT NULL',
                 'keywords'       => 'varchar(200) NOT NULL',
@@ -17,9 +17,9 @@ class m130121_130004_news extends EDbMigration
                 'slug'           => 'varchar(75) NOT NULL',
                 'image'          => 'varchar(300) NOT NULL',
                 'status'         => 'enum("draft","published","moderation") NOT NULL DEFAULT "published"',
-                'is_protected'   => 'tinyint(1) NOT NULL DEFAULT "0"',
-                'create_user_id' => 'int(11) unsigned NOT NULL',
-                'update_user_id' => 'int(11) unsigned DEFAULT NULL',
+                'is_protected'   => 'boolean NOT NULL DEFAULT "0"',
+                'create_user_id' => 'integer NOT NULL',
+                'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
             ),

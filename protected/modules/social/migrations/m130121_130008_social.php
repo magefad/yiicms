@@ -7,10 +7,10 @@ class m130121_130008_social extends EDbMigration
         $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
 
         $this->createTable('{{user_social}}', array(
-                'id'           => 'varchar(255) NOT NULL',
-                'user_id'      => 'int(11) unsigned NOT NULL',
+                'id'           => 'string NOT NULL',
+                'user_id'      => 'integer NOT NULL',
                 'service'      => 'varchar(64) NOT NULL',
-                'access_token' => 'varchar(255) NOT NULL',
+                'access_token' => 'string NOT NULL',
                 'email'        => 'varchar(150)',
             ),
             $options

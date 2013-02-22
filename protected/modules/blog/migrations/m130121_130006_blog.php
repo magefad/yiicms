@@ -7,15 +7,15 @@ class m130121_130006_blog extends EDbMigration
         $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
 
         $this->createTable('{{blog}}', array(
-                'id'             => 'int(11) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY',
+                'id'             => 'pk',
                 'title'          => 'varchar(75) NOT NULL',
                 'keywords'       => 'varchar(200) NOT NULL',
                 'description'    => 'varchar(200) NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
                 'type'           => 'enum("public","private") NOT NULL DEFAULT "public"',
                 'status'         => 'enum("active","blocked","deleted") NOT NULL DEFAULT "active"',
-                'create_user_id' => 'int(11) unsigned NOT NULL',
-                'update_user_id' => 'int(11) unsigned DEFAULT NULL',
+                'create_user_id' => 'integer NOT NULL',
+                'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
             ),
@@ -32,8 +32,8 @@ class m130121_130006_blog extends EDbMigration
         }
 
         $this->createTable('{{blog_post}}', array(
-                'id'             => 'int(11) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY',
-                'blog_id'        => 'int(11) unsigned NOT NULL',
+                'id'             => 'pk',
+                'blog_id'        => 'integer NOT NULL',
                 'title'          => 'varchar(75) NOT NULL',
                 'keywords'       => 'varchar(200) NOT NULL',
                 'description'    => 'varchar(200) NOT NULL',
@@ -41,10 +41,10 @@ class m130121_130006_blog extends EDbMigration
                 'slug'           => 'varchar(75) NOT NULL',
                 'link'           => 'varchar(200) NOT NULL DEFAULT ""',
                 'status'         => 'enum("draft","published","moderation") NOT NULL DEFAULT "published"',
-                'comment_status' => 'tinyint(1) NOT NULL DEFAULT "1"',
+                'comment_status' => 'boolean NOT NULL DEFAULT "1"',
                 'access_type'    => 'enum("public","private") NOT NULL DEFAULT "public"',
-                'create_user_id' => 'int(11) unsigned NOT NULL',
-                'update_user_id' => 'int(11) unsigned DEFAULT NULL',
+                'create_user_id' => 'integer NOT NULL',
+                'update_user_id' => 'integer DEFAULT NULL',
                 'publish_time'   => 'timestamp NOT NULL DEFAULT "0000-00-00 00:00:00"',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
@@ -65,12 +65,12 @@ class m130121_130006_blog extends EDbMigration
         }
 
         $this->createTable('{{user_blog}}', array(
-                'id'             => 'int(11) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY',
-                'user_id'        => 'int(11) unsigned NOT NULL',
-                'blog_id'        => 'int(11) unsigned NOT NULL',
+                'id'             => 'pk',
+                'user_id'        => 'integer NOT NULL',
+                'blog_id'        => 'integer NOT NULL',
                 'role'           => 'tinyint(3) unsigned NOT NULL DEFAULT "1"',
-                'status'         => 'smallint(5) unsigned NOT NULL DEFAULT "1"',
-                'note'           => 'varchar(255) NOT NULL DEFAULT ""',
+                'status'         => 'boolean NOT NULL DEFAULT "1"',
+                'note'           => 'string NOT NULL DEFAULT ""',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
             ),
@@ -85,16 +85,16 @@ class m130121_130006_blog extends EDbMigration
         }
 
         $this->createTable('{{tag}}', array(
-                'id'   => 'int(11) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT',
-                'name' => 'varchar(255) NOT NULL',
+                'id'   => 'pk',
+                'name' => 'string NOT NULL',
             ),
             $options
         );
         $this->createIndex('ux_tag_name', '{{tag}}', 'name', true);
 
         $this->createTable('{{blog_post_tag}}', array(
-                'post_id' => 'int(11) unsigned NOT NULL',
-                'tag_id'  => 'int(11) unsigned NOT NULL',
+                'post_id' => 'integer NOT NULL',
+                'tag_id'  => 'integer NOT NULL',
                 'PRIMARY KEY (post_id, tag_id)'
             ),
             $options

@@ -7,7 +7,7 @@ class m130121_130000_user extends EDbMigration
         $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
 
         $this->createTable('{{user}}', array(
-                'id'                => 'int(11) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT',
+                'id'                => 'pk',
                 'firstname'         => 'varchar(150) DEFAULT NULL',
                 'lastname'          => 'varchar(150) DEFAULT NULL',
                 'username'          => 'varchar(150) NOT NULL',
@@ -20,16 +20,16 @@ class m130121_130000_user extends EDbMigration
                 'password'          => 'varchar(32) NOT NULL',
                 'salt'              => 'varchar(32) NOT NULL',
                 'status'            => 'enum("blocked","active","not_active") NOT NULL DEFAULT "not_active"',
-                'access_level'      => 'tinyint(1) NOT NULL DEFAULT "0"',
+                'access_level'      => 'boolean NOT NULL DEFAULT "0"',
                 'last_visit'        => 'datetime DEFAULT NULL',
                 'registration_date' => 'datetime NOT NULL',
                 'registration_ip'   => 'varchar(20) NOT NULL',
                 'activation_ip'     => 'varchar(20) NOT NULL',
                 'photo'             => 'varchar(100) NOT NULL',
                 'avatar'            => 'varchar(100) DEFAULT NULL',
-                'use_gravatar'      => 'tinyint(1) NOT NULL DEFAULT "0"',
+                'use_gravatar'      => 'boolean NOT NULL DEFAULT "0"',
                 'activate_key'      => 'varchar(32) NOT NULL',
-                'email_confirm'     => 'tinyint(1) NOT NULL DEFAULT "0"',
+                'email_confirm'     => 'boolean NOT NULL DEFAULT "0"',
                 'create_time'       => 'timestamp NULL DEFAULT NULL',
                 'update_time'       => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
             ),
@@ -42,7 +42,7 @@ class m130121_130000_user extends EDbMigration
 
         $this->createTable('{{auth_item}}', array(
                 'name'        => 'varchar(64) NOT NULL PRIMARY KEY',
-                'type'        => 'int(11) NOT NULL',
+                'type'        => 'integer',
                 'description' => 'text',
                 'bizrule'     => 'text',
                 'data'        => 'text',

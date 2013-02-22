@@ -7,15 +7,15 @@ class m130121_130005_gallery extends EDbMigration
         $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
 
         $this->createTable('{{gallery}}', array(
-                'id'             => 'int(11) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT',
+                'id'             => 'pk',
                 'title'          => 'varchar(75) NOT NULL',
                 'keywords'       => 'varchar(200) NOT NULL',
                 'description'    => 'varchar(200) NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
                 'status'         => 'enum("draft","published") NOT NULL DEFAULT "published"',
-                'sort_order'     => 'int(11) unsigned NOT NULL',
-                'create_user_id' => 'int(11) unsigned NOT NULL',
-                'update_user_id' => 'int(11) unsigned DEFAULT NULL',
+                'sort_order'     => 'integer NOT NULL',
+                'create_user_id' => 'integer NOT NULL',
+                'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
             ),
@@ -30,8 +30,8 @@ class m130121_130005_gallery extends EDbMigration
         }
 
         $this->createTable('{{gallery_photo}}', array(
-                'id'             => 'int(11) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT',
-                'gallery_id'     => 'int(11) unsigned NOT NULL',
+                'id'             => 'pk',
+                'gallery_id'     => 'integer NOT NULL',
                 'name'           => 'varchar(50) NOT NULL',
                 'title'          => 'varchar(75) NOT NULL',
                 'keywords'       => 'varchar(200) NOT NULL',
@@ -40,9 +40,9 @@ class m130121_130005_gallery extends EDbMigration
                 'alt'            => 'varchar(100) NOT NULL',
                 'type'           => 'tinyint(4) NOT NULL DEFAULT "0"',
                 'status'         => 'enum("draft","published","moderation") NOT NULL DEFAULT "published"',
-                'sort_order'     => 'int(11) unsigned NOT NULL',
-                'create_user_id' => 'int(11) unsigned NOT NULL',
-                'update_user_id' => 'int(11) unsigned DEFAULT NULL',
+                'sort_order'     => 'integer NOT NULL',
+                'create_user_id' => 'integer NOT NULL',
+                'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
             ),

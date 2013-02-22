@@ -7,8 +7,8 @@ class m130121_130003_page extends EDbMigration
         $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
 
         $this->createTable('{{page}}', array(
-                'id'             => 'int(11) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT',
-                'parent_id'      => 'int(11) unsigned DEFAULT NULL',
+                'id'             => 'pk',
+                'parent_id'      => 'integer DEFAULT NULL',
                 'level'          => 'tinyint(3) unsigned NOT NULL DEFAULT "1"',
                 'name'           => 'varchar(50) NOT NULL',
                 'title'          => 'varchar(75) NOT NULL',
@@ -16,12 +16,12 @@ class m130121_130003_page extends EDbMigration
                 'description'    => 'varchar(200) NOT NULL',
                 'content'        => 'text NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
-                'rich_editor'    => 'tinyint(1) NOT NULL DEFAULT "1"',
+                'rich_editor'    => 'boolean NOT NULL DEFAULT "1"',
                 'status'         => 'enum("draft","published","moderation") NOT NULL DEFAULT "published"',
-                'is_protected'   => 'tinyint(1) NOT NULL DEFAULT "0"',
-                'sort_order'     => 'int(11) NOT NULL',
-                'create_user_id' => 'int(11) unsigned NOT NULL',
-                'update_user_id' => 'int(11) unsigned DEFAULT NULL',
+                'is_protected'   => 'boolean NOT NULL DEFAULT "0"',
+                'sort_order'     => 'integer',
+                'create_user_id' => 'integer NOT NULL',
+                'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
             ),

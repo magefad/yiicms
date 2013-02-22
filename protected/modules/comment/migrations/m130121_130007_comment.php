@@ -7,15 +7,15 @@ class m130121_130007_comment extends EDbMigration
         $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
 
         $this->createTable('{{comment}}', array(
-                'id'             => 'int(11) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY',
+                'id'             => 'pk',
                 'model'          => 'varchar(16) NOT NULL',
-                'model_id'       => 'int(11) unsigned NOT NULL',
+                'model_id'       => 'integer NOT NULL',
                 'content'        => 'text NOT NULL',
                 'ip'             => 'varchar(20) DEFAULT NULL',
                 'status'         => 'enum("not_approved","approved","spam","deleted") NOT NULL DEFAULT "approved"',
                 'username'       => 'varchar(20) DEFAULT NULL',
-                'create_user_id' => 'int(11) unsigned DEFAULT NULL',
-                'update_user_id' => 'int(11) unsigned DEFAULT NULL',
+                'create_user_id' => 'integer DEFAULT NULL',
+                'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
             ),
