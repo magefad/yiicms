@@ -112,6 +112,7 @@ class Database extends CFormModel
 
     /**
      * Try to create Db if not exists
+     * @throws CException|CDbException
      * @return bool|string
      */
     public function createDb()
