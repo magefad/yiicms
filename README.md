@@ -1,3 +1,5 @@
+[Русский README](https://github.com/magefad/yiicms/blob/master/README_RU.md)
+
 Fad Yii Cms (dev)
 ===================
 
@@ -5,6 +7,10 @@ Easy CMS based on Yii (1.1.12) with the basic modules and extensions to start. C
 
 Instead SQL dump used [migrations](http://www.yiiframework.com/doc/guide/1.1/ru/database.migration),
 extended [extension](https://github.com/yiiext/migrate-command) with modules support.
+
+SUPPORT DATABASES
+------------
+CMS working with MySQL and SQLite, other types of DB not tested at now (coming soon).
 
 INSTALLATION
 ------------
@@ -85,7 +91,7 @@ EXTENSIONS
       news/widgets/LastNews         latest news
       user/extensions/eauth/        Yii EAuth extension
 
-ADDITIONALY
+ADDITIONALLY
 ------------
       /robots.txt                           General rules for search engines
       /protected/autocomplete.php           Auto complete for IDE
@@ -130,7 +136,12 @@ WHAT's NEXT
 * **create website and community**
 * switch to sourceLanguage = en (~15%)
 * creating something blocks of content (like ModX)
-* installator
+* ~creation of templates to manage user (Rights ext) under CMS~ now yii-auth with bootstrap
+* ~installer~
 * possibility to edit the page directly on the site (like Google Sites)
+* ~support SQLite~
+* support MSSQL
+* support PostgreSQL
+* support Oracle
 
 I will appreciate any help in improving the project, and, of course, pull requests.
