@@ -139,7 +139,7 @@ WHAT's NEXT
 * ~~creation of templates to manage user (Rights ext) under CMS~~ now yii-auth with bootstrap
 * ~~installer~~
 * possibility to edit the page directly on the site (like Google Sites)
-* ~support SQLite~
+* ~~support SQLite~~
 * support MSSQL
 * support PostgreSQL
 * support Oracle
