@@ -118,6 +118,9 @@ class Database extends CFormModel
     {
         try {
             if ($this->dbType == 'sqlite') {
+                if (!is_writable(Yii::getPathOfAlias('application.data'))) {
+                    throw new CException(Yii::t('InstallModule.database', 'Folder {data} for SQLite database must be writable', array('{data}' => Yii::getPathOfAlias('application.data'))));
+                }
                 touch(Yii::getPathOfAlias('application.data') . DIRECTORY_SEPARATOR . $this->dbName . '.db');
                 $this->_dbExists = true;
             } else {
@@ -128,6 +131,8 @@ class Database extends CFormModel
             return true;
         } catch ( CDbException $e ) {
             return $e->errorInfo['2'] . PHP_EOL . $e->getMessage() . (YII_DEBUG ? PHP_EOL . $e->getTraceAsString() : '');
+        } catch ( CException $e ) {
+            return $e->getMessage() . (YII_DEBUG ? PHP_EOL . $e->getTraceAsString() : '');
         }
     }
 

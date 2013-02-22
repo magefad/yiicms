@@ -47,7 +47,7 @@ $this->widget(
     )
 );
 ?>
-<?php if (Yii::app()->user->isAdmin || Yii::app()->user->checkAccess('Admin') || Yii::app()->user->checkAccess('Editor') && $this->menu): ?>
+<?php if ((Yii::app()->user->checkAccess('Admin') || Yii::app()->user->checkAccess('Editor')) && $this->menu): ?>
 <div class="menu-admin well">
     <?php
     $this->beginWidget(

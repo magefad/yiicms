@@ -15,7 +15,7 @@
 ?>
 <h1><?php echo Yii::t('InstallModule.database', 'Create Database connection'); ?></h1>
 <?php
-Yii::app()->user->setFlash('info', Yii::t('InstallModule.database', 'Correct working is guaranteed only with the use of the database <strong>MySQL</strong>. Working with other databases is not tested!'));
+Yii::app()->user->setFlash('info', Yii::t('InstallModule.database', 'Correct working is guaranteed only with the use of the database <strong>MySQL</strong> or <strong>SQLite</strong>. Working with other databases is not tested!'));
 $this->widget('bootstrap.widgets.TbAlert');
 Yii::app()->clientScript->registerScript('database', '
 function formFields(dbType) {
