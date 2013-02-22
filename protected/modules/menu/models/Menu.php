@@ -190,7 +190,7 @@ class Menu extends CActiveRecord
 
     public static function getAdminItems()
     {
-        if (Yii::app()->user->isGuest || !Yii::app()->user->checkAccess('Editor')) {
+        if (Yii::app()->user->isGuest || (!Yii::app()->user->checkAccess('Admin') && !Yii::app()->user->checkAccess('Editor'))) {
             return array();
         }
         if ($items = Yii::app()->getCache()->get('menu_admin')) {
