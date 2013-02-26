@@ -5,7 +5,7 @@
  *
  * @author Bogdan Savluk <savluk.bogdan@gmail.com>
  */
-class photoManager extends Widget
+class photoManager extends CWidget
 {
     /** @var Gallery Model of gallery to manage */
     #public $gallery;

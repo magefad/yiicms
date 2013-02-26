@@ -99,7 +99,6 @@ ADDITIONALLY
       /protected/components/Controller      extended RController
       /protected/components/FadTbGridView   extended TbGridView
       /protected/components/WebModule       extended CWebModule
-      /protected/components/Widget          extended CWidget
 
 LINKS
 ------------

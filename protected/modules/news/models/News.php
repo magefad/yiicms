@@ -27,6 +27,8 @@
  * The followings are the available model behaviors:
  * @property StatusBehavior $statusMain
  * @property StatusBehavior $statusProtected
+ *
+ * @method published() return published news
  */
 class News extends CActiveRecord
 {

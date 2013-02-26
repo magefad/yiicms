@@ -98,7 +98,6 @@ CMS работает с MySQL, PostgreSQL и SQLite, другие типы БД 
       /protected/components/Controller      Расширенный RController
       /protected/components/FadTbGridView   Расширенный TbGridView
       /protected/components/WebModule       Расширенный CWebModule
-      /protected/components/Widget          Расширенный CWidget
 
 ПОЛЕЗНЫЕ ССЫЛКИ
 ------------
