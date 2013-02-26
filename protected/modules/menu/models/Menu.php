@@ -182,7 +182,7 @@ class Menu extends CActiveRecord
 
     public function getParentsData()
     {
-        $rows = Yii::app()->db->createCommand("SELECT id, level, title FROM {$this->tableName()} ORDER BY root, lft")->queryAll();
+        $rows = Yii::app()->db->createCommand("SELECT id, level, title FROM {{menu}} ORDER BY root, lft")->queryAll();
         $data = array();
         foreach ($rows as $item) {
             $data[$item['id']] = str_repeat('→', ($item['level'] - 1)) . ' ' . $item['title'];

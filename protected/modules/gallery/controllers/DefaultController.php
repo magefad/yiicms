@@ -152,14 +152,9 @@ class DefaultController extends Controller
      */
     public function actionList()
     {
-        $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . Photo::model()->tableName());
+        $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM {{gallery_photo}}');
 
-        $albums = Gallery::model()->public()->cache($this->admin->cachingDuration, $dependency)->findAll(
-            array(
-                #'limit' => $this->count,
-                'order' => 'sort_order'
-            )
-        );
+        $albums = Gallery::model()->public()->cache($this->admin->cachingDuration, $dependency)->findAll(array('order' => 'sort_order'));
         $this->render('list', array('albums' => $albums));
     }
 

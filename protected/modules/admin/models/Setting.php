@@ -152,8 +152,7 @@ class Setting extends CActiveRecord
                 $criteria->compare('`key`', $keys);
             }
 
-            $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . $this->tableName(
-            ) . ' WHERE module_id="' . $module_id . '"');
+            $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM {{settings}} WHERE module_id="' . $module_id . '"');
             $settingsRows = $this->cache(Yii::app()->getModule('admin')->cachingDuration, $dependency, 2)->findAll(
                 $criteria
             );
