@@ -44,12 +44,27 @@ class SaveBehavior extends CTimestampBehavior
      * @var array Maps column types to database method
      */
     protected static $map = array(
-        'default' => array(
+        'mssql'  => array(
+            'datetime'  => 'GETDATE()',
+            'timestamp' => 'GETDATE()',
+            'date'      => 'GETDATE()',
+        ),
+        'mysql'  => array(
             'datetime'  => 'NOW()',
             'timestamp' => 'NOW()',
             'date'      => 'NOW()',
         ),
-        'sqlite'  => array(
+        'oci'    => array(
+            'datetime'  => 'NOW()',
+            'timestamp' => 'NOW()',
+            'date'      => 'NOW()',
+        ),
+        'pgsql'  => array(
+            'datetime'  => 'NOW()',
+            'timestamp' => 'NOW()',
+            'date'      => 'NOW()',
+        ),
+        'sqlite' => array(
             'datetime'  => 'datetime(\'now\')',
             'timestamp' => 'datetime(\'now\')',
             'date'      => 'date(\'now\')',
@@ -103,7 +118,7 @@ class SaveBehavior extends CTimestampBehavior
      */
     protected function getTimestampByColumnType($columnType)
     {
-        $dbKey = isset(self::$map[Yii::app()->db->driverName]) ? Yii::app()->db->driverName : 'default';
+        $dbKey = Yii::app()->db->getDriverName();
         return isset(self::$map[$dbKey][$columnType]) ? new CDbExpression(self::$map[$dbKey][$columnType]) : time();
     }
 }
