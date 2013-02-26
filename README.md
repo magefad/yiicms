@@ -10,7 +10,7 @@ extended [extension](https://github.com/yiiext/migrate-command) with modules sup
 
 SUPPORT DATABASES
 ------------
-CMS working with MySQL and SQLite, other types of DB not tested at now (coming soon).
+CMS working with MySQL, PostgreSQL and SQLite, other types of DB not tested at now (coming soon).
 
 INSTALLATION
 ------------
