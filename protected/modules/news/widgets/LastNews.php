@@ -1,21 +1,15 @@
 <?php
-/**
- * User: fad
- * Date: 27.07.12
- * Time: 16:53
- */
+Yii::import('news.models.News');
 class LastNews extends CWidget
 {
+    public $cacheTime = 3600;
+
     public function run()
     {
-        $count = 3;
-        if (isset(Yii::app()->getModule('news')->lastNewsCount)) {
-            $count = Yii::app()->getModule('news')->lastNewsCount;
-        }
-        $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM ' . News::model()->tableName());
-        $news = News::model()->published()->cache(3600, $dependency, 2)->findAll(
+        $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM {{news}}');
+        $news = News::model()->published()->cache($this->cacheTime, $dependency, 2)->findAll(
             array(
-                'limit' => $count,
+                'limit' => Yii::app()->getModule('news')->lastNewsCount,
                 'order' => 'date DESC'
             )
         );

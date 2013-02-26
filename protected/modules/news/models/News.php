@@ -29,6 +29,9 @@
  * @property StatusBehavior $statusProtected
  *
  * @method published() return published news
+ * @method protected() return news to authenticated users
+ * @method public() return news for all users
+ * @method recent() return 5 recent news
  */
 class News extends CActiveRecord
 {
