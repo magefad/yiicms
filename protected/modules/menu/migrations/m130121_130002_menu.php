@@ -4,21 +4,22 @@ class m130121_130002_menu extends EDbMigration
 {
     public function safeUp()
     {
-        $options           = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
-        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
-
+        $options           = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
+        $tinyint3           = Yii::app()->getDb()->getSchema() instanceof CPgsqlSchema ? 'smallint' : 'tinyint(3)';
+        $tinyint4           = Yii::app()->getDb()->getSchema() instanceof CPgsqlSchema ? 'smallint' : 'tinyint(4)';
         $this->createTable('{{menu}}', array(
                 'id'             => 'pk',
                 'root'           => 'integer NOT NULL',
                 'lft'            => 'integer NOT NULL',
                 'rgt'            => 'integer NOT NULL',
-                'level'          => 'tinyint(4) NOT NULL',
-                'code'           => 'varchar(20) NOT NULL DEFAULT ""',
+                'level'          => $tinyint4.' NOT NULL',
+                'code'           => 'varchar(20) NOT NULL DEFAULT \'\'',
                 'title'          => 'varchar(100) NOT NULL',
-                'href'           => 'varchar(200) NOT NULL DEFAULT ""',
-                'type'           => 'tinyint(3) NOT NULL DEFAULT "1"',
+                'href'           => 'varchar(200) NOT NULL DEFAULT \'\'',
+                'type'           => $tinyint3.' NOT NULL DEFAULT \'1\'',
                 'access'         => 'varchar(50) DEFAULT NULL',
-                'status'         => 'boolean NOT NULL DEFAULT "1"',
+                'status'         => 'boolean NOT NULL DEFAULT \'1\'',
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
@@ -29,7 +30,7 @@ class m130121_130002_menu extends EDbMigration
         $this->createIndex('ix_{{menu}}_status', '{{menu}}', 'status', false);
         $this->createIndex('ix_{{menu}}_create_user_id', '{{menu}}', 'create_user_id', false);
         $this->createIndex('ix_{{menu}}_update_user_id', '{{menu}}', 'update_user_id', false);
-        if ((Yii::app()->db->schema instanceof CSqliteSchema) == false) {
+        if ((Yii::app()->getDb()->getSchema() instanceof CSqliteSchema) == false) {
             $this->addForeignKey('fk_{{menu}}_{{user}}_create_user_id', '{{menu}}', 'create_user_id', '{{user}}', 'id', 'CASCADE', 'NO ACTION');
             $this->addForeignKey('fk_{{menu}}_{{user}}_update_user_id', '{{menu}}', 'update_user_id', '{{user}}', 'id', 'CASCADE', 'NO ACTION');
         }

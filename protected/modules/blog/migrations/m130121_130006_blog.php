@@ -4,8 +4,9 @@ class m130121_130006_blog extends EDbMigration
 {
     public function safeUp()
     {
-        $options           = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
-        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
+        $options           = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
+        $tinyint           = Yii::app()->getDb()->getSchema() instanceof CPgsqlSchema ? 'smallint' : 'tinyint(1)';
 
         $this->createTable('{{blog}}', array(
                 'id'             => 'pk',
@@ -13,8 +14,8 @@ class m130121_130006_blog extends EDbMigration
                 'keywords'       => 'varchar(200) NOT NULL',
                 'description'    => 'varchar(200) NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
-                'type'           => 'boolean NOT NULL DEFAULT "1"',
-                'status'         => 'tinyint(1) NOT NULL DEFAULT "1"',
+                'type'           => 'boolean NOT NULL DEFAULT \'1\'',
+                'status'         => $tinyint.' NOT NULL DEFAULT \'1\'',
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
@@ -27,7 +28,7 @@ class m130121_130006_blog extends EDbMigration
         $this->createIndex('ix_{{blog}}_status', '{{blog}}', 'status', false);
         $this->createIndex('ix_{{blog}}_create_user_id', '{{blog}}', 'create_user_id', false);
         $this->createIndex('ix_{{blog}}_update_user_id', '{{blog}}', 'update_user_id', false);
-        if ((Yii::app()->db->schema instanceof CSqliteSchema) == false) {
+        if ((Yii::app()->getDb()->getSchema() instanceof CSqliteSchema) == false) {
             $this->addForeignKey('fk_{{blog}}_{{user}}_create_user_id', '{{blog}}', 'create_user_id', '{{user}}', 'id', 'CASCADE', 'NO ACTION');
             $this->addForeignKey('fk_{{blog}}_{{user}}_update_user_id', '{{blog}}', 'update_user_id', '{{user}}', 'id', 'CASCADE', 'NO ACTION');
         }
@@ -40,13 +41,13 @@ class m130121_130006_blog extends EDbMigration
                 'description'    => 'varchar(200) NOT NULL',
                 'content'        => 'text NOT NULL',
                 'slug'           => 'varchar(75) NOT NULL',
-                'link'           => 'varchar(200) NOT NULL DEFAULT ""',
-                'status'         => 'tinyint(1) NOT NULL DEFAULT "1"',
-                'comment_status' => 'boolean NOT NULL DEFAULT "1"',
-                'access_type'    => 'boolean NOT NULL DEFAULT "1"',
+                'link'           => 'varchar(200) NOT NULL DEFAULT \'\'',
+                'status'         => $tinyint.' NOT NULL DEFAULT \'1\'',
+                'comment_status' => 'boolean NOT NULL DEFAULT \'1\'',
+                'access_type'    => 'boolean NOT NULL DEFAULT \'1\'',
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
-                'publish_time'   => 'timestamp NOT NULL DEFAULT "0000-00-00 00:00:00"',
+                'publish_time'   => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp
             ),
@@ -59,7 +60,7 @@ class m130121_130006_blog extends EDbMigration
         $this->createIndex('ix_{{blog_post}}_access_type', '{{blog_post}}', 'access_type', false);
         $this->createIndex('ix_{{blog_post}}_create_user_id', '{{blog_post}}', 'create_user_id', false);
         $this->createIndex('ix_{{blog_post}}_update_user_id', '{{blog_post}}', 'update_user_id', false);
-        if ((Yii::app()->db->schema instanceof CSqliteSchema) == false) {
+        if ((Yii::app()->getDb()->getSchema() instanceof CSqliteSchema) == false) {
             $this->addForeignKey('fk_{{blog_post}}_{{blog}}_blog_id', '{{blog_post}}', 'blog_id', '{{blog}}', 'id', 'CASCADE', 'NO ACTION');
             $this->addForeignKey('fk_{{blog_post}}_{{user}}_create_user_id', '{{blog_post}}', 'create_user_id', '{{user}}', 'id', 'RESTRICT', 'NO ACTION');
             $this->addForeignKey('fk_{{blog_post}}_{{user}}_update_user_id', '{{blog_post}}', 'update_user_id', '{{user}}', 'id', 'RESTRICT', 'NO ACTION');
@@ -69,9 +70,9 @@ class m130121_130006_blog extends EDbMigration
                 'id'             => 'pk',
                 'user_id'        => 'integer NOT NULL',
                 'blog_id'        => 'integer NOT NULL',
-                'role'           => 'tinyint(3) NOT NULL DEFAULT "1"',
-                'status'         => 'boolean NOT NULL DEFAULT "1"',
-                'note'           => 'string NOT NULL DEFAULT ""',
+                'role'           => $tinyint.' NOT NULL DEFAULT \'1\'',
+                'status'         => 'boolean NOT NULL DEFAULT \'1\'',
+                'note'           => 'string NOT NULL DEFAULT \'\'',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp
             ),
@@ -80,7 +81,7 @@ class m130121_130006_blog extends EDbMigration
         $this->createIndex('ux_{{user_blog}}_user_id_blog_id', '{{user_blog}}', 'user_id,blog_id', true);
         $this->createIndex('ix_{{user_blog}}_blog_user_id', '{{user_blog}}', 'user_id', false);
         $this->createIndex('ix_{{user_blog}}_blog_blog_id', '{{user_blog}}', 'blog_id', false);
-        if ((Yii::app()->db->schema instanceof CSqliteSchema) == false) {
+        if ((Yii::app()->getDb()->getSchema() instanceof CSqliteSchema) == false) {
             $this->addForeignKey('fk_{{user_blog}}_{{user}}_user_id', '{{user_blog}}', 'user_id', '{{user}}', 'id', 'CASCADE', 'NO ACTION');
             $this->addForeignKey('fk_{{user_blog}}_{{blog}}_blog_id', '{{user_blog}}', 'blog_id', '{{blog}}', 'id', 'CASCADE', 'NO ACTION');
         }
@@ -102,7 +103,7 @@ class m130121_130006_blog extends EDbMigration
         );
         $this->createIndex('ix_{{blog_post_tag}}_post_id', '{{blog_post_tag}}', 'post_id', false);
         $this->createIndex('ix_{{blog_post_tag}}_tag_id', '{{blog_post_tag}}', 'tag_id', false);
-        if ((Yii::app()->db->schema instanceof CSqliteSchema) == false) {
+        if ((Yii::app()->getDb()->getSchema() instanceof CSqliteSchema) == false) {
             $this->addForeignKey('fk_{{blog_post_tag}}_{{blog_post}}_post_id', '{{blog_post_tag}}', 'post_id', '{{blog_post}}', 'id', 'CASCADE', 'NO ACTION');
             $this->addForeignKey('fk_{{blog_post_tag}}_{{tag}}_tag_id', '{{blog_post_tag}}', 'tag_id', '{{tag}}', 'id', 'CASCADE', 'NO ACTION');
         }

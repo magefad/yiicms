@@ -98,12 +98,14 @@ class Database extends CFormModel
      */
     public function createDbConnection($dbExists = true)
     {
-        $this->_dbExists         = $dbExists;
+        $this->_dbExists = $dbExists;
         if ($this->dbType == 'sqlite') {
             $connection = new CDbConnection($this->getConnectionString());
         } else {
             $connection = new CDbConnection($this->getConnectionString(), $this->username, $this->password);
-            $connection->initSQLs    = array("SET NAMES 'utf8' COLLATE 'utf8_general_ci';");
+            if ($this->dbType == 'mysql') {
+                $connection->initSQLs = array("SET NAMES 'utf8' COLLATE 'utf8_general_ci';");
+            }
         }
         $connection->tablePrefix = $this->tablePrefix;
         $connection->init();
@@ -125,13 +127,28 @@ class Database extends CFormModel
                 touch(Yii::getPathOfAlias('application.data') . DIRECTORY_SEPARATOR . $this->dbName . '.db');
                 $this->_dbExists = true;
             } else {
-                $db = $this->createDbConnection(false);
-                $db->createCommand("CREATE DATABASE IF NOT EXISTS `{$this->dbName}` CHARACTER SET utf8 COLLATE utf8_general_ci")->execute();
+                $db          = $this->createDbConnection(false);
+                $dbNameQuote = $db->getSchema()->quoteSimpleTableName($this->dbName);
+
+                switch ($this->dbType) {
+                    case 'mysql':
+                        $db->createCommand("CREATE DATABASE IF NOT EXISTS {$dbNameQuote} CHARACTER SET utf8 COLLATE utf8_general_ci")->execute();
+                        break;
+                    case 'pgsql':                                       // ENCODING 'UTF8'
+                        $db->createCommand("CREATE DATABASE {$dbNameQuote}")->execute();
+                        break;
+                    default:
+                        $db->createCommand("CREATE DATABASE {$dbNameQuote}")->execute();
+                }
                 $this->_dbExists = true;
             }
             return true;
         } catch ( CDbException $e ) {
-            return $e->errorInfo['2'] . PHP_EOL . $e->getMessage() . (YII_DEBUG ? PHP_EOL . $e->getTraceAsString() : '');
+            if ($e->errorInfo['0'] == '42P04') {//PostgreSQL database exists
+                return true;
+            } else {
+                return $e->errorInfo['2'] . PHP_EOL . $e->getMessage() . (YII_DEBUG ? PHP_EOL . $e->getTraceAsString() : '');
+            }
         } catch ( CException $e ) {
             return $e->getMessage() . (YII_DEBUG ? PHP_EOL . $e->getTraceAsString() : '');
         }

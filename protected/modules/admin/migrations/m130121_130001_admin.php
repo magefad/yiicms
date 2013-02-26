@@ -4,8 +4,8 @@ class m130121_130001_admin extends EDbMigration
 {
     public function safeUp()
     {
-        $options           = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
-        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
+        $options           = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
 
         $this->createTable('{{settings}}', array(
                 'id'             => 'pk',
@@ -24,7 +24,7 @@ class m130121_130001_admin extends EDbMigration
         $this->createIndex('ix_{{settings}}_create_user_id', '{{settings}}', 'create_user_id', false);
         $this->createIndex('ix_{{settings}}_update_user_id', '{{settings}}', 'update_user_id', false);
 
-        if ((Yii::app()->db->schema instanceof CSqliteSchema) == false) {
+        if ((Yii::app()->getDb()->getSchema() instanceof CSqliteSchema) == false) {
             $this->addForeignKey('fk_{{settings}}_{{user}}_create_user_id', '{{settings}}', 'create_user_id', '{{user}}', 'id', 'RESTRICT', 'NO ACTION');
             $this->addForeignKey('fk_{{settings}}_{{user}}_update_user_id', '{{settings}}', 'update_user_id', '{{user}}', 'id', 'RESTRICT', 'NO ACTION');
         }

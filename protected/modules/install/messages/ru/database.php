@@ -17,7 +17,7 @@
  * NOTE, this file must be saved in UTF-8 encoding.
  */
 return array (
-  'Correct working is guaranteed only with the use of the database <strong>MySQL</strong> or <strong>SQLite</strong>. Working with other databases is not tested!' => 'Корректная работа гарантируется только при использовании базы данных <strong>MySQL</strong> или <strong>SQLite</strong>. Работа с другими БД не тестировалась!',
+  'Correct working is guaranteed only with the use of the database <strong>MySQL, PostgreSQL</strong> or <strong>SQLite</strong>. Working with other databases is not tested!' => 'Корректная работа гарантируется только при использовании базы данных <strong>MySQL, PostgreSQL</strong> или <strong>SQLite</strong>. Работа с другими БД не тестировалась!',
   'Create Database connection' => 'Создание подключения к базе данных',
   'Database host' => 'Хост БД',
   'Database name' => 'Имя БД',

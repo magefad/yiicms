@@ -4,33 +4,34 @@ class m130121_130000_user extends EDbMigration
 {
     public function safeUp()
     {
-        $options = Yii::app()->db->schema instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
-        $onUpdateTimeStamp = Yii::app()->db->schema instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
+        $options           = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? 'ENGINE=InnoDB DEFAULT CHARSET=utf8' : '';
+        $onUpdateTimeStamp = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' ON UPDATE CURRENT_TIMESTAMP' : '';
+        $tinyint           = Yii::app()->getDb()->getSchema() instanceof CPgsqlSchema ? 'smallint' : 'tinyint(1)';
 
         $this->createTable('{{user}}', array(
                 'id'                => 'pk',
                 'firstname'         => 'varchar(150) DEFAULT NULL',
                 'lastname'          => 'varchar(150) DEFAULT NULL',
                 'username'          => 'varchar(150) NOT NULL',
-                'sex'               => 'tinyint(1) NOT NULL DEFAULT "0"',
+                'sex'               => $tinyint.' NOT NULL DEFAULT \'0\'',
                 'birth_date'        => 'date DEFAULT NULL',
-                'country'           => 'varchar(50) NOT NULL DEFAULT ""',
-                'city'              => 'varchar(50) NOT NULL DEFAULT ""',
-                'phone'             => 'varchar(32) NOT NULL DEFAULT ""',
-                'email'             => 'varchar(150) NOT NULL',
+                'country'           => 'varchar(50) NOT NULL DEFAULT \'\'',
+                'city'              => 'varchar(50) NOT NULL DEFAULT \'\'',
+                'phone'             => 'varchar(32) NOT NULL DEFAULT \'\'',
+                'email'             => 'varchar(150) DEFAULT NULL',
                 'password'          => 'varchar(32) NOT NULL',
                 'salt'              => 'varchar(32) NOT NULL',
-                'status'            => 'tinyint(1) NOT NULL DEFAULT "0"',
-                'access_level'      => 'boolean NOT NULL DEFAULT "0"',
+                'status'            => $tinyint.' NOT NULL DEFAULT \'0\'',
+                'access_level'      => 'boolean NOT NULL DEFAULT \'0\'',
                 'last_visit'        => 'datetime DEFAULT NULL',
                 'registration_date' => 'datetime NOT NULL',
                 'registration_ip'   => 'varchar(20) NOT NULL',
                 'activation_ip'     => 'varchar(20) NOT NULL',
                 'photo'             => 'varchar(100) DEFAULT NULL',
                 'avatar'            => 'varchar(100) DEFAULT NULL',
-                'use_gravatar'      => 'boolean NOT NULL DEFAULT "0"',
+                'use_gravatar'      => 'boolean NOT NULL DEFAULT \'0\'',
                 'activate_key'      => 'varchar(32) NOT NULL',
-                'email_confirm'     => 'boolean NOT NULL DEFAULT "0"',
+                'email_confirm'     => 'boolean NOT NULL DEFAULT \'0\'',
                 'create_time'       => 'timestamp NULL DEFAULT NULL',
                 'update_time'       => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp,
             ),
@@ -58,7 +59,7 @@ class m130121_130000_user extends EDbMigration
             ),
             $options
         );
-        if ((Yii::app()->db->schema instanceof CSqliteSchema) == false) {
+        if ((Yii::app()->getDb()->getSchema() instanceof CSqliteSchema) == false) {
             $this->addForeignKey('fk_{{auth_item_child}}_{{auth_item}}_parent', '{{auth_item_child}}', 'parent', '{{auth_item}}', 'name', 'CASCADE', 'CASCADE');
             $this->addForeignKey('fk_{{auth_item_child}}_{{auth_item}}_child', '{{auth_item_child}}', 'child', '{{auth_item}}', 'name', 'CASCADE', 'CASCADE');
         }
@@ -72,7 +73,7 @@ class m130121_130000_user extends EDbMigration
             ),
             $options
         );
-        if ((Yii::app()->db->schema instanceof CSqliteSchema) == false) {
+        if ((Yii::app()->getDb()->getSchema() instanceof CSqliteSchema) == false) {
             $this->addForeignKey('fk_{{auth_assignment}}_{{auth_item}}_name', '{{auth_assignment}}', 'itemname', '{{auth_item}}', 'name', 'CASCADE', 'CASCADE');
         }
     }

@@ -15,7 +15,7 @@
 ?>
 <h1><?php echo Yii::t('InstallModule.database', 'Create Database connection'); ?></h1>
 <?php
-Yii::app()->user->setFlash('info', Yii::t('InstallModule.database', 'Correct working is guaranteed only with the use of the database <strong>MySQL</strong> or <strong>SQLite</strong>. Working with other databases is not tested!'));
+Yii::app()->user->setFlash('info', Yii::t('InstallModule.database', 'Correct working is guaranteed only with the use of the database <strong>MySQL, PostgreSQL</strong> or <strong>SQLite</strong>. Working with other databases is not tested!'));
 $this->widget('bootstrap.widgets.TbAlert');
 Yii::app()->clientScript->registerScript('database', '
 function formFields(dbType) {
@@ -30,14 +30,9 @@ formFields("'.$model->dbType.'");
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
-        'id'                     => 'database-form',
-        'htmlOptions'            => array('class' => 'well'),
-        'type'                   => 'horizontal',
-        'enableAjaxValidation'   => true,
-        /*'enableClientValidation' => true,
-        'clientOptions'          => array(
-            'validateOnSubmit' => true
-        )*/
+        'id'          => 'database-form',
+        'htmlOptions' => array('class' => 'well'),
+        'type'        => 'horizontal',
     )
 );
 echo $form->errorSummary($model);
