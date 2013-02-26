@@ -25,6 +25,8 @@ class DefaultController extends CController
      */
     public function actionIndex()
     {
+        Yii::app()->user->setStateKeyPrefix('');
+        Yii::app()->user->clearStates();
         $this->render('index', InstallHelper::checkRequirements());
     }
 
@@ -173,19 +175,9 @@ class DefaultController extends CController
                         $modules = array_diff(scandir(Yii::getPathOfAlias('application.modules')), array('auth', 'install', 'sitemap', '.', '..'));
                         sort($modules);
                         foreach ($modules as $id) {
-                            $controllersPath = Yii::getPathOfAlias('application.modules.' . $id . '.controllers');
-                            if (is_dir($controllersPath)) {
-                                $controllersNames = scandir($controllersPath);
-                                foreach ($controllersNames as $name) {
-                                    if (substr($name, -14) == 'Controller.php') {
-                                        $name     = substr($name, 0, -14);
-                                        $name[0]  = strtolower($name[0]);
-                                        $taskName = $id . '.' . $name . '.*';
-                                        Yii::app()->authManager->createTask($taskName, ucfirst($id) . ($name != 'default' ? ' ' . ucfirst($name) : ''));
-                                        Yii::app()->authManager->addItemChild('Admin', $taskName);
-                                    }
-                                }
-                            }
+                            $taskName = $id . '.*';
+                            Yii::app()->authManager->createTask($taskName, Modules::getModuleName($id, false));
+                            Yii::app()->authManager->addItemChild('Admin', $taskName);
                         }
                         Yii::app()->authManager->save();
                     }

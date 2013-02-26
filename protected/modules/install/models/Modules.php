@@ -54,14 +54,15 @@ class Modules extends CFormModel
 
     /**
      * @param string $id Module name
+     * @param boolean $icon
      * @return string html module icon with name
      */
-    public static function getModuleName($id)
+    public static function getModuleName($id, $icon = true)
     {
         $className = ucfirst($id) . 'Module';
         Yii::import('application.modules.' . $id . '.' . $className);
         // PHP 5.2 support :(
-        return '<i class="icon-' . call_user_func($className . '::getIcon') . '"></i> ' . call_user_func($className . '::getName');
+        return ($icon ? '<i class="icon-' . call_user_func($className . '::getIcon') . '"></i> ' : '') . call_user_func($className . '::getName');
     }
 
     public static function getModuleNameDescription($id)
