@@ -154,7 +154,7 @@ class DefaultController extends CController
                                 'email'             => $model->email,
                                 'password'          => $user->hashPassword($model->password, $salt),
                                 'salt'              => $salt,
-                                'status'            => 'active',
+                                'status'            => 1,
                                 'access_level'      => 1,
                                 'email_confirm'     => 1,
                             )
