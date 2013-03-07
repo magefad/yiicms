@@ -28,7 +28,7 @@ class FadTbGridView extends TbGridView
      * the row, and <code>$this</code> is the grid object.
      * @see rowCssClass
      */
-    public $rowCssClassExpression = '($data->status == "moderation") ? "error" : (($data->status == "published") ? "published" : (($data->status == "draft") ? "warning" : ""))';
+    public $rowCssClassExpression = '($data->status == 2) ? "error" : (($data->status == 1) ? "published" : (($data->status == 0) ? "warning" : ""))';
 
 
     /**
