@@ -9,7 +9,7 @@ return CMap::mergeArray(
                 'password'       => 'fad',
                 // If removed, Gii defaults to localhost only. Edit carefully to taste.
                 'ipFilters'      => array('127.0.0.1', '::1'),
-                'generatorPaths' => array('bootstrap.gii'),
+                'generatorPaths' => array('bootstrap.gii', 'admin.gii'),
             ),
         ),
         // application components
@@ -17,8 +17,9 @@ return CMap::mergeArray(
             'db'  => array_merge(
                 require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php'),
                 array(
-                    'enableProfiling'    => true,
-                    'enableParamLogging' => true,
+                    'schemaCachingDuration' => 3600,
+                    'enableProfiling'       => true,
+                    'enableParamLogging'    => true,
                 )
             ),
             'authManager' => array(

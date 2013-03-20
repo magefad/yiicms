@@ -39,7 +39,7 @@ $('.search-form form').submit(function(){
 });
 ");
 ?>
-<?php echo "<?php echo CHtml::link(Yii::t('" . $this->class2id($this->modelClass) . "', 'Search'),'#',array('class'=>'search-button btn btn-small')); ?>"; ?>
+<?php echo "<?php echo CHtml::link(Yii::t('" . $this->class2id($this->modelClass) . "', 'Search'), '#', array('class' => 'search-button btn btn-small')); ?>"; ?>
 
 <div class="search-form" style="display:none">
     <?php echo "<?php \$this->renderPartial('_search', array('model' => \$model)); ?>\n"; ?>
