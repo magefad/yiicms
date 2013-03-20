@@ -31,6 +31,11 @@
  * The followings are the available model behaviors:
  * @property StatusBehavior $statusMain
  * @property StatusBehavior $statusProtected
+ *
+ * @method published()
+ * @method protected()
+ * @method public()
+ * @method root()
  */
 class Page extends CActiveRecord
 {
@@ -229,11 +234,11 @@ class Page extends CActiveRecord
         $sort->defaultOrder = 't.sort_order ASC';
         $sort->attributes   = array(
             'author_search'       => array(
-                'asc' => 'author.username',
+                'asc'  => 'author.username',
                 'desc' => 'author.username DESC',
             ),
             'changeAuthor_search' => array(
-                'asc' => 'changeAuthor.username',
+                'asc'  => 'changeAuthor.username',
                 'desc' => 'changeAuthor.username DESC',
             ),
             '*',
