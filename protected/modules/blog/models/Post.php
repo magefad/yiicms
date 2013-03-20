@@ -141,11 +141,8 @@ class Post extends CActiveRecord
         return array(
             'published' => array(
                 /** @see StatusBehavior::STATUS_PUBLISHED */
-                'condition' => 'status = 1 AND publish_time < ' . (strncasecmp(
-                    'sqlite',
-                    $this->dbConnection->driverName,
-                    6
-                ) === 0) ? new CDbExpression("date('now')") : new CDbExpression('NOW()')
+                'condition' => 'status = 1 AND publish_time < ' . Yii::app(
+                )->db->getDriverName() == 'sqlite' ? new CDbExpression("date('now')") : new CDbExpression('NOW()')
             ),
             'public'    => array(
                 'condition' => 't.access_type = :access_type',
