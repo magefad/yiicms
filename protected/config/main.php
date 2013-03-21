@@ -42,24 +42,22 @@ return array(
         ),
         'widgetFactory' => array(
             'widgets' => array(
-                'TinyMce' => array(
-                    'TbEditableField' => array(
-                        'emptytext' => ' — ',
-                        'options'   => array(
-                            'showbuttons' => false,
-                            'clear'       => '<i class="icon icon-remove"></i>',
-                            'datepicker'  => array(
-                                'weekStart' => 1,
-                                'autoclose' => true
-                            )
-                        ),
-                    ),
-                    'TbDatePicker'    => array(
-                        'options' => array(
-                            'weekStart' => 1,
+                'TbEditableField' => array(
+                    'emptytext' => ' — ',
+                    'options'   => array(
+                        'showbuttons' => false,
+                        'clear' => '<i class="icon icon-remove"></i>',
+                        'datepicker'  => array(
                             'autoclose' => true
                         )
                     ),
+                ),
+                'TbDatePicker' => array(
+                    'options' => array(
+                        'autoclose' => true
+                    )
+                ),
+                'TinyMce' => array(
                     'compressorRoute' => 'tinyMce/compressor',
                     'spellcheckerUrl' => 'http://speller.yandex.net/services/tinyspell?options=15',
                     'fileManager'     => array(
