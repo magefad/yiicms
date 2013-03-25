@@ -1,12 +1,8 @@
 <?php
 /**
- * User: fad
- * Date: 10.07.12
- * Time: 17:30
- */
-/**
  * @property IAuthManager|AuthBehavior $authManager The authorization manager component.
  * @property CAssetManager $assetManager The asset manager component.
+ * @property CFormatter $format provides a set of commonly used data formatting methods.
  * @property CHttpSession $session The session component.
  * @property AuthWebUser $user The user session information.
  * @property IViewRenderer $viewRenderer The view renderer.
@@ -23,5 +19,7 @@
  * @property EAuth $eauth
  * @property YiiMailMessage $mail
  * @property CommandExecutor $executor
+ *
+ * @method getClientScript()
  */
 class CApplication {}
