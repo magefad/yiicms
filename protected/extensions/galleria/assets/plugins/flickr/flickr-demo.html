@@ -23,10 +23,10 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 
         <!-- load Galleria -->
-        <script src="../../galleria-1.2.8.min.js"></script>
+        <script src="../../galleria.js"></script>
 
         <!-- load flickr plugin -->
-        <script src="galleria.flickr.min.js"></script>
+        <script src="galleria.flickr.js"></script>
 
     </head>
 <body>
@@ -39,16 +39,21 @@
         <div id="galleria"></div>
 
         <p class="cred">Made by <a href="http://galleria.aino.se">Galleria</a>.</p>
+        <a href="#" id="close">cloase</a>
     </div>
     <script>
 
     // Load the classic theme
-    Galleria.loadTheme('../../themes/classic/galleria.classic.min.js');
+    Galleria.loadTheme('../../themes/classic/galleria.classic.js');
 
     // Initialize Galleria
     Galleria.run('#galleria', {
-        flickr: 'search:cityscape',
+
+        // search flickr for "galleria"
+        flickr: 'search:galleria',
+        
         flickrOptions: {
+            // sort by interestingness
             sort: 'interestingness-desc'
         }
     });

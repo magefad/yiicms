@@ -1,5 +1,5 @@
 /**
- * Galleria v 1.2.8 2012-08-09
+ * Galleria v 1.3 2013-01-31
  * http://galleria.io
  *
  * Licensed under the MIT license
@@ -7,13 +7,12 @@
  *
  */
 
-(function( $ ) {
+(function( $, Galleria, undef ) {
 
-/*global jQuery, navigator, Galleria:true, Image */
+/*global jQuery, navigator, Image */
 
 // some references
-var undef,
-    window = this,
+var window = this,
     doc    = window.document,
     $doc   = $( doc ),
     $win   = $( window ),
@@ -22,7 +21,7 @@ var undef,
     protoArray = Array.prototype,
 
 // internal constants
-    VERSION = 1.28,
+    VERSION = 1.3,
     DEBUG = true,
     TIMEOUT = 30000,
     DUMMY = false,
@@ -51,6 +50,7 @@ var undef,
             title: doc.title
         };
     },
+    IFRAME = window.parent !== window.self,
 
     // list of Galleria events
     _eventlist = 'data ready thumbnail loadstart loadfinish image play pause progress ' +
@@ -120,13 +120,13 @@ var undef,
             },
             getThumb: function( id, success, fail ) {
                 fail = fail || F;
-                $.getJSON('http://gdata.youtube.com/feeds/api/videos/' + id + '?v=2&alt=json-in-script&callback=?', function(data) {
+                $.getJSON(window.location.protocol+'//gdata.youtube.com/feeds/api/videos/' + id + '?v=2&alt=json-in-script&callback=?', function(data) {
                     try {
                         success( data.entry.media$group.media$thumbnail[0].url );
                     } catch(e) {
                         fail();
                     }
-                }).error(fail);
+                });
             }
         },
         vimeo: {
@@ -142,7 +142,7 @@ var undef,
                     } catch(e) {
                         fail();
                     }
-                }).error(fail);
+                });
             }
         },
         dailymotion: {
@@ -158,7 +158,7 @@ var undef,
                     } catch(e) {
                         fail();
                     }
-                }).error(fail);
+                });
             }
         }
     },
@@ -183,26 +183,26 @@ var undef,
 
         support: (function() {
             var html = DOM().html;
-            return html.requestFullscreen || html.mozRequestFullScreen || html.webkitRequestFullScreen;
+            return !IFRAME && ( html.requestFullscreen || html.mozRequestFullScreen || html.webkitRequestFullScreen );
         }()),
 
         callback: F,
 
-        enter: function( instance, callback ) {
+        enter: function( instance, callback, elem ) {
 
             this.instance = instance;
 
             this.callback = callback || F;
 
-            var html = DOM().html;
-            if ( html.requestFullscreen ) {
-                html.requestFullscreen();
+            elem = elem || DOM().html;
+            if ( elem.requestFullscreen ) {
+                elem.requestFullscreen();
             }
-            else if ( html.mozRequestFullScreen ) {
-                html.mozRequestFullScreen();
+            else if ( elem.mozRequestFullScreen ) {
+                elem.mozRequestFullScreen();
             }
-            else if ( html.webkitRequestFullScreen ) {
-                html.webkitRequestFullScreen();
+            else if ( elem.webkitRequestFullScreen ) {
+                elem.webkitRequestFullScreen();
             }
         },
 
@@ -265,6 +265,7 @@ var undef,
 
     // themeLoad trigger
     _themeLoad = function( theme ) {
+
         Galleria.theme = theme;
 
         // run the instances we have in the pool
@@ -273,6 +274,8 @@ var undef,
                 instance._init.call( instance );
             }
         });
+
+        _pool = [];
     },
 
     // the Utils singleton
@@ -303,6 +306,16 @@ var undef,
                 var elem = doc.createElement( nodeName );
                 elem.className = className;
                 return elem;
+            },
+
+            removeFromArray : function( arr, elem ) {
+                $.each(arr, function(i, el) {
+                    if ( el == elem ) {
+                        arr.splice(i, 1);
+                        return false;
+                    }
+                });
+                return arr;
             },
 
             getScriptPath : function( src ) {
@@ -503,6 +516,9 @@ var undef,
             }()),
 
             removeAlpha : function( elem ) {
+                if ( elem instanceof jQuery ) {
+                    elem = elem[0];
+                }
                 if ( IE < 9 && elem ) {
 
                     var style = elem.style,
@@ -548,28 +564,12 @@ var undef,
                 Utils.revertStyles.apply( Utils, Utils.array( arguments ) );
             },
 
-            elem : function( elem ) {
-                if (elem instanceof $) {
-                    return {
-                        $: elem,
-                        dom: elem[0]
-                    };
-                } else {
-                    return {
-                        $: $(elem),
-                        dom: elem
-                    };
-                }
-            },
-
             hide : function( elem, speed, callback ) {
 
                 callback = callback || F;
 
-                var el = Utils.elem( elem ),
-                    $elem = el.$;
-
-                elem = el.dom;
+                var $elem = $(elem);
+                elem = $elem[0];
 
                 // save the value if not exist
                 if (! $elem.data('opacity') ) {
@@ -606,10 +606,8 @@ var undef,
 
                 callback = callback || F;
 
-                var el = Utils.elem( elem ),
-                    $elem = el.$;
-
-                elem = el.dom;
+                var $elem = $(elem);
+                elem = $elem[0];
 
                 // bring back saved opacity
                 var saved = parseFloat( $elem.data('opacity') ) || 1,
@@ -644,76 +642,6 @@ var undef,
                     }
                 }
             },
-
-
-            // enhanced click for mobile devices
-            // we bind a touchend and hijack any click event in the bubble
-            // then we execute the click directly and save it in a separate data object for later
-            optimizeTouch: (function() {
-
-                var node,
-                    evs,
-                    fakes,
-                    travel,
-                    evt = {},
-                    handler = function( e ) {
-                        e.preventDefault();
-                        evt = $.extend({}, e, true);
-                    },
-                    attach = function() {
-                        this.evt = evt;
-                    },
-                    fake = function() {
-                        this.handler.call(node, this.evt);
-                    };
-
-                return function( elem ) {
-
-                    $(elem).bind('touchend', function( e ) {
-
-                        node = e.target;
-                        travel = true;
-
-                        while( node.parentNode && node != e.currentTarget && travel ) {
-
-                            evs =   $(node).data('events');
-                            fakes = $(node).data('fakes');
-
-                            if (evs && 'click' in evs) {
-
-                                travel = false;
-                                e.preventDefault();
-
-                                // fake the click and save the event object
-                                $(node).click(handler).click();
-
-                                // remove the faked click
-                                evs.click.pop();
-
-                                // attach the faked event
-                                $.each( evs.click, attach);
-
-                                // save the faked clicks in a new data object
-                                $(node).data('fakes', evs.click);
-
-                                // remove all clicks
-                                delete evs.click;
-
-                            } else if ( fakes ) {
-
-                                travel = false;
-                                e.preventDefault();
-
-                                // fake all clicks
-                                $.each( fakes, fake );
-                            }
-
-                            // bubble
-                            node = node.parentNode;
-                        }
-                    });
-                };
-            }()),
 
             wait : function(options) {
                 options = $.extend({
@@ -757,8 +685,17 @@ var undef,
                 img.style.msInterpolationMode = force ? 'bicubic' : 'nearest-neighbor';
             },
 
-            insertStyleTag : function( styles ) {
+            insertStyleTag : function( styles, id ) {
+
+                if ( id && $( '#'+id ).length ) {
+                    return;
+                }
+
                 var style = doc.createElement( 'style' );
+                if ( id ) {
+                    style.id = id;
+                }
+
                 DOM().head.appendChild( style );
 
                 if ( style.styleSheet ) { // IE
@@ -863,13 +800,9 @@ var undef,
                         DOM().head.appendChild( link );
                     }
 
-                    if ( IE ) {
-
-                        // IE has a limit of 31 stylesheets in one document
-                        if( length >= 31 ) {
-                            Galleria.raise( 'You have reached the browser stylesheet limit (31)', true );
-                            return;
-                        }
+                    if ( IE && length >= 31 ) {
+                        Galleria.raise( 'You have reached the browser stylesheet limit (31)', true );
+                        return;
                     }
                 }
 
@@ -890,10 +823,11 @@ var undef,
                             $loader.remove();
 
                             // If failed, tell the dev to download the latest theme
-                            Galleria.raise( 'Theme CSS could not load after 20 sec. Please download the latest theme at http://galleria.io/customer/', true );
-
+                            Galleria.raise( 'Theme CSS could not load after 20 sec. ' + ( Galleria.QUIRK ?
+                                'Your browser is in Quirks Mode, please add a correct doctype.' :
+                                'Please download the latest theme at http://galleria.io/customer/.' ), true );
                         },
-                        timeout: 20000
+                        timeout: 5000
                     });
                 }
                 return link;
@@ -976,7 +910,7 @@ var undef,
                     $(params.next).css({
                         opacity: 0,
                         left: 0
-                    }).show();
+                    });
                     Utils.animate(params.next, {
                         opacity: 1
                     },{
@@ -1069,7 +1003,7 @@ _nativeFullscreen.listen();
 
 */
 
-Galleria = function() {
+Galleria = window.Galleria = function() {
 
     var self = this;
 
@@ -1201,12 +1135,14 @@ Galleria = function() {
         },
 
         getActive : function() {
-            return controls[ controls.active ];
+            return self._options.swipe ? controls.slides[ self._active ] : controls[ controls.active ];
         },
 
         getNext : function() {
-            return controls[ 1 - controls.active ];
-        }
+            return self._options.swipe ? controls.slides[ self.getNext( self._active ) ] : controls[ 1 - controls.active ];
+        },
+
+        slides : []
     };
 
     // internal carousel object
@@ -1385,7 +1321,7 @@ Galleria = function() {
             var css = '.galleria-tooltip{padding:3px 8px;max-width:50%;background:#ffe;color:#000;z-index:3;position:absolute;font-size:11px;line-height:1.3;' +
                       'opacity:0;box-shadow:0 0 2px rgba(0,0,0,.4);-moz-box-shadow:0 0 2px rgba(0,0,0,.4);-webkit-box-shadow:0 0 2px rgba(0,0,0,.4);}';
 
-            Utils.insertStyleTag(css);
+            Utils.insertStyleTag( css, 'galleria-tooltip' );
 
             self.$( 'tooltip' ).css({
                 opacity: 0.8,
@@ -1406,13 +1342,13 @@ Galleria = function() {
                 width = $elem.outerWidth( true ),
                 limitY = height + 15;
 
-            var maxX = self.$( 'container').width() - width - 2,
-                maxY = self.$( 'container').height() - height - 2;
+            var maxX = self.$( 'container' ).width() - width - 2,
+                maxY = self.$( 'container' ).height() - height - 2;
 
             if ( !isNaN(x) && !isNaN(y) ) {
 
                 x += 10;
-                y -= 30;
+                y -= ( height+8 );
 
                 x = Math.max( 0, Math.min( maxX, x ) );
                 y = Math.max( 0, Math.min( maxY, y ) );
@@ -1510,7 +1446,7 @@ Galleria = function() {
                 return;
             }
 
-            self.$( 'tooltip' ).html( text.replace(/\s/, '&nbsp;') );
+            self.$( 'tooltip' ).html( text.replace(/\s/, '&#160;') );
 
             // trigger mousemove on mouseup in case of click
             elem.bind( 'mouseup', mouseup );
@@ -1540,9 +1476,12 @@ Galleria = function() {
 
         crop: undef,
 
-        transition: undef,
-
         active: false,
+
+        prev: $(),
+
+        beforeEnter: function(fn){ fn(); },
+        beforeExit:  function(fn){ fn(); },
 
         keymap: self._keyboard.map,
 
@@ -1550,7 +1489,7 @@ Galleria = function() {
 
             return _transitions.active ? function() {
                 if ( typeof callback == 'function' ) {
-                    callback();
+                    callback.call(self);
                 }
                 var active = self._controls.getActive(),
                     next = self._controls.getNext();
@@ -1569,49 +1508,152 @@ Galleria = function() {
 
         enter: function( callback ) {
 
-            callback = fullscreen.parseCallback( callback, true );
+            fullscreen.beforeEnter(function() {
 
-            if ( self._options.trueFullscreen && _nativeFullscreen.support ) {
-                _nativeFullscreen.enter( self, callback );
-            } else {
-                fullscreen._enter( callback );
-            }
+                callback = fullscreen.parseCallback( callback, true );
+
+                if ( self._options.trueFullscreen && _nativeFullscreen.support ) {
+
+                    // do some stuff prior animation for wmoother transitions
+
+                    fullscreen.active = true;
+
+                    Utils.forceStyles( self.get('container'), {
+                        width: '100%',
+                        height: '100%'
+                    });
+
+                    self.rescale();
+
+                    if ( Galleria.MAC ) {
+                        if ( Galleria.WEBKIT && !( Galleria.SAFARI && /version\/[1-5]/.test(NAV)) ) {
+                            self.$('container').css('opacity', 0).addClass('fullscreen');
+                            window.setTimeout(function() {
+                                fullscreen.scale();
+                                self.$('container').css('opacity', 1);
+                            }, 50);
+                        } else {
+                            self.$('stage').css('opacity', 0);
+                            window.setTimeout(function() {
+                                fullscreen.scale();
+                                self.$('stage').css('opacity', 1);
+                            },4);
+                        }
+                    } else {
+                        self.$('container').addClass('fullscreen');
+                    }
+
+                    $win.resize( fullscreen.scale );
+
+                    _nativeFullscreen.enter( self, callback, self.get('container') );
+
+                } else {
+
+                    fullscreen.scrolled = $win.scrollTop();
+                    if( !Galleria.TOUCH ) {
+                        window.scrollTo(0, 0);
+                    }
+
+                    fullscreen._enter( callback );
+                }
+            });
+
         },
 
         _enter: function( callback ) {
 
             fullscreen.active = true;
 
+            if ( IFRAME ) {
+
+                fullscreen.iframe = (function() {
+
+                    var elem,
+                        refer = doc.referrer,
+                        test = doc.createElement('a'),
+                        loc = window.location;
+
+                    test.href = refer;
+
+                    if( test.protocol != loc.protocol ||
+                        test.hostname != loc.hostname ||
+                        test.port != loc.port ) {
+                            Galleria.raise('Parent fullscreen not available. Iframe protocol, domains and ports must match.');
+                            return false;
+                        }
+
+                    fullscreen.pd = window.parent.document;
+
+                    $( fullscreen.pd ).find('iframe').each(function() {
+                        var idoc = this.contentDocument || this.contentWindow.document;
+                        if ( idoc === doc ) {
+                            elem = this;
+                            return false;
+                        }
+                    });
+
+                    return elem;
+                }());
+
+            }
+
             // hide the image until rescale is complete
             Utils.hide( self.getActiveImage() );
 
-            self.$( 'container' ).addClass( 'fullscreen' );
+            if ( IFRAME && fullscreen.iframe ) {
+                fullscreen.iframe.scrolled = $( window.parent ).scrollTop();
+                window.parent.scrollTo(0, 0);
+            }
 
-            fullscreen.scrolled = $win.scrollTop();
-
-            // begin styleforce
-            Utils.forceStyles(self.get('container'), {
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                zIndex: 10000
-            });
-
-            var htmlbody = {
+            var data = self.getData(),
+                options = self._options,
+                inBrowser = !self._options.trueFullscreen || !_nativeFullscreen.support,
+                htmlbody = {
                     height: '100%',
                     overflow: 'hidden',
                     margin:0,
                     padding:0
-                },
+                };
 
-                data = self.getData(),
+            if (inBrowser) {
 
-                options = self._options;
+                self.$('container').addClass('fullscreen');
+                fullscreen.prev = self.$('container').prev();
 
-            Utils.forceStyles( DOM().html, htmlbody );
-            Utils.forceStyles( DOM().body, htmlbody );
+                if ( !fullscreen.prev.length ) {
+                    fullscreen.parent = self.$( 'container' ).parent();
+                }
+
+                // move
+                self.$('container').appendTo('body');
+
+                // begin styleforce
+
+                Utils.forceStyles(self.get('container'), {
+                    position: Galleria.TOUCH ? 'absolute' : 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 10000
+                });
+                Utils.forceStyles( DOM().html, htmlbody );
+                Utils.forceStyles( DOM().body, htmlbody );
+            }
+
+            if ( IFRAME && fullscreen.iframe ) {
+                Utils.forceStyles( fullscreen.pd.documentElement, htmlbody );
+                Utils.forceStyles( fullscreen.pd.body, htmlbody );
+                Utils.forceStyles( fullscreen.iframe, $.extend( htmlbody, {
+                    width: '100%',
+                    height: '100%',
+                    top: 0,
+                    left: 0,
+                    position: 'fixed',
+                    zIndex: 10000,
+                    border: 'none'
+                }));
+            }
 
             // temporarily attach some keys
             // save the old ones first in a cloned object
@@ -1671,11 +1713,14 @@ Galleria = function() {
             }
 
             // init the first rescale and attach callbacks
+
             self.rescale(function() {
 
                 self.addTimer(false, function() {
                     // show the image after 50 ms
-                    Utils.show( self.getActiveImage() );
+                    if ( inBrowser ) {
+                        Utils.show( self.getActiveImage() );
+                    }
 
                     if (typeof callback === 'function') {
                         callback.call( self );
@@ -1686,10 +1731,12 @@ Galleria = function() {
                 self.trigger( Galleria.FULLSCREEN_ENTER );
             });
 
-            // bind the scaling to the resize event
-            $win.resize( function() {
-                fullscreen.scale();
-            } );
+            if ( !inBrowser ) {
+                Utils.show( self.getActiveImage() );
+            } else {
+                $win.resize( fullscreen.scale );
+            }
+
         },
 
         scale : function() {
@@ -1698,28 +1745,50 @@ Galleria = function() {
 
         exit: function( callback ) {
 
-            callback = fullscreen.parseCallback( callback );
+            fullscreen.beforeExit(function() {
 
-            if ( self._options.trueFullscreen && _nativeFullscreen.support ) {
-                _nativeFullscreen.exit( callback );
-            } else {
-                fullscreen._exit( callback );
-            }
+                callback = fullscreen.parseCallback( callback );
+
+                if ( self._options.trueFullscreen && _nativeFullscreen.support ) {
+                    _nativeFullscreen.exit( callback );
+                } else {
+                    fullscreen._exit( callback );
+                }
+            });
         },
 
         _exit: function( callback ) {
 
             fullscreen.active = false;
 
-            Utils.hide( self.getActiveImage() );
+            var inBrowser = !self._options.trueFullscreen || !_nativeFullscreen.support,
+                $container = self.$( 'container' ).removeClass( 'fullscreen' );
 
-            self.$('container').removeClass( 'fullscreen' );
+            // move back
+            if ( fullscreen.parent ) {
+                fullscreen.parent.prepend( $container );
+            } else {
+                $container.insertAfter( fullscreen.prev );
+            }
 
-            // revert all styles
-            Utils.revertStyles( self.get('container'), DOM().html, DOM().body );
+            if ( inBrowser ) {
+                Utils.hide( self.getActiveImage() );
 
-            // scroll back
-            window.scrollTo(0, fullscreen.scrolled);
+                // revert all styles
+                Utils.revertStyles( self.get('container'), DOM().html, DOM().body );
+
+                // scroll back
+                if( !Galleria.TOUCH ) {
+                    window.scrollTo(0, fullscreen.scrolled);
+                }
+            }
+
+            if ( IFRAME && fullscreen.iframe ) {
+                Utils.revertStyles( fullscreen.pd.documentElement, fullscreen.pd.body, fullscreen.iframe );
+                if ( fullscreen.iframe.scrolled ) {
+                    window.parent.scrollTo(0, fullscreen.iframe.scrolled );
+                }
+            }
 
             // detach all keyboard events and apply the old keymap
             self.detachKeyboard();
@@ -1727,7 +1796,6 @@ Galleria = function() {
 
             // bring back cached options
             self._options.imageCrop = fullscreen.crop;
-            //self._options.transition = fullscreen.transition;
 
             // return to original image
             var big = self.getData().big,
@@ -1747,7 +1815,9 @@ Galleria = function() {
                 self.addTimer(false, function() {
 
                     // show the image after 50 ms
-                    Utils.show( self.getActiveImage() );
+                    if ( inBrowser ) {
+                        Utils.show( self.getActiveImage() );
+                    }
 
                     if ( typeof callback === 'function' ) {
                         callback.call( self );
@@ -1758,7 +1828,6 @@ Galleria = function() {
                 }, 50);
                 self.trigger( Galleria.FULLSCREEN_EXIT );
             });
-
 
             $win.unbind('resize', fullscreen.scale);
         }
@@ -1995,7 +2064,7 @@ Galleria = function() {
                    '.galleria-'+prefix+'box.iframe .galleria-'+prefix+'nextholder{'+
                    'width:100px;height:100px;top:50%;margin-top:-70px}';
 
-            Utils.insertStyleTag( css );
+            Utils.insertStyleTag( css, 'galleria-lightbox' );
 
             // create the elements
             $.each(elems.split(' '), function( i, elemId ) {
@@ -2027,15 +2096,13 @@ Galleria = function() {
 
             $( DOM().body ).append( el.overlay, el.box );
 
-            Utils.optimizeTouch( el.box );
-
             // add the prev/next nav and bind some controls
 
             hover( $( el.close ).bind( 'click', lightbox.hide ).html('&#215;') );
 
             $.each( ['Prev','Next'], function(i, dir) {
 
-                var $d = $( el[ dir.toLowerCase() ] ).html( /v/.test( dir ) ? '&#8249;&nbsp;' : '&nbsp;&#8250;' ),
+                var $d = $( el[ dir.toLowerCase() ] ).html( /v/.test( dir ) ? '&#8249;&#160;' : '&#160;&#8250;' ),
                     $e = $( el[ dir.toLowerCase()+'holder'] );
 
                 $e.bind( 'click', function() {
@@ -2179,8 +2246,25 @@ Galleria = function() {
 
             lightbox.image.load( data.iframe || data.big || data.image, function( image ) {
 
-                lightbox.width = image.isIframe ? $(window).width() : image.original.width;
-                lightbox.height = image.isIframe ? $(window).height() : image.original.height;
+                if ( image.isIframe ) {
+
+                    var cw = $(window).width(),
+                        ch = $(window).height();
+
+                    if ( self._options.maxVideoSize ) {
+                        var r = Math.min( self._options.maxVideoSize/cw, self._options.maxVideoSize/ch );
+                        if ( r < 1 ) {
+                            cw *= r;
+                            ch *= r;
+                        }
+                    }
+                    lightbox.width = cw;
+                    lightbox.height = ch;
+
+                } else {
+                    lightbox.width = image.original.width;
+                    lightbox.height = image.original.height;
+                }
 
                 $( image.image ).css({
                     width: image.isIframe ? '100%' : '100.1%',
@@ -2266,8 +2350,6 @@ Galleria.prototype = {
 
     init: function( target, options ) {
 
-        var self = this;
-
         options = _legacyOptions( options );
 
         // save the original ingredients
@@ -2336,7 +2418,8 @@ Galleria.prototype = {
             lightboxTransitionSpeed: 200,
             linkSourceImages: true,
             maxScaleRatio: undef,
-            minScaleRatio: undef,
+            maxVideoSize: undef, // 1.2.9
+            minScaleRatio: undef, // deprecated in 1.2.9
             overlayOpacity: 0.85,
             overlayBackground: '#0b0b0b',
             pauseOnInteraction: true,
@@ -2348,7 +2431,7 @@ Galleria.prototype = {
             showInfo: true,
             showCounter: true,
             showImagenav: true,
-            swipe: true, // 1.2.4
+            swipe: true, // 1.2.4 -> revised in 1.3
             thumbCrop: true,
             thumbEventType: 'click',
             thumbFit: true, // legacy, deprecate at 1.3
@@ -2398,8 +2481,18 @@ Galleria.prototype = {
             DUMMY = options.dummy;
         }
 
+        // disable swipe if no touch
+        if ( !Galleria.TOUCH ) {
+           this._options.swipe = false;
+        }
+
         // hide all content
         $( this._target ).children().hide();
+
+        // Warn for quirks mode
+        if ( Galleria.QUIRK ) {
+            Galleria.raise('Your page is in Quirks mode, Galleria may not render correctly. Please validate your HTML and add a correct doctype.');
+        }
 
         // now we just have to wait for the theme...
         if ( typeof Galleria.theme === 'object' ) {
@@ -2435,6 +2528,12 @@ Galleria.prototype = {
         // merge the theme & caller options
         $.extend( true, options, Galleria.theme.defaults, this._original.options, Galleria.configure.options );
 
+        // disable options that arent compatible with swipe
+        if ( options.swipe ) {
+            options.clicknext = false;
+            options.imagePan = false;
+        }
+
         // check for canvas support
         (function( can ) {
 
@@ -2452,12 +2551,24 @@ Galleria.prototype = {
 
         }( doc.createElement( 'canvas' ) ) );
 
+
+        Galleria.Fastclick.init( this.get('target' ));
+
         // bind the gallery to run when data is ready
         this.bind( Galleria.DATA, function() {
 
-            // Warn for quirks mode
-            if ( Galleria.QUIRK ) {
-                Galleria.raise('Your page is in Quirks mode, Galleria may not render correctly. Please validate your HTML.');
+            // remove big if total pixels are less than 1024 (most phones)
+            if ( window.screen && window.screen.width && Array.prototype.forEach ) {
+
+                this._data.forEach(function(data) {
+
+                    var density = 'devicePixelRatio' in window ? window.devicePixelRatio : 1,
+                        m = Math.max( window.screen.width, window.screen.height );
+
+                    if ( m*density < 1024 ) {
+                        data.big = data.image;
+                    }
+                });
             }
 
             // save the new data
@@ -2471,7 +2582,7 @@ Galleria.prototype = {
 
             // set ratio if height is < 2
             if ( self._options.height < 2 ) {
-                self._ratio = self._options.height;
+                self._userRatio = self._ratio = self._options.height;
             }
 
             // the gallery is ready, let's just wait for the css
@@ -2551,29 +2662,31 @@ Galleria.prototype = {
         this.$( 'container' ).addClass( Galleria.TOUCH ? 'touch' : 'notouch' );
 
         // add images to the controls
-        $.each( new Array(2), function( i ) {
+        if ( !this._options.swipe ) {
+            $.each( new Array(2), function( i ) {
 
-            // create a new Picture instance
-            var image = new Galleria.Picture();
+                // create a new Picture instance
+                var image = new Galleria.Picture();
 
-            // apply some styles, create & prepend overlay
-            $( image.container ).css({
-                position: 'absolute',
-                top: 0,
-                left: 0
-            }).prepend( self._layers[i] = $( Utils.create('galleria-layer') ).css({
-                position: 'absolute',
-                top:0, left:0, right:0, bottom:0,
-                zIndex:2
-            })[0] );
+                // apply some styles, create & prepend overlay
+                $( image.container ).css({
+                    position: 'absolute',
+                    top: 0,
+                    left: 0
+                }).prepend( self._layers[i] = $( Utils.create('galleria-layer') ).css({
+                    position: 'absolute',
+                    top:0, left:0, right:0, bottom:0,
+                    zIndex:2
+                })[0] );
 
-            // append the image
-            self.$( 'images' ).append( image.container );
+                // append the image
+                self.$( 'images' ).append( image.container );
 
-            // reload the controls
-            self._controls[i] = image;
+                // reload the controls
+                self._controls[i] = image;
 
-        });
+            });
+        }
 
         // some forced generic styling
         this.$( 'images' ).css({
@@ -2583,6 +2696,70 @@ Galleria.prototype = {
             width: '100%',
             height: '100%'
         });
+
+        if ( options.swipe ) {
+            this.$( 'images' ).css({
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: 0,
+                height: '100%'
+            });
+            this.finger = new Galleria.Finger(this.get('stage'), {
+                onchange: function(page) {
+                    self.setCounter( page );
+                    self.pause();
+                    self.show(page);
+                },
+                oncomplete: function(page) {
+
+                    var index = Math.max( 0, Math.min( parseInt( page, 10 ), self.getDataLength() - 1 ) ),
+                        data = self.getData(index);
+
+                    if ( !data ) {
+                       return;
+                    }
+
+                    var src = data.iframe || ( self.isFullscreen() && 'big' in data ? data.big : data.image ),
+                        image = self._controls.slides[index],
+                        cached = image.isCached( src ),
+                        thumb = self._thumbnails[ index ];
+
+                    self.trigger({
+                        type: Galleria.IMAGE,
+                        cached: cached,
+                        index: index,
+                        imageTarget: image.image,
+                        thumbTarget: thumb.image,
+                        galleriaData: data
+                    });
+
+                    if ( self._options.carousel && self._options.carouselFollow ) {
+                        self._carousel.follow( index );
+                    }
+                }
+            });
+            this.bind( Galleria.RESCALE, function() {
+                this.finger.setup();
+            });
+            this.bind( Galleria.IMAGE, function(e) {
+
+                self.setCounter( e.index );
+                self.setInfo( e.index );
+
+                $.each([this.getNext(), this.getPrev()], function(i, loadme) {
+                    var d = self.getData(loadme),
+                        img = self._controls.slides[loadme],
+                        src = d.iframe || ( self.isFullscreen() && 'big' in d ? d.big : d.image );
+
+                    if ( !img.ready ) {
+                        self._controls.slides[loadme].load(src, function(img) {
+                            self._scaleImage(img);
+                        });
+                    }
+                });
+            });
+        }
 
         this.$( 'thumbnails, thumbnails-list' ).css({
             overflow: 'hidden',
@@ -2653,109 +2830,36 @@ Galleria.prototype = {
             });
         }
 
-        // bind swipe gesture
-        if ( options.swipe ) {
+        // double-tap/click fullscreen toggle
 
-            (function( images ) {
+        if ( options.fullscreenDoubleTap ) {
 
-                var swipeStart = [0,0],
-                    swipeStop = [0,0],
-                    limitX = 30,
-                    limitY = 100,
-                    multi = false,
-                    tid = 0,
-                    data,
-                    ev = {
-                        start: 'touchstart',
-                        move: 'touchmove',
-                        stop: 'touchend'
-                    },
+            this.$( 'stage' ).bind( 'touchstart', (function() {
+                var last, cx, cy, lx, ly, now,
                     getData = function(e) {
                         return e.originalEvent.touches ? e.originalEvent.touches[0] : e;
-                    },
-                    moveHandler = function( e ) {
-
-                        if ( e.originalEvent.touches && e.originalEvent.touches.length > 1 ) {
-                            return;
-                        }
-
-                        data = getData( e );
-                        swipeStop = [ data.pageX, data.pageY ];
-
-                        if ( !swipeStart[0] ) {
-                            swipeStart = swipeStop;
-                        }
-
-                        if ( Math.abs( swipeStart[0] - swipeStop[0] ) > 10 ) {
-                            e.preventDefault();
-                        }
-                    },
-                    upHandler = function( e ) {
-
-                        images.unbind( ev.move, moveHandler );
-
-                        // if multitouch (possibly zooming), abort
-                        if ( ( e.originalEvent.touches && e.originalEvent.touches.length ) || multi ) {
-                            multi = !multi;
-                            return;
-                        }
-
-                        if ( Utils.timestamp() - tid < 1000 &&
-                             Math.abs( swipeStart[0] - swipeStop[0] ) > limitX &&
-                             Math.abs( swipeStart[1] - swipeStop[1] ) < limitY ) {
-
-                            e.preventDefault();
-                            self[ swipeStart[0] > swipeStop[0] ? 'next' : 'prev' ]();
-                        }
-
-                        swipeStart = swipeStop = [0,0];
                     };
-
-                images.bind(ev.start, function(e) {
-
-                    if ( e.originalEvent.touches && e.originalEvent.touches.length > 1 ) {
+                self.$( 'stage' ).bind('touchmove', function() {
+                    last = 0;
+                });
+                return function(e) {
+                    if( /(-left|-right)/.test(e.target.className) ) {
                         return;
                     }
-
-                    data = getData(e);
-                    tid = Utils.timestamp();
-                    swipeStart = swipeStop = [ data.pageX, data.pageY ];
-                    images.bind(ev.move, moveHandler ).one(ev.stop, upHandler);
-
-                });
-
-            }( self.$( 'images' ) ));
-
-            // double-tap/click fullscreen toggle
-
-            if ( options.fullscreenDoubleTap ) {
-
-                this.$( 'stage' ).bind( 'touchstart', (function() {
-                    var last, cx, cy, lx, ly, now,
-                        getData = function(e) {
-                            return e.originalEvent.touches ? e.originalEvent.touches[0] : e;
-                        };
-                    return function(e) {
-                        now = Galleria.utils.timestamp();
-                        cx = getData(e).pageX;
-                        cy = getData(e).pageY;
-                        if ( ( now - last < 500 ) && ( cx - lx < 20) && ( cy - ly < 20) ) {
-                            self.toggleFullscreen();
-                            e.preventDefault();
-                            self.$( 'stage' ).unbind( 'touchend', arguments.callee );
-                            return;
-                        }
-                        last = now;
-                        lx = cx;
-                        ly = cy;
-                    };
-                }()));
-            }
-
+                    now = Utils.timestamp();
+                    cx = getData(e).pageX;
+                    cy = getData(e).pageY;
+                    if ( e.originalEvent.touches.length < 2 && ( now - last < 300 ) && ( cx - lx < 20) && ( cy - ly < 20) ) {
+                        self.toggleFullscreen();
+                        e.preventDefault();
+                        return;
+                    }
+                    last = now;
+                    lx = cx;
+                    ly = cy;
+                };
+            }()));
         }
-
-        // optimize touch for container
-        Utils.optimizeTouch( this.get( 'container' ) );
 
         // bind the ons
         $.each( Galleria.on.binds, function(i, bind) {
@@ -2818,8 +2922,8 @@ Galleria.prototype = {
         // allow setting a height ratio instead of exact value
         // useful when doing responsive galleries
 
-        if ( self._ratio ) {
-            num.height = num.width * self._ratio;
+        if ( self._userRatio ) {
+            num.height = num.width * self._userRatio;
         }
 
         return num;
@@ -3140,9 +3244,6 @@ Galleria.prototype = {
 
         var arr = index.constructor == Array ? index : [ index ],
             self = this,
-            thumbnails = this.$( 'thumbnails' ).children().filter(function() {
-                return $(this).data('lazy-src');
-            }),
             loaded = 0;
 
         $.each( arr, function(i, ind) {
@@ -3153,7 +3254,6 @@ Galleria.prototype = {
 
             var thumb = self._thumbnails[ ind ],
                 data = thumb.data,
-                special = data.src.split(':'),
                 callback = function() {
                     if ( ++loaded == arr.length && typeof complete == 'function' ) {
                         complete.call( self );
@@ -3254,6 +3354,30 @@ Galleria.prototype = {
                 _galleries.push( self );
 
                 // postrun some stuff after the gallery is ready
+
+                // create the touch slider
+                if ( self._options.swipe ) {
+
+                    var $images = self.$( 'images' ).width( self.getDataLength() * self._stageWidth );
+                    $.each( new Array( self.getDataLength() ), function(i) {
+
+                        var image = new Galleria.Picture();
+
+                        $( image.container ).css({
+                            position: 'absolute',
+                            top: 0,
+                            left: self._stageWidth*i
+                        }).prepend( self._layers[i] = $( Utils.create('galleria-layer') ).css({
+                            position: 'absolute',
+                            top:0, left:0, right:0, bottom:0,
+                            zIndex:2
+                        })[0] ).appendTo( $images );
+
+                        self._controls.slides.push(image);
+                    });
+
+                    self.finger.setup();
+                }
 
                 // show counter
                 Utils.show( self.get('counter') );
@@ -3457,8 +3581,6 @@ Galleria.prototype = {
             });
         }
 
-
-
         // trigger the DATA event and return
         if ( this.getDataLength() ) {
             this._parseData().trigger( Galleria.DATA );
@@ -3527,8 +3649,12 @@ Galleria.prototype = {
     */
 
     destroy : function() {
-        this.get('target').innerHTML = this._original.html;
+        this.$( 'target' ).data( 'galleria', null );
+        this.$( 'container' ).unbind( 'galleria' );
+        this.get( 'target' ).innerHTML = this._original.html;
         this.clearTimer();
+        Utils.removeFromArray( _instances, this );
+        Utils.removeFromArray( _galleries, this );
         return this;
     },
 
@@ -3577,7 +3703,7 @@ Galleria.prototype = {
         return self;
     },
 
-    _getActive: function() {
+    _getActive : function() {
         return this._controls.getActive();
     },
 
@@ -3816,7 +3942,8 @@ Galleria.prototype = {
     */
 
     getActiveImage: function() {
-        return this._getActive().image || undef;
+        var active = this._getActive();
+        return active ? active.image : undef;
     },
 
     /**
@@ -4127,9 +4254,7 @@ this.prependChild( 'info', 'myElement' );
             return;
         }
 
-        var self = this,
-
-            complete,
+        var complete,
 
             scaleLayer = function( img ) {
                 $( img.container ).children(':first').css({
@@ -4141,13 +4266,14 @@ this.prependChild( 'info', 'myElement' );
             };
 
         options = $.extend({
-            width:    this._stageWidth,
-            height:   this._stageHeight,
-            crop:     this._options.imageCrop,
-            max:      this._options.maxScaleRatio,
-            min:      this._options.minScaleRatio,
-            margin:   this._options.imageMargin,
-            position: this._options.imagePosition
+            width:       this._stageWidth,
+            height:      this._stageHeight,
+            crop:        this._options.imageCrop,
+            max:         this._options.maxScaleRatio,
+            min:         this._options.minScaleRatio,
+            margin:      this._options.imageMargin,
+            position:    this._options.imagePosition,
+            iframelimit: this._options.maxVideoSize
         }, options );
 
         if ( this._options.layerFollow && this._options.imageCrop !== true ) {
@@ -4244,8 +4370,18 @@ this.prependChild( 'info', 'myElement' );
             self._stageWidth = width || self.$( 'stage' ).width();
             self._stageHeight = height || self.$( 'stage' ).height();
 
-            // scale the active image
-            self._scaleImage();
+            if ( self._options.swipe ) {
+                $.each( self._controls.slides, function(i, img) {
+                    self._scaleImage( img );
+                    $( img.container ).css('left', self._stageWidth * i);
+                });
+                self.$('images').css('width', self._stageWidth * self.getDataLength());
+            } else {
+
+                // scale the active image
+                self._scaleImage();
+
+            }
 
             if ( self._options.carousel ) {
                 self.updateCarousel();
@@ -4289,8 +4425,11 @@ this.prependChild( 'info', 'myElement' );
 
     show : function( index, rewind, _history ) {
 
-        // do nothing if index is false or queue is false and transition is in progress
-        if ( index === false || ( !this._options.queue && this._queue.stalled ) ) {
+        var swipe = this._options.swipe;
+
+        // do nothing queue is long || index is false || queue is false and transition is in progress
+        if ( !swipe &&
+            ( this._queue.length > 3 || index === false || ( !this._options.queue && this._queue.stalled ) ) ) {
             return;
         }
 
@@ -4306,14 +4445,70 @@ this.prependChild( 'info', 'myElement' );
             return;
         }
 
+        if ( swipe && index !== this._active ) {
+            this.finger.to = -( index*this.finger.width );
+            this.finger.index = index;
+        }
+
         this._active = index;
 
-        protoArray.push.call( this._queue, {
-            index : index,
-            rewind : rewind
-        });
-        if ( !this._queue.stalled ) {
-            this._show();
+        // we do things a bit simpler in swipe:
+        if ( swipe ) {
+
+            var data = this.getData(index),
+                self = this;
+            if ( !data ) {
+                return;
+            }
+
+            var src = data.iframe || ( this.isFullscreen() && 'big' in data ? data.big : data.image ),
+                image = this._controls.slides[index],
+                cached = image.isCached( src ),
+                thumb = this._thumbnails[ index ];
+
+            var evObj = {
+                cached: cached,
+                index: index,
+                rewind: rewind,
+                imageTarget: image.image,
+                thumbTarget: thumb.image,
+                galleriaData: data
+            };
+
+            this.trigger($.extend(evObj, {
+                type: Galleria.LOADSTART
+            }));
+
+            var complete = function(image) {
+                self.trigger($.extend(evObj, {
+                    type: Galleria.LOADFINISH
+                }));
+                self._playCheck();
+            };
+
+            // load if not ready
+            if ( !image.ready ) {
+                image.load(src, function(image) {
+                    self._scaleImage(image, complete).trigger($.extend(evObj, {
+                        type: Galleria.IMAGE
+                    }));
+                    complete();
+                });
+            } else {
+                self.trigger($.extend(evObj, {
+                    type: Galleria.LOADFINISH
+                }));
+                complete();
+            }
+
+        } else {
+            protoArray.push.call( this._queue, {
+                index : index,
+                rewind : rewind
+            });
+            if ( !this._queue.stalled ) {
+                this._show();
+            }
         }
 
         return this;
@@ -4348,9 +4543,6 @@ this.prependChild( 'info', 'myElement' );
                 var win;
 
                 _transitions.active = false;
-
-                // remove stalled
-                self._queue.stalled = false;
 
                 // optimize quality
                 Utils.toggleQuality( next.image, self._options.imageQuality );
@@ -4389,7 +4581,12 @@ this.prependChild( 'info', 'myElement' );
 
                     $( next.image ).css({
                         cursor: 'pointer'
-                    }).bind( 'mouseup', function() {
+                    }).bind( 'mouseup', function( e ) {
+
+                        // non-left click
+                        if ( typeof e.which == 'number' && e.which > 1 ) {
+                            return;
+                        }
 
                         // clicknext
                         if ( self._options.clicknext && !Galleria.TOUCH ) {
@@ -4417,14 +4614,6 @@ this.prependChild( 'info', 'myElement' );
                     });
                 }
 
-                // remove the queued image
-                protoArray.shift.call( self._queue );
-
-                // if we still have images in the queue, show it
-                if ( self._queue.length ) {
-                    self._show();
-                }
-
                 // check if we are playing
                 self._playCheck();
 
@@ -4436,6 +4625,18 @@ this.prependChild( 'info', 'myElement' );
                     thumbTarget: thumb.image,
                     galleriaData: data
                 });
+
+                // remove the queued image
+                protoArray.shift.call( self._queue );
+
+                // remove stalled
+                self._queue.stalled = false;
+
+                // if we still have images in the queue, show it
+                if ( self._queue.length ) {
+                    self._show();
+                }
+
             };
         }( data, next, active, queue, thumb ));
 
@@ -4483,6 +4684,9 @@ this.prependChild( 'info', 'myElement' );
             galleriaData: data
         });
 
+        // stall the queue
+        self._queue.stalled = true;
+
         // begin loading the next image
         next.load( src, function( next ) {
 
@@ -4498,9 +4702,6 @@ this.prependChild( 'info', 'myElement' );
                         Utils.toggleQuality( active.image, false );
                     }
                     Utils.toggleQuality( next.image, false );
-
-                    // stall the queue
-                    self._queue.stalled = true;
 
                     // remove the image panning, if applied
                     // TODO: rethink if this is necessary
@@ -4518,17 +4719,6 @@ this.prependChild( 'info', 'myElement' );
                             layer.css( 'cursor', 'pointer' ).unbind( 'mouseup' ).mouseup( mousetrigger );
                         }
                     }
-
-                    // trigger the LOADFINISH event
-                    self.trigger({
-                        type: Galleria.LOADFINISH,
-                        cached: cached,
-                        index: queue.index,
-                        rewind: queue.rewind,
-                        imageTarget: next.image,
-                        thumbTarget: self._thumbnails[ queue.index ].image,
-                        galleriaData: self.getData( queue.index )
-                    });
 
                     var transition = self._options.transition;
 
@@ -4561,6 +4751,19 @@ this.prependChild( 'info', 'myElement' );
                         _transitions.init.call( self, transition, params, complete );
 
                     }
+
+                    // trigger the LOADFINISH event
+                    self.trigger({
+                        type: Galleria.LOADFINISH,
+                        cached: cached,
+                        index: queue.index,
+                        rewind: queue.rewind,
+                        imageTarget: next.image,
+                        thumbTarget: self._thumbnails[ queue.index ].image,
+                        galleriaData: self.getData( queue.index )
+                    });
+
+
                 }
             });
         });
@@ -5097,57 +5300,57 @@ Galleria.addTheme = function( theme ) {
 
 Galleria.loadTheme = function( src, options ) {
 
+    // Don't load if theme is already loaded
+    if( $('script').filter(function() { return $(this).attr('src') == src; }).length ) {
+        return;
+    }
+
     var loaded = false,
-        length = _galleries.length,
-        err = window.setTimeout( function() {
-            Galleria.raise( "Theme at " + src + " could not load, check theme path.", true );
-        }, 5000 );
+        err;
+
+    // start listening for the timeout onload
+    $( window ).load( function() {
+        if ( !loaded ) {
+            // give it another 20 seconds
+            err = window.setTimeout(function() {
+                if ( !loaded && !Galleria.theme ) {
+                    Galleria.raise( "Galleria had problems loading theme at " + src + ". Please check theme path or load manually.", true );
+                }
+            }, 20000);
+        }
+    });
 
     // first clear the current theme, if exists
-    Galleria.theme = undef;
+    Galleria.unloadTheme();
 
     // load the theme
     Utils.loadScript( src, function() {
-
+        loaded = true;
         window.clearTimeout( err );
-
-        // check for existing galleries and reload them with the new theme
-        if ( length ) {
-
-            // temporary save the new galleries
-            var refreshed = [];
-
-            // refresh all instances
-            // when adding a new theme to an existing gallery, all options will be resetted but the data will be kept
-            // you can apply new options as a second argument
-            $.each( Galleria.get(), function(i, instance) {
-
-                // mix the old data and options into the new instance
-                var op = $.extend( instance._original.options, {
-                    data_source: instance._data
-                }, options);
-
-                // remove the old container
-                instance.$('container').remove();
-
-                // create a new instance
-                var g = new Galleria();
-
-                // move the id
-                g._id = instance._id;
-
-                // initialize the new instance
-                g.init( instance._original.target, op );
-
-                // push the new instance
-                refreshed.push( g );
-            });
-
-            // now overwrite the old holder with the new instances
-            _galleries = refreshed;
-        }
-
     });
+
+    return Galleria;
+};
+
+/**
+    unloadTheme unloads the Galleria theme and prepares for a new theme
+
+    @returns Galleria
+*/
+
+Galleria.unloadTheme = function() {
+
+    if ( typeof Galleria.theme == 'object' ) {
+
+        $('script').each(function( i, script ) {
+
+            if( new RegExp( 'galleria\\.' + Galleria.theme.name + '\\.' ).test( script.src ) ) {
+                $( script ).remove();
+            }
+        });
+
+        Galleria.theme = undef;
+    }
 
     return Galleria;
 };
@@ -5260,6 +5463,9 @@ Galleria.on.binds = [];
 */
 
 Galleria.run = function( selector, options ) {
+    if ( $.isFunction( options ) ) {
+        options = { extend: options };
+    }
     $( selector || '#galleria' ).galleria( options );
     return Galleria;
 };
@@ -5344,8 +5550,6 @@ Galleria.raise = function( msg, fatal ) {
 
     var type = fatal ? 'Fatal error' : 'Error',
 
-        self = this,
-
         css = {
             color: '#fff',
             position: 'absolute',
@@ -5357,7 +5561,7 @@ Galleria.raise = function( msg, fatal ) {
         echo = function( msg ) {
 
             var html = '<div style="padding:4px;margin:0 0 2px;background:#' +
-                ( fatal ? '811' : '222' ) + '";>' +
+                ( fatal ? '811' : '222' ) + ';">' +
                 ( fatal ? '<strong>' + type + ': </strong>' : '' ) +
                 msg + '</div>';
 
@@ -5558,8 +5762,12 @@ Galleria.Picture.prototype = {
 
         this.image = new Image();
 
-        var i = 0,
-            reload = false,
+        // IE8 opacity inherit bug
+        if ( Galleria.IE8 ) {
+            $( this.image ).css( 'filter', 'inherit' );
+        }
+
+        var reload = false,
             resort = false,
 
             // some jquery cache
@@ -5599,6 +5807,11 @@ Galleria.Picture.prototype = {
                             height: this.height,
                             width: this.width
                         };
+
+                        // translate3d if needed
+                        if ( Galleria.HAS3D ) {
+                            this.style.MozTransform = this.style.webkitTransform = 'translate3d(0,0,0)';
+                        }
 
                         self.container.appendChild( this );
 
@@ -5651,7 +5864,7 @@ Galleria.Picture.prototype = {
         });
 
         // begin load and insert in cache when done
-        $image.load( onload ).error( onerror ).attr( 'src', src );
+        $image.load( onload ).bind( 'error', onerror ).attr( 'src', src );
 
         // return the container
         return this.container;
@@ -5691,12 +5904,35 @@ Galleria.Picture.prototype = {
             complete: F,
             position: 'center',
             crop: false,
-            canvas: false
+            canvas: false,
+            iframelimit: undef
         }, options);
 
         if( this.isIframe ) {
-            $( this.image ).width( options.width ).height( options.height ).removeAttr( 'width' ).removeAttr( 'height' );
-            $( this.container ).width( options.width ).height( options.height) ;
+
+            var cw = options.width,
+                ch = options.height,
+                nw, nh;
+            if ( options.iframelimit ) {
+                var r = Math.min( options.iframelimit/cw, options.iframelimit/ch );
+                if ( r < 1 ) {
+                    nw = cw * r;
+                    nh = ch * r;
+
+                    $( this.image ).css({
+                        top: ch/2-nh/2,
+                        left: cw/2-nw/2,
+                        position: 'absolute'
+                    });
+                } else {
+                    $( this.image ).css({
+                        top: 0,
+                        left: 0
+                    });
+                }
+            }
+            $( this.image ).width( nw || cw ).height( nh || ch ).removeAttr( 'width' ).removeAttr( 'height' );
+            $( this.container ).width( cw ).height( ch );
             options.complete.call(self, self);
             try {
                 if( this.image.contentWindow ) {
@@ -5704,6 +5940,7 @@ Galleria.Picture.prototype = {
                 }
             } catch(e) {}
             return this.container;
+
         }
 
         // return the element if no image found
@@ -5876,6 +6113,467 @@ $.extend( $.easing, {
 
 });
 
+// fastclick, for faster touch interactions
+// loosely based on FastClick by FTLabs (Financial Times)
+
+Galleria.Fastclick = (function() {
+
+    var deviceIsIOS = /iP(ad|hone|od)/.test(navigator.userAgent),
+        deviceIsIOS4 = deviceIsIOS && (/OS 4_\d(_\d)?/).test(navigator.userAgent),
+        deviceIsIOSWithBadTarget = deviceIsIOS && (/OS ([6-9]|\d{2})_\d/).test(navigator.userAgent);
+
+    return {
+        init: function(layer) {
+            var oldOnClick, self = this;
+            this.trackingClick = false;
+            this.trackingClickStart = 0;
+            this.targetElement = null;
+            this.touchStartX = 0;
+            this.touchStartY = 0;
+            this.lastTouchIdentifier = 0;
+            this.layer = layer;
+
+            $.each(['Click', 'TouchStart', 'TouchMove', 'TouchEnd', 'TouchCancel'], function(i, fn) {
+                self['on'+fn] = (function(caller) {
+                    return function() {
+                        caller.apply( self, arguments );
+                    };
+                }(self['on'+fn]));
+            });
+
+            if (!Galleria.TOUCH) {
+                return;
+            }
+
+            // Set up event handlers as required
+            layer.addEventListener('click', this.onClick, true);
+            layer.addEventListener('touchstart', this.onTouchStart, false);
+            layer.addEventListener('touchmove', this.onTouchMove, false);
+            layer.addEventListener('touchend', this.onTouchEnd, false);
+            layer.addEventListener('touchcancel', this.onTouchCancel, false);
+
+            if (!window.Event.prototype.stopImmediatePropagation) {
+                layer.removeEventListener = function(type, callback, capture) {
+                    var rmv = window.Node.prototype.removeEventListener;
+                    if (type === 'click') {
+                        rmv.call(layer, type, callback.hijacked || callback, capture);
+                    } else {
+                        rmv.call(layer, type, callback, capture);
+                    }
+                };
+                layer.addEventListener = function(type, callback, capture) {
+                    var adv = window.Node.prototype.addEventListener;
+                    if (type === 'click') {
+                        adv.call(layer, type, callback.hijacked || (callback.hijacked = function(event) {
+                            if (!event.propagationStopped) {
+                                callback(event);
+                            }
+                        }), capture);
+                    } else {
+                        adv.call(layer, type, callback, capture);
+                    }
+                };
+            }
+            if (typeof layer.onclick === 'function') {
+                oldOnClick = layer.onclick;
+                layer.addEventListener('click', function(event) {
+                    oldOnClick(event);
+                }, false);
+                layer.onclick = null;
+            }
+
+        },
+        sendClick: function(targetElement, event) {
+            var clickEvent, touch;
+
+            if (doc.activeElement && doc.activeElement !== targetElement) {
+                doc.activeElement.blur();
+            }
+
+            touch = event.changedTouches[0];
+
+            // Synthesise a click event, with an extra attribute so it can be tracked
+            clickEvent = doc.createEvent('MouseEvents');
+            clickEvent.initMouseEvent('click', true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
+            clickEvent.forwardedTouchEvent = true;
+            targetElement.dispatchEvent(clickEvent);
+        },
+        onTouchStart: function(event) {
+            var targetElement, touch, selection;
+
+            targetElement = event.target;
+            touch = event.targetTouches[0];
+
+            if (deviceIsIOS) {
+
+                selection = window.getSelection();
+                if (selection.rangeCount && !selection.isCollapsed) {
+                    return true;
+                }
+
+                if (!deviceIsIOS4) {
+                    if (touch.identifier === this.lastTouchIdentifier) {
+                        event.preventDefault();
+                        return false;
+                    }
+
+                    this.lastTouchIdentifier = touch.identifier;
+                }
+            }
+
+            this.trackingClick = true;
+            this.trackingClickStart = event.timeStamp;
+            this.targetElement = targetElement;
+
+            this.touchStartX = touch.pageX;
+            this.touchStartY = touch.pageY;
+
+            if ((event.timeStamp - this.lastClickTime) < 200) {
+                event.preventDefault();
+            }
+
+            return true;
+        },
+        touchHasMoved: function(event) {
+            var touch = event.targetTouches[0];
+
+            if (Math.abs(touch.pageX - this.touchStartX) > 10 || Math.abs(touch.pageY - this.touchStartY) > 10) {
+                return true;
+            }
+
+            return false;
+        },
+        onTouchMove: function(event) {
+            if (!this.trackingClick) {
+                return true;
+            }
+
+            // If the touch has moved, cancel the click tracking
+            if (this.targetElement !== event.target || this.touchHasMoved(event)) {
+                this.trackingClick = false;
+                this.targetElement = null;
+            }
+
+            return true;
+        },
+        onTouchEnd: function(event) {
+            var trackingClickStart, targetTagName, touch, targetElement = this.targetElement;
+
+            if (!this.trackingClick) {
+                return true;
+            }
+
+            // Prevent phantom clicks on fast double-tap (issue #36)
+            if ((event.timeStamp - this.lastClickTime) < 200) {
+                this.cancelNextClick = true;
+                return true;
+            }
+
+            this.lastClickTime = event.timeStamp;
+
+            trackingClickStart = this.trackingClickStart;
+            this.trackingClick = false;
+            this.trackingClickStart = 0;
+
+            if (deviceIsIOSWithBadTarget) {
+                touch = event.changedTouches[0];
+                targetElement = event.target;
+                targetElement = doc.elementFromPoint(touch.pageX - window.pageXOffset, touch.pageY - window.pageYOffset);
+            }
+
+            targetTagName = targetElement.tagName.toLowerCase();
+
+            event.preventDefault();
+            this.sendClick(targetElement, event);
+
+            return false;
+        },
+        onTouchCancel: function() {
+            this.trackingClick = false;
+            this.targetElement = null;
+        },
+        onClick: function(event) {
+            var oldTargetElement;
+
+            // If a target element was never set (because a touch event was never fired) allow the click
+            if (!this.targetElement) {
+                return true;
+            }
+
+            if (event.forwardedTouchEvent) {
+                return true;
+            }
+
+            oldTargetElement = this.targetElement;
+            this.targetElement = null;
+
+            if (this.trackingClick) {
+                this.trackingClick = false;
+                return true;
+            }
+
+            // Programmatically generated events targeting a specific element should be permitted
+            if (!event.cancelable) {
+                return true;
+            }
+
+            if (this.cancelNextClick) {
+                this.cancelNextClick = false;
+
+                // Prevent any user-added listeners declared on FastClick element from being fired.
+                if (event.stopImmediatePropagation) {
+                    event.stopImmediatePropagation();
+                } else {
+
+                    // Part of the hack for browsers that don't support Event#stopImmediatePropagation (e.g. Android 2)
+                    event.propagationStopped = true;
+                }
+
+                // Cancel the event
+                event.stopPropagation();
+                event.preventDefault();
+
+                return false;
+            }
+            return true;
+        }
+    };
+}());
+
+// Forked version of Ainos Finger.js for native-style touch
+
+Galleria.Finger = (function() {
+
+    var abs = Math.abs;
+
+    // test for translate3d support
+    var has3d = Galleria.HAS3D = (function() {
+
+        var el = doc.createElement('p'),
+            has3d,
+            t = ['webkit','O','ms','Moz',''], s, i=0, a = 'transform';
+
+        DOM().html.insertBefore(el, null);
+
+        for (; t[i]; i++) {
+            s = t[i] ? t[i]+'Transform' : a;
+            if (el.style[s] !== undefined) {
+                el.style[s] = "translate3d(1px,1px,1px)";
+                has3d = $(el).css(t[i] ? '-'+t[i].toLowerCase()+'-'+a : a);
+            }
+        }
+
+        DOM().html.removeChild(el);
+        return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
+    }());
+
+    // request animation shim
+    var requestFrame = (function(){
+        var r = 'RequestAnimationFrame';
+        return window.requestAnimationFrame ||
+               window['webkit'+r] ||
+               window['moz'+r] ||
+               window['o'+r] ||
+               window['ms'+r] ||
+               function( callback ) {
+                   window.setTimeout(callback, 1000 / 60);
+               };
+    }());
+
+    var Finger = function(elem, options) {
+
+        // default options
+        this.config = {
+            start: 0,
+            duration: 240,
+            onchange: function() {},
+            oncomplete: function() {},
+            easing: function(x,t,b,c,d) {
+                return -c * ((t=t/d-1)*t*t*t - 1) + b; // easeOutQuart
+            }
+        };
+
+        if ( !elem.children.length ) {
+            return;
+        }
+
+        var self = this;
+
+        // extend options
+        $.extend(this.config, options);
+
+        this.elem = elem;
+        this.child = elem.children[0];
+        this.to = this.pos = 0;
+        this.touching = false;
+        this.start = {};
+        this.index = this.config.start;
+        this.anim = 0;
+
+        if ( !has3d ) {
+          this.child.style.position = 'absolute';
+          this.elem.style.position = 'relative';
+        }
+
+        // Bind event handlers to context
+        $.each(['ontouchstart','ontouchmove','ontouchend','setup'], function(i, fn) {
+            self[fn] = (function(caller) {
+                return function() {
+                    caller.apply( self, arguments );
+                };
+            }(self[fn]));
+        });
+
+        // the physical animator
+        this.setX = function() {
+
+            var style = self.child.style;
+
+            if (!has3d) {
+                // this is actually faster than CSS3 translate
+                style.left = self.pos+'px';
+                return;
+            }
+            style.MozTransform = style.webkitTransform = 'translate3d(' + self.pos + 'px,0,0)';
+            return;
+        };
+
+        // bind events
+        $(elem).bind('touchstart', this.ontouchstart);
+        $(window).bind('resize', this.setup);
+        $(window).bind('orientationchange', this.setup);
+
+        // set up width
+        this.setup();
+
+        // start the animations
+        (function animloop(){
+          requestFrame(animloop);
+          self.loop.call( self );
+        }());
+
+    };
+
+    Finger.prototype = {
+
+        constructor: Finger,
+
+        setup: function() {
+            this.width = $( this.elem ).width();
+            this.length = Math.ceil( $(this.child).width() / this.width );
+            if ( this.index !== 0 ) {
+                this.index = Math.max(0, Math.min( this.index, this.length-1 ) );
+                this.pos = this.to = -this.width*this.index;
+            }
+        },
+
+        ontouchstart: function(e) {
+
+            var touch = e.originalEvent.touches;
+
+            this.start = {
+                pageX: touch[0].pageX,
+                pageY: touch[0].pageY,
+                time:  +new Date()
+            };
+
+            this.isScrolling = null;
+            this.touching = true;
+            this.deltaX = 0;
+
+            $doc.bind('touchmove', this.ontouchmove);
+            $doc.bind('touchend', this.ontouchend);
+        },
+
+        ontouchmove: function(e) {
+
+            var touch = e.originalEvent.touches;
+
+            // ensure swiping with one touch and not pinching
+            if( touch && touch.length > 1 || e.scale && e.scale !== 1 || doc.documentElement.clientWidth !== window.innerWidth ) {
+                return;
+            }
+
+            this.deltaX = touch[0].pageX - this.start.pageX;
+
+            // determine if scrolling test has run - one time test
+            if ( this.isScrolling === null ) {
+                this.isScrolling = !!(
+                    this.isScrolling ||
+                    abs(this.deltaX) < abs(touch[0].pageY - this.start.pageY)
+                );
+            }
+
+            // if user is not trying to scroll vertically
+            if (!this.isScrolling) {
+
+                // prevent native scrolling
+                e.preventDefault();
+
+                // increase resistance if first or last slide
+                this.deltaX /= ( (!this.index && this.deltaX > 0 || this.index == this.length - 1 && this.deltaX < 0 ) ?
+                    ( abs(this.deltaX) / this.width + 1.8 )  : 1 );
+                this.to = this.deltaX - this.index * this.width;
+            }
+            e.stopPropagation();
+        },
+
+        ontouchend: function(e) {
+
+            this.touching = false;
+
+            // determine if slide attempt triggers next/prev slide
+            var isValidSlide = +new Date() - this.start.time < 250 &&
+                abs(this.deltaX) > 40 ||
+                abs(this.deltaX) > this.width/2,
+
+                isPastBounds = !this.index && this.deltaX > 0 ||
+                    this.index == this.length - 1 && this.deltaX < 0;
+
+            // if not scrolling vertically
+            if ( !this.isScrolling ) {
+                this.show( this.index + ( isValidSlide && !isPastBounds ? (this.deltaX < 0 ? 1 : -1) : 0 ) );
+            }
+
+            $doc.unbind('touchmove', this.ontouchmove);
+            $doc.unbind('touchend', this.ontouchend);
+        },
+
+        show: function( index ) {
+            if ( index != this.index ) {
+                this.config.onchange.call(this, index);
+            } else {
+                this.to = -( index*this.width );
+            }
+        },
+
+        loop: function() {
+
+            var distance = this.to - this.pos;
+
+            // if distance is short or the user is touching, do a 1-1 animation
+            if ( this.touching || abs(distance) <= 1 ) {
+                this.pos = this.to;
+                if ( this.anim ) {
+                    this.config.oncomplete( this.index );
+                }
+                this.anim = 0;
+            } else {
+                if ( !this.anim ) {
+                    // save animation parameters
+                    this.anim = { v: this.pos, c: distance, t: 0 };
+                }
+                // apply easing
+                this.pos = this.config.easing(null, this.anim.t++, this.anim.v, this.anim.c, (this.config.duration/10));
+            }
+            this.setX();
+        }
+    };
+
+    return Finger;
+
+}());
+
 // the plugin initializer
 $.fn.galleria = function( options ) {
 
@@ -5913,10 +6611,14 @@ $.fn.galleria = function( options ) {
 
     return this.each(function() {
 
-        // fail silent if already run
-        if ( !$.data(this, 'galleria') ) {
-            $.data( this, 'galleria', new Galleria().init( this, options ) );
+        // destroy previous instance and prepare for new load
+        if ( $.data(this, 'galleria') ) {
+            $.data( this, 'galleria' ).destroy();
+            $( this ).find( '*' ).hide();
         }
+
+        // load the new gallery
+        $.data( this, 'galleria', new Galleria().init( this, options ) );
     });
 
 };
