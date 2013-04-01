@@ -45,7 +45,7 @@ $('.search-form form').submit(function(){
     <?php echo "<?php \$this->renderPartial('_search', array('model' => \$model)); ?>\n"; ?>
 </div><!-- search-form -->
 
-<?php echo "<?php"; ?> $this->widget('bootstrap.widgets.TbGridView',array(
+<?php echo "<?php"; ?> $this->widget('FadTbGridView', array(
     'id'           => '<?php echo $this->class2id($this->modelClass); ?>-grid',
     'dataProvider' => $model->search(),
     'filter'       => $model,
