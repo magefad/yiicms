@@ -38,6 +38,10 @@ return array(
                     'baseUrl' => '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/',
                     'js'      => array('jquery-ui.min.js'),
                 ),
+                'bbq' => array(
+                    'baseUrl' => '//cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/',
+                    'js' => array('jquery.ba-bbq.min.js'),
+                ),
             ),
         ),
         'widgetFactory' => array(
@@ -144,8 +148,10 @@ return array(
             ),
         ),
         'bootstrap'     => array(
-            'class'           => 'ext.bootstrap.components.Bootstrap',
-            'enableBootboxJS' => false
+            'class'            => 'ext.bootstrap.components.Bootstrap',
+            'enableBootboxJS'  => false,
+            'enableNotifierJS' => false,
+            'jqueryCss'        => false,
         ),
     ),
     // application-level parameters that can be accessed
