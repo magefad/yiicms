@@ -181,7 +181,7 @@ class TbJEditableColumn extends TbDataColumn
 				break;
 			case 'bdatepicker':
 				$cs->registerCssFile($assetsUrl . '/css/bootstrap-datepicker.css')
-					->registerScriptFile($assetsUrl . '/js/bootstrap.datepicker.js', CClientScript::POS_END)
+					->registerScriptFile($assetsUrl . '/js/bootstrap-datepicker.js', CClientScript::POS_END)
 					->registerScriptFile($assetsUrl . '/js/jquery.jeditable.bdatepicker.js', CClientScript::POS_END);
 				if (!isset($this->jEditableOptions['submit']))
 					$this->jEditableOptions['submit'] = Yii::t('zii', 'Ok');
