@@ -38,10 +38,18 @@ return array(
                     'baseUrl' => '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/',
                     'js'      => array('jquery-ui.min.js'),
                 ),
+                'cookie' => array(
+                    'baseUrl' => '//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/',
+                    'js' => array('jquery.cookie.min.js')
+                ),
                 'bbq' => array(
                     'baseUrl' => '//cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/',
                     'js' => array('jquery.ba-bbq.min.js'),
                 ),
+                'punycode' => array(
+                    'baseUrl' => '//cdnjs.cloudflare.com/ajax/libs/punycode/1.0.0/',
+                    'js' => array('punycode.min.js')
+                )
             ),
         ),
         'widgetFactory' => array(
@@ -152,6 +160,7 @@ return array(
             'enableBootboxJS'  => false,
             'enableNotifierJS' => false,
             'jqueryCss'        => false,
+            'enableCdn'        => true,
         ),
     ),
     // application-level parameters that can be accessed
