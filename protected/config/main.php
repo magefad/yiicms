@@ -46,6 +46,10 @@ return array(
                     'baseUrl' => '//cdnjs.cloudflare.com/ajax/libs/jquery.ba-bbq/1.2.1/',
                     'js' => array('jquery.ba-bbq.min.js'),
                 ),
+                'history' => array(
+                    'baseUrl' => '//cdnjs.cloudflare.com/ajax/libs/history.js/1.8/bundled/html5/',
+                    'js' => array('jquery.history.js'),
+                ),
                 'punycode' => array(
                     'baseUrl' => '//cdnjs.cloudflare.com/ajax/libs/punycode/1.0.0/',
                     'js' => array('punycode.min.js')
@@ -60,13 +64,15 @@ return array(
                         'showbuttons' => false,
                         'clear' => '<i class="icon icon-remove"></i>',
                         'datepicker'  => array(
-                            'autoclose' => true
+                            'autoclose' => true,
+                            'todayBtn' => 'linked'
                         )
                     ),
                 ),
                 'TbDatePicker' => array(
                     'options' => array(
-                        'autoclose' => true
+                        'autoclose' => true,
+                        'todayBtn' => 'linked'
                     )
                 ),
                 'TinyMce' => array(
@@ -157,9 +163,9 @@ return array(
         ),
         'bootstrap'     => array(
             'class'            => 'ext.bootstrap.components.Bootstrap',
+            'jqueryCss'        => false,
             'enableBootboxJS'  => false,
             'enableNotifierJS' => false,
-            'jqueryCss'        => false,
             'enableCdn'        => true,
         ),
     ),
