@@ -7,7 +7,6 @@
  *
  * @author Ruslan Fadeev <fadeevr@gmail.com>
  */
-/** @var $this Bootstrap */
  return array(
      'bootstrap'     => array(
          'baseUrl' => $this->enableCdn ? '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/' : $this->getAssetsUrl(),
@@ -19,21 +18,21 @@
          'depends' => array('jquery'),
      ),
      'responsive'    => array(
-         'baseUrl' => $this->enableCdn ? '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/' : $this->getAssetsUrl(),
-         'css'     => array(YII_DEBUG ? 'bootstrap-responsive.css' : 'bootstrap-responsive.min.css'),
+         'baseUrl' => $this->enableCdn ? '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/' : $this->getAssetsUrl(),
+         'css'     => array(YII_DEBUG ? 'css/bootstrap-responsive.css' : 'css/bootstrap-responsive.min.css'),
          'depends' => array('bootstrap')
      ),
      'font-awesome'  => array(
-         'baseUrl' => $this->enableCdn ? '//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/' : $this->getAssetsUrl(),
-         'css'     => array(YII_DEBUG ? 'font-awesome.css' : 'font-awesome.min.css'),
+         'baseUrl' => $this->enableCdn ? '//netdna.bootstrapcdn.com/font-awesome/3.0.2/' : $this->getAssetsUrl(),
+         'css'     => array(YII_DEBUG ? 'css/font-awesome.css' : 'css/font-awesome.min.css'),
      ),
      'font-awesome-ie7'  => array(
-         'baseUrl' => $this->enableCdn ? '//netdna.bootstrapcdn.com/font-awesome/3.0.2/css/' : $this->getAssetsUrl(),
-         'css'     => array('font-awesome-ie7.min.css'), // only minified version exists in our assets and CDN serves minified version anyway
+         'baseUrl' => $this->enableCdn ? '//netdna.bootstrapcdn.com/font-awesome/3.0.2/' : $this->getAssetsUrl(),
+         'css'     => array('css/font-awesome-ie7.min.css'), // only minified version exists in our assets and CDN serves minified version anyway
      ),
      'full.css'      => array(
          'baseUrl' => $this->enableCdn ? '//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/' : $this->getAssetsUrl(),
-         'css'     => array(YII_DEBUG ? 'css/bootstrap-combined.no-icons.css' : 'css/bootstrap-combined.no-icons.min.css'),
+         'css'     => array('css/bootstrap-combined.no-icons.min.css'), // only minified version exists in our assets and CDN serves minified version anyway
      ),
      'bootstrap-yii' => array(
          'baseUrl' => $this->getAssetsUrl(),
@@ -50,6 +49,6 @@
      'notify'    => array(
          'baseUrl' => $this->getAssetsUrl(),
          'css'     => array('css/bootstrap-notify.css'),
-         'js'      => array('bootstrap.notify.js')
+         'js'      => array('js/bootstrap.notify.js')
      ),
  );

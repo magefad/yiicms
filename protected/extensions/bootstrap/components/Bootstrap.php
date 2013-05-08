@@ -31,7 +31,7 @@ class Bootstrap extends CApplicationComponent
 	const PLUGIN_TOOLTIP = 'tooltip';
 	const PLUGIN_TRANSITION = 'transition';
 	const PLUGIN_TYPEAHEAD = 'typeahead';
-	const PLUGIN_DATEPICKER = 'datepicker';
+	const PLUGIN_DATEPICKER = 'bdatepicker';
 	const PLUGIN_REDACTOR = 'redactor';
 	const PLUGIN_MARKDOWNEDITOR = 'markdowneditor';
 	const PLUGIN_DATERANGEPICKER = 'daterangepicker';
@@ -150,7 +150,7 @@ class Bootstrap extends CApplicationComponent
 			$this->enableCdn = !YII_DEBUG;
 
 		$this->packages = CMap::mergeArray(
-			require(Yii::getPathOfAlias('bootstrap.assets') . DIRECTORY_SEPARATOR . 'packages.php'),
+			require(Yii::getPathOfAlias('bootstrap.components') . DIRECTORY_SEPARATOR . 'packages.php'),
 			$this->packages
 		);
 		foreach ($this->packages as $name => $definition)

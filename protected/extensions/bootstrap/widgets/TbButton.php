@@ -130,7 +130,8 @@ class TbButton extends CWidget
 	public $dropdownOptions = array();
 
 	/**
-	 * @var bool is visible
+	 * @var whether the button is visible or not
+	 * @since 0.9.11
 	 */
 	public $visible = true;
 
@@ -241,6 +242,7 @@ class TbButton extends CWidget
 				'encodeLabel'=>$this->encodeLabel,
 				'items'=>$this->items,
 				'htmlOptions'=>$this->dropdownOptions,
+				'id'=>isset($this->dropdownOptions['id']) ? $this->dropdownOptions['id'] : null,
 			));
 		}
 	}

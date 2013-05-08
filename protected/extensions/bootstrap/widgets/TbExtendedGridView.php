@@ -242,10 +242,10 @@ class TbExtendedGridView extends TbGridView
 	public function renderKeys()
 	{
 		$data = $this->dataProvider->getData();
-
 		if (empty($data))
-			 return false;
-		if (!$this->sortableRows || !$this->getAttribute($data[0], $this->sortableAttribute))
+			return false;
+
+		if (!$this->sortableRows || !$this->getAttribute($data[0], (string)$this->sortableAttribute))
 			parent::renderKeys();
 
 		echo CHtml::openTag('div',array(
@@ -822,7 +822,7 @@ class TbSumOperation extends TbOperation
 	 */
 	protected function extractNumber($value)
 	{
-		preg_match_all('/([0-9]+[,\.]?)+/', $value, $matches);
+		preg_match_all('/([+-]?[0-9]+[,\.]?)+/', $value, $matches);
 		return !empty($matches[0]) && @$matches[0][0] ? $matches[0][0] : 0;
 	}
 
