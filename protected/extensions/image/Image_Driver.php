@@ -164,4 +164,5 @@ abstract class Image_Driver
      */
     abstract public function negate($unused);
 
+    abstract public function watermark($params);
 } // End Image Driver

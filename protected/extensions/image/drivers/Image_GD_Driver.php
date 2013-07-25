@@ -385,4 +385,16 @@ class Image_GD_Driver extends Image_Driver
         return $img;
     }
 
+    public function watermark($params)
+    {
+        $path = $params['path'];
+        $x = $params['x'];
+        $y = $params['y'];
+        imagealphablending($this->tmp_image, true);
+        imagesavealpha($this->tmp_image, true);
+        $mark = imagecreatefrompng($path);
+        imagecopyresized($this->tmp_image, $mark, $x, $y, 0, 0, imagesx($mark), imagesy($mark), imagesx($mark), imagesy($mark));
+        imagedestroy($mark);
+        return $this->tmp_image;
+    }
 } // End Image GD Driver

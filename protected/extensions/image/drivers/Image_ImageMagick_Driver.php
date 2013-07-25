@@ -205,4 +205,8 @@ class Image_ImageMagick_Driver extends Image_Driver
         return array_slice(getimagesize($this->tmp_image), 0, 2, FALSE);
     }
 
+    public function watermark($params)
+    {
+        // TODO: Implement watermark() method.
+    }
 } // End Image ImageMagick Driver

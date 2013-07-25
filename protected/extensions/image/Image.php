@@ -1,6 +1,8 @@
 <?php
 
-Yii::import('ext.image.Image_Driver');
+require 'Image_Driver.php';
+require 'drivers/Image_GD_Driver.php';
+require 'drivers/Image_ImageMagick_Driver.php';
 
 /**
  * Manipulate images using standard methods such as resize, crop, rotate, etc.
@@ -529,5 +531,12 @@ class Image
             );
 
         return $this;
+    }
+
+    public function watermark($path, $x, $y){
+        $this->actions['watermark'] = array
+        (
+            'path'=>$path, 'x'=>$x, 'y'=>$y,
+        );
     }
 } // End Image
