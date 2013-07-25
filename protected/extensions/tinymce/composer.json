@@ -1,0 +1,16 @@
+{
+    "name": "z_bodya/yii-tinymce",
+    "description": "Extension to use TinyMce with Compressor, SpellChecker and FileManager",
+    "keywords": ["wysiwyg", "tinymce"],
+    "type": "yii-extension",
+    "extra": {
+        "installer-name": "tinymce"
+    },
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Bogdan Savluk",
+            "email": "savluk.bogdan@gmail.com"
+        }
+    ]
+}

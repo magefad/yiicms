@@ -51,6 +51,13 @@ class TinyMceCompressorAction extends CAction
     {
         $this->init();
         $this->handleRequest();
+
+        if (Yii::app()->log instanceof CLogRouter) {
+            foreach (Yii::app()->log->routes as $route) {
+                if ($route instanceof CWebLogRoute)
+                    $route->enabled = false;
+            }
+        }
     }
 
     /**

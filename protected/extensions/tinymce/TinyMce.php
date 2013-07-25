@@ -32,7 +32,7 @@ class TinyMce extends CInputWidget
      * @var bool|array FileManager configuration.
      * For example:
      * 'fileManager' => array(
-     *      'class' => 'ext.elFinder.TinyMceElFinder',
+     *      'class' => 'TinyMceElFinder',
      *      'connectorRoute'=>'admin/elfinder/connector',
      * )
      */
