@@ -1,12 +1,18 @@
 <?php
-/*## TbCKEditor class file.
- *
- * Supports new CKEditor 4
+/**
+ *## TbCKEditor class file.
  *
  * @author Antonio Ramirez <antonio@clevertech.biz>
  * @copyright Copyright &copy; Clevertech 2012-
- * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php) 
- * @package bootstrap.widgets.input
+ * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php)
+ */
+
+/**
+ *## CKEditor 4 as a form input
+ *
+ * @see <http://docs.ckeditor.com/>
+ *
+ * @package booster.widgets.forms.inputs.wysiwyg
  */
 class TbCKEditor extends CInputWidget
 {
@@ -39,15 +45,15 @@ class TbCKEditor extends CInputWidget
 		$this->htmlOptions['id'] = $id;
 
 		// Do we have a model?
-		if ($this->hasModel())
-		{
-			if ($this->form)
+		if ($this->hasModel()) {
+			if ($this->form) {
 				$html = $this->form->textArea($this->model, $this->attribute, $this->htmlOptions);
-			else
+			} else {
 				$html = CHtml::activeTextArea($this->model, $this->attribute, $this->htmlOptions);
-		}
-		else
+			}
+		} else {
 			$html = CHtml::textArea($name, $this->value, $this->htmlOptions);
+		}
 		echo $html;
 	}
 
@@ -55,14 +61,18 @@ class TbCKEditor extends CInputWidget
 	 *### .registerClientScript()
 	 *
 	 * Registers required javascript
+	 *
 	 * @param string $id
 	 */
 	public function registerClientScript($id)
 	{
 		Yii::app()->bootstrap->registerAssetJs('ckeditor/ckeditor.js');
 
-		$options = !empty($this->editorOptions)? CJavaScript::encode($this->editorOptions) : '{}';
+		$options = !empty($this->editorOptions) ? CJavaScript::encode($this->editorOptions) : '{}';
 
-		Yii::app()->clientScript->registerScript(__CLASS__.'#'.$this->getId(), "CKEDITOR.replace( '$id', $options);");
+		Yii::app()->clientScript->registerScript(
+			__CLASS__ . '#' . $this->getId(),
+			"CKEDITOR.replace( '$id', $options);"
+		);
 	}
 }

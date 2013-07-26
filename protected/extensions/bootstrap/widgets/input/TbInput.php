@@ -1,47 +1,51 @@
 <?php
-/*## TbInput class file.
+/**
+ *## TbInput class file.
  *
  * @author Christoffer Niska <ChristofferNiska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2011-
  * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php) 
- * @package bootstrap.widgets.input
  */
 
 /**
- * Bootstrap input widget.
+ *## Bootstrap input widget.
+ *
  * Used for rendering inputs according to Bootstrap standards.
+ *
+ * @package booster.widgets.forms.inputs
  */
 abstract class TbInput extends CInputWidget
 {
 	// The different input types.
-	const TYPE_CHECKBOX              = 'checkbox';
-	const TYPE_CHECKBOXLIST          = 'checkboxlist';
-	const TYPE_CHECKBOXLIST_INLINE   = 'checkboxlist_inline';
-	const TYPE_CHECKBOXGROUPSLIST    = 'checkboxgroupslist';
-	const TYPE_DROPDOWN              = 'dropdownlist';
-	const TYPE_FILE                  = 'filefield';
-	const TYPE_PASSWORD              = 'password';
-	const TYPE_RADIO                 = 'radiobutton';
-	const TYPE_RADIOLIST             = 'radiobuttonlist';
-	const TYPE_RADIOLIST_INLINE      = 'radiobuttonlist_inline';
+	const TYPE_CHECKBOX = 'checkbox';
+	const TYPE_CHECKBOXLIST = 'checkboxlist';
+	const TYPE_CHECKBOXLIST_INLINE = 'checkboxlist_inline';
+	const TYPE_CHECKBOXGROUPSLIST = 'checkboxgroupslist';
+	const TYPE_DROPDOWN = 'dropdownlist';
+	const TYPE_FILE = 'filefield';
+	const TYPE_PASSWORD = 'password';
+	const TYPE_RADIO = 'radiobutton';
+	const TYPE_RADIOLIST = 'radiobuttonlist';
+	const TYPE_RADIOLIST_INLINE = 'radiobuttonlist_inline';
 	const TYPE_RADIOBUTTONGROUPSLIST = 'radiobuttongroupslist';
-	const TYPE_TEXTAREA              = 'textarea';
-	const TYPE_TEXT                  = 'text';
-	const TYPE_MASKEDTEXT            = 'maskedtextfield';
-	const TYPE_CAPTCHA               = 'captcha';
-	const TYPE_UNEDITABLE            = 'uneditable';
-	const TYPE_DATEPICKER            = 'datepicker';
-	const TYPE_REDACTOR              = 'redactor';
-	const TYPE_MARKDOWNEDITOR        = 'markdowneditor';
-	const TYPE_HTML5EDITOR           = 'wysihtml5';
-	const TYPE_DATERANGEPICKER       = 'daterangepicker';
-	const TYPE_TOGGLEBUTTON          = 'togglebutton';
-	const TYPE_COLORPICKER           = 'colorpicker';
-	const TYPE_CKEDITOR              = 'ckeditor';
-	const TYPE_TIMEPICKER            = 'timepicker';
-	const TYPE_SELECT2               = 'select2';
-	const TYPE_TYPEAHEAD             = 'typeahead';
-	const TYPE_NUMBER                = 'numberfield';
+	const TYPE_TEXTAREA = 'textarea';
+	const TYPE_TEXT = 'text';
+	const TYPE_MASKEDTEXT = 'maskedtextfield';
+	const TYPE_CAPTCHA = 'captcha';
+	const TYPE_UNEDITABLE = 'uneditable';
+	const TYPE_DATEPICKER = 'datepicker';
+	const TYPE_REDACTOR = 'redactor';
+	const TYPE_MARKDOWNEDITOR = 'markdowneditor';
+	const TYPE_HTML5EDITOR = 'wysihtml5';
+	const TYPE_DATERANGEPICKER = 'daterangepicker';
+	const TYPE_TOGGLEBUTTON = 'togglebutton';
+	const TYPE_COLORPICKER = 'colorpicker';
+	const TYPE_CKEDITOR = 'ckeditor';
+	const TYPE_TIMEPICKER = 'timepicker';
+	const TYPE_SELECT2 = 'select2';
+	const TYPE_TYPEAHEAD = 'typeahead';
+	const TYPE_NUMBER = 'numberfield';
+	const TYPE_CUSTOM = 'custom';
 
 	/**
 	 * @var TbActiveForm the associated form widget.
@@ -134,22 +138,25 @@ abstract class TbInput extends CInputWidget
 	 */
 	public function init()
 	{
-		if (!isset($this->form))
+		if (!isset($this->form)) {
 			throw new CException(__CLASS__ . ': Failed to initialize widget! Form is not set.');
+		}
 
-		if (!isset($this->model))
+		if (!isset($this->model)) {
 			throw new CException(__CLASS__ . ': Failed to initialize widget! Model is not set.');
+		}
 
-		if (!isset($this->type))
+		if (!isset($this->type)) {
 			throw new CException(__CLASS__ . ': Failed to initialize widget! Input type is not set.');
+		}
 
 		// todo: move this logic elsewhere, it doesn't belong here ...
-		if ($this->type === self::TYPE_UNEDITABLE)
-		{
-			if (isset($this->htmlOptions['class']))
+		if ($this->type === self::TYPE_UNEDITABLE) {
+			if (isset($this->htmlOptions['class'])) {
 				$this->htmlOptions['class'] .= ' uneditable-input';
-			else
+			} else {
 				$this->htmlOptions['class'] = 'uneditable-input';
+			}
 		}
 
 		$this->processHtmlOptions();
@@ -162,73 +169,59 @@ abstract class TbInput extends CInputWidget
 	 */
 	protected function processHtmlOptions()
 	{
-		if (isset($this->htmlOptions['label']))
-		{
+		if (isset($this->htmlOptions['label'])) {
 			$this->label = $this->htmlOptions['label'];
 			unset($this->htmlOptions['label']);
 		}
 
-		if (isset($this->htmlOptions['prepend']))
-		{
+		if (isset($this->htmlOptions['prepend'])) {
 			$this->prependText = $this->htmlOptions['prepend'];
 			unset($this->htmlOptions['prepend']);
 		}
 
-		if (isset($this->htmlOptions['append']))
-		{
+		if (isset($this->htmlOptions['append'])) {
 			$this->appendText = $this->htmlOptions['append'];
 			unset($this->htmlOptions['append']);
 		}
 
-		if (isset($this->htmlOptions['hint']))
-		{
+		if (isset($this->htmlOptions['hint'])) {
 			$this->hintText = $this->htmlOptions['hint'];
 			unset($this->htmlOptions['hint']);
 		}
 
-		if (isset($this->htmlOptions['label']))
-		{
-			$this->label = $this->htmlOptions['label'];
-			unset($this->htmlOptions['label']);
-		}
-
-		if (isset($this->htmlOptions['labelOptions']))
-		{
+		if (isset($this->htmlOptions['labelOptions'])) {
 			$this->labelOptions = $this->htmlOptions['labelOptions'];
 			unset($this->htmlOptions['labelOptions']);
 		}
 
-		if (isset($this->htmlOptions['prependOptions']))
-		{
+		if (isset($this->htmlOptions['prependOptions'])) {
 			$this->prependOptions = $this->htmlOptions['prependOptions'];
 			unset($this->htmlOptions['prependOptions']);
 		}
 
-		if (isset($this->htmlOptions['appendOptions']))
-		{
+		if (isset($this->htmlOptions['appendOptions'])) {
 			$this->appendOptions = $this->htmlOptions['appendOptions'];
 			unset($this->htmlOptions['appendOptions']);
 		}
 
-		if (isset($this->htmlOptions['hintOptions']))
-		{
+		if (isset($this->htmlOptions['hintOptions'])) {
 			$this->hintOptions = $this->htmlOptions['hintOptions'];
 			unset($this->htmlOptions['hintOptions']);
 		}
 
-		if (isset($this->htmlOptions['errorOptions']))
-		{
+		if (isset($this->htmlOptions['errorOptions'])) {
 			$this->errorOptions = $this->htmlOptions['errorOptions'];
-			if (isset($this->htmlOptions['errorOptions']['enableAjaxValidation']))
+			if (isset($this->htmlOptions['errorOptions']['enableAjaxValidation'])) {
 				$this->enableAjaxValidation = (boolean)$this->htmlOptions['errorOptions']['enableAjaxValidation'];
+			}
 
-			if (isset($this->htmlOptions['errorOptions']['enableClientValidation']))
+			if (isset($this->htmlOptions['errorOptions']['enableClientValidation'])) {
 				$this->enableClientValidation = (boolean)$this->htmlOptions['errorOptions']['enableClientValidation'];
+			}
 			unset($this->htmlOptions['errorOptions']);
 		}
 
-		if (isset($this->htmlOptions['captchaOptions']))
-		{
+		if (isset($this->htmlOptions['captchaOptions'])) {
 			$this->captchaOptions = $this->htmlOptions['captchaOptions'];
 			unset($this->htmlOptions['captchaOptions']);
 		}
@@ -243,8 +236,7 @@ abstract class TbInput extends CInputWidget
 	 */
 	public function run()
 	{
-		switch ($this->type)
-		{
+		switch ($this->type) {
 			case self::TYPE_CHECKBOX:
 				$this->checkBox();
 				break;
@@ -358,6 +350,10 @@ abstract class TbInput extends CInputWidget
 				$this->numberField();
 				break;
 
+			case self::TYPE_CUSTOM:
+				$this->customField();
+				break;
+
 			default:
 				throw new CException(__CLASS__ . ': Failed to run widget! Type is invalid.');
 		}
@@ -372,12 +368,13 @@ abstract class TbInput extends CInputWidget
 	 */
 	protected function getLabel()
 	{
-		if ($this->label !== false && !in_array($this->type, array('checkbox', 'radio')) && $this->hasModel())
+		if ($this->label !== false && !in_array($this->type, array('checkbox', 'radio')) && $this->hasModel()) {
 			return $this->form->labelEx($this->model, $this->attribute, $this->labelOptions);
-		else if ($this->label !== null)
+		} else if ($this->label !== null) {
 			return $this->label;
-		else
+		} else {
 			return '';
+		}
 	}
 
 	/**
@@ -389,26 +386,29 @@ abstract class TbInput extends CInputWidget
 	 */
 	protected function getPrepend()
 	{
-		if ($this->hasAddOn())
-		{
+		if ($this->hasAddOn()) {
 			$htmlOptions = $this->prependOptions;
 
-			if (isset($htmlOptions['class']))
+			if (isset($htmlOptions['class'])) {
 				$htmlOptions['class'] .= ' add-on';
-			else
+			} else {
 				$htmlOptions['class'] = 'add-on';
+			}
 
 			ob_start();
 			echo '<div class="' . $this->getAddonCssClass() . '">';
-			if (isset($this->prependText))
-				if (isset($htmlOptions['isRaw']) && $htmlOptions['isRaw'])
+			if (isset($this->prependText)) {
+				if (isset($htmlOptions['isRaw']) && $htmlOptions['isRaw']) {
 					echo $this->prependText;
-				else
+				} else {
 					echo CHtml::tag('span', $htmlOptions, $this->prependText);
+				}
+			}
 
 			return ob_get_clean();
-		} else
+		} else {
 			return '';
+		}
 	}
 
 	/**
@@ -420,26 +420,29 @@ abstract class TbInput extends CInputWidget
 	 */
 	protected function getAppend()
 	{
-		if ($this->hasAddOn())
-		{
+		if ($this->hasAddOn()) {
 			$htmlOptions = $this->appendOptions;
 
-			if (isset($htmlOptions['class']))
+			if (isset($htmlOptions['class'])) {
 				$htmlOptions['class'] .= ' add-on';
-			else
+			} else {
 				$htmlOptions['class'] = 'add-on';
+			}
 
 			ob_start();
-			if (isset($this->appendText))
-				if (isset($htmlOptions['isRaw']) && $htmlOptions['isRaw'])
+			if (isset($this->appendText)) {
+				if (isset($htmlOptions['isRaw']) && $htmlOptions['isRaw']) {
 					echo $this->appendText;
-				else
+				} else {
 					echo CHtml::tag('span', $htmlOptions, $this->appendText);
+				}
+			}
 
 			echo '</div>';
 			return ob_get_clean();
-		} else
+		} else {
 			return '';
+		}
 	}
 
 	/**
@@ -448,6 +451,7 @@ abstract class TbInput extends CInputWidget
 	 * Returns the id that should be used for the specified attribute
 	 *
 	 * @param string $attribute the attribute
+	 *
 	 * @return string the id
 	 */
 	protected function getAttributeId($attribute)
@@ -466,7 +470,13 @@ abstract class TbInput extends CInputWidget
 	 */
 	protected function getError()
 	{
-		return $this->form->error($this->model, $this->attribute, $this->errorOptions, $this->enableAjaxValidation, $this->enableClientValidation);
+		return $this->form->error(
+			$this->model,
+			$this->attribute,
+			$this->errorOptions,
+			$this->enableAjaxValidation,
+			$this->enableClientValidation
+		);
 	}
 
 	/**
@@ -478,18 +488,19 @@ abstract class TbInput extends CInputWidget
 	 */
 	protected function getHint()
 	{
-		if (isset($this->hintText))
-		{
+		if (isset($this->hintText)) {
 			$htmlOptions = $this->hintOptions;
 
-			if (isset($htmlOptions['class']))
+			if (isset($htmlOptions['class'])) {
 				$htmlOptions['class'] .= ' help-block';
-			else
+			} else {
 				$htmlOptions['class'] = 'help-block';
+			}
 
 			return CHtml::tag('p', $htmlOptions, $this->hintText);
-		} else
+		} else {
 			return '';
+		}
 	}
 
 	/**
@@ -515,10 +526,12 @@ abstract class TbInput extends CInputWidget
 	protected function getAddonCssClass()
 	{
 		$classes = array();
-		if (isset($this->prependText))
+		if (isset($this->prependText)) {
 			$classes[] = 'input-prepend';
-		if (isset($this->appendText))
+		}
+		if (isset($this->appendText)) {
 			$classes[] = 'input-append';
+		}
 
 		return implode(' ', $classes);
 	}
@@ -809,4 +822,14 @@ abstract class TbInput extends CInputWidget
 	 * @abstract
 	 */
 	abstract protected function numberField();
+
+	/**
+	 *### . customField()
+	 *
+	 * Renders a pre-rendered custom field.
+	 *
+	 * @return string the rendered content
+	 * @abstract
+	 */
+	abstract protected function customField();
 }

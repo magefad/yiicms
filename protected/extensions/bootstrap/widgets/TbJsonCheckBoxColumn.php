@@ -1,17 +1,21 @@
 <?php
 /**
- * TbJsonCheckBoxColumn class
- * Works in conjunction with TbJsonGridView. Renders HTML or returns JSON containing checkbox
- * according to the request to the Grid.
+ *## TbJsonCheckBoxColumn class file
  *
  * @author: Mikhail Kuklin <mikhail@clevertech.biz>
  * @copyright Copyright &copy; Clevertech 2012-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package YiiBooster bootstrap.widgets
  */
 
 /**
+ *## TbJsonCheckBoxColumn class
+ *
+ * Works in conjunction with TbJsonGridView. Renders HTML or returns JSON containing checkbox
+ * according to the request to the Grid.
+ *
  * @property TbJsonGridView $grid
+ *
+ * @package booster.widgets.grids.columns
  */
 class TbJsonCheckBoxColumn extends CCheckBoxColumn
 {
@@ -20,11 +24,9 @@ class TbJsonCheckBoxColumn extends CCheckBoxColumn
 	 */
 	public function renderHeaderCell()
 	{
-		if ($this->grid->json)
-		{
-			$this->headerHtmlOptions['id']=$this->id;
-			if ($this->grid->json)
-			{
+		if ($this->grid->json) {
+			$this->headerHtmlOptions['id'] = $this->id;
+			if ($this->grid->json) {
 				return CMap::mergeArray(
 					$this->headerHtmlOptions,
 					array('content' => $this->renderHeaderCellContent())
@@ -41,52 +43,54 @@ class TbJsonCheckBoxColumn extends CCheckBoxColumn
 	 */
 	protected function renderHeaderCellContent()
 	{
-		if ($this->grid->json)
-		{
-			if (trim($this->headerTemplate)==='')
+		if ($this->grid->json) {
+			if (trim($this->headerTemplate) === '') {
 				return $this->grid->blankDisplay;
+			}
 
-			if ($this->selectableRows===null && $this->grid->selectableRows>1)
-				$item = CHtml::checkBox($this->id.'_all',false,array('class'=>'select-on-check-all'));
-			else if ($this->selectableRows>1)
-				$item = CHtml::checkBox($this->id.'_all',false);
-			else
-			{
+			if ($this->selectableRows === null && $this->grid->selectableRows > 1) {
+				$item = CHtml::checkBox($this->id . '_all', false, array('class' => 'select-on-check-all'));
+			} else if ($this->selectableRows > 1) {
+				$item = CHtml::checkBox($this->id . '_all', false);
+			} else {
 				ob_start();
 				parent::renderHeaderCellContent();
 				$item = ob_get_clean();
 			}
 
-			return strtr($this->headerTemplate,array(
-				'{item}'=>$item,
-			));
+			return strtr(
+				$this->headerTemplate,
+				array(
+					'{item}' => $item,
+				)
+			);
 		}
 		parent::renderHeaderCellContent();
 	}
 
 	/**
 	 * Renders|returns the data cell.
+	 *
 	 * @param int $row
+	 *
 	 * @return array|void
 	 */
 	public function renderDataCell($row)
 	{
 		$data = $this->grid->dataProvider->data[$row];
 		$options = $this->htmlOptions;
-		if ($this->cssClassExpression !== null)
-		{
+		if ($this->cssClassExpression !== null) {
 			$class = $this->evaluateExpression($this->cssClassExpression, array('row' => $row, 'data' => $data));
-			if (!empty($class))
-			{
-				if (isset($options['class']))
+			if (!empty($class)) {
+				if (isset($options['class'])) {
 					$options['class'] .= ' ' . $class;
-				else
+				} else {
 					$options['class'] = $class;
+				}
 			}
 		}
 
-		if ($this->grid->json)
-		{
+		if ($this->grid->json) {
 			return CMap::mergeArray(
 				$options,
 				array('content' => $this->renderDataCellContent($row, $data))
@@ -98,8 +102,10 @@ class TbJsonCheckBoxColumn extends CCheckBoxColumn
 
 	/**
 	 * Renders|returns the data cell content
+	 *
 	 * @param int $row
 	 * @param mixed $data
+	 *
 	 * @return array|void
 	 */
 	protected function renderDataCellContent($row, $data)
@@ -109,8 +115,9 @@ class TbJsonCheckBoxColumn extends CCheckBoxColumn
 		$html = ob_get_contents();
 		ob_end_clean();
 
-		if ($this->grid->json)
+		if ($this->grid->json) {
 			return $html;
+		}
 
 		echo $html;
 	}

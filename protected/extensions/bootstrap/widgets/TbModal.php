@@ -1,16 +1,19 @@
 <?php
-/*## TbModal class file.
+/**
+ *## TbModal class file.
  *
  * @author Christoffer Niska <ChristofferNiska@gmail.com>
  * @copyright Copyright &copy; Christoffer Niska 2011-
  * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php)
- * @package bootstrap.widgets
- * @since 0.9.3
  */
 
 /**
- * Bootstrap modal widget.
+ *## Bootstrap modal widget.
+ *
  * @see <http://twitter.github.com/bootstrap/javascript.html#modals>
+ *
+ * @since 0.9.3
+ * @package booster.widgets.modals
  */
 class TbModal extends CWidget
 {
@@ -46,24 +49,27 @@ class TbModal extends CWidget
 	 */
 	public function init()
 	{
-		if (!isset($this->htmlOptions['id']))
+		if (!isset($this->htmlOptions['id'])) {
 			$this->htmlOptions['id'] = $this->getId();
+		}
 
-		if ($this->autoOpen === false && !isset($this->options['show']))
+		if ($this->autoOpen === false && !isset($this->options['show'])) {
 			$this->options['show'] = false;
+		}
 
 		$classes = array('modal hide');
 
-		if ($this->fade === true)
+		if ($this->fade === true) {
 			$classes[] = 'fade';
+		}
 
-		if (!empty($classes))
-		{
+		if (!empty($classes)) {
 			$classes = implode(' ', $classes);
-			if (isset($this->htmlOptions['class']))
-				$this->htmlOptions['class'] .= ' '.$classes;
-			else
+			if (isset($this->htmlOptions['class'])) {
+				$this->htmlOptions['class'] .= ' ' . $classes;
+			} else {
 				$this->htmlOptions['class'] = $classes;
+			}
 		}
 		echo CHtml::openTag('div', $this->htmlOptions);
 	}
@@ -83,12 +89,11 @@ class TbModal extends CWidget
 		$cs = Yii::app()->getClientScript();
 
 		$options = !empty($this->options) ? CJavaScript::encode($this->options) : '';
-		$cs->registerScript(__CLASS__.'#'.$id, "jQuery('#{$id}').modal({$options});");
+		$cs->registerScript(__CLASS__ . '#' . $id, "jQuery('#{$id}').modal({$options});");
 
-		foreach ($this->events as $name => $handler)
-		{
+		foreach ($this->events as $name => $handler) {
 			$handler = CJavaScript::encode($handler);
-			$cs->registerScript(__CLASS__.'#'.$id.'_'.$name, "jQuery('#{$id}').on('{$name}', {$handler});");
+			$cs->registerScript(__CLASS__ . '#' . $id . '_' . $name, "jQuery('#{$id}').on('{$name}', {$handler});");
 		}
 	}
 }
