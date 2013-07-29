@@ -1,10 +1,14 @@
 <?php
 /**
- * TbToggleButton.php
+ *## TbToggleButton class file
  *
  * @author: antonio ramirez <antonio@clevertech.biz>
- * Date: 10/19/12
- * Time: 7:00 PM
+ */
+
+/**
+ *## Class TbToggleButton
+ *
+ * @package booster.widgets.forms.buttons
  */
 class TbToggleButton extends CInputWidget
 {
@@ -111,16 +115,17 @@ class TbToggleButton extends CInputWidget
 	{
 		list($name, $id) = $this->resolveNameID();
 
-		echo CHtml::openTag('div', array('id'=>'wrapper-'.$id));
+		echo CHtml::openTag('div', array('id' => 'wrapper-' . $id));
 
-		if ($this->hasModel())
-		{
-			if ($this->form)
+		if ($this->hasModel()) {
+			if ($this->form) {
 				echo $this->form->checkBox($this->model, $this->attribute, $this->htmlOptions);
-			else
+			} else {
 				echo CHtml::activeCheckBox($this->model, $this->attribute, $this->htmlOptions);
-		} else
+			}
+		} else {
 			echo CHtml::checkBox($name, $this->value, $this->htmlOptions);
+		}
 
 		echo '</div>';
 
@@ -129,6 +134,7 @@ class TbToggleButton extends CInputWidget
 
 	/**
 	 * Registers required css and js files
+	 *
 	 * @param integer $id the id of the toggle button
 	 */
 	protected function registerClientScript($id)
@@ -140,7 +146,7 @@ class TbToggleButton extends CInputWidget
 
 		$config = CJavaScript::encode($this->getConfiguration());
 
-		$cs->registerScript(__CLASS__.'#'.$this->getId(), "$('#wrapper-{$id}').toggleButtons({$config});");
+		$cs->registerScript(__CLASS__ . '#' . $this->getId(), "$('#wrapper-{$id}').toggleButtons({$config});");
 	}
 
 	/**
@@ -148,18 +154,18 @@ class TbToggleButton extends CInputWidget
 	 */
 	protected function getConfiguration()
 	{
-		if ($this->onChange!==null)
-		{
-			if ((!$this->onChange instanceof CJavaScriptExpression) && strpos($this->onChange,'js:')!==0)
-				$onChange=new CJavaScriptExpression($this->onChange);
-			else
-				$onChange=$this->onChange;
-		}
-		else
+		if ($this->onChange !== null) {
+			if ((!$this->onChange instanceof CJavaScriptExpression) && strpos($this->onChange, 'js:') !== 0) {
+				$onChange = new CJavaScriptExpression($this->onChange);
+			} else {
+				$onChange = $this->onChange;
+			}
+		} else {
 			$onChange = 'js:$.noop';
+		}
 
 		$config = array(
-		   'onChange' => $onChange,
+			'onChange' => $onChange,
 			'width' => $this->width,
 			'height' => $this->height,
 			'animated' => $this->animated,
@@ -170,23 +176,26 @@ class TbToggleButton extends CInputWidget
 			),
 			'style' => array()
 		);
-		if (!empty($this->enabledStyle))
+		if (!empty($this->enabledStyle)) {
 			$config['style']['enabled'] = $this->enabledStyle;
-		if (!empty($this->disabledStyle))
-			$config['style']['disabled'] = $this->disabledStyle;
-		if (!empty($this->customEnabledStyle))
-			$config['style']['custom']= array('enabled'=>$this->customEnabledStyle);
-		if (!empty($this->customDisabledStyle))
-		{
-			if (isset($config['style']['custom']))
-				$config['style']['custom']['disabled'] = $this->customDisabledStyle;
-			else
-				$config['style']['custom'] = array('disabled'=>$this->customDisabledStyle);
 		}
-		foreach($config as $key=>$element)
-		{
-			if (empty($element))
+		if (!empty($this->disabledStyle)) {
+			$config['style']['disabled'] = $this->disabledStyle;
+		}
+		if (!empty($this->customEnabledStyle)) {
+			$config['style']['custom'] = array('enabled' => $this->customEnabledStyle);
+		}
+		if (!empty($this->customDisabledStyle)) {
+			if (isset($config['style']['custom'])) {
+				$config['style']['custom']['disabled'] = $this->customDisabledStyle;
+			} else {
+				$config['style']['custom'] = array('disabled' => $this->customDisabledStyle);
+			}
+		}
+		foreach ($config as $key => $element) {
+			if (empty($element)) {
 				unset($config[$key]);
+			}
 		}
 		return $config;
 	}

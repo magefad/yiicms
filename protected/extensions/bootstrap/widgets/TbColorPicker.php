@@ -1,9 +1,15 @@
 <?php
-/*## TbColorPicker widget class
+/**
+ *## TbColorPicker class file
  *
  * @author: yiqing95 <yiqing_95@qq.com>
- * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php) 
- * @package YiiBooster bootstrap.widgets
+ * @author Antonio Ramirez <antonio@clevertech.biz>
+ * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php)
+ */
+
+/**
+ *## TbColorPicker widget class
+ *
  * ------------------------------------------------------------------------
  *   in yii  use this to register the necessary js and css files :
  *   <?php  $this->widget('bootstrap.widgets.TbColorPicker', array( )); ?>
@@ -12,11 +18,7 @@
  * @see <http://www.eyecon.ro/bootstrap-colorpicker/>
  * ------------------------------------------------------------------------
  *
- * - Changelog
- * @since 10/27/12 7:28 PM
- * @author Antonio Ramirez <antonio@clevertech.biz>
- * Total refactor to work as a widget instead of a class and allow the use of TbActiveForm
- *
+ * @package booster.widgets.forms.inputs
  */
 class TbColorPicker extends CInputWidget
 {
@@ -46,7 +48,7 @@ class TbColorPicker extends CInputWidget
 	 *          console.log(ev.color.toHex());
 	 *      }',
 	 *      'hide'=>'js:function(ev){
-	 *    	console.log("I am hidden!");
+	 *        console.log("I am hidden!");
 	 *   }')
 	 * </pre>
 	 */
@@ -66,15 +68,15 @@ class TbColorPicker extends CInputWidget
 		$this->htmlOptions['id'] = $id;
 
 		// Do we have a model?
-		if ($this->hasModel())
-		{
-			if ($this->form)
+		if ($this->hasModel()) {
+			if ($this->form) {
 				echo $this->form->textField($this->model, $this->attribute, $this->htmlOptions);
-			else
+			} else {
 				echo CHtml::activeTextField($this->model, $this->attribute, $this->htmlOptions);
-		}
-		else
+			}
+		} else {
 			echo CHtml::textField($name, $this->value, $this->htmlOptions);
+		}
 	}
 
 	/**
@@ -93,8 +95,9 @@ class TbColorPicker extends CInputWidget
 
 		ob_start();
 		echo "jQuery('#{$id}').colorpicker({$options})";
-		foreach ($this->events as $event => $handler)
+		foreach ($this->events as $event => $handler) {
 			echo ".on('{$event}', " . CJavaScript::encode($handler) . ")";
+		}
 
 		Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->getId(), ob_get_clean() . ';');
 	}

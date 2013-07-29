@@ -1,15 +1,19 @@
 <?php
 /**
- * TbGoogleVisualizationChart widget
- *
- * Makes use of the Google Visualization service to render charts
- *
- * @see https://developers.google.com/chart/interactive/docs/gallery
+ *## TbGoogleVisualizationChart class file
  *
  * @author: antonio ramirez <antonio@clevertech.biz>
  * @copyright Copyright &copy; Clevertech 2012-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package YiiBooster bootstrap.widgets
+ */
+
+/**
+ *## TbGoogleVisualizationChart widget
+ *
+ * Makes use of the Google Visualization service to render charts
+ * @see https://developers.google.com/chart/interactive/docs/gallery
+ *
+ * @package booster.widgets.charts
  */
 class TbGoogleVisualizationChart extends CWidget
 {
@@ -44,14 +48,14 @@ class TbGoogleVisualizationChart extends CWidget
 	/**
 	 * Widget's run method
 	 */
-	public function run() {
+	public function run()
+	{
 		$id = $this->getId();
 		$this->htmlOptions['id'] = $id;
 		// if no container is set, it will create one
-		if ($this->containerId==null)
-		{
-			$this->containerId = 'div-chart'.$id;
-			echo '<div '.CHtml::renderAttributes($this->htmlOptions).'></div>';
+		if ($this->containerId == null) {
+			$this->containerId = 'div-chart' . $id;
+			echo '<div ' . CHtml::renderAttributes($this->htmlOptions) . '></div>';
 		}
 		$this->registerClientScript();
 	}
@@ -66,21 +70,25 @@ class TbGoogleVisualizationChart extends CWidget
 		$jsOptions = CJavaScript::jsonEncode($this->options);
 
 		$script = '
-			google.setOnLoadCallback(drawChart'.$id.');
-			var '.$id.'=null;
-			function drawChart'.$id.'() {
-				var data = google.visualization.arrayToDataTable('.$jsData.');
+			google.setOnLoadCallback(drawChart' . $id . ');
+			var ' . $id . '=null;
+			function drawChart' . $id . '() {
+				var data = google.visualization.arrayToDataTable(' . $jsData . ');
 
-				var options = '.$jsOptions.';
+				var options = ' . $jsOptions . ';
 
-				'.$id.' = new google.visualization.'.$this->visualization.'(document.getElementById("'.$this->containerId.'"));
-				'.$id.'.draw(data, options);
+				' . $id . ' = new google.visualization.' . $this->visualization . '(document.getElementById("' . $this->containerId . '"));
+				' . $id . '.draw(data, options);
 			}';
 
 		/** @var $cs CClientScript */
 		$cs = Yii::app()->getClientScript();
 		$cs->registerScriptFile('https://www.google.com/jsapi');
-		$cs->registerScript(__CLASS__.'#'.$id, 'google.load("visualization", "1", {packages:["corechart"]});', CClientScript::POS_HEAD);
-		$cs->registerScript($id, $script, CClientScript::POS_HEAD );
+		$cs->registerScript(
+			__CLASS__ . '#' . $id,
+			'google.load("visualization", "1", {packages:["corechart"]});',
+			CClientScript::POS_HEAD
+		);
+		$cs->registerScript($id, $script, CClientScript::POS_HEAD);
 	}
 }

@@ -1,11 +1,19 @@
 <?php
 /**
- * TbMarkdownEditorJs class
+ *## TbMarkdownEditorJs class file
  *
  * @author: antonio ramirez <antonio@clevertech.biz>
  * @copyright Copyright &copy; Clevertech 2012-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package YiiBooster bootstrap.widgets
+ */
+
+/**
+ *## Class TbMarkdownEditorJS
+ *
+ * @see <https://code.google.com/p/pagedown/wiki/PageDown>
+ * @see <https://github.com/arhpreston/jquery-markdown>
+ *
+ * @package booster.widgets.forms.inputs.wysiwyg
  */
 class TbMarkdownEditorJS extends CInputWidget
 {
@@ -33,20 +41,23 @@ class TbMarkdownEditorJS extends CInputWidget
 		$this->htmlOptions['id'] = $id;
 
 		$this->htmlOptions['class'] = (isset($this->htmlOptions['class']))
-			? $this->htmlOptions['class'].' wmd-input'
+			? $this->htmlOptions['class'] . ' wmd-input'
 			: 'wmd-input';
 
-		if (!array_key_exists('style', $this->htmlOptions))
+		if (!array_key_exists('style', $this->htmlOptions)) {
 			$this->htmlOptions['style'] = "width:{$this->width};height:{$this->height};";
+		}
 		// Do we have a model?
-		if ($this->hasModel())
+		if ($this->hasModel()) {
 			echo CHtml::activeTextArea($this->model, $this->attribute, $this->htmlOptions);
-		else
+		} else {
 			echo CHtml::textArea($name, $this->value, $this->htmlOptions);
+		}
 	}
 
 	/**
 	 * Register required script files
+	 *
 	 * @param integer $id
 	 */
 	public function registerClientScript($id)
@@ -58,7 +69,7 @@ class TbMarkdownEditorJS extends CInputWidget
 		Yii::app()->clientScript->registerScript(
 			$id,
 			"var converter = Markdown.getSanitizingConverter();
-			var editor = new Markdown.Editor(converter, '".$id."');
+			var editor = new Markdown.Editor(converter, '" . $id . "');
 			editor.run();",
 			CClientScript::POS_END
 		);

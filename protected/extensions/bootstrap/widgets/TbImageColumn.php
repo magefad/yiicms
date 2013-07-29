@@ -1,14 +1,19 @@
 <?php
 /**
- * TbImageColumn widget class
+ *## TbImageColumn class file
  *
  * @author: antonio ramirez <antonio@clevertech.biz>
  * @copyright Copyright &copy; Clevertech 2012-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package YiiBooster bootstrap.widgets
  */
+
 Yii::import('zii.widgets.grid.CGridColumn');
 
+/**
+ * TbImageColumn widget class
+ *
+ * @package booster.widgets.grids.columns
+ */
 class TbImageColumn extends CGridColumn
 {
 	/**
@@ -57,21 +62,28 @@ class TbImageColumn extends CGridColumn
 
 	/**
 	 * Renders the data cell content
+	 *
 	 * @param int $row the row number (zero based)
 	 * @param mixed $data teh data associated with the row
 	 */
 	protected function renderDataCellContent($row, $data)
 	{
 		$content = $this->emptyText;
-		if ($this->imagePathExpression && $imagePath = $this->evaluateExpression($this->imagePathExpression, array('row' => $row, 'data' => $data)))
-		{
+		if ($this->imagePathExpression && $imagePath = $this->evaluateExpression(
+			$this->imagePathExpression,
+			array('row' => $row, 'data' => $data)
+		)
+		) {
 			$this->imageOptions['src'] = $imagePath;
 			$content = CHtml::tag('img', $this->imageOptions);
+		} elseif ($this->usePlaceHoldIt && !empty($this->placeHoldItSize)) {
+			$content = CHtml::tag(
+				'img',
+				array('src' => 'http://placehold.it/' . $this->placeHoldItSize)
+			);
+		} elseif ($this->usePlaceKitten && !empty($this->placeKittenSize)) {
+			$content = CHtml::tag('img', array('src' => 'http://placekitten.com/' . $this->placeKittenSize));
 		}
-		elseif ($this->usePlaceHoldIt && !empty($this->placeHoldItSize))
-			$content = CHtml::tag('img', array('src'=>'http://placehold.it/' . $this->placeHoldItSize));
-		elseif ($this->usePlaceKitten && !empty($this->placeKittenSize))
-			$content = CHtml::tag('img', array('src'=>'http://placekitten.com/' . $this->placeKittenSize));
 		echo $content;
 	}
 }

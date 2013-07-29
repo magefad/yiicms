@@ -1,17 +1,22 @@
 <?php
 /**
- * TbJsonButtonColumn class
- * Works in conjunction with TbJsonGridView. Renders HTML or returns JSON according to the request to the Grid.
+ *## TbJsonButtonColumn class file
  *
  * @author: antonio ramirez <antonio@clevertech.biz>
  * @copyright Copyright &copy; Clevertech 2012-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package YiiBooster bootstrap.widgets
  */
+
 Yii::import('bootstrap.widgets.TbButtonColumn');
 
 /**
+ *## JsonButtomColumn widget
+ *
+ * Works in conjunction with TbJsonGridView. Renders HTML or returns JSON according to the request to the Grid.
+ *
  * @property TbJsonGridView $grid
+ *
+ * @package booster.widgets.grids.columns
  */
 class TbJsonButtonColumn extends TbButtonColumn
 {
@@ -20,27 +25,27 @@ class TbJsonButtonColumn extends TbButtonColumn
 	 */
 	public function renderHeaderCell()
 	{
-		if ($this->grid->json)
-		{
+		if ($this->grid->json) {
 			ob_start();
 			$this->renderHeaderCellContent();
 			$content = ob_get_contents();
 			ob_end_clean();
 
-			return array('id'=>$this->id, 'content'=>$content);
+			return array('id' => $this->id, 'content' => $content);
 		}
 		parent::renderHeaderCell();
 	}
 
 	/**
 	 * Renders|returns the data cell
+	 *
 	 * @param int $row
+	 *
 	 * @return array|void
 	 */
 	public function renderDataCell($row)
 	{
-		if ($this->grid->json)
-		{
+		if ($this->grid->json) {
 			$data = $this->grid->dataProvider->data[$row];
 			$col = array();
 			ob_start();
@@ -63,6 +68,9 @@ class TbJsonButtonColumn extends TbButtonColumn
 		/**
 		 * add custom with msgbox instead
 		 */
-		$this->buttons['delete']['click'] = strtr($this->buttons['delete']['click'],array('yiiGridView'=>'yiiJsonGridView'));
+		$this->buttons['delete']['click'] = strtr(
+			$this->buttons['delete']['click'],
+			array('yiiGridView' => 'yiiJsonGridView')
+		);
 	}
 }

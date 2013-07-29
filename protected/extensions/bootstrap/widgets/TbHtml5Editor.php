@@ -1,21 +1,25 @@
 <?php
 /**
- * TbHtml5Editor widget
- *
- * Implements the bootstrap-wysihtml5 editor
- *
- * @see https://github.com/jhollingworth/bootstrap-wysihtml5
+ *## TbHtml5Editor class file
  *
  * @author: antonio ramirez <antonio@clevertech.biz>
  * @copyright Copyright &copy; Clevertech 2012-
  * @license http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @package YiiBooster bootstrap.widgets
+ */
+
+/**
+ *## TbHtml5Editor widget
+ *
+ * Implements the bootstrap-wysihtml5 editor
+ * @see https://github.com/jhollingworth/bootstrap-wysihtml5
+ *
+* @package booster.widgets.forms.inputs.wysiwyg
  */
 class TbHtml5Editor extends CInputWidget
 {
 	/**
 	 * Editor language
-	 * Supports: de-DE, es-ES, fr-FR, pt-BR, sv-SE
+	 * Supports: de-DE, es-ES, fr-FR, pt-BR, sv-SE, it-IT
 	 */
 	public $lang = 'en';
 
@@ -51,17 +55,20 @@ class TbHtml5Editor extends CInputWidget
 
 		$this->htmlOptions['id'] = $id;
 
-		if (!array_key_exists('style', $this->htmlOptions))
+		if (!array_key_exists('style', $this->htmlOptions)) {
 			$this->htmlOptions['style'] = "width:{$this->width};height:{$this->height};";
+		}
 		// Do we have a model?
-		if ($this->hasModel())
+		if ($this->hasModel()) {
 			echo CHtml::activeTextArea($this->model, $this->attribute, $this->htmlOptions);
-		else
+		} else {
 			echo CHtml::textArea($name, $this->value, $this->htmlOptions);
+		}
 	}
 
 	/**
 	 * Register required script files
+	 *
 	 * @param string $id
 	 */
 	public function registerClientScript($id)
@@ -70,13 +77,12 @@ class TbHtml5Editor extends CInputWidget
 		Yii::app()->bootstrap->registerAssetJs('wysihtml5-0.3.0.js');
 		Yii::app()->bootstrap->registerAssetJs('bootstrap-wysihtml5.js');
 
-		if (isset($this->editorOptions['locale']))
-		{
-			Yii::app()->bootstrap->registerAssetJs('locales/bootstrap-wysihtml5.'.$this->editorOptions['locale'].'.js');
-		}
-		elseif (in_array($this->lang, array('de-DE','es-ES','fr','fr-NL','pt-BR','sv-SE')))
-		{
-			Yii::app()->bootstrap->registerAssetJs('locales/bootstrap-wysihtml5.'.$this->lang.'.js');
+		if (isset($this->editorOptions['locale'])) {
+			Yii::app()->bootstrap->registerAssetJs(
+				'locales/bootstrap-wysihtml5.' . $this->editorOptions['locale'] . '.js'
+			);
+		} elseif (in_array($this->lang, array('de-DE', 'es-ES', 'fr', 'fr-NL', 'pt-BR', 'sv-SE', 'it-IT'))) {
+			Yii::app()->bootstrap->registerAssetJs('locales/bootstrap-wysihtml5.' . $this->lang . '.js');
 			$this->editorOptions['locale'] = $this->lang;
 		}
 
@@ -85,27 +91,54 @@ class TbHtml5Editor extends CInputWidget
 
 		$options = CJSON::encode($this->editorOptions);
 
-		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$id, "$('#{$id}').wysihtml5({$options});");
+		$script = array();
+		/**
+		 * The default stylesheet option is incompatible with yii paths so it is reset here.
+		 * The insertDefaultStylesheetIfColorsEnabled includes the correct stylesheet if needed.
+		 *
+		 * Any other changes to defaults should be made here.
+		 */
+		$script[] = "$.fn.wysihtml5.defaultOptions.stylesheets = [];";
+
+		/**
+		 * Check if we need a deep copy for the configuration.
+		 */
+		if (isset($this->editorOptions['deepExtend']) && $this->editorOptions['deepExtend'] === true)
+		{
+			$script[] = "$('#{$id}').wysihtml5('deepExtend', {$options});";
+		}
+		else
+		{
+			$script[] = "$('#{$id}').wysihtml5({$options});";
+		}
+
+		Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, implode("\n", $script));
 	}
 
 	private function insertDefaultStylesheetIfColorsEnabled()
 	{
-		if (empty($this->editorOptions['color']))
+		if (empty($this->editorOptions['color'])) {
 			return;
+		}
 
 		$defaultStyleSheetUrl = Yii::app()->bootstrap->getAssetsUrl() . '/css/wysiwyg-color.css';
-		array_unshift( $this->editorOptions['stylesheets'], $defaultStyleSheetUrl ); // we want default css to be first
+		array_unshift($this->editorOptions['stylesheets'], $defaultStyleSheetUrl); // we want default css to be first
 	}
 
 	private function normalizeStylesheetsProperty()
 	{
-		if (empty($this->editorOptions['stylesheets']))
+		if (empty($this->editorOptions['stylesheets'])) {
 			$this->editorOptions['stylesheets'] = array();
-		else if (is_array($this->editorOptions['stylesheets']))
-			$this->editorOptions['stylesheets'] = array_filter($this->editorOptions['stylesheets'], 'is_string');
-		else if (is_string($this->editorOptions['stylesheets']))
+		} else if (is_array($this->editorOptions['stylesheets'])) {
+			$this->editorOptions['stylesheets'] = array_filter(
+				$this->editorOptions['stylesheets'],
+				'is_string'
+			);
+		} else if (is_string($this->editorOptions['stylesheets'])) {
 			$this->editorOptions['stylesheets'] = array($this->editorOptions['stylesheets']);
-		else // presumably if this option is neither an array or string then it's some erroneous value; clean it
+		} else // presumably if this option is neither an array or string then it's some erroneous value; clean it
+		{
 			$this->editorOptions['stylesheets'] = array();
+		}
 	}
 }

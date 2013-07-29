@@ -1,13 +1,17 @@
 <?php
 /**
- * TbToggleAction CAction Component
+ *## TbToggleAction class file
+ *
+ * @author antonio ramirez <antonio@clevertech.biz>
+ */
+
+/**
+ *## TbToggleAction CAction Component
  *
  * It is a component that works in conjunction of TbToggleColumn widget. Just attach to the controller you wish to
  * make the calls to.
  *
- * @author: antonio ramirez <antonio@clevertech.biz>
- * Date: 10/16/12
- * Time: 5:40 PM
+ * @package booster.actions
  */
 class TbToggleAction extends CAction
 {
@@ -54,52 +58,58 @@ class TbToggleAction extends CAction
 
 	/**
 	 * Widgets run function
+	 *
 	 * @param integer $id
 	 * @param string $attribute
+	 *
 	 * @throws CHttpException
 	 */
 	public function run($id, $attribute)
 	{
-		if (Yii::app()->getRequest()->isPostRequest)
-		{
+		if (Yii::app()->getRequest()->isPostRequest) {
 			$model = $this->loadModel($id);
 			$model->$attribute = ($model->$attribute == $this->noValue) ? $this->yesValue : $this->noValue;
 			$success = $model->save(false, array($attribute));
 
-			if (Yii::app()->getRequest()->isAjaxRequest)
-			{
+			if (Yii::app()->getRequest()->isAjaxRequest) {
 				echo $success ? $this->ajaxResponseOnSuccess : $this->ajaxResponseOnFailed;
 				exit(0);
 			}
-			if ($this->redirectRoute !== null)
+			if ($this->redirectRoute !== null) {
 				$this->getController()->redirect($this->redirectRoute);
-		} else
+			}
+		} else {
 			throw new CHttpException(Yii::t('zii', 'Invalid request'));
+		}
 	}
 
 	/**
 	 * Loads the requested data model.
+	 *
 	 * @param integer $id the model ID
+	 *
 	 * @return CActiveRecord the model instance.
 	 * @throws CHttpException if the model cannot be found
 	 */
 	protected function loadModel($id)
 	{
-		if (empty($this->additionalCriteriaOnLoadModel))
-			$model = CActiveRecord::model($this->modelName)->findByPk($id);
-		else
-		{
-			$finder = CActiveRecord::model($this->modelName);
+		$finder = CActiveRecord::model($this->modelName);
+		if ($this->additionalCriteriaOnLoadModel) {
 			$c = new CDbCriteria($this->additionalCriteriaOnLoadModel);
-			$c->mergeWith(array(
-				'condition' => $finder->tableSchema->primaryKey . '=:id',
-				'params' => array(':id' => $id),
-			));
+			$c->mergeWith(
+				array(
+					'condition' => $finder->tableSchema->primaryKey . '=:id',
+					'params' => array(':id' => $id),
+				)
+			);
 			$model = $finder->find($c);
+		} else {
+			$model = $finder->findByPk($id);
 		}
-		if (isset($model))
-			return $model;
-		if ($this->additionalCriteriaOnLoadModel)
+
+		if (!$model)
 			throw new CHttpException(404, 'Unable to find the requested object.');
+
+		return $model;
 	}
 }
