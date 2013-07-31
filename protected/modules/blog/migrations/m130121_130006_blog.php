@@ -47,7 +47,7 @@ class m130121_130006_blog extends EDbMigration
                 'access_type'    => 'boolean NOT NULL DEFAULT \'1\'',
                 'create_user_id' => 'integer NOT NULL',
                 'update_user_id' => 'integer DEFAULT NULL',
-                'publish_time'   => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP',
+                'publish_time'   => 'timestamp NULL DEFAULT NULL',
                 'create_time'    => 'timestamp NULL DEFAULT NULL',
                 'update_time'    => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP' . $onUpdateTimeStamp
             ),
