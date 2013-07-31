@@ -230,6 +230,7 @@ class Photo extends CActiveRecord
 
     public function setImage($path)
     {
+        Yii::import('ext.image.Image');
         /** @var $image Image */
         $image = Yii::app()->image->load($path);
 
@@ -296,6 +297,7 @@ class Photo extends CActiveRecord
      */
     public function updateImages()
     {
+        Yii::import('ext.image.Image');
         foreach ($this->versions as $version => $actions) {
             $_uploadPath = $this->getUploadPath();
             $_fileName   = $this->getFileName();

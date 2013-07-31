@@ -236,6 +236,7 @@ class News extends CActiveRecord
 
     private function setImage($path, $uploadPath)
     {
+        Yii::import('ext.image.Image');
         /** @var $image Image */
         $image = Yii::app()->image->load($path);
 
