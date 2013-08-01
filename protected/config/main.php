@@ -103,9 +103,9 @@ return array(
                     ),
                 ),
                 'CJuiDatePicker' => array( // where <WidgetName> is the name of the JUI Widget (Tabs, DatePicker, etc.). Each CJuiWidget used must be declared
-                    'scriptUrl'      => '//ajax.googleapis.com/ajax/libs/jqueryui/1.8',
+                    'scriptUrl'      => '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2',
                     'i18nScriptFile' => 'i18n/jquery-ui-i18n.min.js',
-                    'themeUrl'       => '//ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes',
+                    'themeUrl'       => '//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes',
                 ),
             ),
         ),
@@ -167,6 +167,7 @@ return array(
             'enableBootboxJS'  => false,
             'enableNotifierJS' => false,
             'enableCdn'        => true,
+            'tooltipSelector'  => '[rel=tooltip]'
         ),
     ),
     // application-level parameters that can be accessed
