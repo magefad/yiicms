@@ -38,7 +38,7 @@ $this->widget(
 );
 if ( $model->rich_editor) {
     #Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css')
-    $contentCss = array(Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css');
+    $contentCss = array(Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/bootstrap/css/bootstrap.min.css');
     if (isset(Yii::app()->theme->baseUrl)) {
         $contentCss[] = Yii::app()->theme->baseUrl . '/css/style.css';
     }

@@ -60,9 +60,7 @@ $this->widget(
             'theme_advanced_buttons1' => 'bold,italic,underline,strikethrough,|,sub,sup,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,anchor,image,cleanup,|,media,|,forecolor,backcolor,|,insertdate,inserttime,|,preview,|,spellchecker',
             'theme_advanced_buttons2' => '',
             'theme_advanced_buttons3' => '',
-            'content_css'             => Yii::app()->assetManager->getPublishedUrl(
-                Yii::getPathOfAlias('ext.bootstrap.assets')
-            ) . '/css/bootstrap.min.css, /css/main.css'
+            'content_css'             => Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/bootstrap/css/bootstrap.min.css, /css/main.css'
         )
     )
 );
@@ -75,9 +73,7 @@ $this->widget(
         'model'     => $model,
         'attribute' => 'content',
         'settings'  => array(
-            'content_css' => Yii::app()->assetManager->getPublishedUrl(
-                Yii::getPathOfAlias('ext.bootstrap.assets')
-            ) . '/css/bootstrap.min.css'
+            'content_css' => Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/bootstrap/css/bootstrap.min.css'
         )
     )
 ); ?>

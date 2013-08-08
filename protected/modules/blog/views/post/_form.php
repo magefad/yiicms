@@ -51,9 +51,7 @@ $form = $this->beginWidget(
         'model'     => $model,
         'attribute' => 'content',
         'settings'  => array(
-            'content_css' => Yii::app()->assetManager->getPublishedUrl(
-                Yii::getPathOfAlias('ext.bootstrap.assets')
-            ) . '/css/bootstrap.min.css'
+            'content_css' => Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/bootstrap/css/bootstrap.min.css'
         )
     )
 ); ?>
