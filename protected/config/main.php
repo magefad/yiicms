@@ -100,6 +100,7 @@ return array(
                         'apply_source_formatting'           => true,
                         'spellchecker_word_separator_chars' => '\\s!"#$%&()*+,./:;<=>?@[\]^_{|}\xa7\xa9\xab\xae\xb1\xb6\xb7\xb8\xbb\xbc\xbd\xbe\u00bf\xd7\xf7\xa4\u201d\u201c',
                         //'setup'                             => 'js:function (a){a.addCommand("mceSpellCheckRuntime",function(){t=a.plugins.spellchecker;t.mceSpellCheckRuntimeTimer&&window.clearTimeout(t.mceSpellCheckRuntimeTimer);t.mceSpellCheckRuntimeTimer=window.setTimeout(function(){t._done();t._sendRPC("checkWords",[t.selectedLang,t._getWords()],function(c){0<c.length&&(t.active=1,t._markWords(c),a.nodeChanged())})},4E3)});a.onKeyUp.add(function(a,b){(13==b.keyCode||190==b.keyCode||191==b.keyCode)&&a.execCommand("mceSpellCheckRuntime")})}',
+                        'setup'                             => 'js:function (ed){ed.onPostRender.add(function(ed, cm) {ed.dom.setAttrib(tinymce.DOM.get(ed.id + "_ifr"), "title", "");});}',
                     ),
                 ),
                 'CJuiDatePicker' => array( // where <WidgetName> is the name of the JUI Widget (Tabs, DatePicker, etc.). Each CJuiWidget used must be declared
