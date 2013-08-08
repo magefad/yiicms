@@ -43,12 +43,14 @@ class FadTbGridView extends TbGridView
         $statusAttribute = 'status',
         $property = 'statusMain',
         $icons = array(
-            'published'  => 'ok-sign',
-            'draft'      => 'eye-close',
-            'moderation' => 'time',
-            'active'     => 'ok-sign',
-            'blocked'    => 'eye-close',
-            'deleted'    => 'ok-sign'
+            'eye-close',
+            /** @see StatusBehavior::STATUS_DRAFT, Blog::STATUS_BLOCKED, UserBlog::STATUS_BLOCKED, Comment::STATUS_NOT_APPROVED, Gallery::STATUS_DRAFT, Menu::STATUS_OFF, User::STATUS_BLOCKED */
+            'ok-sign',
+            /** @see StatusBehavior::STATUS_PUBLISHED, Blog::STATUS_ACTIVE, Menu::STATUS_ON, UserBlog::STATUS_ACTIVE, Comment::STATUS_APPROVED, Gallery::STATUS_PUBLISHED, Menu::STATUS_ON, User::STATUS_ACTIVE */
+            'time',
+            /** @see StatusBehavior::STATUS_MODERATION, Blog::STATUS_DELETED, Comment::STATUS_SPAM, User::STATUS_NOT_ACTIVE */
+            'ban-circle',
+            /** @see Comment::STATUS_DELETED */
         )
     )
     {
