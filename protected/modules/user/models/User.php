@@ -146,8 +146,8 @@ class User extends CActiveRecord
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'email_confirm',
                 'list' => array(
-                    1 => Yii::t('user', 'Да'),
-                    0 => Yii::t('user', 'Нет'),
+                    1 => Yii::t('yii', 'Yes'),
+                    0 => Yii::t('yii', 'No'),
                 )
             ),
         );
@@ -311,7 +311,7 @@ class User extends CActiveRecord
     public function getAccessLevel()
     {
         $data = $this->getAccessLevelsList();
-        return array_key_exists($this->access_level, $data) ? $data[$this->access_level] : Yii::t('user', 'нет');
+        return array_key_exists($this->access_level, $data) ? $data[$this->access_level] : Yii::t('yii', 'No');
     }
 
     public function getAccessLevelsList()

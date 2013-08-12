@@ -209,8 +209,8 @@ class WebModule extends CModule
     public function getChoice()
     {
         return array(
-            self::CHOICE_YES => Yii::t('admin', 'Да'),
-            self::CHOICE_NO  => Yii::t('admin', 'Нет'),
+            self::CHOICE_YES => Yii::t('yii', 'Yes'),
+            self::CHOICE_NO  => Yii::t('yii', 'No'),
         );
     }
 

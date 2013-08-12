@@ -123,8 +123,8 @@ class Page extends CActiveRecord
                 'class'     => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'is_protected',
                 'list'      => array(
-                    Yii::t('page', 'Нет'),
-                    Yii::t('page', 'Да')
+                    Yii::t('yii', 'No'),
+                    Yii::t('yii', 'Yes')
                 )
             )
         );

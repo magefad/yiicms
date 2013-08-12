@@ -136,8 +136,8 @@ class News extends CActiveRecord
                 'class'     => 'application.components.behaviors.StatusBehavior',
                 'attribute' => 'is_protected',
                 'list'      => array(
-                    Yii::t('news', 'Нет'),
-                    Yii::t('news', 'Да')
+                    Yii::t('yii', 'No'),
+                    Yii::t('yii', 'Yes')
                 )
             )
         );
