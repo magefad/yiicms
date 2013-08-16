@@ -5,11 +5,14 @@
  */
 ?>
 <div class="row-fluid">
-    <span class="span2">
+    <span class="span3">
         <?php echo $form->dropDownListRow($model, 'parent_id', $model->treeArray->listData, array('style' => 'width: 100% !important;', 'empty' => Yii::t('page', '- нет родительской страницы -'))); ?>
     </span>
-    <span class="span3">
+    <span class="span2">
         <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList(), array('style' => 'width: 100% !important')) ?>
+    </span>
+    <span class="span2">
+        <?php echo $form->dropDownListRow($model, 'type', $model->statusType->getList(), array('empty' => Yii::t('zii', 'Not set'), 'style' => 'width: 100% !important')) ?>
     </span>
     <span class="span1">
         <?php echo $form->textFieldRow($model, 'sort_order', array('style' => 'width: 100% !important')); ?>

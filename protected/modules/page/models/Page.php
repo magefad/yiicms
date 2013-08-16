@@ -15,6 +15,7 @@
  * @property string $slug
  * @property integer $rich_editor
  * @property string $status
+ * @property string $type
  * @property boolean $is_protected
  * @property integer $sort_order
  * @property string $create_time
@@ -30,6 +31,7 @@
  *
  * The followings are the available model behaviors:
  * @property StatusBehavior $statusMain
+ * @property StatusBehavior $statusType
  * @property StatusBehavior $statusProtected
  *
  * @method published()
@@ -43,6 +45,8 @@ class Page extends CActiveRecord
     public $changeAuthor_search;
 
     const ROOT_YES = 0;
+
+    const TYPE_CATALOG = 0;
 
     /**
      * Returns the static model of the specified AR class.
@@ -75,6 +79,7 @@ class Page extends CActiveRecord
             array('keywords, description', 'length', 'max' => 200),
             array('slug', 'unique'), #slug is a link of page
             array('status', 'in', 'range' => array_keys($this->statusMain->getList())),
+            array('type', 'in', 'range' => array_keys($this->statusType->getList())),
             array('is_protected', 'boolean'),
             array('name, title, keywords, description, content, slug', 'filter', 'filter' => 'trim'),
             array(
@@ -89,7 +94,7 @@ class Page extends CActiveRecord
                 'message' => Yii::t('page', 'Строка содержит запрещенные символы: {attribute}')
             ),
             array(
-                'id, parent_id, level, name, title, keywords, description, slug, content, status, sort_order, create_time, update_time, author_search, changeAuthor_search',
+                'id, parent_id, level, name, title, keywords, description, slug, content, status, type, sort_order, create_time, update_time, author_search, changeAuthor_search',
                 'safe',
                 'on' => 'search'
             ),
@@ -126,6 +131,13 @@ class Page extends CActiveRecord
                     Yii::t('yii', 'No'),
                     Yii::t('yii', 'Yes')
                 )
+            ),
+            'statusType' => array(
+                'class'     => 'StatusBehavior',
+                'attribute' => 'type',
+                'list' => array(
+                    Yii::t('page', 'Каталог')
+                )
             )
         );
     }
@@ -161,6 +173,10 @@ class Page extends CActiveRecord
             'root'      => array(
                 'condition' => 'parent_id = :parent_id',
                 'params'    => array(':parent_id' => self::ROOT_YES)
+            ),
+            'catalog' => array(
+                'condition' => 'type = :type',
+                'params'    => array(':type' => self::TYPE_CATALOG)
             )
         );
     }
@@ -182,6 +198,7 @@ class Page extends CActiveRecord
             'slug'                => Yii::t('page', 'Ссылка'),
             'rich_editor'         => Yii::t('page', 'Использовать HTML редактор'),
             'status'              => Yii::t('page', 'Статус'),
+            'type'                => Yii::t('page', 'Тип'),
             'is_protected'        => Yii::t('page', 'Доступ только для авторизованных пользователей'),
             'sort_order'          => Yii::t('page', 'Порядок'),
             'create_user_id'      => Yii::t('page', 'Создал'),
@@ -223,6 +240,7 @@ class Page extends CActiveRecord
         $criteria->compare('slug', $this->slug, true);
         $criteria->compare('rich_editor', $this->rich_editor, true);
         $criteria->compare('t.status', $this->status);
+        $criteria->compare('t.type', $this->type);
         $criteria->compare('is_protected', $this->is_protected);
         $criteria->compare('sort_order', $this->sort_order);
         $criteria->compare('create_time', $this->create_time, true);
