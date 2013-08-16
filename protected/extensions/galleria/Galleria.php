@@ -123,8 +123,8 @@ class Galleria extends CWidget
                     'bind'                 => $this->binding,
                     'data'                 => $this->dataProvider,
                     'imagePrefixSeparator' => $this->imagePrefixSeparator, //optional
-                    'srcPrefix'            => $this->srcPrefix, //optional
-                    'srcPrefixThumb'       => $this->srcPrefixThumb, //optional
+                    'srcPrefix'            => Yii::app()->getBaseUrl() . $this->srcPrefix, //optional
+                    'srcPrefixThumb'       => Yii::app()->getBaseUrl() . $this->srcPrefixThumb, //optional
                 )
             );
         }
