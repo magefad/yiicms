@@ -29,7 +29,7 @@ foreach ($modules_dirs as $module) {
     $modules[] = $module;
 }
 $components = array();
-if (file_exists(dirname(__FILE__) . '/protected/config/db.php')) {
+if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php')) {
     $components['db'] = require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php');
 }
 return array(
