@@ -39,6 +39,7 @@
  * @method protected()
  * @method public()
  * @method root()
+ * @method catalog()
  */
 class Page extends CActiveRecord
 {
