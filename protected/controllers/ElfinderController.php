@@ -24,7 +24,7 @@ class ElfinderController extends Controller
                 'settings' => array(
                     'root'       => Yii::getPathOfAlias('uploads'),
                     'URL'        => Yii::app()->baseUrl . '/' . $this->admin->uploadDir . '/',
-                    'rootAlias'  => 'Home',
+                    'rootAlias'  => Yii::t('zii', 'Home'),
                     'mimeDetect' => 'none'
                 )
             ),
