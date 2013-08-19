@@ -30,6 +30,7 @@
  * @property User $changeAuthor
  *
  * The followings are the available model behaviors:
+ * @property AdjacencyListBehavior $treeArray
  * @property StatusBehavior $statusMain
  * @property StatusBehavior $statusType
  * @property StatusBehavior $statusProtected
