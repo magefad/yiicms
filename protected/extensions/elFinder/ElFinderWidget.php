@@ -76,7 +76,7 @@ class ElFinderWidget extends CWidget
         $id = $this->getId();
         $settings = CJavaScript::encode($this->settings);
         $cs = Yii::app()->getClientScript();
-        $cs->registerScript('elFinder', "$('#$id').elfinder($settings);");
+        $cs->registerScript("elFinder#$id", "$('#$id').elfinder($settings);");
         echo "<div id=\"$id\"></div>";
     }
 
