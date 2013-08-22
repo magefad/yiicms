@@ -31,12 +31,12 @@ class NewsModule extends WebModule
 
     public static function getName()
     {
-        return Yii::t('news', 'Новости');
+        return Yii::t('NewsModule.news', 'News');
     }
 
     public static function getDescription()
     {
-        return Yii::t('news', 'Управление новостями сайта');
+        return Yii::t('NewsModule.news', 'Manage Site News');
     }
 
     public static function getIcon()
@@ -48,12 +48,12 @@ class NewsModule extends WebModule
     public function getSettingLabels()
     {
         return array(
-            'uploadDir'      => Yii::t('news', 'Папка загрузки фото'),
-            'uploadAllowExt' => Yii::t('news', 'Форматы фотографий'),
-            'maxWidth'       => Yii::t('news', 'Максимальная ширина фото после загрузки'),
-            'maxHeight'      => Yii::t('news', 'Максимальная высота фото после загрузки'),
-            'thumbMaxWidth'  => Yii::t('news', 'Максимальная ширина миниатюры фото'),
-            'lastNewsCount'  => Yii::t('news', 'Количество новостей на главной')
+            'uploadDir'      => Yii::t('NewsModule.news', 'Photo upload directory'),
+            'uploadAllowExt' => Yii::t('NewsModule.news', 'Photo formats'),
+            'maxWidth'       => Yii::t('NewsModule.news', 'Max photo width after upload'),
+            'maxHeight'      => Yii::t('NewsModule.news', 'Max photo height after upload'),
+            'thumbMaxWidth'  => Yii::t('NewsModule.news', 'Max thumb photo width after upload'),
+            'lastNewsCount'  => Yii::t('NewsModule.news', 'Count of news on main page')
         );
     }
 

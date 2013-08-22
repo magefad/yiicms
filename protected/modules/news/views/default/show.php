@@ -5,7 +5,7 @@
  */
 $this->pageTitle   = $model->title;
 $this->breadcrumbs = array(
-    Yii::t('news', 'Новости') => array('/news'),
+    Yii::t('NewsModule.news', 'News') => array('/news'),
     CHtml::encode($model->title)
 );
 ?>

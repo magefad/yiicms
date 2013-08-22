@@ -23,7 +23,7 @@ class DefaultController extends Controller
             $model = News::model()->published()->find('slug = :slug', array(':slug' => $slug));
         }
         if (!$model) {
-            throw new CHttpException(404, Yii::t('news', 'Новость не найдена!'));
+            throw new CHttpException(404, Yii::t('NewsModule.news', 'News Not Found!'));
         }
         $_GET['id'] = $model->id;
         $this->httpCacheFilter($model->update_time);
@@ -51,7 +51,7 @@ class DefaultController extends Controller
         if (isset($_POST['News'])) {
             $model->attributes = $_POST['News'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', Yii::t('news', 'Новость добавлена!'));
+                Yii::app()->user->setFlash('success', Yii::t('NewsModule.news', 'News Added!'));
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }
@@ -79,7 +79,7 @@ class DefaultController extends Controller
             #rename image directory if slug (link) changed
             $model->attributes = $_POST['News'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', Yii::t('news', 'Новость добавлена!'));
+                Yii::app()->user->setFlash('success', Yii::t('NewsModule.news', 'News Added!'));
                 $this->redirect(array('view', 'id' => $model->id));
             }
         }

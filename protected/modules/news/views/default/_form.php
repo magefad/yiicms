@@ -20,8 +20,8 @@ $form = $this->beginWidget(
 ); ?>
 
 <p class="alert alert-info"><?php echo Yii::t(
-    'news',
-    'Поля, отмеченные <span class="required">*</span> обязательны для заполнения.'
+    'NewsModule.news',
+    'Fields with <span class="required">*</span> is required.'
 )?></p>
 <?php echo $form->errorSummary($model); ?>
 <div class="control-group">
@@ -88,7 +88,7 @@ $this->widget(
     array(
         'buttonType'   => 'submit',
         'type'         => 'primary',
-        'label'        => $model->isNewRecord ? Yii::t('news', 'Добавить') : Yii::t('news', 'Сохранить'),
+        'label'        => $model->isNewRecord ? Yii::t('NewsModule.news', 'Add') : Yii::t('NewsModule.news', 'Save'),
     )
 ); ?>
 </div>

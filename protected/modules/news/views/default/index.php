@@ -4,8 +4,8 @@
  * @var $dataProvider CDataProvider
  * @property $module NewsModule
  */
-$this->pageTitle = Yii::app()->name . ' — ' . Yii::t('news', 'Новости');
-$this->breadcrumbs = array(Yii::t('news', 'Новости'));
+$this->pageTitle = Yii::app()->name . ' — ' . Yii::t('NewsModule.news', 'News');
+$this->breadcrumbs = array(Yii::t('NewsModule.news', 'News'));
 $css = <<<CSS
 h2.media-heading {
     font-size: 17.5px;
@@ -32,7 +32,7 @@ div.well .media-object {
 CSS;
 Yii::app()->clientScript->registerCss('news', $css);
 ?>
-<h1 style="margin-top:0"><?php echo Yii::t('news', 'Новости'); ?></h1>
+<h1 style="margin-top:0"><?php echo Yii::t('NewsModule.news', 'News'); ?></h1>
 <?php
 $this->widget(
     'bootstrap.widgets.TbListView',

@@ -4,8 +4,8 @@
  * @var $this Controller
  */
 $this->breadcrumbs = array(
-    Yii::t('news', 'Новости') => array('admin'),
-    Yii::t('news', 'Управление'),
+    Yii::t('NewsModule.news', 'News') => array('admin'),
+    Yii::t('NewsModule.news', 'Manage'),
 );
 
 Yii::app()->clientScript->registerScript(
@@ -25,7 +25,7 @@ $('.search-form form').submit(function(){
 );
 ?>
 <?php echo CHtml::link(
-    Yii::t('News', '<i class="icon-search"></i> Поиск <span class="caret"></span>'),
+    Yii::t('NewsModule.news', '<i class="icon-search"></i> Search <span class="caret"></span>'),
     '#',
     array('class' => 'search-button btn btn-small')
 ) ?>
@@ -71,10 +71,10 @@ $this->widget(
                 'type'        => 'raw',
                 'value'       => '$this->grid->getStatus($data)',
                 'filter'      => array(
-                    '' => Yii::t('menu', 'Все'),
-                    1  => Yii::t('menu', 'Опубликовано'),
-                    0  => Yii::t('menu', 'Черновики'),
-                    2  => Yii::t('menu', 'На модерации')
+                    '' => Yii::t('NewsModule.news', 'All'),
+                    1  => Yii::t('NewsModule.news', 'Published'),
+                    0  => Yii::t('NewsModule.news', 'Draft'),
+                    2  => Yii::t('NewsModule.news', 'On Moderation')
                 ),
                 'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
             ), /*'create_time',

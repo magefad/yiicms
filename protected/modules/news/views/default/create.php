@@ -4,7 +4,7 @@
  * @var $model News
  */
 $this->breadcrumbs = array(
-    Yii::t('news', 'Новости') => array('admin'),
-    Yii::t('news', 'Добавление'),
+    Yii::t('NewsModule.news', 'News') => array('admin'),
+    Yii::t('NewsModule.news', 'Adding'),
 );
 $this->renderPartial('_form', array('model' => $model));

@@ -4,21 +4,21 @@
  * @var $model News
  */
 $this->breadcrumbs = array(
-	Yii::t('news', 'Новости') => array('admin'),
+	Yii::t('NewsModule.news', 'News') => array('admin'),
 	$model->title,
 );
 $this->widget('bootstrap.widgets.TbTabs', array(
 	'type' => 'tabs', // 'tabs' or 'pills'
 	'tabs' => array(
 		array(
-			'label'   => Yii::t('news', 'Анонс новости'),
+			'label'   => Yii::t('NewsModule.news', 'News announce (short)'),
 			'content' => '<h6><span class="label">' . $model->date . '</span> ' . CHtml::link($model->title, array(
 				'/news/show',
 				'title' => $model->slug
 			)) . '</h6>' . $model->content_short,
 			'active'  => true
 		), array(
-			'label'   => Yii::t('news', 'Полная новость'),
+			'label'   => Yii::t('NewsModule.news', 'Full Text'),
 			'content' => '<h3>' . CHtml::link($model->title, array(
 				'/news/show',
 				'title' => $model->slug

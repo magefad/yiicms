@@ -29,7 +29,7 @@ $form = $this->beginWidget(
     $model,
     'status',
     $model->statusMain->getList(),
-    array('empty' => Yii::t('news', '- любой -'))
+    array('empty' => Yii::t('NewsModule.news', '- anything -'))
 ); ?>
 <?php echo $form->checkBoxRow($model, 'is_protected'); ?>
 <div class="form-actions">
@@ -38,7 +38,7 @@ $form = $this->beginWidget(
     array(
         'buttonType' => 'submit',
         'type'       => 'primary',
-        'label'      => Yii::t('news', 'Искать'),
+        'label'      => Yii::t('NewsModule.news', 'Search'),
     )
 ); ?>
 </div>

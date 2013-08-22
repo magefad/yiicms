@@ -103,7 +103,7 @@ class News extends CActiveRecord
                 'slug',
                 'match',
                 'pattern' => '/^[a-zA-Z0-9_\-]+$/',
-                'message' => Yii::t('news', 'Строка содержит запрещенные символы: {attribute}')
+                'message' => Yii::t('yii', 'The format of {attribute} is invalid.')
             ),
             array(
                 'id, date, title, keywords, description, slug, content_short, content, status, is_protected, create_user_id, update_user_id, create_time, update_time,   author_search',
@@ -182,22 +182,22 @@ class News extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'            => 'ID',
-            'date'          => Yii::t('news', 'Дата'),
-            'title'         => Yii::t('news', 'Заголовок'),
-            'keywords'      => Yii::t('news', 'META ключевые слова'),
-            'description'   => Yii::t('news', 'META описание'),
-            'content_short' => Yii::t('news', 'Превью'),
-            'content'       => Yii::t('news', 'Текст'),
-            'slug'          => Yii::t('news', 'Ссылка'),
-            'image'         => Yii::t('news', 'Изображение'),
-            'status'        => Yii::t('news', 'Статус'),
-            'is_protected'  => Yii::t('news', 'Доступ только для авторизованных пользователей'),
-            'author_search' => Yii::t('page', 'Автор'),
-            'create_user_id'=> Yii::t('news', 'Автор'),
-            'update_user_id'=> Yii::t('news', 'Изменил'),
-            'create_time'   => Yii::t('news', 'Создано'),
-            'update_time'   => Yii::t('news', 'Изменено'),
+            'id'             => 'ID',
+            'date'           => Yii::t('NewsModule.news', 'Date'),
+            'title'          => Yii::t('NewsModule.news', 'Title'),
+            'keywords'       => Yii::t('NewsModule.news', 'META Keywords'),
+            'description'    => Yii::t('NewsModule.news', 'META Description'),
+            'content_short'  => Yii::t('NewsModule.news', 'Short Text'),
+            'content'        => Yii::t('NewsModule.news', 'Text'),
+            'slug'           => Yii::t('NewsModule.news', 'Slug'),
+            'image'          => Yii::t('NewsModule.news', 'Picture'),
+            'status'         => Yii::t('NewsModule.news', 'Status'),
+            'is_protected'   => Yii::t('NewsModule.news', 'Only for registered users'),
+            'author_search'  => Yii::t('NewsModule.news', 'Author'),
+            'create_user_id' => Yii::t('NewsModule.news', 'Author'),
+            'update_user_id' => Yii::t('NewsModule.news', 'Update User'),
+            'create_time'    => Yii::t('NewsModule.news', 'Created'),
+            'update_time'    => Yii::t('NewsModule.news', 'Update Time'),
         );
     }
 
