@@ -15,10 +15,18 @@
  * of the guide for details.
  *
  * NOTE, this file must be saved in UTF-8 encoding.
- *
- * @version $Id: $
  */
 return array (
-  'Sitemap' => '',
-  'Sitemap and sitemap.xml generator' => '',
+  'Author' => 'Автор',
+  'Changed' => 'Изменено',
+  'Created' => 'Создано',
+  'Default' => 'Сбросить',
+  'Error while saving!' => 'Произошла ошибка при сохранении!',
+  'Key' => 'Ключ',
+  'Module' => 'Модуль',
+  'Module {name} haven\'t settings' => 'У модуля {name} нет настроек',
+  'Save' => 'Сохранить',
+  'Settings Saved!' => '',
+  'Update User' => 'Изменил',
+  'Value' => 'Значение',
 );

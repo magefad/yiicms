@@ -1,17 +1,14 @@
 <?php
 /**
- * User: fad
- * Date: 18.09.12
- * Time: 16:38
  * @var $settings Setting[]
  * @var $form TbActiveForm
  * @var $this Controller
- * @var $module CModule
+ * @var $module WebModule
  */
 $this->breadcrumbs = array(
-	Yii::t('admin', 'Админка') => array('/admin'),
-	Yii::t('admin', $module->name) => array('/' . $module->id . '/default/admin'),
-	Yii::t('admin', 'Настройки'),
+	Yii::t('AdminModule.admin', 'Admin CP') => array('/admin'),
+	$module->name => array('/' . $module->id . '/default/admin'),
+	Yii::t('AdminModule.admin', 'Settings'),
 );
 
 $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
@@ -21,7 +18,7 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
 ));
 ?>
 <fieldset>
-	<legend><?php echo Yii::t('admin', 'Настройки') . ' ' . $module->name?></legend>
+	<legend><?php echo Yii::t('AdminModule.admin', 'Settings') . ' ' . $module->name?></legend>
     <?php foreach ($settings as $key => $setting): ?>
     <?php
     echo $form->hiddenField($setting, "[$key]module_id");
@@ -35,8 +32,8 @@ $form = $this->beginWidget('bootstrap.widgets.TbActiveForm', array(
     <?php endforeach; ?>
 </fieldset>
 <div class="form-actions">
-	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'label' => Yii::t('setting', 'Сохранить'))); ?>
-	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'reset', 'label' => Yii::t('setting', 'Сбросить'))); ?>
+	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'submit', 'type' => 'primary', 'label' => Yii::t('AdminModule.settings', 'Save'))); ?>
+	<?php $this->widget('bootstrap.widgets.TbButton', array('buttonType' => 'reset', 'label' => Yii::t('AdminModule.settings', 'Default'))); ?>
 </div>
 
 <?php $this->endWidget(); ?>

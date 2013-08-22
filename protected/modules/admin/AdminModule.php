@@ -13,17 +13,17 @@ class AdminModule extends WebModule
 
     public static function getName()
     {
-        return Yii::t('admin', 'Панель управления');
+        return Yii::t('AdminModule.admin', 'Control Panel');
     }
 
     public function getSettingLabels()
     {
         return array(
-            'siteName'               => Yii::t('admin', 'Название сайта'),
-            'cachingDuration'        => Yii::t('admin', 'Кэширование (сек.)'),
-            'uploadDir'              => Yii::t('admin', 'Каталог для файлов'),
-            'email'                  => Yii::t('admin', 'Email сайта'),
-            'googleAnalyticsAccount' => Yii::t('admin', 'Аккаунт Google Analytics (UA-XXXXXX-X)')
+            'siteName'               => Yii::t('AdminModule.admin', 'Site Name'),
+            'cachingDuration'        => Yii::t('AdminModule.admin', 'Caching (sec.)'),
+            'uploadDir'              => Yii::t('AdminModule.admin', 'Upload Directory'),
+            'email'                  => Yii::t('AdminModule.admin', 'Site Email'),
+            'googleAnalyticsAccount' => Yii::t('AdminModule.admin', 'Google Analytics Account (UA-XXXXXX-X)')
         );
     }
 
@@ -32,7 +32,7 @@ class AdminModule extends WebModule
         return array(
             'uploadDir' => array(
                 'htmlOptions' => array(
-                    'hint' => Yii::t('admin', 'При изменении значения требуется вручную переименовать папку на FTP'),
+                    'hint' => Yii::t('AdminModule.admin', 'Manually rename directory on FTP after save'),
                 )
             ),
         );

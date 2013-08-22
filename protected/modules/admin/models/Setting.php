@@ -93,14 +93,14 @@ class Setting extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'             => Yii::t('setting', 'ID'),
-            'module_id'      => Yii::t('setting', 'Модуль'),
-            'key'            => Yii::t('setting', 'Ключ'),
-            'value'          => Yii::t('setting', 'Значение'),
-            'create_user_id' => Yii::t('setting', 'Автор'),
-            'update_user_id' => Yii::t('settings', 'Изменил'),
-            'create_time'    => Yii::t('setting', 'Создано'),
-            'update_time'    => Yii::t('setting', 'Изменено'),
+            'id'             => 'ID',
+            'module_id'      => Yii::t('AdminModule.settings', 'Module'),
+            'key'            => Yii::t('AdminModule.settings', 'Key'),
+            'value'          => Yii::t('AdminModule.settings', 'Value'),
+            'create_user_id' => Yii::t('AdminModule.settings', 'Author'),
+            'update_user_id' => Yii::t('AdminModule.settings', 'Update User'),
+            'create_time'    => Yii::t('AdminModule.settings', 'Created'),
+            'update_time'    => Yii::t('AdminModule.settings', 'Changed'),
         );
     }
 
@@ -153,6 +153,7 @@ class Setting extends CActiveRecord
             }
 
             $dependency = new CDbCacheDependency('SELECT MAX(update_time) FROM {{settings}} WHERE module_id="' . $module_id . '"');
+            /** @var Setting[] $settingsRows */
             $settingsRows = $this->cache(Yii::app()->getModule('admin')->cachingDuration, $dependency, 2)->findAll(
                 $criteria
             );

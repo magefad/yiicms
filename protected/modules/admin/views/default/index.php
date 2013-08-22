@@ -5,12 +5,12 @@
  * @var $yiiModules CWebModule[]
  */
 ?>
-<h2><?php echo Yii::t('global', 'Панель управления "{app}"', array('{app}' => CHtml::encode(Yii::app()->name))); ?></h2>
+<h2><?php echo Yii::t('AdminModule.admin', 'Control Panel') . CHtml::encode(Yii::app()->name); ?></h2>
 <p>
     Yii: <small class="label label-info" title="<?php echo Yii::getVersion(); ?>"><?php echo Yii::getVersion(); ?></small>,
     PHP: <small class="label label-info" title="<?php echo phpversion(); ?>"><?php echo phpversion(); ?></small>.
 	<small class="label label-info"><?php echo $mn = count($modules) + count($yiiModules); ?></small>
-	<?php echo Yii::t('admin', 'модуль|модуля|модулей', $mn); ?>
+	<?php echo Yii::t('AdminModule.admin', 'module|modules', $mn); ?>
 </p>
 <div style="float: right; width: 20% ">
 	<?php /** @var TbActiveForm $form */
@@ -56,23 +56,23 @@ $this->widget(
             array(
                 'name'   => 'name',
                 'type'   => 'raw',
-                'value'  => 'CHtml::link("$data[name]", "/".$data["id"]."/default/admin", array("title" => Yii::t("admin", "Перейти в управление")))',
-                'header' => Yii::t('admin', 'Название')
+                'value'  => 'CHtml::link("$data[name]", "/".$data["id"]."/default/admin", array("title" => Yii::t("admin", "Go to Settings")))',
+                'header' => Yii::t('AdminModule.admin', 'Name')
             ),
-            array('name' => 'description', 'header' => Yii::t('admin', 'Описание')),
-            #array('name' => 'author', 'header' => Yii::t('admin', 'Автор')),
+            array('name' => 'description', 'header' => Yii::t('AdminModule.admin', 'Description')),
+            #array('name' => 'author', 'header' => Yii::t('AdminModule.admin', 'Author')),
 
             array(
                 'class'       => 'bootstrap.widgets.TbButtonColumn',
                 'template'    => '{settings}',
                 'buttons'     => array(
                     /*'view' => array(
-                         'label' => Yii::t('admin', 'Управление'),
+                         'label' => Yii::t('AdminModule.admin', 'Manage'),
                          'url'   => 'Yii::app()->createUrl("/".$data["id"]."/default/admin")',
                          'icon'  => 'list-alt',
                      ),*/
                     'settings' => array(
-                        'label' => Yii::t('admin', 'Настройки'),
+                        'label' => Yii::t('AdminModule.admin', 'Settings'),
                         'url'   => 'Yii::app()->createUrl("/admin/setting/update", array("slug" => $data["id"]))',
                         'icon'  => 'wrench',
                     )

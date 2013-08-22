@@ -53,12 +53,12 @@ class SettingController extends Controller
                     }
                 }
                 if (count($errors)) {
-                    Yii::app()->user->setFlash('error', Yii::t('setting', 'Произошла ошибка при сохранении!') . implode('<br />', $errors));
+                    Yii::app()->user->setFlash('error', Yii::t('AdminModule.settings', 'Error while saving!') . implode('<br />', $errors));
                 } else {
-                    Yii::app()->user->setFlash('success', Yii::t('setting', 'Настройки сохранены!'));
+                    Yii::app()->user->setFlash('success', Yii::t('AdminModule.settings', 'Settings Saved!'));
                 }
             } else {
-                Yii::app()->user->setFlash('error', Yii::t('setting', 'Произошла ошибка при сохранении!'));
+                Yii::app()->user->setFlash('error', Yii::t('AdminModule.settings', 'Error while saving!'));
             }
         }
         $this->render('update', array('module' => $module, 'settings' => $settings));
@@ -66,23 +66,23 @@ class SettingController extends Controller
 
     /**
      * @todo move to Model
-     * @param CModule $module
+     * @param WebModule $module
      * @return array Setting[]
      * @throws CHttpException 404 if no settings
      */
     public function getSettingsToUpdate($module)
     {
-        $settingLabels = $module->settingLabels;
+        $settingLabels = $module->getSettingLabels();
         if (!count($settingLabels)) {
             throw new CHttpException(404, Yii::t(
-                'admin',
-                "У модуля {name} нет настроек",
+                'AdminModule.settings',
+                "Module {name} haven't settings",
                 array('{name}' => $module->name)
             ));
         }
 
         $settingKeys = array_keys($settingLabels);
-        $settingData = $module->settingData;
+        $settingData = $module->getSettingData();
         /** @var $settings Setting[] */
         $settings = Setting::model()->getSettings($module->id, $settingKeys);
         foreach ($module as $key => $value) //settingKey and settingValue
