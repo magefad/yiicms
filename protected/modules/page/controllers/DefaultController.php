@@ -66,7 +66,13 @@ class DefaultController extends Controller
             $this->breadcrumbs = $this->getPageBreadCrumbs($model->parent);
             array_push($this->breadcrumbs, $model->title);
             $navigation = Yii::app()->db->createCommand(
-                'SELECT name, title, slug, sort_order FROM {{page}} WHERE (sort_order=' . ($model->sort_order - 1) . ' OR sort_order=' . ($model->sort_order + 1) . ") AND level={$model->level}"
+                "SELECT name, title, slug, sort_order
+                   FROM {{page}}
+                    WHERE sort_order = (SELECT MAX(sort_order) FROM {{page}} WHERE level={$model->level} AND sort_order < {$model->sort_order} AND parent_id={$model->parent_id})
+                UNION
+                SELECT name, title, slug, sort_order
+                   FROM {{page}}
+                    WHERE sort_order = (SELECT MIN(sort_order) FROM {{page}} WHERE level={$model->level} AND sort_order > {$model->sort_order} AND parent_id={$model->parent_id})"
             )->queryAll();
             if ($navigationCount = count($navigation)) {
                 if ($navigationCount === 1) {
