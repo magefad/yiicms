@@ -2,6 +2,7 @@
 /**
  * @var $form TbActiveForm
  * @var $model Page
+ * @var $this Controller
  */
 ?>
 <div class="row-fluid">
@@ -19,7 +20,7 @@
     </span>
 </div>
 <?php echo $form->checkBoxRow($model, 'is_protected'); ?>
-<?php echo $form->checkBoxRow($model, 'rich_editor'); ?>
+<?php if ($model->slug != $this->getModule()->defaultPage) echo $form->checkBoxRow($model, 'rich_editor'); ?>
 <?php
 Yii::app()->clientScript->registerScript(
     'rich_editor',
