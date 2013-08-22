@@ -25,12 +25,12 @@ $this->widget(
         'type' => 'tabs', // 'tabs' or 'pills'
         'tabs' => array(
             array(
-                'label'   => Yii::t('page', 'Основное'),
+                'label'   => Yii::t('PageModule.page', 'General'),
                 'content' => $this->renderPartial('_formGeneral', array('model' => $model, 'form' => $form), true),
                 'active'  => true
             ),
             array(
-                'label'   => Yii::t('page', 'Дополнительно'),
+                'label'   => Yii::t('PageModule.page', 'Additional'),
                 'content' => $this->renderPartial('_formSettings', array('model' => $model, 'form' => $form), true),
             )
         )
@@ -59,7 +59,7 @@ $this->widget(
     array(
         'buttonType' => 'submit',
         'type'       => 'primary',
-        'label'      => $model->isNewRecord ? Yii::t('page', 'Добавить') : Yii::t('page', 'Сохранить')
+        'label'      => $model->isNewRecord ? Yii::t('PageModule.page', 'Add') : Yii::t('PageModule.page', 'Save')
     )
 );
 $this->endWidget();

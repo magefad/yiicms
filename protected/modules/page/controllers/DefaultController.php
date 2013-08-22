@@ -52,14 +52,15 @@ class DefaultController extends Controller
         }
 
         if (!$model) {
-            throw new CHttpException(404, Yii::t('page', 'Страница не найдена или удалена!'));
+            throw new CHttpException(404, Yii::t('PageModule.page', 'Page Not Found or Deleted!'));
         }
         $_GET['id'] = $model->id;
         if ($slug != $this->module->defaultPage) {
             $this->httpCacheFilter($model->update_time);
         }
         if ($model->is_protected && Yii::app()->user->isGuest) {
-            throw new CHttpException(403, Yii::t('page', 'Страница доступна только для авторизованных пользователей'));
+            $this->invalidActionParams($this->action);
+            throw new CHttpException(403, Yii::t('yii', 'You are not authorized to perform this action.'));
         }
         $this->setMetaTags($model);
         if ($model->level > 1) {
@@ -122,7 +123,7 @@ class DefaultController extends Controller
         if (isset($_POST['Page'])) {
             $model->attributes = $_POST['Page'];
             if ($model->save()) {
-                Yii::app()->user->setFlash('success', Yii::t('page', 'Страница добавлена!'));
+                Yii::app()->user->setFlash('success', Yii::t('PageModule.page', 'Page Added!'));
                 if (isset($_POST['saveAndClose'])) {
                     $this->redirect(array('admin'));
                 }
@@ -131,6 +132,7 @@ class DefaultController extends Controller
         }
         $criteria          = new CDbCriteria;
         $criteria->select  = new CDbExpression('MAX(sort_order) as sort_order');
+        /** @var Page $max */
         $max               = $model->find($criteria);
         $model->sort_order = $max->sort_order + 1;
 
@@ -203,6 +205,7 @@ class DefaultController extends Controller
      */
     public function actionMceListUrl()
     {
+        /** @var Page[] $items */
         $items      = Page::model()->findAll(array('select' => 'name, slug, level', 'order' => 'sort_order'));
         $output     = 'var tinyMCELinkList = new Array(' . "\n\t";
         $itemsCount = count($items);

@@ -16,7 +16,7 @@
         <?php echo $form->textFieldRow($model, 'slug', array('style' => 'width: 100%')); ?>
     </div>
     <div class="span3 control-group">
-        <?php echo $form->textFieldRow($model, 'keywords', array('style' => 'width: 93%', 'placeholder' => Yii::t('page', 'Через запятую'))); ?>
+        <?php echo $form->textFieldRow($model, 'keywords', array('style' => 'width: 93%', 'placeholder' => Yii::t('PageModule.page', 'Через запятую'))); ?>
     </div>
 </div>
 <div class="row-fluid control-group">

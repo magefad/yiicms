@@ -3,8 +3,8 @@
  * @var $this Controller
  * @var $dataProvider CDataProvider
  */
-$this->pageTitle   = Yii::t('page', 'Список страниц');
-$this->breadcrumbs = array(Yii::t('page', 'Страницы') => array('admin'));
+$this->pageTitle   = Yii::t('PageModule.page', 'List Pages');
+$this->breadcrumbs = array(Yii::t('PageModule.page', 'Pages') => array('admin'));
 
 $this->widget(
     'bootstrap.widgets.TbListView',

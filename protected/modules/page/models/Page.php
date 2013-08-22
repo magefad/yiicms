@@ -93,7 +93,7 @@ class Page extends CActiveRecord
                 'slug',
                 'match',
                 'pattern' => '/^[a-zA-Z0-9_\-]+$/',
-                'message' => Yii::t('page', 'Строка содержит запрещенные символы: {attribute}')
+                'message' => Yii::t('yii', 'The format of {attribute} is invalid.')
             ),
             array(
                 'id, parent_id, level, name, title, keywords, description, slug, content, status, type, sort_order, create_time, update_time, author_search, changeAuthor_search',
@@ -138,7 +138,7 @@ class Page extends CActiveRecord
                 'class'     => 'StatusBehavior',
                 'attribute' => 'type',
                 'list' => array(
-                    Yii::t('page', 'Каталог')
+                    Yii::t('PageModule.page', 'Catalog')
                 )
             )
         );
@@ -189,26 +189,26 @@ class Page extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id'                  => Yii::t('page', 'ID'),
-            'parent_id'           => Yii::t('page', 'Родитель'),
-            'level'               => Yii::t('page', 'Уровень вложенности'),
-            'name'                => Yii::t('page', 'Название в меню'),
-            'title'               => Yii::t('page', 'Заголовок (title)'),
-            'keywords'            => Yii::t('page', 'META ключевые слова'),
-            'description'         => Yii::t('page', 'META описание'),
-            'content'             => Yii::t('page', 'Текст'),
-            'slug'                => Yii::t('page', 'Ссылка'),
-            'rich_editor'         => Yii::t('page', 'Использовать HTML редактор'),
-            'status'              => Yii::t('page', 'Статус'),
-            'type'                => Yii::t('page', 'Тип'),
-            'is_protected'        => Yii::t('page', 'Доступ только для авторизованных пользователей'),
-            'sort_order'          => Yii::t('page', 'Порядок'),
-            'create_user_id'      => Yii::t('page', 'Создал'),
-            'update_user_id'      => Yii::t('page', 'Изменил'),
-            'create_time'         => Yii::t('page', 'Создано'),
-            'update_time'         => Yii::t('page', 'Изменено'),
-            'author_search'       => Yii::t('page', 'Создал'),
-            'changeAuthor_search' => Yii::t('page', 'Изменил'),
+            'id'                  => 'ID',
+            'parent_id'           => Yii::t('PageModule.page', 'Parent'),
+            'level'               => Yii::t('PageModule.page', 'Parent Level'),
+            'name'                => Yii::t('PageModule.page', 'Name in Menu'),
+            'title'               => Yii::t('PageModule.page', 'Title'),
+            'keywords'            => Yii::t('PageModule.page', 'META Keywords'),
+            'description'         => Yii::t('PageModule.page', 'META Description'),
+            'content'             => Yii::t('PageModule.page', 'Text'),
+            'slug'                => Yii::t('PageModule.page', 'Link'),
+            'rich_editor'         => Yii::t('PageModule.page', 'Use HTML Editor'),
+            'status'              => Yii::t('PageModule.page', 'Status'),
+            'type'                => Yii::t('PageModule.page', 'Type'),
+            'is_protected'        => Yii::t('PageModule.page', 'Only for registered users'),
+            'sort_order'          => Yii::t('PageModule.page', 'Sorting'),
+            'create_user_id'      => Yii::t('PageModule.page', 'Author'),
+            'update_user_id'      => Yii::t('PageModule.page', 'Update user'),
+            'create_time'         => Yii::t('PageModule.page', 'Created'),
+            'update_time'         => Yii::t('PageModule.page', 'Updated'),
+            'author_search'       => Yii::t('PageModule.page', 'Author'),
+            'changeAuthor_search' => Yii::t('PageModule.page', 'Update user'),
         );
     }
 

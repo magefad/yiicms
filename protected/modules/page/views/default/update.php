@@ -4,23 +4,23 @@
  * @var $model Page
  * @var $this Controller
  */
-$this->pageTitle   = Yii::t('page', 'Редактирование страницы');
+$this->pageTitle   = Yii::t('PageModule.page', 'Editing Page');
 $this->breadcrumbs = array(
-    Yii::t('page', 'Страницы') => array('admin'), #index
+    Yii::t('PageModule.page', 'Pages') => array('admin'), #index
     $model->title              => array('show', 'slug' => $model->slug), #
-    Yii::t('page', 'Изменение страницы'),
+    Yii::t('PageModule.page', 'Editing Page'),
 );
 
 $this->menu[] = array(
     'icon'        => 'eye-open',
-    'label'       => Yii::t('page', 'Предпросмотр'),
+    'label'       => Yii::t('PageModule.page', 'Preview'),
     'url'         => 'javascript:',
     'linkOptions' => array('id' => 'ajaxPreview')
 );
 if (!$model->isNewRecord) {
     $this->menu[] = array(
         'icon'        => 'eye-open',
-        'label'       => Yii::t('page', 'Открыть на сайте'),
+        'label'       => Yii::t('PageModule.page', 'Open on Site'),
         'url'         => array('show', 'slug' => $model->slug),
         'linkOptions' => array('target' => '_blank')
     );

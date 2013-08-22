@@ -3,15 +3,15 @@
  * @var $this Controller
  * @var $model Page
  */
-$this->pageTitle   = Yii::t('page', 'Добавление страницы');
+$this->pageTitle   = Yii::t('PageModule.page', 'Adding Page');
 $this->breadcrumbs = array(
-    Yii::t('page', 'Страницы') => array('admin'),
-    Yii::t('page', 'Добавление'),
+    Yii::t('PageModule.page', 'Pages') => array('admin'),
+    Yii::t('PageModule.page', 'Adding'),
 );
 
 $this->menu[] = array(
     'icon'        => 'eye-open',
-    'label'       => Yii::t('page', 'Предпросмотр'),
+    'label'       => Yii::t('PageModule.page', 'Preview'),
     'url'         => 'javascript:',
     'linkOptions' => array('id' => 'ajaxPreview')
 );

@@ -4,10 +4,10 @@
  * @var $model Page
  * @var $this Controller
  */
-$this->pageTitle   = Yii::t('user', 'Управление страницами');
+$this->pageTitle   = Yii::t('PageModule.page', 'Manage Pages');
 $this->breadcrumbs = array(
-    Yii::t('page', 'Страницы') => array('admin'),
-    Yii::t('page', 'Управление'),
+    Yii::t('PageModule.page', 'Pages') => array('admin'),
+    Yii::t('PageModule.page', 'Manage'),
 );
 
 Yii::app()->clientScript->registerCss('level', '
@@ -33,7 +33,7 @@ $('.search-form form').submit(function(){
 );
 ?>
 <?php echo CHtml::link(
-    Yii::t('page', '<i class="icon-search"></i> Поиск страниц <span class="caret"></span>'),
+    Yii::t('PageModule.page', '<i class="icon-search"></i> Search Pages <span class="caret"></span>'),
     '#',
     array('class' => 'search-button btn btn-small')
 ) ?>
@@ -100,10 +100,10 @@ $('.search-form form').submit(function(){
                 'type'        => 'raw',
                 'value'       => '$this->grid->getStatus($data)',
                 'filter'      => array(
-                    '' => Yii::t('menu', 'Все'),
-                    1  => Yii::t('menu', 'Опубликовано'),
-                    0  => Yii::t('menu', 'Черновики'),
-                    2  => Yii::t('menu', 'На модерации')
+                    '' => Yii::t('PageModule.page', 'All'),
+                    1  => Yii::t('PageModule.page', 'Published'),
+                    0  => Yii::t('PageModule.page', 'Draft'),
+                    2  => Yii::t('PageModule.page', 'On Moderation')
                 ),
                 'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
             ),

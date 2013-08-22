@@ -19,12 +19,12 @@ class PageModule extends WebModule
 
     public static function getName()
     {
-        return Yii::t('PageModule.page', 'Страницы');
+        return Yii::t('PageModule.page', 'Pages');
     }
 
     public static function getDescription()
     {
-        return Yii::t('page', 'Управление страницами сайта');
+        return Yii::t('PageModule.page', 'Manage Site Pages');
     }
 
     public static function getIcon()
@@ -35,8 +35,8 @@ class PageModule extends WebModule
     public function getSettingLabels()
     {
         return array(
-            'defaultPage' => Yii::t('page', 'Главная страница (ссылка)'),
-            'pageSize'    => Yii::t('page', 'Количество результатов на одну страницу'),
+            'defaultPage' => Yii::t('PageModule.page', 'Main Page (slug)'),
+            'pageSize'    => Yii::t('PageModule.page', 'Count Results Per Page'),
         );
     }
 

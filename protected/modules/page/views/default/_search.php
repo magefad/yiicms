@@ -12,10 +12,10 @@ $form = $this->beginWidget(
         'method' => 'get',
     )
 );
-echo '<p>' . Yii::t('page', 'Используйте символы');?> (<b>&lt;</b>,
-<b>&lt;=</b>(<?php echo Yii::t('page', 'меньше или равно)'); ?>, <b>&gt;</b>, <b>&gt;=</b>,
-<b>&lt;&gt;</b><?php echo Yii::t('page', '(не равно) или'); ?>
-<b>=</b>) <?php echo Yii::t('page', 'в начале строки поиска') . '</p>';
+echo '<p>' . Yii::t('PageModule.page', 'Use Symbols');?> (<b>&lt;</b>,
+<b>&lt;=</b>(<?php echo Yii::t('PageModule.page', 'меньше или равно)'); ?>, <b>&gt;</b>, <b>&gt;=</b>,
+<b>&lt;&gt;</b><?php echo Yii::t('PageModule.page', '(not) or'); ?>
+<b>=</b>) <?php echo Yii::t('PageModule.page', 'в начале строки поиска') . '</p>';
 ?>
 <?php echo $form->textFieldRow($model, 'id', array('class' => 'span5', 'maxlength' => 10)); ?>
 <?php echo $form->textFieldRow($model, 'parent_id', array('class' => 'span5')); ?>
@@ -38,7 +38,7 @@ echo '<p>' . Yii::t('page', 'Используйте символы');?> (<b>&lt;
     array(
         'buttonType' => 'submit',
         'type'       => 'primary',
-        'label'      => Yii::t('page', 'Поиск'),
+        'label'      => Yii::t('PageModule.page', 'Search'),
     )
 ); ?>
 </div>

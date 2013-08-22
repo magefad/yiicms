@@ -3,15 +3,15 @@
  * @var $this Controller
  * @var $model Page
  */
-$this->pageTitle   = Yii::t('page', 'Просмотр страницы');
+$this->pageTitle   = Yii::t('PageModule.page', 'Viewing Page');
 $this->breadcrumbs = array(
-    Yii::t('page', 'Страницы') => array('admin'),
+    Yii::t('PageModule.page', 'Pages') => array('admin'),
     $model->title,
 );
 
 $this->menu = $this->module->adminMenu;
 echo CHtml::link(
-    Yii::t('page', 'Просмотреть на сайте'),
+    Yii::t('PageModule.page', 'See on Site'),
     array(
         'show',
         'slug'    => $model->slug,

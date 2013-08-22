@@ -6,7 +6,7 @@
 ?>
 <div class="row-fluid">
     <span class="span3">
-        <?php echo $form->dropDownListRow($model, 'parent_id', $model->treeArray->listData, array('style' => 'width: 100% !important;', 'empty' => Yii::t('page', '- нет родительской страницы -'))); ?>
+        <?php echo $form->dropDownListRow($model, 'parent_id', $model->treeArray->getListData(), array('style' => 'width: 100% !important;', 'empty' => Yii::t('PageModule.page', '- no parent page -'))); ?>
     </span>
     <span class="span2">
         <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList(), array('style' => 'width: 100% !important')) ?>
