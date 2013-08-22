@@ -4,7 +4,7 @@
  * @var $model Gallery
  */
 $this->breadcrumbs = array(
-    Yii::t('gallery', 'Альбомы') => array('index'),
+    Yii::t('GalleryModule.gallery', 'Albums') => array('index'),
     $model->title,
 );
 

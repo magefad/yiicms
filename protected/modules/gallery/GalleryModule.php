@@ -19,12 +19,12 @@ class GalleryModule extends WebModule
 
     public static function getName()
     {
-        return Yii::t('gallery', 'Галерея');
+        return Yii::t('GalleryModule.gallery', 'Gallery');
     }
 
     public static function getDescription()
     {
-        return Yii::t('gallery', 'Создание и управление альбомами с фотографиями');
+        return Yii::t('GalleryModule.gallery', 'Create and manage albums with photos');
     }
 
     public static function getIcon()
@@ -35,11 +35,11 @@ class GalleryModule extends WebModule
     public function getSettingLabels()
     {
         return array(
-            'uploadDir'      => Yii::t('news', 'Папка галереи для фотографий'),
-            'uploadAllowExt' => Yii::t('news', 'Форматы фотографий'),
-            'maxWidth'       => Yii::t('news', 'Максимальная ширина фото после загрузки'),
-            'maxHeight'      => Yii::t('news', 'Максимальная высота фото после загрузки'),
-            'thumbMaxWidth'  => Yii::t('news', 'Максимальная ширина миниатюры фото'),
+            'uploadDir'      => Yii::t('GalleryModule.gallery', 'Directory for photos'),
+            'uploadAllowExt' => Yii::t('GalleryModule.gallery', 'Supported photo formats'),
+            'maxWidth'       => Yii::t('GalleryModule.gallery', 'Max photo width after upload'),
+            'maxHeight'      => Yii::t('GalleryModule.gallery', 'Max photo height after upload'),
+            'thumbMaxWidth'  => Yii::t('GalleryModule.gallery', 'Max thumb photo width after upload'),
         );
     }
 
@@ -70,10 +70,10 @@ class GalleryModule extends WebModule
             ),
             'thumbMaxWidth' => array(
                 'htmlOptions' => array(
-                    'hint' => "Если используется галерея Gallery с темой Folio (по умолчанию), нужно изменить значение параметра в CSS:
+                    'hint' => Yii::t('GalleryModule.gallery', "If you use Gallery with Folio theme (default), change CSS:
 					<br/> .galleria-thumbnails .galleria-image {width: 130px}
-					<br/>Файл: ./extensions/galleria/assets/themes/folio/galleria.folio.css
-					<br/>иначе превью будут показываться размером по умолчанию 130px в ширину",
+					<br/>File: ./extensions/galleria/assets/themes/folio/galleria.folio.css
+					<br/>else thumbnail will be show in 130px width"),
                 )
             )
         );

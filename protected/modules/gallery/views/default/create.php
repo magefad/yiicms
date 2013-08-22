@@ -4,7 +4,7 @@
  * @var $model Gallery
  */
 $this->breadcrumbs = array(
-    Yii::t('gallery', 'Галерея') => array('admin'),
-    Yii::t('gallery', 'Добавление'),
+    Yii::t('GalleryModule.gallery', 'Gallery') => array('admin'),
+    Yii::t('GalleryModule.gallery', 'Adding'),
 );
 echo $this->renderPartial('_form', array('model' => $model));

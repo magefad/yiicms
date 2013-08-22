@@ -78,8 +78,8 @@ class photoManager extends CWidget
             'deleteUrl'        => Yii::app()->createUrl($this->controllerRoute . '/ajaxDelete'),
             'updateUrl'        => Yii::app()->createUrl($this->controllerRoute . '/changeData'),
             'arrangeUrl'       => Yii::app()->createUrl($this->controllerRoute . '/order'),
-            'nameLabel'        => Yii::t('gallery', 'Название'),
-            'descriptionLabel' => Yii::t('gallery', 'Описание'),
+            'nameLabel'        => Yii::t('GalleryModule.gallery', 'Name'),
+            'descriptionLabel' => Yii::t('GalleryModule.gallery', 'Description'),
             'photos'           => $photos
         );
         if (Yii::app()->getRequest()->enableCsrfValidation) {

@@ -4,8 +4,8 @@
  * @var $this Controller
  */
 $this->breadcrumbs = array(
-    Yii::t('gallery', 'Галерея') => array('admin'),
-    Yii::t('gallery', 'Управление'),
+    Yii::t('GalleryModule.gallery', 'Gallery') => array('admin'),
+    Yii::t('GalleryModule.gallery', 'Manage'),
 );
 
 Yii::app()->clientScript->registerScript(
@@ -25,7 +25,7 @@ $('.search-form form').submit(function(){
 );
 ?>
 <?php echo CHtml::link(
-    Yii::t('gallery', '<i class="icon-search"></i> Поиск <span class="caret"></span>'),
+    Yii::t('GalleryModule.gallery', '<i class="icon-search"></i> Search <span class="caret"></span>'),
     '#',
     array('class' => 'search-button btn btn-small')
 ) ?>
@@ -67,12 +67,12 @@ $('.search-form form').submit(function(){
             ),*/
             array(
                 'class'                => 'bootstrap.widgets.TbToggleColumn',
-                'checkedButtonLabel'   => Yii::t('global', 'Опубликовано. Скрыть?'),
-                'uncheckedButtonLabel' => Yii::t('global', 'Скрыто. Опубликовтаь?'),
+                'checkedButtonLabel'   => Yii::t('GalleryModule.gallery', 'Published. Hide?'),
+                'uncheckedButtonLabel' => Yii::t('GalleryModule.gallery', 'Hidden. Publish?'),
                 'name'                 => 'status',
                 'filter'      => array(
-                    0  => Yii::t('menu', 'Скрыто'),
-                    1  => Yii::t('menu', 'Опубликовано')
+                    0  => Yii::t('GalleryModule.gallery', 'Hidden'),
+                    1  => Yii::t('GalleryModule.gallery', 'Published')
                 ),
                 'htmlOptions' => array('style' => 'width:40px; text-align:center;'),
             ),
@@ -83,7 +83,7 @@ $('.search-form form').submit(function(){
                     'manager' => array(
                         'label'   => false,
                         'url'     => 'array("photo/manager", "id" => $data->id)',
-                        'options' => array('class' => 'icon-picture', 'title' => 'Фотографии'),
+                        'options' => array('class' => 'icon-picture', 'title' => Yii::t('galleryModule.gallery', 'Photos')),
                     ),
                 ),
                 'htmlOptions' => array('style' => 'width: 85px'),

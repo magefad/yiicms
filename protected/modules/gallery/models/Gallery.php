@@ -80,8 +80,8 @@ class Gallery extends CActiveRecord
             'statusMain' => array(
                 'class' => 'application.components.behaviors.StatusBehavior',
                 'list'  => array(
-                    self::STATUS_PUBLISHED => Yii::t('gallery', 'Опубликовано'),
-                    self::STATUS_DRAFT     => Yii::t('gallery', 'Скрыто'),
+                    self::STATUS_PUBLISHED => Yii::t('GalleryModule.gallery', 'Published'),
+                    self::STATUS_DRAFT     => Yii::t('GalleryModule.gallery', 'Hidden'),
                 )
             ),
         );
@@ -104,12 +104,12 @@ class Gallery extends CActiveRecord
     {
         return array(
             'id'          => 'ID',
-            'title'       => 'Заголовок',
-            'description' => 'Описание',
-            'keywords'    => 'Ключевые слова',
-            'slug'        => 'Ссылка',
-            'status'      => 'Статус',
-            'sort_order'  => 'Порядок',
+            'title'       => Yii::t('GalleryModule.gallery', 'Title'),
+            'description' => Yii::t('GalleryModule.gallery', 'Description'),
+            'keywords'    => Yii::t('GalleryModule.gallery', 'Keywords'),
+            'slug'        => Yii::t('GalleryModule.gallery', 'Slug'),
+            'status'      => Yii::t('GalleryModule.gallery', 'Status'),
+            'sort_order'  => Yii::t('GalleryModule.gallery', 'Order'),
         );
     }
 

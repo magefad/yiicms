@@ -4,7 +4,7 @@
  * @var $this Controller
  */
 $this->breadcrumbs = array(
-    Yii::t('gallery', 'Фотографии') => array('admin'),
+    Yii::t('GalleryModule.gallery', 'Photos') => array('admin'),
     $model->name,
 );
 

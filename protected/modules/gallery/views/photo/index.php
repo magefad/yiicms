@@ -4,7 +4,7 @@
  * @var $dataProvider CDataProvider
  */
 $this->breadcrumbs = array(
-    Yii::t('gallery', 'Фотографии'),
+    Yii::t('GalleryModule.gallery', 'Photos'),
 );
 
 $this->widget(

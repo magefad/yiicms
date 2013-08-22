@@ -27,7 +27,7 @@ $form = $this->beginWidget(
     array(
         'buttonType' => 'submit',
         'type'       => 'primary',
-        'label'      => Yii::t('gallery', 'Искать'),
+        'label'      => Yii::t('GalleryModule.gallery', 'Search'),
     )
 ); ?>
 </div>

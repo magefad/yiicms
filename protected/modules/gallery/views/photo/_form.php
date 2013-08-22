@@ -20,8 +20,8 @@ $form = $this->beginWidget(
 ?>
 
 <p class="alert alert-info"><?php echo Yii::t(
-    'gallery',
-    'Поля, отмеченные <span class="required">*</span> обязательны для заполнения.'
+    'GalleryModule.gallery',
+    'Fields with <span class="required">*</span> is required.'
 )?></p>
 <?php echo $form->errorSummary($model); ?>
 <?php echo $form->textFieldRow($model, 'gallery_id', array('class' => 'span5', 'maxlength' => 10)); ?>
@@ -41,7 +41,7 @@ $form = $this->beginWidget(
     array(
         'buttonType'   => 'submit',
         'type'         => 'primary',
-        'label'        => $model->isNewRecord ? Yii::t('gallery', 'Добавить') : Yii::t('gallery', 'Сохранить'),
+        'label'        => $model->isNewRecord ? Yii::t('GalleryModule.gallery', 'Add') : Yii::t('GalleryModule.gallery', 'Save'),
     )
 ); ?>
 </div>
