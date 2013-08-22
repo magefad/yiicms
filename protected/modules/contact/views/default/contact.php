@@ -2,8 +2,8 @@
 /**
  * @var $this Controller
  */
-$this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('contact', 'Контакты');
-$this->breadcrumbs = array(Yii::t('contact', 'Контакты'));
+$this->pageTitle   = Yii::app()->name . ' - ' . Yii::t('ContactModule.contact', 'Contacts');
+$this->breadcrumbs = array(Yii::t('ContactModule.contact', 'Contacts'));
 
 Yii::import('application.modules.page.models.*');
 $pageSlug = str_replace('page/', '', Yii::app()->getRequest()->getPathInfo());
@@ -68,7 +68,7 @@ if ($page = Page::model()->findBySlug($pageSlug)) {
             'buttonType' => 'submit',
             'type'      => 'primary',
             'icon'      => 'ok white',
-            'label'     => Yii::t('contact', 'Отправить')
+            'label'     => Yii::t('ContactModule.contact', 'Send')
         )
     ); ?>
     </div>

@@ -54,17 +54,17 @@ class ContactForm extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'name'             => Yii::t('contact', 'Как Вас зовут?'),
-            'subject'          => Yii::t('contact', 'Тема письма'),
-            'body'             => Yii::t('contact', 'Текст сообщения'),
-            'verifyCode'       => Yii::t('contact', 'Введите код'),
+            'name'             => Yii::t('ContactModule.contact', 'You name?'),
+            'subject'          => Yii::t('ContactModule.contact', 'Message title'),
+            'body'             => Yii::t('ContactModule.contact', 'Message Text'),
+            'verifyCode'       => Yii::t('ContactModule.contact', 'Enter Code'),
 
-            'organization'     => Yii::t('contact', 'Наименование организации'),
-            'education'        => Yii::t('contact', 'Наименование учебного заведения'),
-            'countShop'        => Yii::t('contact', 'Количество торговых точек'),
-            'countStudent'     => Yii::t('contact', 'Количество учащихся'),
-            'city'             => Yii::t('contact', 'Город'),
-            'phone'            => Yii::t('contact', 'Контактный номер телефона'),
+            'organization'     => 'Наименование организации',
+            'education'        => 'Наименование учебного заведения',
+            'countShop'        => 'Количество торговых точек',
+            'countStudent'     => 'Количество учащихся',
+            'city'             => Yii::t('ContactModule.contact', 'City'),
+            'phone'            => 'Контактный номер телефона',
         );
     }
 }

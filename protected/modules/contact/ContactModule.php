@@ -25,12 +25,12 @@ class ContactModule extends WebModule
 
     public static function getName()
     {
-        return Yii::t('contact', 'Форма обратной связи');
+        return Yii::t('ContactModule.contact', 'Contact form and mail settings');
     }
 
     public static function getDescription()
     {
-        return Yii::t('contact', 'Модуль для отправки сообщений с сайта');
+        return Yii::t('ContactModule.contact', 'Module for sending messages from site');
     }
 
     public static function getIcon()
@@ -41,17 +41,17 @@ class ContactModule extends WebModule
     public function getSettingLabels()
     {
         return array(
-            'captchaRequired' => Yii::t('contact', 'Требовать ввод кода с картинки'),
-            'setFrom'         => Yii::t('contact', 'Указывать адрес отправителя'),
-            'fullFormClass'   => Yii::t('contact', 'Имя класса полной версии формы'),
-            'fullFormTitle'   => Yii::t('contact', 'Заголовок сообщения полной версии формы'),
-            'fullFormMessage' => Yii::t('contact', 'Текст сообщений после отправки полной версии формы'),
-            'smtpEnabled'     => Yii::t('contact', 'Включить отправку почты через SMTP?'),
-            'smtpHost'        => Yii::t('contact', 'SMTP Адрес сервера'),
-            'smtpPort'        => Yii::t('contact', 'SMTP порт'),
-            'smtpUserName'    => Yii::t('contact', 'SMTP логин'),
-            'smtpPassword'    => Yii::t('contact', 'SMTP пароль'),
-            'smtpEncryption'  => Yii::t('contact', 'SMTP тип соединения')
+            'captchaRequired' => Yii::t('ContactModule.contact', 'Required Captcha?'),
+            'setFrom'         => Yii::t('ContactModule.contact', 'Set from email address'),
+            'fullFormClass'   => Yii::t('ContactModule.contact', 'Full form class name'),
+            'fullFormTitle'   => Yii::t('ContactModule.contact', 'Message title of full form'),
+            'fullFormMessage' => Yii::t('ContactModule.contact', 'Alert text after send message from full form'),
+            'smtpEnabled'     => Yii::t('ContactModule.contact', 'Enable send mail via SMTP?'),
+            'smtpHost'        => Yii::t('ContactModule.contact', 'SMTP Server Host'),
+            'smtpPort'        => Yii::t('ContactModule.contact', 'SMTP port'),
+            'smtpUserName'    => Yii::t('ContactModule.contact', 'SMTP login'),
+            'smtpPassword'    => Yii::t('ContactModule.contact', 'SMTP password'),
+            'smtpEncryption'  => Yii::t('ContactModule.contact', 'SMTP type connection')
         );
     }
 
@@ -62,14 +62,14 @@ class ContactModule extends WebModule
                 'data'        => $this->getChoice(), //yes no
                 'tag'         => 'radioButtonListInline',
                 'htmlOptions' => array(
-                    'hint' => Yii::t('contact', 'Только для простой формы. Используется для бобрьбы против спаммеров') . ' (captcha)',
+                    'hint' => Yii::t('ContactModule.contact', 'Only for simple form. Anti-spam.') . ' (captcha)',
                 )
             ),
             'setFrom'         => array(
                 'data'        => $this->getChoice(), //yes no
                 'tag'         => 'radioButtonListInline',
                 'htmlOptions' => array(
-                    'hint' => Yii::t('contact', 'На примере хостинга McHost.ru рекоммендуется отключить. Опция действует ТОЛЬКО при отправке через PHP mail(), не SMTP'),
+                    'hint' => Yii::t('ContactModule.contact', 'For example disable on McHost.ru. Option worked only throw PHP mail(), not SMTP'),
                 )
             ),
             'smtpEnabled'     => array(
@@ -78,7 +78,7 @@ class ContactModule extends WebModule
             ),
             'fullFormClass'   => array(
                 'htmlOptions' => array(
-                    'hint' => Yii::t('contact', 'Не меняйте, если не уверены')
+                    'hint' => Yii::t('ContactModule.contact', 'Не меняйте, если не уверены')
                 )
             )
         );
@@ -89,10 +89,10 @@ class ContactModule extends WebModule
         /** read settings from DB */
         parent::init();
         if (empty($this->fullFormTitle)) {
-            $this->fullFormTitle = Yii::t('contact', 'Опросный лист с сайта') . ' ' . Yii::app()->name;
+            $this->fullFormTitle = Yii::t('ContactModule.contact', 'Опросный лист с сайта') . ' ' . Yii::app()->name;
         }
         if (empty($this->fullFormMessage)) {
-            $this->fullFormMessage = Yii::t('contact', 'Спасибо за сообщение! Мы Вам обязательно ответим!');
+            $this->fullFormMessage = Yii::t('ContactModule.contact', 'Thanks for message!');
         }
         $this->setImport(
             array(

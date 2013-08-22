@@ -46,7 +46,7 @@ class DefaultController extends Controller
                 $body .= "\r\nIP: " . Yii::app()->getRequest()->userHostAddress;
 
                 if (!$model->subject) {
-                    $model->subject = Yii::t('contact', 'Письмо с сайта ' . Yii::app()->name);
+                    $model->subject = Yii::t('ContactModule.contact', 'Message from {site}', array('{name}' => Yii::app()->name));
                 }
 
                 $message->setBody($body, 'text/html', Yii::app()->charset);
@@ -60,9 +60,9 @@ class DefaultController extends Controller
                     $message->from = $this->admin->email;
                 }
                 if (Yii::app()->mail->send($message)) {
-                    Yii::app()->user->setFlash('success', Yii::t('contact', 'Спасибо за сообщение! Мы Вам обязательно ответим!'));
+                    Yii::app()->user->setFlash('success', Yii::t('ContactModule.contact', 'Thanks for message!'));
                 } else {
-                    Yii::app()->user->setFlash('error', Yii::t('contact', 'Произошла проблема с отправкой письма! Обратитесь к администратоу: ' . $this->admin->email));
+                    Yii::app()->user->setFlash('error', Yii::t('ContactModule.contact', 'Problem with sending message. Write to administrator:') . ' ' . $this->admin->email);
                 }
                 if (Yii::app()->getRequest()->isAjaxRequest) {
                     foreach (Yii::app()->user->getFlashes() as $key => $message) {
@@ -92,7 +92,7 @@ class DefaultController extends Controller
                     $message = new YiiMailMessage;
                     $message->view = $viewName;
                     $message->setBody(array('model' => $model), 'text/html', Yii::app()->charset);
-                    $message->subject = Yii::t('contact', 'Письмо с сайта {site}', array('{site}' => Yii::app()->name));
+                    $message->subject = Yii::t('ContactModule.contact', 'Message from {site}', array('{site}' => Yii::app()->name));
                     $message->addTo($this->admin->email);
                     $message->setReplyTo($model->email);
 
