@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var $form CActiveForm
+ * @var $model CModel
+ */
 $class=get_class($model);
 Yii::app()->clientScript->registerScript('gii.crud',"
 $('#{$class}_controller').change(function(){

@@ -46,11 +46,11 @@ EOD;
 	{
 		$this->files=array();
 		$templatePath=$this->templatePath;
-		$modulePath=$this->modulePath;
+		$modulePath=$this->getModulePath();
 		$moduleTemplateFile=$templatePath.DIRECTORY_SEPARATOR.'module.php';
 
 		$this->files[]=new CCodeFile(
-			$modulePath.'/'.$this->moduleClass.'.php',
+			$modulePath.'/'.$this->getModuleClass().'.php',
 			$this->render($moduleTemplateFile)
 		);
 

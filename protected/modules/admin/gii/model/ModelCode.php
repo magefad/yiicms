@@ -169,6 +169,7 @@ class ModelCode extends CCodeModel
 			if(!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/',$column->name))
 				return $table->name.'.'.$column->name;
 		}
+        return null;
 	}
 
 	public function validateModelPath($attribute,$params)
@@ -179,7 +180,8 @@ class ModelCode extends CCodeModel
 
 	public function validateBaseClass($attribute,$params)
 	{
-		$class=@Yii::import($this->baseClass,true);
+        /** @noinspection PhpUsageOfSilenceOperatorInspection */
+        $class=@Yii::import($this->baseClass,true);
 		if(!is_string($class) || !$this->classExists($class))
 			$this->addError('baseClass', "Class '{$this->baseClass}' does not exist or has syntax error.");
 		elseif($class!=='CActiveRecord' && !is_subclass_of($class,'CActiveRecord'))
@@ -348,7 +350,7 @@ class ModelCode extends CCodeModel
 	/**
 	 * Checks if the given table is a "many to many" pivot table.
 	 * Their PK has 2 fields, and both of those fields are also FK to other separate tables.
-	 * @param CDbTableSchema table to inspect
+	 * @param CDbTableSchema $table to inspect
 	 * @return boolean true if table matches description of helpter table.
 	 */
 	protected function isRelationTable($table)
@@ -377,9 +379,9 @@ class ModelCode extends CCodeModel
 
 	/**
 	 * Generate a name for use as a relation name (inside relations() function in a model).
-	 * @param string the name of the table to hold the relation
-	 * @param string the foreign key name
-	 * @param boolean whether the relation would contain multiple objects
+	 * @param string $tableName the name of the table to hold the relation
+	 * @param string $fkName the foreign key name
+	 * @param boolean $multiple whether the relation would contain multiple objects
 	 * @return string the relation name
 	 */
 	protected function generateRelationName($tableName, $fkName, $multiple)

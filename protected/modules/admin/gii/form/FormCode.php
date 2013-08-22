@@ -55,7 +55,8 @@ EOD;
 	{
 		if($this->hasErrors('model'))
 			return;
-		$class=@Yii::import($this->model,true);
+        /** @noinspection PhpUsageOfSilenceOperatorInspection */
+        $class=@Yii::import($this->model,true);
 		if(!is_string($class) || !$this->classExists($class))
 			$this->addError('model', "Class '{$this->model}' does not exist or has syntax error.");
 		elseif(!is_subclass_of($class,'CModel'))

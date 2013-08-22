@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var $form CActiveForm
+ * @var $model CModel
+ */?>
 <h1>Form Generator</h1>
 
 <p>This generator generates a view script file that displays a form to collect input for the specified model class.</p>

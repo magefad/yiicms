@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $form CActiveForm
+ * @var $model CModel
+ */
+?>
 <h1>Controller Generator</h1>
 
 <p>This generator helps you to quickly generate a new controller class,

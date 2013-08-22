@@ -48,7 +48,7 @@ class ControllerCode extends CCodeModel
 		$templatePath=$this->templatePath;
 
 		$this->files[]=new CCodeFile(
-			$this->controllerFile,
+			$this->getControllerFile(),
 			$this->render($templatePath.'/controller.php')
 		);
 
@@ -113,6 +113,7 @@ class ControllerCode extends CCodeModel
 
 	public function getControllerFile()
 	{
+        /** @var WebModule $module */
 		$module=$this->getModule();
 		$id=$this->getControllerID();
 		if(($pos=strrpos($id,'/'))!==false)
@@ -124,6 +125,7 @@ class ControllerCode extends CCodeModel
 
 	public function getViewFile($action)
 	{
+        /** @var WebModule $module */
 		$module=$this->getModule();
 		return $module->getViewPath().'/'.$this->getControllerID().'/'.$action.'.php';
 	}

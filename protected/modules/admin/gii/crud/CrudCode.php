@@ -56,7 +56,8 @@ class CrudCode extends CCodeModel
 	{
 		if($this->hasErrors('model'))
 			return;
-		$class=@Yii::import($this->model,true);
+        /** @noinspection PhpUsageOfSilenceOperatorInspection */
+        $class=@Yii::import($this->model,true);
 		if(!is_string($class) || !$this->classExists($class))
 			$this->addError('model', "Class '{$this->model}' does not exist or has syntax error.");
 		elseif(!is_subclass_of($class,'CActiveRecord'))
@@ -83,7 +84,7 @@ class CrudCode extends CCodeModel
 		$controllerTemplateFile=$templatePath.DIRECTORY_SEPARATOR.'controller.php';
 
 		$this->files[]=new CCodeFile(
-			$this->controllerFile,
+			$this->getControllerFile(),
 			$this->render($controllerTemplateFile)
 		);
 
@@ -93,7 +94,7 @@ class CrudCode extends CCodeModel
 			if(is_file($templatePath.'/'.$file) && CFileHelper::getExtension($file)==='php' && $file!=='controller.php')
 			{
 				$this->files[]=new CCodeFile(
-					$this->viewPath.DIRECTORY_SEPARATOR.$file,
+					$this->getViewPath().DIRECTORY_SEPARATOR.$file,
 					$this->render($templatePath.'/'.$file)
 				);
 			}
@@ -149,6 +150,7 @@ class CrudCode extends CCodeModel
 
 	public function getControllerFile()
 	{
+        /** @var WebModule $module */
 		$module=$this->getModule();
 		$id=$this->getControllerID();
 		if(($pos=strrpos($id,'/'))!==false)

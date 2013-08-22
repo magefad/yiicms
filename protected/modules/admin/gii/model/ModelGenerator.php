@@ -4,11 +4,12 @@ class ModelGenerator extends CCodeGenerator
 {
 	public $codeModel='admin.gii.model.ModelCode';
 
-	/**
-	 * Provides autocomplete table names
-	 * @param string $db the database connection component id
-	 * @return string the json array of tablenames that contains the entered term $q
-	 */
+    /**
+     * Provides autoComplete table names
+     * @param string $db the database connection component id
+     * @throws CHttpException
+     * @return string the json array of tableNames that contains the entered term $q
+     */
 	public function actionGetTableNames($db)
 	{
 		if(Yii::app()->getRequest()->getIsAjaxRequest())

@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $form CActiveForm
+ * @var $model CModel
+ */
+?>
 <h1>Module Generator</h1>
 
 <p>This generator helps you to generate the skeleton code needed by a Yii module.</p>
