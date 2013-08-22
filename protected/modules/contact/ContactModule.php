@@ -97,7 +97,8 @@ class ContactModule extends WebModule
         $this->setImport(
             array(
                 'contact.models.*',
-                'ext.mail.YiiMailMessage'
+                'ext.mail.YiiMailMessage',
+                'page.PageModule'
             )
         );
         Yii::app()->setComponents(
