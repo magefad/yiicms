@@ -13,21 +13,21 @@ class SocialModule extends WebModule
 
     public static function getName()
     {
-        return Yii::t('SocialModule.social', 'Социальные сети');
+        return Yii::t('SocialModule.social', 'Social Networks');
     }
 
     public static function getDescription()
     {
-        return Yii::t('SocialModule.social', 'Настройки интеграции с сервисами социальных сетей');
+        return Yii::t('SocialModule.social', 'Integrate social services with site');
     }
 
     public function getSettingLabels()
     {
         return array(
-            'vkontakteClientId'     => Yii::t('SocialModule.social', 'Вконтакте client_id'),
-            'vkontakteClientSecret' => Yii::t('SocialModule.social', 'Вконтакте client_secret'),
-            'facebookClientId'      => Yii::t('SocialModule.social', 'Facebook client_id'),
-            'facebookClientSecret'  => Yii::t('SocialModule.social', 'Facebook client_secret'),
+            'vkontakteClientId'     => 'Вконтакте client_id',
+            'vkontakteClientSecret' => 'Вконтакте client_secret',
+            'facebookClientId'      => 'Facebook client_id',
+            'facebookClientSecret'  => 'Facebook client_secret',
         );
     }
 
@@ -36,12 +36,12 @@ class SocialModule extends WebModule
         return array(
             'vkontakteClientId' => array(
                 'htmlOptions' => array(
-                    'hint' => Yii::t('SocialModule.social', 'Регистрация приложения:' . CHtml::link(' http://vk.com/editapp?act=create&site=1', 'http://vk.com/editapp?act=create&site=1', array('target' => '_blank'))),
+                    'hint' => Yii::t('SocialModule.social', 'Register link:') . CHtml::link(' http://vk.com/editapp?act=create&site=1', 'http://vk.com/editapp?act=create&site=1', array('target' => '_blank')),
                 )
             ),
             'facebookClientId' => array(
                 'htmlOptions' => array(
-                    'hint' => Yii::t('SocialModule.social', 'Регистрация приложения:'  . CHtml::link(' https://developers.facebook.com/apps/', ' https://developers.facebook.com/apps/', array('target' => '_blank'))),
+                    'hint' => Yii::t('SocialModule.social', 'Register link:')  . CHtml::link(' https://developers.facebook.com/apps/', ' https://developers.facebook.com/apps/', array('target' => '_blank')),
                 )
             ),
         );
