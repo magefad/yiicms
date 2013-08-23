@@ -59,7 +59,6 @@ class DefaultController extends Controller
             $this->httpCacheFilter($model->update_time);
         }
         if ($model->is_protected && Yii::app()->user->isGuest) {
-            $this->invalidActionParams($this->action);
             throw new CHttpException(403, Yii::t('yii', 'You are not authorized to perform this action.'));
         }
         $this->setMetaTags($model);
