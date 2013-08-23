@@ -28,6 +28,7 @@
  * @property Page $parent
  * @property User $author
  * @property User $changeAuthor
+ * @property Good $good
  *
  * The followings are the available model behaviors:
  * @property AdjacencyListBehavior $treeArray
@@ -154,6 +155,7 @@ class Page extends CActiveRecord
             'parent'       => array(self::BELONGS_TO, 'Page', 'parent_id'),
             'author'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
             'changeAuthor' => array(self::BELONGS_TO, 'User', 'update_user_id'),
+            'goods'        => array(self::HAS_MANY, 'Good', 'id')
         );
     }
 

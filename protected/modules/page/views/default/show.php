@@ -5,8 +5,8 @@
  * Time: 17:14
  * @var $this Controller
  */
-/** @var $page array */
-echo $this->decodeWidgets($page['content']);
+/** @var $page Page */
+echo $this->decodeWidgets($page->content);
 if (!empty($navigation)):?>
 <ul class="pager">
 <?php if (isset($navigation['prev'])):?>
@@ -20,4 +20,10 @@ if (!empty($navigation)):?>
     </li>
 <?php endif;?>
 </ul>
-<?php endif;?>
+<?php endif;
+if (!is_null($page->type) && $page->type == Page::TYPE_CATALOG && Yii::app()->hasModule('catalog')) {
+    Yii::import('catalog.models.Good');//@todo why not found?
+    foreach ($page->goods as $good) {
+        $this->renderPartial('application.modules.catalog.views.good.' . Yii::app()->getModule('catalog')->template, array('good' => $good));
+    }
+}
