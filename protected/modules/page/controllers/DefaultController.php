@@ -55,7 +55,7 @@ class DefaultController extends Controller
             throw new CHttpException(404, Yii::t('PageModule.page', 'Page Not Found or Deleted!'));
         }
         $_GET['id'] = $model->id;
-        if ($slug != $this->module->defaultPage) {
+        if (!YII_DEBUG && $slug != $this->module->defaultPage) {
             $this->httpCacheFilter($model->update_time);
         }
         if ($model->is_protected && Yii::app()->user->isGuest) {

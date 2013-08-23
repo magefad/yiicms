@@ -26,7 +26,9 @@ class DefaultController extends Controller
             throw new CHttpException(404, Yii::t('NewsModule.news', 'News Not Found!'));
         }
         $_GET['id'] = $model->id;
-        $this->httpCacheFilter($model->update_time);
+        if (!YII_DEBUG) {
+            $this->httpCacheFilter($model->update_time);
+        }
         $this->setMetaTags($model);
         $this->render('show', array('model' => $model));
     }
