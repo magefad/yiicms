@@ -7,7 +7,8 @@ class m130816_104840_addType extends EDbMigration
 {
 	public function safeUp()
 	{
-        $this->addColumn('{{page}}', 'type', 'tinyint(4) DEFAULT NULL AFTER status');
+        $after = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' AFTER status' : '';//sqlite not support AFTER
+        $this->addColumn('{{page}}', 'type', 'tinyint(4) DEFAULT NULL' . $after);
 	}
 
 	public function safeDown()
