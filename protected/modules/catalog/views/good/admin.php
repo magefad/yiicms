@@ -49,6 +49,11 @@ $('.search-form form').submit(function(){
         ),
 		'name',
 		'title',
+        array(
+            'name' => 'slug',
+            'value' => 'CHtml::link($data->page->name, array("/catalog/good/show", "slug" => $data->slug), array("target" => "_blank"))',
+            'type' => 'raw'
+        ),
         'slug',
         array(
             'name'        => 'create_time',
