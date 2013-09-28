@@ -36,11 +36,11 @@
  * @property StatusBehavior $statusType
  * @property StatusBehavior $statusProtected
  *
- * @method published()
- * @method protected()
- * @method public()
- * @method root()
- * @method catalog()
+ * @method Page published()
+ * @method Page protected()
+ * @method Page public()
+ * @method Page root()
+ * @method Page catalog()
  */
 class Page extends CActiveRecord
 {
