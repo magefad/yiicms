@@ -24,7 +24,7 @@
  * @property integer $update_user_id
  *
  * The followings are the available model relations:
- * @property Page $children
+ * @property Page[] $children
  * @property Page $parent
  * @property User $author
  * @property User $changeAuthor
