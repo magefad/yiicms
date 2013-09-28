@@ -28,7 +28,7 @@
  * @property Page $parent
  * @property User $author
  * @property User $changeAuthor
- * @property Good $good
+ * @property Good[] $goods if has module "catalog"
  *
  * The followings are the available model behaviors:
  * @property AdjacencyListBehavior $treeArray
@@ -155,7 +155,6 @@ class Page extends CActiveRecord
             'parent'       => array(self::BELONGS_TO, 'Page', 'parent_id'),
             'author'       => array(self::BELONGS_TO, 'User', 'create_user_id'),
             'changeAuthor' => array(self::BELONGS_TO, 'User', 'update_user_id'),
-            'goods'        => array(self::HAS_MANY, 'Good', 'id')
         );
     }
 
@@ -212,6 +211,14 @@ class Page extends CActiveRecord
             'author_search'       => Yii::t('PageModule.page', 'Author'),
             'changeAuthor_search' => Yii::t('PageModule.page', 'Update user'),
         );
+    }
+
+    public function afterFind()
+    {
+        if (Yii::app()->hasModule('catalog')) {
+            $this->getMetaData()->addRelation('goods', array(CActiveRecord::HAS_MANY, 'Good', 'page_id'));
+        }
+        parent::afterFind();
     }
 
     /**
