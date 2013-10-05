@@ -36,10 +36,9 @@ $this->widget(
         )
     )
 );
-if ( $model->rich_editor) {
-    #Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/css/bootstrap.min.css')
-    $contentCss = array(Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')).'/bootstrap/css/bootstrap.min.css');
-    if (isset(Yii::app()->theme->baseUrl)) {
+if ($model->rich_editor) {
+    $contentCss = array(Yii::app()->assetManager->getPublishedUrl(Yii::getPathOfAlias('ext.bootstrap.assets')) . '/bootstrap/css/bootstrap.min.css');
+    if (isset(Yii::app()->theme) && file_exists(Yii::app()->theme->getBasePath() . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'style.css')) {
         $contentCss[] = Yii::app()->theme->baseUrl . '/css/style.css';
     }
     $this->widget('ext.tinymce.TinyMce', array('model' => $model, 'attribute' => 'content', 'settings' => array('height' => 420, 'content_css' => implode(',', $contentCss))));
@@ -52,7 +51,7 @@ if ( $model->rich_editor) {
         });
     ');
 }
-echo '<div>&nbsp;</div>';
+echo CHtml::tag('div', array(), '&nbsp;');
 
 $this->widget(
     'bootstrap.widgets.TbButton',
