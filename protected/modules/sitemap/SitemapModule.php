@@ -31,6 +31,7 @@ class SitemapModule extends WebModule
         'page/default/show'   => array(
             'model' => array(
                 'class'      => 'application.modules.page.models.Page',
+                'import'     => 'application.modules.page.PageModule',
                 'criteria'   => array(
                     'select' => 'level, title, slug, update_time',
                     'scopes' => array('published', 'public'),
