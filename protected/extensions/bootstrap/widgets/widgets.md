@@ -1,10 +1,12 @@
-# Decoration
- HeroUnit
- Badge
- Progress
- Label
- Alert
+Legend: `+` sign means availability of end-user documentation page.
 
+# Decoration
+
+ + HeroUnit
+ + Badge
+ + Progress
+ + Label
+ + Alert
 
 # Content Grouping
 
@@ -41,9 +43,8 @@
 
 # Editable
 
- EditableField
+ + EditableField
  EditableDetailView
-
 
 # Grids
 
@@ -54,23 +55,25 @@
 
 ## Columns
 
- JsonButtonColumn
  DataColumn
  RelationalColumn
  GroupButtonColumn
  ImageColumn
- JsonGridColumn
- JsonCheckBoxColumn
  ButtonColumn
- JsonDataColumn
  EditableColumn
- JsonPickerColumn
  ToggleColumn
  TotalSumColumn
  ButtonGroupColumn
  PickerColumn
  BulkActions
 
+### Json
+
+ JsonGridColumn
+ JsonDataColumn
+ JsonButtonColumn
+ JsonCheckBoxColumn
+ JsonPickerColumn
 
 # Forms
 
@@ -86,8 +89,9 @@
  Select2
  FileUpload
  Tags
- TimePicker
+ + TimePicker
  FormInputElement
+ DateTimePicker
 
 ### WYSIWYG Editors
 
@@ -104,7 +108,7 @@
  FormButtonElement
 
 
-# Support shit
+# Support stuff
 
  JsonPager
  EditableSaver
@@ -112,6 +116,3 @@
  ScrollSpy
  ExtendedFilter
 
-# Broken
-
- ExtendedTooltip

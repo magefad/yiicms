@@ -26,7 +26,7 @@ class TbInputHorizontal extends TbInput
 	{
 		echo CHtml::openTag('div', array('class' => 'control-group ' . $this->getContainerCssClass()));
 		parent::run();
-		echo '</div>';
+		echo CHtml::closeTag('div');
 	}
 
 	/**
@@ -55,9 +55,12 @@ class TbInputHorizontal extends TbInput
 	protected function checkBox()
 	{
 		$attribute = $this->attribute;
+		list($hidden, $checkbox) = $this->getSeparatedSelectableInput();
+
 		echo '<div class="controls">';
+		echo ($hidden) ? $hidden . PHP_EOL : '';
 		echo '<label class="checkbox" for="' . $this->getAttributeId($attribute) . '">';
-		echo $this->form->checkBox($this->model, $attribute, $this->htmlOptions) . PHP_EOL;
+		echo $checkbox . PHP_EOL;
 		echo $this->model->getAttributeLabel($attribute);
 		echo $this->getError() . $this->getHint();
 		echo '</label></div>';
@@ -180,15 +183,54 @@ class TbInputHorizontal extends TbInput
 	}
 
 	/**
+	 * Renders a Pass*Field field.
+	 * @return string the rendered content
+	 * @author Hrumpa
+	 */
+	protected function passfieldField()
+	{
+		if (isset($this->htmlOptions['options'])) {
+			$options = $this->htmlOptions['options'];
+			unset($this->htmlOptions['options']);
+		}
+
+		if (isset($this->htmlOptions['events'])) {
+			$events = $this->htmlOptions['events'];
+			unset($this->htmlOptions['events']);
+		}
+
+		echo $this->getLabel();
+		echo '<div class="controls">';
+		echo $this->getPrepend();
+		$this->widget(
+			'bootstrap.widgets.TbPassfield',
+			array(
+				'model' => $this->model,
+				'attribute' => $this->attribute,
+				'options' => isset($options) ? $options : array(),
+				'events' => isset($events) ? $events : array(),
+				'htmlOptions' => $this->htmlOptions,
+			)
+		);
+		echo $this->getAppend();
+		echo $this->getError() . $this->getHint();
+		echo '</div>';
+	}
+
+	/**
 	 * Renders a radio button.
 	 * @return string the rendered content
 	 */
 	protected function radioButton()
 	{
 		$attribute = $this->attribute;
+		list($hidden, $radioButton) = $this->getSeparatedSelectableInput();
+
 		echo '<div class="controls">';
+		echo ($hidden) ? $hidden . PHP_EOL : '';
 		echo '<label class="radio" for="' . $this->getAttributeId($attribute) . '">';
-		echo $this->form->radioButton($this->model, $attribute, $this->htmlOptions) . PHP_EOL;
+		echo $radioButton . PHP_EOL;
+		//echo $this->form->radioButton($this->model, $attribute, $this->htmlOptions) . PHP_EOL;
 		echo $this->model->getAttributeLabel($attribute);
 		echo $this->getError() . $this->getHint();
 		echo '</label></div>';
@@ -201,10 +243,10 @@ class TbInputHorizontal extends TbInput
 	protected function radioButtonList()
 	{
 		echo $this->getLabel();
-		echo '<div class="controls">';
+		echo '<div class="controls"><span id="' . $this->getAttributeId($this->attribute) . '">';
 		echo $this->form->radioButtonList($this->model, $this->attribute, $this->data, $this->htmlOptions);
 		echo $this->getError() . $this->getHint();
-		echo '</div>';
+		echo '</span></div>';
 	}
 
 	/**
@@ -337,6 +379,41 @@ class TbInputHorizontal extends TbInput
 		echo $this->getPrepend();
 		$this->widget(
 			'bootstrap.widgets.TbDatePicker',
+			array(
+				'model' => $this->model,
+				'attribute' => $this->attribute,
+				'options' => isset($options) ? $options : array(),
+				'events' => isset($events) ? $events : array(),
+				'htmlOptions' => $this->htmlOptions,
+			)
+		);
+		echo $this->getAppend();
+		echo $this->getError() . $this->getHint();
+		echo '</div>';
+	}
+
+	/**
+	 * Renders a datetimepicker field.
+	 * @return string the rendered content
+	 * @author Hrumpa
+	 */
+	protected function datetimepickerField()
+	{
+		if (isset($this->htmlOptions['options'])) {
+			$options = $this->htmlOptions['options'];
+			unset($this->htmlOptions['options']);
+		}
+
+		if (isset($this->htmlOptions['events'])) {
+			$events = $this->htmlOptions['events'];
+			unset($this->htmlOptions['events']);
+		}
+
+		echo $this->getLabel();
+		echo '<div class="controls">';
+		echo $this->getPrepend();
+		$this->widget(
+			'bootstrap.widgets.TbDateTimePicker',
 			array(
 				'model' => $this->model,
 				'attribute' => $this->attribute,
@@ -572,7 +649,7 @@ class TbInputHorizontal extends TbInput
 		}
 
 		echo $this->getLabel();
-		echo '<div class="controls bootstrap-timepicker">';
+		echo '<div class="controls">';
 		echo $this->getPrepend();
 		$this->widget(
 			'bootstrap.widgets.TbTimePicker',

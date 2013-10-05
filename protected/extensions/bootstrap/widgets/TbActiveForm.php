@@ -202,6 +202,22 @@ class TbActiveForm extends CActiveForm
 	}
 
 	/**
+	 *### .passfieldFieldRow()
+	 *
+	 * Renders a Pass*Field field input row.
+	 *
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes
+	 *
+	 * @return string the generated row
+	 */
+	public function passfieldFieldRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->inputRow(TbInput::TYPE_PASSFIELD, $model, $attribute, null, $htmlOptions);
+	}
+
+	/**
 	 *### .radioButtonRow()
 	 *
 	 * Renders a radio button input row.
@@ -434,6 +450,25 @@ class TbActiveForm extends CActiveForm
 	public function datepickerRow($model, $attribute, $htmlOptions = array())
 	{
 		return $this->inputRow(TbInput::TYPE_DATEPICKER, $model, $attribute, null, $htmlOptions);
+	}
+
+	/**
+	 *### .datetimepickerRow()
+	 *
+	 * Renders a datetimepicker field row.
+	 *
+	 * @param CModel $model the data model
+	 * @param string $attribute the attribute
+	 * @param array $htmlOptions additional HTML attributes. 'events' and 'options' key specify the events
+	 * and configuration options of datepicker respectively.
+	 *
+	 * @return string the generated row
+	 *
+	 * @since 2.0.0 Booster
+	 */
+	public function datetimepickerRow($model, $attribute, $htmlOptions = array())
+	{
+		return $this->inputRow(TbInput::TYPE_DATETIMEPICKER, $model, $attribute, null, $htmlOptions);
 	}
 
 	/**
