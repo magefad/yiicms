@@ -101,23 +101,25 @@ class ContactModule extends WebModule
                 'page.PageModule'
             )
         );
-        Yii::app()->setComponents(
-            array(
-                'mail' => array(
-                    'class'            => 'ext.mail.YiiMail',
-                    'transportType'    => $this->smtpEnabled ? 'smtp' : 'php',
-                    'transportOptions' => array(
-                        'host'       => $this->smtpHost,
-                        'username'   => $this->smtpUserName,
-                        'password'   => $this->smtpPassword,
-                        'port'       => $this->smtpPort,
-                        'encryption' => $this->smtpEncryption,
-                    ),
-                    'viewPath'         => 'contact.views.mail',
-                    'logging'          => true,
-                    'dryRun'           => false
-                )
-            )
+        $config = array(
+            'class'            => 'ext.mail.YiiMail',
+            'transportType'    => $this->smtpEnabled ? 'smtp' : 'php',
+            'viewPath'         => 'contact.views.mail',
+            'logging'          => true,
+            'dryRun'           => false
         );
+        if ($this->smtpEnabled) {
+            $config = array_merge(
+                $config,
+                array(
+                    'host'       => $this->smtpHost,
+                    'username'   => $this->smtpUserName,
+                    'password'   => $this->smtpPassword,
+                    'port'       => $this->smtpPort,
+                    'encryption' => $this->smtpEncryption
+                )
+            );
+        }
+        Yii::app()->setComponents(array('mail' => $config));
     }
 }
