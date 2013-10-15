@@ -90,7 +90,8 @@ class SitemapModule extends WebModule
                 'class'      => 'application.modules.blog.models.Blog',
                 'import'     => array(
                     'application.modules.blog.BlogModule',
-                    'application.modules.blog.models.UserBlog'
+                    'application.modules.blog.models.UserBlog',
+                    'application.modules.blog.models.Post',
                 ),
                 'criteria'   => array(
                     'select' => 'title, slug',
