@@ -12,7 +12,7 @@
     <span class="span2">
         <?php echo $form->dropDownListRow($model, 'status', $model->statusMain->getList(), array('style' => 'width: 100% !important')) ?>
     </span>
-    <span class="span2">
+    <span class="span3">
         <?php echo $form->dropDownListRow($model, 'type', $model->statusType->getList(), array('empty' => Yii::t('zii', 'Not set'), 'style' => 'width: 100% !important')) ?>
     </span>
     <span class="span1">
