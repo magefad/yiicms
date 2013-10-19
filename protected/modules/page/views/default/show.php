@@ -30,8 +30,8 @@ if ($page->type == Page::TYPE_ARTICLE) {
     $this->widget(
         'zii.widgets.CListView',
         array(
-            'dataProvider' => new CActiveDataProvider('Page', array(
-                'data' => $page->children,
+            'dataProvider' => new CActiveDataProvider($page->search(), array(
+                'data' => $page->children(array('order' => 'create_time desc')),
             )),
             'itemView'     => '_article',
             'template'     => '{sorter}{items}{pager}',
