@@ -13,16 +13,33 @@ if (Yii::app()->hasModule('catalog')) {
         foreach ($page->goods as $good) {
             $this->renderPartial('application.modules.catalog.views.good.' . Yii::app()->getModule('catalog')->template, array('good' => $good));
         }
-    } else {
-        echo CHtml::tag('ul', array('class' => 'nav nav-tabs nav-stacked'));
+    }/* else {
+        $liArray = array();
         foreach ($page->children as $children) {
             if (!is_null($children->type) && $children->type == Page::TYPE_CATALOG) {
-                echo '<li>' . CHtml::link($children->title, array('/page/default/show', 'slug' => $children->slug)) . '</li>';
+                $liArray[] = '<li>' . CHtml::link($children->title, array('/page/default/show', 'slug' => $children->slug)) . '</li>';
             }
         }
-        echo CHtml::closeTag('ul');
-    }
+        if (!empty($liArray)) {
+            echo CHtml::tag('ul', array('class' => 'nav nav-tabs nav-stacked'), implode(PHP_EOL, $liArray));
+        }
+    }*/
 }
+if ($page->type == Page::TYPE_ARTICLE) {
+    Yii::app()->clientScript->registerCss('article', '#articles h3 {font-size: 14px; margin: 0; line-height: 20px;} #articles p {font-size: 11px; line-height: 16px}');
+    $this->widget(
+        'zii.widgets.CListView',
+        array(
+            'dataProvider' => new CActiveDataProvider('Page', array(
+                'data' => $page->children,
+            )),
+            'itemView'     => '_article',
+            'template'     => '{sorter}{items}{pager}',
+            'htmlOptions'  => array('style' => 'padding-top:0'),
+        )
+    );
+}
+
 if (!empty($navigation)):?>
 <ul class="pager">
 <?php if (isset($navigation['prev'])):?>

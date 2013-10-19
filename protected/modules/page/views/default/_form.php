@@ -14,7 +14,8 @@ $form = $this->beginWidget(
         'clientOptions'          => array(
             'validateOnSubmit' => true,
             'hideErrorMessage' => true
-        )
+        ),
+        'htmlOptions'            => array('enctype' => 'multipart/form-data'),
     )
 );
 
@@ -31,6 +32,10 @@ $this->widget(
             ),
             array(
                 'label'   => Yii::t('PageModule.page', 'Additional'),
+                'content' => $this->renderPartial('_formAdditional', array('model' => $model, 'form' => $form), true),
+            ),
+            array(
+                'label'   => Yii::t('PageModule.page', 'Settings'),
                 'content' => $this->renderPartial('_formSettings', array('model' => $model, 'form' => $form), true),
             )
         )
