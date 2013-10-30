@@ -19,7 +19,10 @@
  * @property EAuth $eauth
  * @property YiiMailMessage $mail
  * @property CommandExecutor $executor
+ * @property Image $image
  *
- * @method getClientScript()
+ * @method CClientScript getClientScript()
+ * @method CAssetManager getAssetManager()
+ * @method AdminModule|AuthModule|BlogModule|CatalogModule|CommentModule|ContactModule|GalleryModule|MenuModule|NewsModule|PageModule|SitemapModule|SocialModule|UserModule getModule()
  */
 class CApplication {}

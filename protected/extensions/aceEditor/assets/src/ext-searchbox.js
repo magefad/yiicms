@@ -69,6 +69,9 @@ float: left;\
 margin-bottom: 4px;\
 overflow: hidden;\
 }\
+.ace_search_form.ace_nomatch {\
+outline: 1px solid red;\
+}\
 .ace_search_field {\
 background-color: white;\
 border-right: 1px solid #cbcbcb;\
@@ -144,6 +147,42 @@ width: 54px\
 }\
 .ace_replacebtn.next {\
 width: 27px\
+}\
+.ace_button {\
+margin-left: 2px;\
+cursor: pointer;\
+-webkit-user-select: none;\
+-moz-user-select: none;\
+-o-user-select: none;\
+-ms-user-select: none;\
+user-select: none;\
+overflow: hidden;\
+opacity: 0.7;\
+border: 1px solid rgba(100,100,100,0.23);\
+padding: 1px;\
+-moz-box-sizing: border-box;\
+box-sizing:    border-box;\
+color: black;\
+}\
+.ace_button:hover {\
+background-color: #eee;\
+opacity:1;\
+}\
+.ace_button:active {\
+background-color: #ddd;\
+}\
+.ace_button.checked {\
+border-color: #3399ff;\
+opacity:1;\
+}\
+.ace_search_options{\
+margin-bottom: 3px;\
+text-align: right;\
+-webkit-user-select: none;\
+-moz-user-select: none;\
+-o-user-select: none;\
+-ms-user-select: none;\
+user-select: none;\
 }";
 var HashHandler = require("../keyboard/hash_handler").HashHandler;
 var keyUtil = require("../lib/keys");
@@ -151,16 +190,21 @@ var keyUtil = require("../lib/keys");
 dom.importCssString(searchboxCss, "ace_searchbox");
 
 var html = '<div class="ace_search right">\
-    <button action="hide" class="ace_searchbtn_close"></button>\
+    <button type="button" action="hide" class="ace_searchbtn_close"></button>\
     <div class="ace_search_form">\
-        <input class="ace_search_field" placeholder="Search for" spellcheck="false">\
-        <button action="findNext" class="ace_searchbtn next"></button>\
-        <button action="findPrev" class="ace_searchbtn prev"></button>\
+        <input class="ace_search_field" placeholder="Search for" spellcheck="false"></input>\
+        <button type="button" action="findNext" class="ace_searchbtn next"></button>\
+        <button type="button" action="findPrev" class="ace_searchbtn prev"></button>\
     </div>\
     <div class="ace_replace_form">\
-        <input class="ace_search_field" placeholder="Replace with" spellcheck="false">\
-        <button action="replace" class="ace_replacebtn">Replace</button>\
-        <button action="replaceAll" class="ace_replacebtn">All</button>\
+        <input class="ace_search_field" placeholder="Replace with" spellcheck="false"></input>\
+        <button type="button" action="replaceAndFindNext" class="ace_replacebtn">Replace</button>\
+        <button type="button" action="replaceAll" class="ace_replacebtn">All</button>\
+    </div>\
+    <div class="ace_search_options">\
+        <span action="toggleRegexpMode" class="ace_button" title="RegExp Search">.*</span>\
+        <span action="toggleCaseSensitive" class="ace_button" title="CaseSensitive Search">Aa</span>\
+        <span action="toggleWholeWords" class="ace_button" title="Whole Word Search">\\b</span>\
     </div>\
 </div>'.replace(/>\s+/g, ">");
 
@@ -180,14 +224,22 @@ var SearchBox = function(editor, range, showReplaceForm) {
         this.editor = editor;
     };
 
-    this.$init = function() {
-        var sb = this.element;
-
+    this.$initElements = function(sb) {
         this.searchBox = sb.querySelector(".ace_search_form");
         this.replaceBox = sb.querySelector(".ace_replace_form");
+        this.searchOptions = sb.querySelector(".ace_search_options");
+        this.regExpOption = sb.querySelector("[action=toggleRegexpMode]");
+        this.caseSensitiveOption = sb.querySelector("[action=toggleCaseSensitive]");
+        this.wholeWordOption = sb.querySelector("[action=toggleWholeWords]");
         this.searchInput = this.searchBox.querySelector(".ace_search_field");
         this.replaceInput = this.replaceBox.querySelector(".ace_search_field");
-
+    };
+    
+    this.$init = function() {
+        var sb = this.element;
+        
+        this.$initElements(sb);
+        
         var _this = this;
         event.addListener(sb, "mousedown", function(e) {
             setTimeout(function(){
@@ -196,10 +248,12 @@ var SearchBox = function(editor, range, showReplaceForm) {
             event.stopPropagation(e);
         });
         event.addListener(sb, "click", function(e) {
-            var t = e.target;
+            var t = e.target || e.srcElement;
             var action = t.getAttribute("action");
             if (action && _this[action])
                 _this[action]();
+            else if (_this.$searchBarKb.commands[action])
+                _this.$searchBarKb.commands[action].exec(_this);
             event.stopPropagation(e);
         });
 
@@ -221,9 +275,11 @@ var SearchBox = function(editor, range, showReplaceForm) {
         });
         event.addListener(this.searchInput, "focus", function() {
             _this.activeInput = _this.searchInput;
+            _this.searchInput.value && _this.highlight();
         });
         event.addListener(this.replaceInput, "focus", function() {
             _this.activeInput = _this.replaceInput;
+            _this.searchInput.value && _this.highlight();
         });
     };
     this.$closeSearchBarKb = new HashHandler([{
@@ -239,6 +295,12 @@ var SearchBox = function(editor, range, showReplaceForm) {
             var isReplace = sb.isReplace = !sb.isReplace;
             sb.replaceBox.style.display = isReplace ? "" : "none";
             sb[isReplace ? "replaceInput" : "searchInput"].focus();
+        },
+        "Ctrl-G|Command-G": function(sb) {
+            sb.findNext();
+        },
+        "Ctrl-Shift-G|Command-Shift-G": function(sb) {
+            sb.findPrev();
         },
         "esc": function(sb) {
             setTimeout(function() { sb.hide();});
@@ -258,14 +320,53 @@ var SearchBox = function(editor, range, showReplaceForm) {
         }
     });
 
+    this.$searchBarKb.addCommands([{
+        name: "toggleRegexpMode",
+        bindKey: {win: "Alt-R|Alt-/", mac: "Ctrl-Alt-R|Ctrl-Alt-/"},
+        exec: function(sb) {
+            sb.regExpOption.checked = !sb.regExpOption.checked;
+            sb.$syncOptions();
+        }
+    }, {
+        name: "toggleCaseSensitive",
+        bindKey: {win: "Alt-C|Alt-I", mac: "Ctrl-Alt-R|Ctrl-Alt-I"},
+        exec: function(sb) {
+            sb.caseSensitiveOption.checked = !sb.caseSensitiveOption.checked;
+            sb.$syncOptions();
+        }
+    }, {
+        name: "toggleWholeWords",
+        bindKey: {win: "Alt-B|Alt-W", mac: "Ctrl-Alt-B|Ctrl-Alt-W"},
+        exec: function(sb) {
+            sb.wholeWordOption.checked = !sb.wholeWordOption.checked;
+            sb.$syncOptions();
+        }
+    }]);
 
+    this.$syncOptions = function() {
+        dom.setCssClass(this.regExpOption, "checked", this.regExpOption.checked);
+        dom.setCssClass(this.wholeWordOption, "checked", this.wholeWordOption.checked);
+        dom.setCssClass(this.caseSensitiveOption, "checked", this.caseSensitiveOption.checked);
+        this.find(false, false);
+    };
+
+    this.highlight = function(re) {
+        this.editor.session.highlight(re || this.editor.$search.$options.re);
+        this.editor.renderer.updateBackMarkers()
+    };
     this.find = function(skipCurrent, backwards) {
-        this.editor.find(this.searchInput.value, {
+        var range = this.editor.find(this.searchInput.value, {
             skipCurrent: skipCurrent,
             backwards: backwards,
-            wrap: true
+            wrap: true,
+            regExp: this.regExpOption.checked,
+            caseSensitive: this.caseSensitiveOption.checked,
+            wholeWord: this.wholeWordOption.checked
         });
-        this.editor.session.highlight(this.editor.$search.$options.re);
+        var noMatch = !range && this.searchInput.value;
+        dom.setCssClass(this.searchBox, "ace_nomatch", noMatch);
+        this.editor._emit("findSearchBox", { match: !noMatch });
+        this.highlight();
     };
     this.findNext = function() {
         this.find(true, false);
@@ -274,16 +375,23 @@ var SearchBox = function(editor, range, showReplaceForm) {
         this.find(true, true);
     };
     this.replace = function() {
-        this.editor.replace(this.replaceInput.value);
-        this.findNext();
+        if (!this.editor.getReadOnly())
+            this.editor.replace(this.replaceInput.value);
+    };    
+    this.replaceAndFindNext = function() {
+        if (!this.editor.getReadOnly()) {
+            this.editor.replace(this.replaceInput.value);
+            this.findNext()
+        }
     };
     this.replaceAll = function() {
-        this.editor.replaceAll(this.replaceInput.value);
+        if (!this.editor.getReadOnly())
+            this.editor.replaceAll(this.replaceInput.value);
     };
 
-    this.hide = function () {
+    this.hide = function() {
         this.element.style.display = "none";
-        this.editor.keyBinding.removeKeyboardHandler(this.$searchKeybingin);
+        this.editor.keyBinding.removeKeyboardHandler(this.$closeSearchBarKb);
         this.editor.focus();
     };
     this.show = function(value, isReplace) {
@@ -308,46 +416,5 @@ exports.Search = function(editor, isReplace) {
     var sb = editor.searchBox || new SearchBox(editor);
     sb.show(editor.session.getTextRange(), isReplace);
 };
-
-
-exports.ISearch = function(session, options) {
-    this.$changeListener = this.$changeListener.bind(this);
-    this.startRange = session.selection.toOrientedRange();
-    this.options = options || {};
-};
-
-(function(){
-    this.setSession = function(session) {
-        if (this.session) {
-            this.session.removeListener(this.$changeListener);
-        }
-        this.session = session;
-        this.session.addListener(this.$changeListener);
-    };
-    this.setSearchString = function() {
-
-    };
-    this.getValue = function() {
-        if (this.value == null)
-            this.value = this.session.getValue();
-        return this.value;
-    };
-    this.$changeListener = function() {
-        this.value = null;
-    };
-    this.find = function() {
-
-    };
-    this.$edgeBefore = function() {
-        this.cursor = this.startRange[this.options.backwards ? "start" : "end"];
-    };
-    this.$edgeAfter = function() {
-
-    };
-    this.next = function(dir) {
-
-    };
-}).call(exports.ISearch.prototype);
-
 
 });

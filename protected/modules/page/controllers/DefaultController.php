@@ -116,6 +116,7 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new Page;
+        $model->rich_editor = true;//@todo sqlite no default value from table bug?
         // Uncomment the following line if AJAX validation is needed
         $this->performAjaxValidation($model);
 

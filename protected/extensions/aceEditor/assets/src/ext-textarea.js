@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2010, Ajax.org B.V.
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -14,7 +14,7 @@
  *     * Neither the name of Ajax.org B.V. nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -64,7 +64,7 @@ function applyStyles(elm, styles) {
 
 function setupContainer(element, getValue) {
     if (element.type != 'textarea') {
-        throw "Textarea required!";
+        throw new Error("Textarea required!");
     }
 
     var parentNode = element.parentNode;
@@ -167,7 +167,7 @@ exports.transformTextarea = function(element, loader) {
     container.appendChild(settingOpener);
     setupApi(editor, editorDiv, settingDiv, ace, options, loader);
     setupSettingPanel(settingDiv, settingOpener, editor, options);
-    
+
     var state = "";
     event.addListener(settingOpener, "mousemove", function(e) {
         var rect = this.getBoundingClientRect();
@@ -180,7 +180,7 @@ exports.transformTextarea = function(element, loader) {
             this.style.cursor = "nw-resize";
         }
     });
-    
+
     event.addListener(settingOpener, "mousedown", function(e) {
         if (state == "toggle") {
             editor.setDisplaySettings();
@@ -223,21 +223,18 @@ function setupApi(editor, editorDiv, settingDiv, ace, options, loader) {
             settingDiv.hideButton.focus();
             editor.on("focus", function onFocus() {
                 editor.removeListener("focus", onFocus);
-                settingDiv.style.display = "none"
+                settingDiv.style.display = "none";
             });
         } else {
             editor.focus();
-        };
+        }
     };
-    
+
+    editor.$setOption = editor.setOption;
     editor.setOption = function(key, value) {
         if (options[key] == value) return;
 
         switch (key) {
-            case "gutter":
-                renderer.setShowGutter(toBool(value));
-            break;
-
             case "mode":
                 if (value != "text") {
                     loader("mode-" + value + ".js", "ace/mode/" + value, function() {
@@ -268,7 +265,7 @@ function setupApi(editor, editorDiv, settingDiv, ace, options, loader) {
                     case "vim":
                         editor.setKeyboardHandler("ace/keyboard/vim");
                         break;
-                    case "emacs": 
+                    case "emacs":
                         editor.setKeyboardHandler("ace/keyboard/emacs");
                         break;
                     default:
@@ -299,18 +296,9 @@ function setupApi(editor, editorDiv, settingDiv, ace, options, loader) {
                     break;
                 }
             break;
-
-            case "useSoftTabs":
-                session.setUseSoftTabs(toBool(value));
-            break;
-
-            case "showPrintMargin":
-                renderer.setShowPrintMargin(toBool(value));
-            break;
-
-            case "showInvisibles":
-                editor.setShowInvisibles(toBool(value));
-            break;
+            
+            default:
+                editor.$setOption(key, toBool(value));
         }
 
         options[key] = value;
@@ -324,9 +312,7 @@ function setupApi(editor, editorDiv, settingDiv, ace, options, loader) {
         return options;
     };
 
-    for (var option in exports.options) {
-        editor.setOption(option, exports.options[option]);
-    }
+    editor.setOptions(exports.options);
 
     return editor;
 }
@@ -426,7 +412,7 @@ function setupSettingPanel(settingDiv, settingOpener, editor, options) {
                     cValue == "true" ? "checked='true'" : "",
                "'></input>"
             );
-            return
+            return;
         }
         builder.push("<select title='" + option + "'>");
         for (var value in obj) {
@@ -489,138 +475,4 @@ exports.options = {
     showInvisibles:     "false"
 };
 
-});
-
-define('ace/theme/textmate', ['require', 'exports', 'module' , 'ace/lib/dom'], function(require, exports, module) {
-
-
-exports.isDark = false;
-exports.cssClass = "ace-tm";
-exports.cssText = ".ace-tm .ace_gutter {\
-background: #f0f0f0;\
-color: #333;\
-}\
-.ace-tm .ace_print-margin {\
-width: 1px;\
-background: #e8e8e8;\
-}\
-.ace-tm .ace_fold {\
-background-color: #6B72E6;\
-}\
-.ace-tm .ace_scroller {\
-background-color: #FFFFFF;\
-}\
-.ace-tm .ace_cursor {\
-border-left: 2px solid black;\
-}\
-.ace-tm .ace_overwrite-cursors .ace_cursor {\
-border-left: 0px;\
-border-bottom: 1px solid black;\
-}\
-.ace-tm .ace_invisible {\
-color: rgb(191, 191, 191);\
-}\
-.ace-tm .ace_storage,\
-.ace-tm .ace_keyword {\
-color: blue;\
-}\
-.ace-tm .ace_constant {\
-color: rgb(197, 6, 11);\
-}\
-.ace-tm .ace_constant.ace_buildin {\
-color: rgb(88, 72, 246);\
-}\
-.ace-tm .ace_constant.ace_language {\
-color: rgb(88, 92, 246);\
-}\
-.ace-tm .ace_constant.ace_library {\
-color: rgb(6, 150, 14);\
-}\
-.ace-tm .ace_invalid {\
-background-color: rgba(255, 0, 0, 0.1);\
-color: red;\
-}\
-.ace-tm .ace_support.ace_function {\
-color: rgb(60, 76, 114);\
-}\
-.ace-tm .ace_support.ace_constant {\
-color: rgb(6, 150, 14);\
-}\
-.ace-tm .ace_support.ace_type,\
-.ace-tm .ace_support.ace_class {\
-color: rgb(109, 121, 222);\
-}\
-.ace-tm .ace_keyword.ace_operator {\
-color: rgb(104, 118, 135);\
-}\
-.ace-tm .ace_string {\
-color: rgb(3, 106, 7);\
-}\
-.ace-tm .ace_comment {\
-color: rgb(76, 136, 107);\
-}\
-.ace-tm .ace_comment.ace_doc {\
-color: rgb(0, 102, 255);\
-}\
-.ace-tm .ace_comment.ace_doc.ace_tag {\
-color: rgb(128, 159, 191);\
-}\
-.ace-tm .ace_constant.ace_numeric {\
-color: rgb(0, 0, 205);\
-}\
-.ace-tm .ace_variable {\
-color: rgb(49, 132, 149);\
-}\
-.ace-tm .ace_xml-pe {\
-color: rgb(104, 104, 91);\
-}\
-.ace-tm .ace_entity.ace_name.ace_function {\
-color: #0000A2;\
-}\
-.ace-tm .ace_markup.ace_heading {\
-color: rgb(12, 7, 255);\
-}\
-.ace-tm .ace_markup.ace_list {\
-color:rgb(185, 6, 144);\
-}\
-.ace-tm .ace_meta.ace_tag {\
-color:rgb(0, 22, 142);\
-}\
-.ace-tm .ace_string.ace_regex {\
-color: rgb(255, 0, 0)\
-}\
-.ace-tm .ace_marker-layer .ace_selection {\
-background: rgb(181, 213, 255);\
-}\
-.ace-tm.ace_multiselect .ace_selection.ace_start {\
-box-shadow: 0 0 3px 0px white;\
-border-radius: 2px;\
-}\
-.ace-tm .ace_marker-layer .ace_step {\
-background: rgb(252, 255, 0);\
-}\
-.ace-tm .ace_marker-layer .ace_stack {\
-background: rgb(164, 229, 101);\
-}\
-.ace-tm .ace_marker-layer .ace_bracket {\
-margin: -1px 0 0 -1px;\
-border: 1px solid rgb(192, 192, 192);\
-}\
-.ace-tm .ace_marker-layer .ace_active-line {\
-background: rgba(0, 0, 0, 0.07);\
-}\
-.ace-tm .ace_gutter-active-line {\
-background-color : #dcdcdc;\
-}\
-.ace-tm .ace_marker-layer .ace_selected-word {\
-background: rgb(250, 250, 255);\
-border: 1px solid rgb(200, 200, 250);\
-}\
-.ace-tm .ace_indent-guide {\
-background: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAACCAYAAACZgbYnAAAAE0lEQVQImWP4////f4bLly//BwAmVgd1/w11/gAAAABJRU5ErkJggg==\") right repeat-y;\
-}\
-";
-
-var dom = require("../lib/dom");
-dom.importCssString(exports.cssText, exports.cssClass);
 });

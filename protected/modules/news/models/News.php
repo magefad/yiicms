@@ -209,7 +209,7 @@ class News extends CActiveRecord
             if ($imageFile = CUploadedFile::getInstance($this, 'image')) {
                 $uploadPath = $this->getUploadPath();
                 if (!$this->isNewRecord && is_dir($uploadPath)) {
-                    $this->deleteImage($uploadPath); // удаляем старое изображение, если обновляем новость
+                    CFileHelper::removeDirectory($uploadPath); // удаляем старое изображение, если обновляем новость
                 }
                 mkdir($uploadPath, 0777);
                 $this->image = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.jpg';
@@ -222,7 +222,7 @@ class News extends CActiveRecord
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            $this->deleteImage($this->getUploadPath()); // удалили модель? удаляем и файл
+            CFileHelper::removeDirectory($this->getUploadPath());// удалили модель? удаляем и файл
             return true;
         }
         return false;
@@ -265,19 +265,6 @@ class News extends CActiveRecord
         }
     }
 
-    private function deleteImage($uploadPath)
-    {
-        $this->removeFile($uploadPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.jpg');
-
-        foreach ($this->versions as $version => $actions) {
-            $this->removeFile(
-                $uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $this->getFileName() . '.jpg'
-            );
-            $this->removeDir($uploadPath . DIRECTORY_SEPARATOR . $version);
-        }
-        $this->removeDir($uploadPath);
-    }
-
     public function renamePath($newPathName)
     {
         if (is_dir($this->getUploadPath())) {
@@ -288,21 +275,7 @@ class News extends CActiveRecord
         }
     }
 
-    private function removeFile($fileName)
-    {
-        if (file_exists($fileName)) {
-            @unlink($fileName);
-        }
-    }
-
-    private function removeDir($dirName)
-    {
-        if (is_dir($dirName)) {
-            rmdir($dirName);
-        }
-    }
-
-    /**
+     /**
      * Retrieves a list of models based on the current search/filter conditions.
      * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
      */
