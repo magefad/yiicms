@@ -20,12 +20,12 @@
  * @property integer $create_user_id
  * @property integer $update_user_id
  *
- * @method roots() Named scope. Gets root node(s).
- * @method children() Named scope. Gets children for node (direct descendants only).
- * @method ancestors(int $depth=null) Named scope. Gets ancestors for node.
- * @method parent() Named scope. Gets parent of node.
- * @method isLeaf() Determines if node is leaf.
- * @method isRoot() Determines if node is root.
+ * @method Menu[] roots() Named scope. Gets root node(s).
+ * @method Menu children() Named scope. Gets children for node (direct descendants only).
+ * @method Menu ancestors(int $depth=null) Named scope. Gets ancestors for node.
+ * @method Menu parent() Named scope. Gets parent of node.
+ * @method boolean isLeaf() Determines if node is leaf.
+ * @method boolean isRoot() Determines if node is root.
  *
  * The followings are the available model behaviors:
  * @property StatusBehavior $statusMain
@@ -126,7 +126,7 @@ class Menu extends CActiveRecord
     {
         if (parent::beforeSave()) {
             // need to delete menu cache when move node...
-            if ($this->parentId && $this->parent()->find()->id != $this->parentId) {
+            if ($this->parentId && $this->parent()->find()->getPrimaryKey() != $this->parentId) {
                 /** @var $oldParent Menu|NestedSetBehavior //see updateAction where setted parentId after load model */
                 if ($oldParent = $this->findByPk($this->parentId)) {
                     Yii::app()->getCache()->delete(
@@ -207,7 +207,7 @@ class Menu extends CActiveRecord
                 continue;
             }
             Yii::import($config['class']);
-            $className = array_pop(explode('.', $config['class']));
+            $className = substr($config['class'], (int)strrpos($config['class'], '.') + 1);
             if (is_callable($className . '::getAdminLink')) {
                 $items[$className] = call_user_func($className . '::getAdminLink');
             }
