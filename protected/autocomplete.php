@@ -20,6 +20,7 @@
  * @property YiiMailMessage $mail
  * @property CommandExecutor $executor
  *
- * @method getClientScript()
+ * @method CClientScript getClientScript()
+ * @method CAssetManager getAssetManager()
  */
 class CApplication {}
