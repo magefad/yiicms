@@ -259,36 +259,19 @@ class Photo extends CActiveRecord
         }
     }
 
-    public function delete()
+    public function beforeDelete()
     {
-        $_uploadPath = $this->getUploadPath();
-        $_fileName   = $this->getFileName();
-        $this->removeFile($_uploadPath . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt);
-
-        //create image preview for gallery manager
-        foreach ($this->versions as $version => $actions) {
-            $this->removeFile(
-                $_uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $_fileName . '.' . $this->galleryExt
-            );
+        if (parent::beforeDelete()) {
+            CFileHelper::removeDirectory($this->getUploadPath());// удалили модель? удаляем и папку с фото
+            return true;
         }
-
-        return parent::delete();
+        return false;
     }
 
     private function removeFile($fileName)
     {
         if (file_exists($fileName)) {
             @unlink($fileName);
-        }
-    }
-
-    public function removeImages()
-    {
-        foreach ($this->versions as $version => $actions) {
-            $this->removeFile(
-                $this->getUploadPath() . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $this->getFileName(
-                ) . '.' . $this->galleryExt
-            );
         }
     }
 

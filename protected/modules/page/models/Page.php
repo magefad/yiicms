@@ -256,7 +256,7 @@ class Page extends CActiveRecord
                 $uploadPath = $this->getUploadPath();
                 #echo $uploadPath;exit;
                 if (!$this->isNewRecord && is_dir($uploadPath)) {
-                    $this->deleteImage($uploadPath); // удаляем старое изображение, если обновляем новость
+                    CFileHelper::removeDirectory($uploadPath); // удаляем старое изображение, если обновляем модель
                 }
                 mkdir($uploadPath, 0777);
                 $this->image = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.jpg';
@@ -269,7 +269,7 @@ class Page extends CActiveRecord
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            $this->deleteImage($this->getUploadPath()); // удалили модель? удаляем и файл
+            CFileHelper::removeDirectory($this->getUploadPath());// удалили модель? удаляем и файл
             return true;
         }
         return false;
@@ -317,19 +317,6 @@ class Page extends CActiveRecord
         }
     }
 
-    private function deleteImage($uploadPath)
-    {
-        $this->removeFile($uploadPath . DIRECTORY_SEPARATOR . $this->getFileName() . '.jpg');
-
-        foreach ($this->versions as $version => $actions) {
-            $this->removeFile(
-                $uploadPath . DIRECTORY_SEPARATOR . $version . DIRECTORY_SEPARATOR . $this->getFileName() . '.jpg'
-            );
-            $this->removeDir($uploadPath . DIRECTORY_SEPARATOR . $version);
-        }
-        $this->removeDir($uploadPath);
-    }
-
     public function renamePath($newPathName)
     {
         if (is_dir($this->getUploadPath())) {
@@ -337,20 +324,6 @@ class Page extends CActiveRecord
                 $this->getUploadPath(),
                 'page' . DIRECTORY_SEPARATOR . $newPathName
             );
-        }
-    }
-
-    private function removeFile($fileName)
-    {
-        if (file_exists($fileName)) {
-            @unlink($fileName);
-        }
-    }
-
-    private function removeDir($dirName)
-    {
-        if (is_dir($dirName)) {
-            rmdir($dirName);
         }
     }
 
