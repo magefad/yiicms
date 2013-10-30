@@ -7,10 +7,10 @@ class m131019_111347_addTypeArticle extends EDbMigration
 {
     public function safeUp()
     {
-        $after = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' AFTER description' : '';//sqlite not support AFTER
+        $after = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' AFTER description' : ' DEFAULT ""';//sqlite not support AFTER
         $this->addColumn('{{page}}', 'annotation', 'varchar(400) NOT NULL' . $after);
 
-        $after = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' AFTER slug' : '';
+        $after = Yii::app()->getDb()->getSchema() instanceof CMysqlSchema ? ' AFTER slug' : ' DEFAULT ""';
         $this->addColumn('{{page}}', 'image', 'varchar(300) NOT NULL' . $after);
     }
 
