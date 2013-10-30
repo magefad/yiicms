@@ -2,15 +2,15 @@
 
 /**
  * @var $this Controller
- * @var $model Good
+ * @var $model CatalogItem
  */
 $this->breadcrumbs = array(
-	Yii::t('CatalogModule.catalog', 'Goods') => array('admin'),
+	Yii::t('CatalogModule.catalog', 'Items') => array('admin'),
 	$model->name,
 );
 
 $this->menu = array(
-    array('label' => Yii::t('CatalogModule.catalog', 'Goods')),
+    array('label' => Yii::t('CatalogModule.catalog', 'Items')),
     array('icon'  => 'list-alt', 'label' => Yii::t('CatalogModule.catalog', 'Manage'), 'url' => array('admin')),
     array('icon'  => 'file', 'label' => Yii::t('CatalogModule.catalog', 'Create'), 'url' => array('create')),
     array('icon'  => 'pencil', 'label' => Yii::t('zii', 'Update'), 'url' => array('update', 'id' => $model->id)),

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "{{good_template}}".
+ * This is the model class for table "{{catalog_item_template}}".
  *
- * The followings are the available columns in table '{{good_template}}':
+ * The followings are the available columns in table '{{catalog_item_template}}':
  * @property integer $id
  * @property string $key
  * @property string $name
@@ -11,9 +11,9 @@
  *
  * The followings are the available model relations:
  * @property StatusBehavior $statusInputType
- * @property Good[] $fadGoods
+ * @property CatalogItem[] $items
  */
-class GoodTemplate extends CActiveRecord
+class CatalogItemTemplate extends CActiveRecord
 {
     const INPUT_TYPE_TEXT = 0;
     const INPUT_TYPE_TEXTAREA = 1;
@@ -33,7 +33,7 @@ class GoodTemplate extends CActiveRecord
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return GoodTemplate the static model class
+     * @return CatalogItemTemplate the static model class
      */
     public static function model($className=__CLASS__)
     {
@@ -45,7 +45,7 @@ class GoodTemplate extends CActiveRecord
      */
     public function tableName()
     {
-        return '{{good_template}}';
+        return '{{catalog_item_template}}';
     }
 
     /**
@@ -92,7 +92,7 @@ class GoodTemplate extends CActiveRecord
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
         return array(
-            'fadGoods' => array(self::MANY_MANY, 'Good', '{{good_data}}(key, good_id)'),
+            'items' => array(self::MANY_MANY, 'CatalogItem', '{{catalog_item_data}}(key, item_id)'),
         );
     }
 
@@ -127,10 +127,10 @@ class GoodTemplate extends CActiveRecord
 
     public function afterSave()
     {
-        $goodData = GoodData::model()->findAllByAttributes(array('key' => $this->oldKey));
-        if ($goodData) {
-            foreach ($goodData as $data) {
-                /** @var GoodData $data */
+        $catalogItemData = CatalogItemData::model()->findAllByAttributes(array('key' => $this->oldKey));
+        if ($catalogItemData) {
+            foreach ($catalogItemData as $data) {
+                /** @var CatalogItemData $data */
                 $data->setAttribute('key', $this->key);
                 $data->save(false);
             }

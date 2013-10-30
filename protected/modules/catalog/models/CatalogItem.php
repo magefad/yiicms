@@ -1,9 +1,9 @@
 <?php
 Yii::import('page.models.Page');
 /**
- * This is the model class for table "{{good}}".
+ * This is the model class for table "{{catalogItem}}".
  *
- * The followings are the available columns in table '{{good}}':
+ * The followings are the available columns in table '{{catalogItem}}':
  * @property integer $id
  * @property integer $page_id
  * @property string $name
@@ -21,12 +21,12 @@ Yii::import('page.models.Page');
  * @property StatusBehavior $statusMain
  * @property Page $page
  * @property User $createUser
- * @property GoodTemplate[] $templates
- * @property GoodData[] $data
+ * @property CatalogItemTemplate[] $templates
+ * @property CatalogItemData[] $data
  *
  * @method published()
  */
-class Good extends CActiveRecord
+class CatalogItem extends CActiveRecord
 {
     /**
      * @var array key=>value
@@ -35,7 +35,7 @@ class Good extends CActiveRecord
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return Good the static model class
+     * @return CatalogItem the static model class
      */
     public static function model($className=__CLASS__)
     {
@@ -47,7 +47,7 @@ class Good extends CActiveRecord
      */
     public function tableName()
     {
-        return '{{good}}';
+        return '{{catalog_item}}';
     }
 
     /**
@@ -98,8 +98,8 @@ class Good extends CActiveRecord
         return array(
             'page'       => array(self::BELONGS_TO, 'Page', 'page_id'),
             'createUser' => array(self::BELONGS_TO, 'User', 'create_user_id'),
-            'templates'  => array(self::MANY_MANY, 'GoodTemplate', '{{good_data}}(good_id, key)'),
-            'data'       => array(self::HAS_MANY, 'GoodData', 'good_id')
+            'templates'  => array(self::MANY_MANY, 'CatalogItemTemplate', '{{catalog_item_data}}(item_id, key)'),
+            'data'       => array(self::HAS_MANY, 'CatalogItemData', 'item_id')
         );
     }
 
@@ -122,7 +122,7 @@ class Good extends CActiveRecord
     {
         return array(
             'id'             => 'ID',
-            'page_id'        => Yii::t('CatalogModule.catalog', 'Page'),
+            'page_id'        => Yii::t('CatalogModule.catalog', 'Parent page'),
             'name'           => Yii::t('CatalogModule.catalog', 'Name'),
             'title'          => Yii::t('CatalogModule.catalog', 'Title'),
             'keywords'       => Yii::t('CatalogModule.catalog', 'Keywords'),

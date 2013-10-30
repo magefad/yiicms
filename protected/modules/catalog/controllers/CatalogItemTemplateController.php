@@ -1,6 +1,6 @@
 <?php
 
-class GoodTemplateController extends Controller
+class CatalogItemTemplateController extends Controller
 {
     public $defaultAction = 'admin';
 
@@ -30,13 +30,13 @@ class GoodTemplateController extends Controller
      */
     public function actionCreate()
     {
-        $model = new GoodTemplate;
+        $model = new CatalogItemTemplate;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['GoodTemplate'])) {
-            $model->attributes=$_POST['GoodTemplate'];
+        if (isset($_POST['CatalogItemTemplate'])) {
+            $model->attributes = $_POST['CatalogItemTemplate'];
             if ($model->save()) {
                 //$this->redirect(array('view', 'id' => $model->id));
                 $this->redirect(array('admin'));
@@ -58,8 +58,8 @@ class GoodTemplateController extends Controller
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['GoodTemplate'])) {
-            $model->attributes = $_POST['GoodTemplate'];
+        if (isset($_POST['CatalogItemTemplate'])) {
+            $model->attributes = $_POST['CatalogItemTemplate'];
             if ($model->save()) {
                 //$this->redirect(array('view', 'id' => $model->key));
                 $this->redirect(array('admin'));
@@ -90,7 +90,7 @@ class GoodTemplateController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new CActiveDataProvider('GoodTemplate');
+        $dataProvider = new CActiveDataProvider('CatalogItemTemplate');
         $this->render('index', array('dataProvider' => $dataProvider));
     }
 
@@ -99,10 +99,10 @@ class GoodTemplateController extends Controller
      */
     public function actionAdmin()
     {
-        $model = new GoodTemplate('search');
+        $model = new CatalogItemTemplate('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['GoodTemplate'])) {
-            $model->attributes = $_GET['GoodTemplate'];
+        if (isset($_GET['CatalogItemTemplate'])) {
+            $model->attributes = $_GET['CatalogItemTemplate'];
         }
 
         $this->render('admin', array('model' => $model));
@@ -114,11 +114,11 @@ class GoodTemplateController extends Controller
      * @param integer $id the ID of the model to be loaded
      * @param int $id
      * @throws CHttpException
-     * @return GoodTemplate
+     * @return CatalogItemTemplate
      */
     public function loadModel($id)
     {
-        $model = GoodTemplate::model()->findByPk($id);
+        $model = CatalogItemTemplate::model()->findByPk($id);
         if ($model===null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
@@ -131,7 +131,7 @@ class GoodTemplateController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax']==='good-template-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax']==='catalogItem-template-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

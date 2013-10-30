@@ -1,19 +1,19 @@
 <?php
 
 /**
- * This is the model class for table "{{good_data}}".
+ * This is the model class for table "{{catalog_item_data}}".
  *
- * The followings are the available columns in table '{{good_data}}':
- * @property integer $good_id
+ * The followings are the available columns in table '{{catalog_item_data}}':
+ * @property integer $item_id
  * @property string $key
  * @property string $value
  */
-class GoodData extends CActiveRecord
+class CatalogItemData extends CActiveRecord
 {
     /**
      * Returns the static model of the specified AR class.
      * @param string $className active record class name.
-     * @return GoodData the static model class
+     * @return CatalogItemData the static model class
      */
     public static function model($className=__CLASS__)
     {
@@ -25,7 +25,7 @@ class GoodData extends CActiveRecord
      */
     public function tableName()
     {
-        return '{{good_data}}';
+        return '{{catalog_item_data}}';
     }
 
     /**
@@ -36,12 +36,12 @@ class GoodData extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('good_id, key, value', 'required'),
-            array('good_id', 'numerical', 'integerOnly' => true),
+            array('item_id, key, value', 'required'),
+            array('key, value', 'filter', 'filter' => 'trim'),
+            array('item_id', 'numerical', 'integerOnly' => true),
             array('key', 'length', 'max' => 32),
-            array('value', 'length', 'max' => 500),
             // The following rule is used by search().
-            array('good_id, key, value', 'safe', 'on' => 'search'),
+            array('item_id, key, value', 'safe', 'on' => 'search'),
         );
     }
 
@@ -62,7 +62,7 @@ class GoodData extends CActiveRecord
     public function attributeLabels()
     {
         return array(
-            'good_id' => Yii::t('CatalogModule.catalog', 'Good'),
+            'item_id' => Yii::t('CatalogModule.catalog', 'Item'),
             'key'     => Yii::t('CatalogModule.catalog', 'Key'),
             'value'   => Yii::t('CatalogModule.catalog', 'Value'),
         );
@@ -76,7 +76,7 @@ class GoodData extends CActiveRecord
     {
         $criteria = new CDbCriteria;
 
-		$criteria->compare('good_id', $this->good_id);
+		$criteria->compare('item_id', $this->item_id);
 		$criteria->compare('key', $this->key,true);
 		$criteria->compare('value', $this->value,true);
 

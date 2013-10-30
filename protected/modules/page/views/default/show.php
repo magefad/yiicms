@@ -9,10 +9,21 @@
 echo $this->decodeWidgets($page->content);
 if (Yii::app()->hasModule('catalog')) {
     if (!is_null($page->type) && $page->type == Page::TYPE_CATALOG) {
-        Yii::import('catalog.models.Good');//@todo why not found?
-        foreach ($page->goods as $good) {
-            $this->renderPartial('application.modules.catalog.views.good.' . Yii::app()->getModule('catalog')->template, array('good' => $good));
-        }
+        Yii::import('catalog.models.CatalogItem');//@todo why not found?
+        /*foreach ($page->catalogItems as $catalogItem) {
+            $this->renderPartial('application.modules.catalog.views.catalogItem.' . Yii::app()->getModule('catalog')->template, array('catalogItem' => $catalogItem));
+        }*/
+        $this->widget(
+            'zii.widgets.CListView',
+            array(
+                'dataProvider' => new CActiveDataProvider('CatalogItem', array(
+                        'data' => $page->catalogItems,
+                    )),
+                'itemView'     => 'application.modules.catalog.views.catalogItem.' . Yii::app()->getModule('catalog')->template,
+                'template'     => '{sorter}{items}{pager}',
+                'htmlOptions'  => array('style' => 'padding-top:0'),
+            )
+        );
     }/* else {
         $liArray = array();
         foreach ($page->children as $children) {
@@ -26,7 +37,7 @@ if (Yii::app()->hasModule('catalog')) {
     }*/
 }
 if ($page->type == Page::TYPE_ARTICLE) {
-    Yii::app()->clientScript->registerCss('article', '#articles h3 {font-size: 14px; margin: 0; line-height: 20px;} #articles p {font-size: 11px; line-height: 16px}');
+    Yii::app()->clientScript->registerCss('article', '#articles h3 {font-size: 14px; font-weight: 700; margin: 0; line-height: 20px; margin-bottom: 7px;} #articles p {font-size: 12px; line-height: 16px} #articles div.date {font-size: 12px; margin-bottom: 15px; color: #0a2937; font-style: italic; font-weight: 700;}');
     $this->widget(
         'zii.widgets.CListView',
         array(

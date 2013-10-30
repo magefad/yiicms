@@ -1,5 +1,5 @@
 <?php
-/** @var $data Good */
+/** @var $data CatalogItem */
 ?>
 <div class="view">
 

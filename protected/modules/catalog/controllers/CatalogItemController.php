@@ -1,6 +1,6 @@
 <?php
 
-class GoodController extends Controller
+class CatalogItemController extends Controller
 {
     public $defaultAction = 'admin';
     /**
@@ -10,7 +10,7 @@ class GoodController extends Controller
     {
         return array(
              'postOnly + delete',/** @see CController::filterPostOnly */
-             array('auth.filters.AuthFilter')/** @see AuthFilter */
+             array('auth.filters.AuthFilter - show')/** @see AuthFilter */
         );
     }
 
@@ -28,15 +28,15 @@ class GoodController extends Controller
         if (empty($slug)) {
             $this->invalidActionParams($this->action);
         }
-        /** @var $model Good */
-        $model = Good::model()->published()->find('slug = :slug', array(':slug' => $slug));
+        /** @var $model CatalogItem */
+        $model = CatalogItem::model()->published()->find('slug = :slug', array(':slug' => $slug));
 
         if (!$model) {
             $this->invalidActionParams($this->action);
         }
         $_GET['id'] = $model->id;
         $this->setMetaTags($model);
-        $this->render('show', array('good' => $model));
+        $this->render('show', array('catalogItem' => $model));
     }
 
     /**
@@ -45,46 +45,46 @@ class GoodController extends Controller
      */
     public function actionCreate()
     {
-        $good = new Good;
-        /** @var GoodData[] $goodData */
-        $goodData = array();
+        $catalogItem = new CatalogItem;
+        /** @var CatalogItemData[] $catalogItemData */
+        $catalogItemData = array();
 
-        /** @var GoodTemplate[] $goodTemplate */
-        $goodTemplate = GoodTemplate::model()->findAll();
-        foreach ($goodTemplate as $_goodTemplate) {
-            $goodData[$_goodTemplate->key] = new GoodData;
+        /** @var CatalogItemTemplate[] $catalogItemTemplate */
+        $catalogItemTemplate = CatalogItemTemplate::model()->findAll();
+        foreach ($catalogItemTemplate as $_catalogItemTemplate) {
+            $catalogItemData[$_catalogItemTemplate->key] = new CatalogItemData;
         }
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Good'])) {
+        if (isset($_POST['CatalogItem'])) {
             $valid = true;
-            $transaction = $good->getDbConnection()->beginTransaction();
-            $good->attributes = $_POST['Good'];
-            if ($good->save()) {
-                if (isset($_POST['GoodData'])) {
-                    foreach ($_POST['GoodData'] as $key => $_goodData) {
-                        if (empty($_goodData['value'])) {
+            $transaction = $catalogItem->getDbConnection()->beginTransaction();
+            $catalogItem->attributes = $_POST['CatalogItem'];
+            if ($catalogItem->save()) {
+                if (isset($_POST['CatalogItemData'])) {
+                    foreach ($_POST['CatalogItemData'] as $key => $_catalogItemData) {
+                        if (empty($_catalogItemData['value'])) {
                             continue;
                         }
-                        $goodData[$key]->good_id = $good->getPrimaryKey();
-                        $goodData[$key]->setAttribute('key', $key);
-                        $goodData[$key]->setAttributes($_goodData);
-                        if (!$goodData[$key]->save()) {
+                        $catalogItemData[$key]->item_id = $catalogItem->getPrimaryKey();
+                        $catalogItemData[$key]->setAttribute('key', $key);
+                        $catalogItemData[$key]->setAttributes($_catalogItemData);
+                        if (!$catalogItemData[$key]->save()) {
                             $valid = false;
                         }
                     }
                 }
                 if ($valid) {
                     $transaction->commit();
-                    //$this->redirect(array('view', 'id' => $good->id));
+                    //$this->redirect(array('view', 'id' => $catalogItem->id));
                     $this->redirect(array('admin'));
                 } else {
                     $transaction->rollback();
                 }
             }
         }
-        $this->render('create', array('good' => $good, 'goodData' => $goodData));
+        $this->render('create', array('catalogItem' => $catalogItem, 'catalogItemData' => $catalogItemData));
     }
 
     /**
@@ -94,48 +94,48 @@ class GoodController extends Controller
      */
     public function actionUpdate($id)
     {
-        $good = $this->loadModel($id);
-        /** @var GoodData[] $goodData */
-        $goodData = array();
-        /** @var GoodData[] $tempGoodData */
-        $tempGoodData = GoodData::model()->findAllByAttributes(array('good_id' => $id));
+        $catalogItem = $this->loadModel($id);
+        /** @var CatalogItemData[] $catalogItemData */
+        $catalogItemData = array();
+        /** @var CatalogItemData[] $tempCatalogItemData */
+        $tempCatalogItemData = CatalogItemData::model()->findAllByAttributes(array('item_id' => $id));
 
-        foreach ($tempGoodData as $_goodData) {
-            $goodData[$_goodData->key] = $_goodData;
+        foreach ($tempCatalogItemData as $_catalogItemData) {
+            $catalogItemData[$_catalogItemData->key] = $_catalogItemData;
         }
-        unset($tempGoodData);
-        /** @var GoodTemplate[] $goodTemplate */
-        $goodTemplate = GoodTemplate::model()->findAll();
-        foreach ($goodTemplate as $_goodTemplate) {
-            if (!array_key_exists($_goodTemplate->key, $goodData)) {
-                $goodData[$_goodTemplate->key] = new GoodData;
+        unset($tempCatalogItemData);
+        /** @var CatalogItemTemplate[] $catalogItemTemplate */
+        $catalogItemTemplate = CatalogItemTemplate::model()->findAll();
+        foreach ($catalogItemTemplate as $_catalogItemTemplate) {
+            if (!array_key_exists($_catalogItemTemplate->key, $catalogItemData)) {
+                $catalogItemData[$_catalogItemTemplate->key] = new CatalogItemData;
             }
         }
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Good'])) {
+        if (isset($_POST['CatalogItem'])) {
             $valid = true;
-            $transaction = $good->getDbConnection()->beginTransaction();
-            $good->attributes = $_POST['Good'];
-            if ($good->save()) {
-                if (isset($_POST['GoodData'])) {
-                    foreach ($_POST['GoodData'] as $key => $_goodData) {
-                        if (empty($_goodData['value'])) {
+            $transaction = $catalogItem->getDbConnection()->beginTransaction();
+            $catalogItem->attributes = $_POST['CatalogItem'];
+            if ($catalogItem->save()) {
+                if (isset($_POST['CatalogItemData'])) {
+                    foreach ($_POST['CatalogItemData'] as $key => $_catalogItemData) {
+                        if (empty($_catalogItemData['value'])) {
                             continue;
                         }
-                        $goodData[$key]->good_id = $good->getPrimaryKey();
-                        $goodData[$key]->setAttribute('key', $key);
-                        $goodData[$key]->setAttributes($_goodData);
-                        if (!$goodData[$key]->save()) {
+                        $catalogItemData[$key]->item_id = $catalogItem->getPrimaryKey();
+                        $catalogItemData[$key]->setAttribute('key', $key);
+                        $catalogItemData[$key]->setAttributes($_catalogItemData);
+                        if (!$catalogItemData[$key]->save()) {
                             $valid = false;
                         }
                     }
                 }
                 if ($valid) {
                     $transaction->commit();
-                    //$this->redirect(array('view', 'id' => $good->id));
+                    //$this->redirect(array('view', 'id' => $catalogItem->id));
                     $this->redirect(array('admin'));
                 } else {
                     $transaction->rollback();
@@ -143,7 +143,7 @@ class GoodController extends Controller
             }
         }
 
-        $this->render('update', array('good' => $good, 'goodData' => $goodData));
+        $this->render('update', array('catalogItem' => $catalogItem, 'catalogItemData' => $catalogItemData));
     }
 
     /**
@@ -167,7 +167,7 @@ class GoodController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new CActiveDataProvider('Good');
+        $dataProvider = new CActiveDataProvider('CatalogItem');
         $this->render('index', array('dataProvider' => $dataProvider));
     }
 
@@ -176,10 +176,10 @@ class GoodController extends Controller
      */
     public function actionAdmin()
     {
-        $model = new Good('search');
+        $model = new CatalogItem('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Good'])) {
-            $model->attributes = $_GET['Good'];
+        if (isset($_GET['CatalogItem'])) {
+            $model->attributes = $_GET['CatalogItem'];
         }
 
         $this->render('admin', array('model' => $model));
@@ -191,10 +191,10 @@ class GoodController extends Controller
      * @param integer the ID of the model to be loaded
      * @param int $id
      * @throws CHttpException
-     * @return Good     */
+     * @return CatalogItem     */
     public function loadModel($id)
     {
-        $model = Good::model()->findByPk($id);
+        $model = CatalogItem::model()->findByPk($id);
         if ($model===null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
@@ -207,7 +207,7 @@ class GoodController extends Controller
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax']==='good-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax']==='catalogItem-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

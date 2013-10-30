@@ -2,15 +2,15 @@
 
 /**
  * @var $this Controller
- * @var $model GoodTemplate
+ * @var $model CatalogItemTemplate
  */
 $this->breadcrumbs = array(
-	Yii::t('CatalogModule.catalog', 'Good Templates') => array('admin'),
+	Yii::t('CatalogModule.catalog', 'Item Templates') => array('admin'),
 	$model->name,
 );
 
 $this->menu = array(
-    array('label' => Yii::t('CatalogModule.catalog', 'Good Templates')),
+    array('label' => Yii::t('CatalogModule.catalog', 'Item Templates')),
     array('icon'  => 'list-alt', 'label' => Yii::t('CatalogModule.catalog', 'Manage'), 'url' => array('admin')),
     array('icon'  => 'file', 'label' => Yii::t('CatalogModule.catalog', 'Create'), 'url' => array('create')),
     array('icon'  => 'pencil', 'label' => Yii::t('zii', 'Update'), 'url' => array('update', 'id'=>$model->key)),

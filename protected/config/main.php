@@ -125,6 +125,7 @@ return array(
                     'blog/list'                                                  => 'blog/default/list',
                     'blog/show/<slug:[\w\_-]+>'                                  => 'blog/default/show',
                     'blog/post/tag/<tag>'                                        => 'blog/post/tag',
+                    'catalog/<slug:[\w\_-]+>'                                        => 'catalog/catalogItem/show/',
                     'sitemap.xml'                                                => 'sitemap/default/index/format/xml',
                     '<module:\w+>/<controller:\w+>/<action:\w+>/<id:\d+>'        => '<module>/<controller>/<action>',
                     '<module:\w+>/<controller:\w+>/<action:\w+>/<slug:[\w\_-]+>' => '<module>/<controller>/<action>',

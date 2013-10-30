@@ -30,7 +30,7 @@
  * @property Page $parent
  * @property User $author
  * @property User $changeAuthor
- * @property Good[] $goods if has module "catalog"
+ * @property CatalogItem[] $catalogItems if has module "catalog"
  *
  * The followings are the available model behaviors:
  * @property AdjacencyListBehavior $treeArray
@@ -278,7 +278,7 @@ class Page extends CActiveRecord
     public function afterFind()
     {
         if (Yii::app()->hasModule('catalog')) {
-            $this->getMetaData()->addRelation('goods', array(CActiveRecord::HAS_MANY, 'Good', 'page_id'));
+            $this->getMetaData()->addRelation('catalogItems', array(self::HAS_MANY, 'CatalogItem', 'page_id'));
         }
         parent::afterFind();
     }

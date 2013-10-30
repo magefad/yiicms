@@ -2,7 +2,7 @@
 /**
  * @var $form TBActiveForm
  * @var $this Controller
- * @var $model Good
+ * @var $model CatalogItem
  */
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',

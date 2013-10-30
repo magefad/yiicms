@@ -6,7 +6,7 @@ class CatalogModule extends WebModule
 
     public static function getAdminLink()
     {
-        return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/catalog/good/admin'));
+        return array('icon' => self::getIcon(), 'label' => self::getName(), 'url' => array('/catalog/catalogItem/admin'));
     }
 
     public static function getName()
@@ -16,7 +16,7 @@ class CatalogModule extends WebModule
 
     public static function getDescription()
     {
-        return Yii::t('CatalogModule.catalog', 'Goods catalog');
+        return Yii::t('CatalogModule.catalog', 'Catalog of items');
     }
 
     public static function getIcon()

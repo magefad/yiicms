@@ -3,12 +3,12 @@
 /**
  * @var $form TBActiveForm
  * @var $this Controller
- * @var $model GoodTemplate
+ * @var $model CatalogItemTemplate
  */
 $form = $this->beginWidget(
     'bootstrap.widgets.TbActiveForm',
     array(
-        'id'                   => 'good-template-form',
+        'id'                   => 'catalogItem-template-form',
         'enableAjaxValidation' => false,
         'type'                 => 'inline',
         'htmlOptions'          => array('class' => 'well')
