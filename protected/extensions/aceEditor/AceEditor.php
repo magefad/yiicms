@@ -1,8 +1,7 @@
 <?php
 /**
- * User: fad
- * Date: 17.10.12
- * Time: 1:00
+ * @author Ruslan Fadeev
+ * Created: 17.10.12 1:00
  */
 class AceEditor extends CInputWidget
 {
@@ -14,25 +13,28 @@ class AceEditor extends CInputWidget
 
     public function run()
     {
-        $id     = 'ace_' . $this->id;
-        $assets = Yii::app()->assetManager->publish(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'src' . (!YII_DEBUG ? '-min' : ''));
-        $cs     = Yii::app()->clientScript;
-        $cs->registerCss($id, '#' . $id . ' {position:' . $this->position .'; width: ' . $this->width .'; height: ' . $this->height);
+        $assets = Yii::app()->getAssetManager()->publish(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'src' . (!YII_DEBUG ? '-min' : ''));
+        $cs     = Yii::app()->getClientScript();
+        $cs->registerCss($this->getId(), '#' . $this->getId() . ' {position:' . $this->position .'; width: ' . $this->width .'; height: ' . $this->height);
         $cs->registerScriptFile($assets . '/ace.js');
-        $cs->registerScriptFile($assets . '/theme-' . $this->theme . '.js');
         $cs->registerScriptFile($assets . '/mode-' . $this->mode . '.js');
 
-        $script = 'var editor = ace.edit("' . $id . '");';
-        $script .= 'editor.setShowPrintMargin(false);';
-        #$script .= 'editor.session.setFoldStyle("markbeginend");';
-        $script .= 'editor.setTheme("ace/theme/' . $this->theme . '");';
-        $script .= 'var Mode=require("ace/mode/' . $this->mode . '").Mode; editor.getSession().setMode(new Mode());';
-        $cs->registerScript($id, $script);
+        $script = <<<JS
+var editor = ace.edit("{$this->getId()}");
+editor.setShowPrintMargin(false);
+//editor.session.setFoldStyle("markbeginend");
+editor.setTheme("ace/theme/{$this->theme}");
+var Mode = require("ace/mode/{$this->mode}").Mode;
+editor.getSession().setMode(new Mode());
+JS;
+        $cs->registerScript($this->getId(), $script);
 
-        if ( $this->hasModel() ) {
-            echo CHtml::tag('div', array('id' => $id), CHtml::encode($this->model->{$this->attribute}));
+        if ($this->hasModel()) {
+            echo CHtml::tag('div', array('id' => $this->getId()), CHtml::encode($this->model->{$this->attribute}));
+        } else if ($this->name) {
+            echo CHtml::tag('div', array('id' => $this->getId(), 'class' => $this->name));
         } else {
-            echo 'Ace Editor: No model or attribute';
+            echo Yii::t('zii', '{class} must specify "model" and "{attribute}" or "{name}" property values.', array('{class}' => get_class($this), '{attribute}' => 'attribute', '{name}' => 'name'));
         }
     }
 }
