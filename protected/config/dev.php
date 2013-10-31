@@ -22,13 +22,9 @@ return CMap::mergeArray(
                     'enableParamLogging'    => true,
                 )
             ),
-            'authManager' => array(
-                'behaviors' => array(
-                    'auth' => array(
-                        'admins' => array(), // !user names with full access!
-                    )
-                )
-            ),
+            /*'user' => array(
+                'admins' => array(), // !user names with full access! default yii-auth superuser named "admin"
+            ),*/
             'log' => array(
                 'class'  => 'CLogRouter',
                 'routes' => array(

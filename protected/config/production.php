@@ -9,12 +9,8 @@ return CMap::mergeArray(
                 require(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'db.php'),
                 array('schemaCachingDuration' => 108000)
             ),
-            'authManager' => array(
-                'behaviors' => array(
-                    'auth' => array(
-                        'admins' => array(), // !user names with full access!
-                    )
-                )
+            'user' => array(
+                'admins' => array(), // !user names with full access!
             ),
             /*'cache' => array(
                 'class' => 'CXCache',

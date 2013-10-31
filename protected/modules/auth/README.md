@@ -1,4 +1,4 @@
-yii-auth
+yii-auth-booster
 ========
 
 Auth is a module for the [Yii PHP framework](http://www.yiiframework.com) that provides a web user interface for Yii's built-in authorization manager (CAuthManager). 
@@ -37,12 +37,12 @@ return array(
       'behaviors' => array(
         'auth' => array(
           'class' => 'auth.components.AuthBehavior',
-          'admins' => array('admin', 'foo', 'bar'), // users with full access
         ),
       ),
     ),
     'user' => array(
       'class' => 'auth.components.AuthWebUser',
+      'admins' => array('admin', 'foo', 'bar'), // users with full access
     ),
   ),
 );
@@ -61,7 +61,7 @@ Configure the module to suit your needs. Here's a list of the available configur
   'userClass' => 'User', // the name of the user model class.
   'userIdColumn' => 'id', // the name of the user id column.
   'userNameColumn' => 'name', // the name of the user name column.
-  'appLayout' => 'application.views.layouts.main', // the layout used by the module.
+  'defaultLayout' => 'application.views.layouts.main', // the layout used by the module.
   'viewDir' => null, // the path to view files to use with this module.
 ),
 ```
@@ -96,7 +96,7 @@ For more information on Yii's authorization manager refer to the framework docum
 
 You can also use a filter to automatically check access before controller actions are called.
 Operations used with this filter has to be named as follows ***(moduleId.)controllerId.actionId***, where ***moduleId*** is optional. 
-You can also use a wildcard ***controllerId.**** instead of the actionId to cover all actions in the controller. 
+You can also use a wildcard ***controllerId.**** instead of the actionId to cover all actions in the controller or ***module.**** instead of the controllerId to cover all controllers in the module. 
 
 ```php
 public function filters()
@@ -113,3 +113,7 @@ For more information on how filters work refer to the framework documentation on
 
 Do you wish to provide a translation for Auth? If so, please do a pull request for it. 
 Translations should be placed in the messages folder under a folder named according to its locale (e.g. en_us).
+
+### Note
+
+Note: This form use and require YiiBooster instead yiistrap :)
