@@ -51,6 +51,7 @@ return array(
                 'comment' => 'application.modules.comment.migrations',
                 'social'  => 'application.modules.social.migrations',
                 'admin'   => 'application.modules.admin.migrations',
+                'catalog' => 'application.modules.catalog.migrations',
             ),
         ),
     )
