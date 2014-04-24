@@ -258,7 +258,7 @@ class Page extends CActiveRecord
                 if (!$this->isNewRecord && is_dir($uploadPath)) {
                     CFileHelper::removeDirectory($uploadPath); // удаляем старое изображение, если обновляем модель
                 }
-                mkdir($uploadPath, 0777);
+                !file_exists($uploadPath) && mkdir($uploadPath, 0777);
                 $this->image = pathinfo($imageFile->getName(), PATHINFO_FILENAME) . '.jpg';
                 $this->setImage($imageFile->getTempName(), $uploadPath);
             }
