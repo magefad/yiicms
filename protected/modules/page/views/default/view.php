@@ -47,7 +47,7 @@ $this->widget(
             ),
             array(
                 'name'  => 'update_user_id',
-                'value' => $model->changeAuthor->getFullName()
+                'value' => $model->changeAuthor && $model->changeAuthor->getFullName()
             ),
             'create_time',
             'update_time',
